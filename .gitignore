@@ -1,0 +1,4 @@
+# report/*
+# !report/Figure
+# !report/Chapters/Chapter1.tex
+# !report/Chapters/Chapter2.tex
