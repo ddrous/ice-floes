@@ -1,0 +1,33 @@
+﻿\begin{tikzpicture}
+		\node (0) at (0, 0) {};
+		\node (1) at (0, 5) {};
+		\node (2) at (0, -5) {};
+		\node (3) at (10, 0) {};
+		\node (4) at (-10, 0) {};
+
+		\node (5) at (-9, 2.5) {};
+		\node (6) at (-5, 1.5) {};
+		\node (7) at (3.25, 1.25) {};
+		\node  (8) at (9, 4.75) {};
+
+		\node  (9) at (-9, -6.75) {};
+		\node  (10) at (-5, -4) {};
+		\node  (11) at (3.25, -1.75) {};
+		\node  (12) at (9, -1.25) {};
+		
+		\draw [->] (1.center) to (2.center);
+		\draw [->] (3.center) to (4.center);
+		\draw [bend right=15, looseness=0.75] (5.center) to (6.center);
+		\draw [in=-165, out=0, looseness=1.25] (6.center) to (7.center);
+		\draw [in=-135, out=15, looseness=1.25] (7.center) to (8.center);
+		\draw [in=-165, out=45] (9.center) to (10.center);
+		\draw [in=195, out=0, looseness=0.50] (10.center) to (11.center);
+		\draw [in=180, out=15, looseness=0.75] (11.center) to (12.center);
+	
+	  \draw [<->, blue] (9) -- (5);
+
+	\node  (13) at (9, -1.25) {};
+\node  (14) at (9, -1.25) {};
+  \draw [<->, red] (2.6,-1.8) to (2.6, 1);
+
+\end{tikzpicture}

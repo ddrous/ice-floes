@@ -1,0 +1,448 @@
+%% !TeX program = LuaLaTeX
+%% !TeX encoding = UTF-8
+
+%----------------------------------------------------------------------------------------
+%	PACKAGES AND OTHER DOCUMENT CONFIGURATIONS
+%----------------------------------------------------------------------------------------
+%\UseRawInputEncoding
+%\DeclareUnicodeCharacter{00A0}{~}
+\documentclass[ 
+11pt, % The default document font size, options: 10pt, 11pt, 12pt
+%oneside, % Two side (alternating margins) for binding by default, uncomment to switch to one side
+french, % ngerman for German
+singlespacing, % Single line spacing, alternatives: onehalfspacing or doublespacing
+% draft, % Uncomment to enable draft mode (no pictures, no links, overfull hboxes indicated)
+%nolistspacing, % If the document is onehalfspacing or doublespacing, uncomment this to set spacing in lists to single
+% liststotoc, % Uncomment to add the list of figures/tables/etc to the table of contents
+%toctotoc, % Uncomment to add the main table of contents to the table of contents
+parskip, % Uncomment to add space between paragraphs
+%nohyperref, % Uncomment to not load the hyperref package
+headsepline, % Uncomment to get a line under the header
+%chapterinoneline, % Uncomment to place the chapter title next to the number on one line
+%consistentlayout, % Uncomment to change the layout of the declaration, abstract and acknowledgements pages to match the default layout
+openany, %% Use this option to make chapters start on the next page, irrespective of whether it's an odd or even numbered page
+]{MastersDoctoralThesis} % The class file specifying the document structure
+
+\usepackage{mathpazo} % Use the Palatino font by default
+% \usepackage[light,condensed,math]{iwona}  %% Comment above and uncomment this to use the Iwona font
+\renewcommand{\emph}[1]{\textbf{\textit{#1}}} %% Use this to make \emph text bold (you lose all other properties of the command)
+
+%-----------------------------------------------------------------------
+
+%\usepackage[charter]{mathdesign}
+%\usepackage{fouriernc}
+%\usepackage{fourier}
+%\usepackage{eulervm}
+%\usepackage{arev}
+%\usepackage{arev}
+%\usepackage[varg]{txfonts}
+%\usepackage{kpfonts}
+%\usepackage[sb]{libertine}
+%\usepackage[sb]{libertine} % or \usepackage[sb]{libertinus}
+%\usepackage{libertinust1math} % slanted integrals, by default
+
+
+%\usepackage{fontspec}
+%\setromanfont{Meta Serif Pro}
+%\setsansfont{Fira Sans}
+%\setmonofont[Color={0019D4}]{Fira Code}
+
+%\usepackage{fontspec}
+%\usepackage{fontspec,realscripts}
+%\defaultfontfeatures{Ligatures=TeX}
+%\usepackage{unicode-math}
+%\setmainfont{Linux Libertine O} % Note the O
+
+%\setmainfont[BoldFont={Meta Serif Pro Bold}, 
+%ItalicFont={Meta Serif Pro BookIta},
+%BoldItalicFont={Meta Serif Pro BoldIta}
+%]{Meta Serif Pro Light} % Note the O
+%\setromanfont{Meta Serif Pro}
+%\setsansfont{Fira Sans}
+%\setmonofont[Color={0019D4}]{Fira Code}
+
+%\setmathfont{Libertinus Math}
+%\usepackage{eulervm}
+%\usepackage{mathpazo}
+%\usepackage{newtxtext}
+%\usepackage{newtxmath}
+
+\newcommand{\Run}{\mathbb{R}}
+\newcommand{\Rdeux}{\mathbb{R}^2}
+\newcommand{\Rtrois}{\mathbb{R}^3}
+\newcommand{\hplus}{h_{+}}
+\newcommand{\hmoins}{h_{-}}
+\newcommand{\eun}{e_1(\omega)}
+\newcommand{\edeux}{e_2(\omega)}
+%-----------------------------------------------------------------------
+
+
+% \setcounter{tocdepth}{4} %% Use this to set numbering depth for sections in the toc (already set in the Class)
+\setcounter{secnumdepth}{3} %% Use this to set numbering depth for sections in the whole document
+
+\graphicspath{ {./Figures/} } %% To load all images in this document from the Figures directory
+\DeclareGraphicsExtensions{.pdf,.png}  %% Use to this to set the priority for extensions leading
+\usepackage{subcaption} %% Use to make subgraphics
+\usepackage{float} %% Use this to control where the images are placed compared to thier related text
+\usepackage{multirow}
+
+\usepackage{tikz}
+\usetikzlibrary{patterns}
+\usepackage{tikzscale}
+
+%% TikZit preambule
+\usetikzlibrary{decorations.markings}
+\usetikzlibrary{shapes.geometric}
+\pagestyle{empty}
+\pgfdeclarelayer{edgelayer}
+\pgfdeclarelayer{nodelayer}
+\pgfsetlayers{edgelayer,nodelayer,main}
+
+%% TikZit default styles
+\tikzstyle{none}=[inner sep=0pt]
+
+\tikzstyle{rn}=[circle,fill=Red,draw=Black,line width=0.8 pt]
+\tikzstyle{gn}=[circle,fill=Lime,draw=Black,line width=0.8 pt]
+\tikzstyle{yn}=[circle,fill=Yellow,draw=Black,line width=0.8 pt]
+
+\tikzstyle{simple}=[-,draw=Black,line width=2.000]
+\tikzstyle{arrow}=[-,draw=Black,postaction={decorate},decoration={markings,mark=at position .5 with {\arrow{>}}},line width=2.000]
+\tikzstyle{tick}=[-,draw=Black,postaction={decorate},decoration={markings,mark=at position .5 with {\draw (0,-0.1) -- (0,0.1);}},line width=2.000]
+
+%% TikZit custom styles
+\tikzstyle{newstyle}=[-,draw=Green,line width=2.000]  %% You need to replace with whatever definition you are using
+
+
+%\usepackage{amssymb}
+%\usepackage{amsthm}
+\usepackage{amsmath,bm,mathtools} %% Use this to include the "align" environment in witch equations can be made easier
+\usepackage{physics} %% To have physical terms like the divergence operator
+\newcommand{\bvec}[1]{\mathbf{#1}}  %% Use this to make you vectors look bolded
+
+
+%\usepackage[backend=bibtex,style=numeric,maxnames=2,natbib=true]{biblatex} % Use the bibtex backend with the numeric citation style
+\usepackage[backend=bibtex,style=authoryear,maxnames=2,natbib=true]{biblatex} % Use the bibtex backend with the authoryear citation style (which resembles APA)
+% \bibliographystyle{abbrv}
+%\usepackage[backend=bibtex,style=authoryear-comp,sorting=none,sortcites=true,doi=false,url=false,giveninits=true,hyperref]{biblatex}
+
+\addbibresource{bibliography.bib} % The filename of the bibliography
+
+\usepackage[autostyle=true]{csquotes} % Required to generate language-dependent quotes in the bibliography 
+
+\usepackage{indentfirst}  %% For indentation
+
+\usepackage{xcolor}   %% To add color to text
+
+%% Stupid characters to declare if you your code to compile
+% \DeclareUnicodeCharacter{25CF}{$\bullet$}
+% \DeclareUnicodeCharacter{251C}{\mbox{\kern.23em
+%   \vrule height2.2exdepth1exwidth.4pt\vrule height2.2ptdepth-1.8ptwidth.23em}}
+% \DeclareUnicodeCharacter{2500}{\mbox{\vrule height2.2ptdepth-1.8ptwidth.5em}}
+% \DeclareUnicodeCharacter{2514}{\mbox{\kern.23em
+%   \vrule height2.2exdepth-1.8ptwidth.4pt\vrule height2.2ptdepth-1.8ptwidth.23em}}
+% \DeclareUnicodeCharacter{202F}{FIX ME!!!!}
+
+% \usepackage[en-US]{datetime2}
+% \renewcommand{\today}{\DTMdate{2021-1-27}}
+
+%----------------------------------------------------------------------------------------
+%	MARGIN SETTINGS
+%----------------------------------------------------------------------------------------
+
+\geometry{
+	paper=a4paper, % Change to letterpaper for US letter
+	inner=0.75in, % Inner margin
+	outer=0.75in, % Outer margin
+	bindingoffset=.5cm, % Binding offset
+	top=1.5cm, % Top margin
+	bottom=1.5cm, % Bottom margin
+	%showframe, % Uncomment to show how the type block is set on the page
+}
+
+%----------------------------------------------------------------------------------------
+%	THESIS INFORMATION
+%----------------------------------------------------------------------------------------
+
+\thesistitle{Fracturation de floes de glace par percution dans un modèle granulaire} % Your thesis title, ths is used in the title and abstract, print it elsewhere with \ttitle
+\supervisor{\href{http://mduprez.perso.math.cnrs.fr/}{Stéphane \textsc{Labbé}}} % Your supervisor's name, this is used in the title page, print it elsewhere with \supname
+\examiner{Christophe \textsc{Prud'homme}} % Your examiner's name, this is not currently used anywhere in the template, print it elsewhere with \examname
+\degree{master 2 CSMI} % Your degree name, this is used in the title page and abstract, print it elsewhere with \degreename
+\author{Desmond Roussel \textsc{Nzoyem}} % Your name, this is used in the title page and abstract, print it elsewhere with \authorname
+\addresses{} % Your address, this is not currently used anywhere in the template, print it elsewhere with \addressname
+
+\subject{Mathématiques appliquées} % Your subject area, this is not currently used anywhere in the template, print it elsewhere with \subjectname
+\keywords{} % Keywords for your thesis, this is not currently used anywhere in the template, print it elsewhere with \keywordnames
+\university{\href{http://www.unistra.fr}{University of Strasbourg, Sorbonne Unisersité}} % Your university's name and URL, this is used in the title page and abstract, print it elsewhere with \univname
+\department{\href{https://mathinfo.unistra.fr/}{UFR de mathématiques et d'informatique}} % Your department's name and URL, this is used in the title page and abstract, print it elsewhere with \deptname
+\group{\href{https://mimesis.inria.fr/}{SASIP}} % Your research group's name and URL, this is used in the title page, print it elsewhere with \groupname
+\faculty{\href{https://mathinfo.unistra.fr/}{UFR de mathématiques et d'informatique}} % Your faculty's name and URL, this is used in the title page and abstract, print it elsewhere with \facname
+
+\AtBeginDocument{
+\hypersetup{pdftitle=\ttitle} % Set the PDF's title to your title
+\hypersetup{pdfauthor=\authorname} % Set the PDF's author to your name
+\hypersetup{pdfkeywords=\keywordnames} % Set the PDF's keywords to your keywords
+}
+
+
+%\pdfmapfile{=/var/lib/texmf/fonts/map/pdftex/updmap/pdftex.map}
+
+\begin{document}
+
+\frontmatter % Use roman page numbering style (i, ii, iii, iv...) for the pre-content pages
+
+\pagestyle{plain} % Default to the plain heading style until the thesis style is called for the body content
+
+%----------------------------------------------------------------------------------------
+%	TITLE PAGE
+%----------------------------------------------------------------------------------------
+
+\begin{titlepage}
+
+\begin{figure}[!htb]
+   \begin{minipage}{0.32\textwidth}
+     \centering
+     \includegraphics[width=.8\linewidth]{LogoUnistra.jpg}
+     \label{Fig:LogoUnistra}
+   \end{minipage}\hfill
+   \begin{minipage}{0.32\textwidth}
+    \centering
+    \includegraphics[width=.6\linewidth]{LogoLJLL.jpg}
+    \label{Fig:LogoMimesis}
+  \end{minipage}\hfill
+   \begin{minipage}{0.32\textwidth}
+     \centering
+     \includegraphics[width=.8\linewidth]{LogoCSMI.png}
+     \label{Fig:LogoInria}
+   \end{minipage}
+\end{figure}
+
+
+\begin{center}
+
+\vspace*{.04\textheight}
+% {\scshape\LARGE \univname\par}\vspace{1.5cm} % University name
+\textsc{\Large Rapport de stage}\\[0.5cm] % Thesis type
+
+\HRule \\[0.4cm] % Horizontal line
+{\huge \bfseries \ttitle\par}\vspace{0.4cm} % Thesis title
+\HRule \\[1.5cm] % Horizontal line
+
+\begin{minipage}[t]{0.4\textwidth}
+\begin{flushleft} \large
+\vspace{7mm}
+\emph{Étudiant}\\
+\href{https://github.com/desmond-rn}{\authorname} % Author name - remove the \href bracket to remove the link
+\end{flushleft}
+\end{minipage}
+\begin{minipage}[t]{0.4\textwidth}
+\begin{flushright} \large
+\emph{Superviseur} \\
+\href{http://mduprez.perso.math.cnrs.fr/}{\supname} % Supervisor names - remove the \href bracket to remove the link
+\\ \vspace{5mm}
+\emph{Enseignant référent} \\
+\href{http://www.feelpp.org/team/prudhomm/}{\examname} % Examiner's name - remove the \href bracket to remove the link
+\end{flushright}
+\end{minipage}%%\\[2cm]
+
+% \vfill
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=.9\linewidth]{IntroPic.jpg}
+    \label{Fig:IntroPic}
+\end{figure}
+
+
+\large \textit{Ce stage à été effectué dans le cadre du \href{https://docs.google.com/document/d/10JbbXeqqu5J2BjMkSQRNQ8Gx7xBPOClLKpvd7EBZT8U/edit}{master 2 CSMI,}}\\[0.2cm]
+\textit{du 03 février 2021, au 31 juillet 2021;}\\[0.2cm]
+\textit{initié par le groupe \groupname au \href{https://www.ljll.math.upmc.fr/?lang=fr}{LJLL}.}\\[0.2cm]
+
+\vspace*{.04\textheight}
+\large Année académique 2020 - 2021
+
+\vfill
+
+{\large \today}\\[4cm] % Today's date
+% \includegraphics{Logo_UNIV} % University/department logo - uncomment to place it
+
+% \vfill
+\end{center}
+\end{titlepage}
+
+%----------------------------------------------------------------------------------------
+%	DECLARATION PAGE
+%----------------------------------------------------------------------------------------
+%
+% \begin{declaration}  
+% \addchaptertocentry{\authorshipname} % Add the declaration to the table of contents
+% \not I, \authorname, declare that this thesis titled, \enquote{\ttitle} and the work presented in it are my own. I confirm that:
+%
+% \begin{itemize}
+% \item This work was done wholly or mainly while in candidature for a research degree at this University.
+% \item Where any part of this thesis has previously been submitted for a degree or any other qualification at this University or any other institution, this has been clearly stated.
+% \item Where I have consulted the published work of others, this is always clearly attributed.
+% \item Where I have quoted from the work of others, the source is always given. With the exception of such quotations, this thesis is entirely my own work.
+% \item I have acknowledged all main sources of help.
+% \item Where the thesis is based on work done by myself jointly with others, I have made clear exactly what was done by others and what I have contributed myself.\\
+% \end{itemize}
+%
+% \noindent Signed:\\
+% \rule[0.5em]{25em}{0.5pt} % This prints a line for the signature
+%
+% \noindent Date:\\
+% \rule[0.5em]{25em}{0.5pt} % This prints a line to write the date
+% \end{declaration}
+%
+% \cleardoublepage
+
+%----------------------------------------------------------------------------------------
+%	QUOTATION PAGE
+%----------------------------------------------------------------------------------------
+%
+% \vspace*{0.2\textheight}
+%
+% \noindent\enquote{\itshape Thanks to my solid academic training, today I can write hundreds of words on virtually any topic without possessing a shred of information, which is how I got a good job in journalism.}\bigbreak
+%
+% \hfill Dave Barry
+
+%----------------------------------------------------------------------------------------
+%	ABSTRACT PAGE
+%----------------------------------------------------------------------------------------
+%
+% \begin{abstract}
+% \addchaptertocentry{\abstractname} % Add the abstract to the table of contents
+% The Thesis Abstract is written here (and usually kept to just this page). The page is kept centered vertically so can expand into the blank space above the title too\ldots
+% \end{abstract}
+
+% ----------------------------------------------------------------------------------------
+% 	ACKNOWLEDGEMENTS
+% ----------------------------------------------------------------------------------------
+
+\begin{acknowledgements}
+\addchaptertocentry{\acknowledgementname} % Add the acknowledgements to the table of contents
+
+\end{acknowledgements}
+
+%----------------------------------------------------------------------------------------
+%	LIST OF CONTENTS/FIGURES/TABLES PAGES
+%----------------------------------------------------------------------------------------
+
+\tableofcontents % Prints the main table of contents
+
+% \listoffigures % Prints the list of figures
+
+% \listoftables % Prints the list of tables
+
+%----------------------------------------------------------------------------------------
+%	ABBREVIATIONS
+%----------------------------------------------------------------------------------------
+
+% \begin{abbreviations}{11} % Include a list of abbreviations (a table of two columns)
+% 
+% \addchaptertocentry{\abbreviations} % Add the abbreviations to the table of contents
+% \textbf{ETR} & \textbf{E}quation (du) \textbf{T}ransfert \textbf{R}adiatif\\
+% \textbf{ETL} & \textbf{E}quilibre \textbf{T}hermique \textbf{L}ocal\\
+% \textbf{UFR} & \textbf{U}nite de\textbf{F}ormation et de \textbf{R}echerche de l'Universite de Strasbourg
+% 
+% \end{abbreviations}
+
+%----------------------------------------------------------------------------------------
+%	PHYSICAL CONSTANTS/OTHER DEFINITIONS
+%----------------------------------------------------------------------------------------
+
+% \begin{constants}{lr@{${}={}$}l} % The list of physical constants is a three column table
+% 
+% The \SI{}{} command is provided by the siunitx package, see its documentation for instructions on how to use it
+% 
+% Speed of Light & $c_{0}$ & \SI{2.99792458e8}{\meter\per\second} (exact)\\
+% Constant Name & $Symbol$ & $Constant Value$ with units\\
+
+% \end{constants}
+
+%----------------------------------------------------------------------------------------
+%	SYMBOLS
+%----------------------------------------------------------------------------------------
+
+% \begin{symbols}{rcc} % Include a list of Symbols (a three column table)
+% \label{sec:symbols}
+% \textbf{Symbole} & \textbf{Définition} & \textbf{Unité} \\
+% \addlinespace % Gap to separate the Roman symbols from the Greek
+
+% $x$ & Abscisse & \si{\cm} \\
+% $y$ & Ordonnée & \si{\cm} \\
+% $\bvec{x}$ & Vecteur position & \si{\cm} \\
+% $\bm{\Omega}$ & Vecteur direction de propagation des photons & \si{\cm^2 \per \cm^2} \\
+% $\nu$ & Fréquence & \si{Hz} \\
+% $p$ & Fonction de distribution angulaire de « scattering » &  \\
+% $I$ & Intensité spécifique de radiation & \si{W \per m^2 \per sr  \per Hz} \\
+% $B$ & Fonction de Planck & \si{W \per m^2 \per sr  \per Hz} \\
+
+% \addlinespace % Gap with real SI dimensions
+
+% $\rho$ & Densité du milieu & \si{\g \per \cm\cubed} \\
+% $\sigma_a$ & Opacité d'absorption & \si{\per\cm} \\
+% $\sigma_c$ & Opacité de « scattering » (ou de dispersion) & \si{\per\cm} \\
+
+% \addlinespace % Gap to separate inputs
+
+% $t$ & Temps & \si{sh} \\
+% $C_v$ & Capacité thermique du milieu & \si{Jerk \per\g \per keV} \\
+% $a$ & Constante radiative (ou de rayonnement)& \si{g \per cm \per sh^2  \per keV } \\
+% $c$ & Vitesse de la lumière & \si{\cm \per sh} \\
+
+% \addlinespace % Gap to separate output
+
+% $T$ & Température matière & \si{keV} \\
+% $E$ & Energie des photons & \si{g \per \cm \per sh^2} \\
+% $\bvec{F}$ & Flux de photons & \si{g \per sh^2} \\
+
+% \end{symbols}
+
+%----------------------------------------------------------------------------------------
+%	DEDICATION
+%----------------------------------------------------------------------------------------
+
+% \dedicatory{For/Dedicated to/To my\ldots}
+
+%----------------------------------------------------------------------------------------
+%	THESIS CONTENT - CHAPTERS
+%----------------------------------------------------------------------------------------
+
+\mainmatter % Begin numeric (1,2,3...) page numbering
+\setlength{\parindent}{4ex} %% Set the paragraph indentation as from this line
+
+\pagestyle{thesis} % Return the page headers back to the "thesis" style
+
+% Include the chapters of the thesis as separate files from the Chapters folder
+% Uncomment the lines as you write the chapters
+
+\include{Chapters/Chapter1}       %% Introduction
+\include{Chapters/Chapter2}     %% Roadmap
+\include{Chapters/Chapter3}       %% Results
+\include{Chapters/Chapter4}       %% Milestones
+\include{Chapters/Chapter5}     %% Summary   
+\include{Chapters/Chapter6}       %% Conclusion
+
+%----------------------------------------------------------------------------------------
+%	THESIS CONTENT - APPENDICES
+%----------------------------------------------------------------------------------------
+
+% \appendix % Cue to tell LaTeX that the following "chapters" are Appendices
+
+% Include the appendices of the thesis as separate files from the Appendices folder
+% Uncomment the lines as you write the Appendices
+
+% \include{Appendices/AppendixA}
+% \include{Appendices/AppendixB}
+%\include{Appendices/AppendixC}
+
+%----------------------------------------------------------------------------------------
+%	BIBLIOGRAPHY
+%----------------------------------------------------------------------------------------
+
+\printbibliography[heading=bibintoc]
+
+%----------------------------------------------------------------------------------------
+
+\end{document}
+
