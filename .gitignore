@@ -1,4 +1,18 @@
-# report/*
-# !report/Figure
-# !report/Chapters/Chapter1.tex
-# !report/Chapters/Chapter2.tex
+report/*
+
+!report/main.tex
+!report/main.pdf
+!report/MastersDoctoralThesis.cls
+!report/bibliography.bib
+
+!report/Figures/
+
+!report/Chapters/Chapter1.tex
+!report/Chapters/Chapter2.tex
+!report/Chapters/Chapter3.tex
+!report/Chapters/Chapter4.tex
+!report/Chapters/Chapter5.tex
+!report/Chapters/Chapter6.tex
+
+!report/Appendices/AppendixA.tex
+!report/Appendices/AppendixB.tex
