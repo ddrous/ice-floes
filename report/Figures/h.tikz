@@ -1,8 +1,8 @@
 ﻿\begin{tikzpicture}
 		\node (0) at (0, 0) {};
-		\node (1) at (0, 5) {};
-		\node (2) at (0, -5) {};
-		\node (3) at (10, 0) {};
+		\node (1) at (0, 6) {};
+		\node (2) at (0, -7) {};
+		\node (3) at (11, 0) {};
 		\node (4) at (-10, 0) {};
 
 		\node (5) at (-9, 2.5) {};
@@ -15,19 +15,36 @@
 		\node  (11) at (3.25, -1.75) {};
 		\node  (12) at (9, -1.25) {};
 		
-		\draw [->] (1.center) to (2.center);
-		\draw [->] (3.center) to (4.center);
-		\draw [bend right=15, looseness=0.75] (5.center) to (6.center);
-		\draw [in=-165, out=0, looseness=1.25] (6.center) to (7.center);
-		\draw [in=-135, out=15, looseness=1.25] (7.center) to (8.center);
-		\draw [in=-165, out=45] (9.center) to (10.center);
-		\draw [in=195, out=0, looseness=0.50] (10.center) to (11.center);
-		\draw [in=180, out=15, looseness=0.75] (11.center) to (12.center);
-	
-	  \draw [<->, blue] (9) -- (5);
+		\draw [->] (2.center) to (1.center);
+		\draw [->] (4.center) to (3.center);
 
+		\node [below] at (11,0) {$x$};
+		\node [left] at (0,6) {$z$};
+
+		\draw [ultra thick, bend right=15, looseness=0.75] (5.center) to (6.center);
+		\draw [ultra thick, in=-165, out=0, looseness=1.25] (6.center) to (7.center);
+		\draw [ultra thick, in=-135, out=15, looseness=1.25] (7.center) to (8.center);
+		\draw [ultra thick, in=-165, out=45] (9.center) to (10.center);
+		\draw [ultra thick, in=195, out=0, looseness=0.50] (10.center) to (11.center);
+		\draw [ultra thick, in=180, out=15, looseness=0.75] (11.center) to (12.center);
+
+		\node[below left]  at (0,-3.3) {\large \bfseries $h_{-}(x)$};
+		\node[below left]  at (0,2.7) {\large \bfseries $h_{+}(x)$};
+	
+	  \draw [<->, red] (9) -- (5);
+	
 	\node  (13) at (9, -1.25) {};
-\node  (14) at (9, -1.25) {};
-  \draw [<->, red] (2.6,-1.8) to (2.6, 1);
+	\node  (14) at (9, -1.25) {};
+	  \draw [<->, blue] (2.6,-1.8) to (2.6, 1);
+
+	\draw [dashed] (-10.5,4.75) -- (9, 4.75) ;
+	\draw [dashed] (-10.5,-6.75) -- (-9,-6.75);
+	\draw [<->, orange] (-10.2,4.75) -- (-10.2,-6.75);
+
+	\node [left] at (-10.2,-1) {\Large \bfseries $\textcolor{orange}{\bar{h}}$};
+	\node [right] at (-9,-2) {\Large \bfseries $\textcolor{red}{\bar{h}^*}$};
+	\node [left] at (2.6,-0.5) {\Large \bfseries $\textcolor{blue}{\underline{h}^*}$};		
+	
+
 
 \end{tikzpicture}

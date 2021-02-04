@@ -1,0 +1,7 @@
+﻿\begin{tikzpicture}
+	\draw [fill=blue] (0,0) -- (10,0) -- (10,10) -- (0,10) -- cycle;
+
+	\draw [rounded corners,white,dashed,pattern=north west lines,pattern color=white] (2,6) rectagle (4,6);
+	\draw[rounded corners,white,fill=white,cm={cos(45) ,-sin(45) ,sin(45) ,cos(45) ,(2 cm,6 cm)} ] (2,6) -- (2,4) -- (4,4) -- (4,6)-- cycle;
+
+\end{tikzpicture}}
