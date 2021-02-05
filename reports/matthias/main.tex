@@ -22,12 +22,12 @@
 \documentclass[
   french,
   % twocolumn,
-	10pt, % Default font size, values between 10pt-12pt are allowed
+	11pt, % Default font size, values between 10pt-12pt are allowed
 	%letterpaper, % Uncomment for US letter paper size
 	%spanish, % Uncomment for Spanish
 ]{fphw}
 
-\usepackage[fontsize=10.0]{scrextend} % Use this to force the fontsize
+% \usepackage[fontsize=10.0]{scrextend} % Use this to force the fontsize
 
 %% Commands for numering paragraphs
 \renewcommand\thesection{\Roman{section}}
@@ -134,10 +134,8 @@
 % \newcommand{\mymatrix}[16]{\begin{pmatrix} #1 & #2 & #3 & #4 \\ #4 & #6 & #7 & #8 \\ #9 & #10 & #11 & #12 \\ #13 & #14 & #15 & #16 \end{pmatrix}}  %% Matrice 3*3
 
 \newcommand{\hquad}{\hspace{0.5em}} %% Bew command for half quad
-\setlength\parindent{0.65cm}	%% To remove all indentations
-
+% \setlength\parindent{0pt}	%% To remove all indentations
 % \setlength{\parskip}{1em}%
-% \setlength\parindent{0pt}
 
 \usepackage[backend=bibtex,style=authoryear,maxnames=2,natbib=true]{biblatex} % Use the bibtex backend with the authoryear citation style (which resembles APA)
 \addbibresource{bibliography.bib} % The filename of the bibliography
@@ -148,13 +146,13 @@
 %	ASSIGNMENT INFORMATION
 %----------------------------------------------------------------------------------------
 
-\title{Résumé thèse Matthias} % Assignment title
+\title{Résumé thèse M. Rabatel} % Assignment title
 
 \author{Desmond Roussel Nzoyem} % Student name
 
 \date{\today} % Due date
 
-\institute{Université de Strasbourg \\ UFR de Mathématiques et Informatique} % Institute or school name
+\institute{Université de Strasbourg, Sorbone Université \\ Laboratoire Jacques-Louis Lions} % Institute or school name
 
 \class{Stage M2} % Course or class name
 
@@ -164,21 +162,77 @@
 
 \begin{document}
 
-% \maketitle % Output the assignment title, created automatically using the information in the custom commands above
+\maketitle % Output the assignment title, created automatically using the information in the custom commands above
+
+%----------------------------------------------------------------------------------------
+%	ASSIGNMENT CONTENT - CODE COULEUR
+%----------------------------------------------------------------------------------------
+\section*{Code couleur}
+\begin{description}
+  \item[\textcolor{yellow}{jaune}]: information importante;
+  \item[\textcolor{blue}{blue}]: information triviale;
+  \item[\textcolor{green}{vert}]: question à poser;
+  \item[\textcolor{red}{rouge}]: possible ereur;
+  \item[\textcolor{brown}{marron}]: piste d'étude pour le stage;
+\end{description}
+
+%----------------------------------------------------------------------------------------
+%	ASSIGNMENT CONTENT - INTRODUCTION
+%----------------------------------------------------------------------------------------
+
+\section*{Introdution}
+
+La simulation de la glace artique est importante pour:
+\begin{itemize}
+  \item les prédictions climatiques, vu le role que joue la coucle dans la reflection des rayonnements.
+  \item l'exploitation des ressources, suite à la fonte de la glace artique
+\end{itemize}
+
+Le cout numérique élevé des modèles granulaires justifie leur rareté. Mais il y a un regain ces dernière années. 
+
+L'algorithme ne repose pas sur les méthodes classiques de dynamique moléculaire\footnote{Technique de simulation numérique permettant de modéliser l'évolution d'un système de particules au cours du temps.}; mais à partir d’un algorithme de gestion d’événements\footnote{La gestion d’événements (ou Event-Driven) consiste à séparer la dynamique régulière de la dynamique non régulière, comme les collisions.} et avec une attention particulière sur les collisions entre les floes, tout en évitant les interpénétrations\footnote{lorsque la distance entre deux floes est négative i.e. $\delta \leq 0$. Il faut g gérer les interpénétrations avant qu'elles n'arrivent.}. 
+
 
 %----------------------------------------------------------------------------------------
 %	ASSIGNMENT CONTENT - SECTION 1
 %----------------------------------------------------------------------------------------
 
-\renewcommand{\abstractname}{Introduction}
-\maketitle
-\begin{abstract}
-  \normalsize
-  No abstract
-\end{abstract}
+
+\section{Modélisation Théorique de la Dynamique des Glaces de Mer}
+
+\subsection{Le modèle du floe}
 
 
-\section{Résultats de thèse}
+\begin{itemize}
+  \item Les floes de glace sont à peine connexes. 
+  \item Le modèle considère des floes dont l’aire est supérieure à quelques mètres carrés et sans restrictions concernant leur géométrie. À cette échelle, l’épaisseur et les processus hors-plan peuvent-être négligés en première approximation.
+  \item L'échelle temporelle est celle de quelques jours;
+  \item Les obstacles sont des floes de masse volumique très forte;
+  \item Le coefficient de restitution $\varepsilon$ détermine le caratère élastique ou inélastique de la collision;
+  \item Le repère absolu $\mathcal{R}_{abs}$ est euclidien, ce qui empèche de prendre en compte la rotondité de la terre (rondeur);
+  \item L'aipaisseur $h$ du floe peut varier en espace, mais pas en temps, vu que les floes sont considéres rigide, et on a négliger les effets thermodynamiques.
+\end{itemize}
+
+
+%----------------------------------------------------------------------------------------
+%	ASSIGNMENT CONTENT - CONCLUSION
+%----------------------------------------------------------------------------------------
+
+\section*{Conclusion}
+
+Les points forts du modèle:
+\begin{enumerate}
+  \item Ce modèle considère des tailles de glace réalistes, aussi petites ($\leq 10 km$) que grandes ($\geq 10 km$); des concentrations variées (plus ou moins de $80 \%$ de glace), etc.
+  \item Ce modèle gère l'interpénétration des floes: on ne veut pas qu'un morceau de glace ratre dans un autre;
+\end{enumerate}
+
+
+Les points faibles:
+\begin{enumerate}
+  \item ne gère pas la rhéologie\footnote{La rhéologie est l'étude de la déformation et de l'écoulement de la matière sous l'effet d'une contrainte appliquée.} de la glace: les floes sont des solides purement rigides (ils ne se déforment pas) et la dissipation d’énergie cinétique durant la collision est décrite en utilisant un coefficient purement empirique
+\end{enumerate}
+
+
 
 % %-------------------------------------------------------------------------------
 % %							THE BIBLIOGRAPHY

@@ -30,7 +30,7 @@
 \newcommand{\CourseLang}{Course}
 \newcommand{\DateLang}{Due date}
 \newcommand{\StudentLang}{Student name}
-\newcommand{\ProfessorLang}{Professor}
+\newcommand{\ProfessorLang}{Supervisor}
 
 % Header and footers, we will use the titles also
 \RequirePackage{fancyhdr}
@@ -59,7 +59,7 @@
     \renewcommand{\CourseLang}{UE}
     \renewcommand{\DateLang}{Date}
     \renewcommand{\StudentLang}{Etudiant}
-    \renewcommand{\ProfessorLang}{Enseignant}
+    \renewcommand{\ProfessorLang}{Superviseur}
 }
 
 \PassOptionsToClass{a4paper}{article}

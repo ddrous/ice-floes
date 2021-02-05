@@ -22,12 +22,12 @@
 \documentclass[
   french,
   % twocolumn,
-	10pt, % Default font size, values between 10pt-12pt are allowed
+	11pt, % Default font size, values between 10pt-12pt are allowed
 	%letterpaper, % Uncomment for US letter paper size
 	%spanish, % Uncomment for Spanish
 ]{fphw}
 
-\usepackage[fontsize=10.0]{scrextend} % Use this to force the fontsize
+% \usepackage[fontsize=10.0]{scrextend} % Use this to force the fontsize
 
 %% Commands for numering paragraphs
 \renewcommand\thesection{\Roman{section}}
@@ -75,7 +75,7 @@
 \captionsetup{justification=centering}
 
 \usepackage{float}
-\graphicspath{ {./img/} }
+\graphicspath{ {../img/} }
 
 \usepackage{booktabs} % Required for better horizontal rules in tables
 
@@ -134,27 +134,27 @@
 % \newcommand{\mymatrix}[16]{\begin{pmatrix} #1 & #2 & #3 & #4 \\ #4 & #6 & #7 & #8 \\ #9 & #10 & #11 & #12 \\ #13 & #14 & #15 & #16 \end{pmatrix}}  %% Matrice 3*3
 
 \newcommand{\hquad}{\hspace{0.5em}} %% Bew command for half quad
-\setlength\parindent{0.65cm}	%% To remove all indentations
+% \setlength\parindent{0pt}	%% To remove all indentations
 
-% \setlength{\parskip}{1em}%
-% \setlength\parindent{0pt}
-
-\usepackage[backend=bibtex,style=authoryear,maxnames=2,natbib=true]{biblatex} % Use the bibtex backend with the authoryear citation style (which resembles APA)
-\addbibresource{bibliography.bib} % The filename of the bibliography
+\usepackage[backend=bibtex,style=alphabetic,maxnames=2,natbib=true]{biblatex} % Use the bibtex backend with the alphabetic citation style (compact APA-like)
+% \usepackage[backend=bibtex,style=authoryear,maxnames=2,natbib=true]{biblatex} % Use the bibtex backend with the authoryear citation style (which resembles APA)
+\addbibresource{../bib/bibliography.bib} % The filename of the bibliography
 \usepackage[autostyle=true]{csquotes} % Required to generate language-dependent quotes in the bibliography 
 % \renewcommand*{\bibfont}{\tiny} % Pour reduire la taille des references
+
+\usepackage[useregional=numeric]{datetime2}
 
 %----------------------------------------------------------------------------------------
 %	ASSIGNMENT INFORMATION
 %----------------------------------------------------------------------------------------
 
-\title{Rapport semaine 1} % Assignment title
+\title{Compte rendu semaine \#1} % Assignment title
 
 \author{Desmond Roussel Nzoyem} % Student name
 
-\date{\today} % Due date
+\date{\DTMdisplaydate{2021}{2}{3}{-1} - \DTMdisplaydate{2021}{2}{9}{-1}} % Due date
 
-\institute{Université de Strasbourg \\ UFR de Mathématiques et Informatique} % Institute or school name
+\institute{Université de Strasbourg, Sorbone Université \\ Laboratoire Jacques-Louis Lions} % Institute or school name
 
 \class{Stage M2} % Course or class name
 
@@ -164,37 +164,49 @@
 
 \begin{document}
 
-% \maketitle % Output the assignment title, created automatically using the information in the custom commands above
+\maketitle % Output the assignment title, created automatically using the information in the custom commands above
 
 %----------------------------------------------------------------------------------------
 %	ASSIGNMENT CONTENT - SECTION 1
 %----------------------------------------------------------------------------------------
 
-\renewcommand{\abstractname}{Introduction}
-\maketitle
-\begin{abstract}
-  \normalsize
-  No abstract
-\end{abstract}
+\section{Travail effectué}
 
 
-\section{Résultats de thèse}
+
+%----------------------------------------------------------------------------------------
+%	ASSIGNMENT CONTENT - SECTION 2
+%----------------------------------------------------------------------------------------
+
+\section{Difficultés rencontrées}
+
+\subsection{Inpirées de la thèse de M. Rabatel}
+\begin{enumerate}
+  \item En exprimant les propriétés du floe $G(\omega)$, $e_1(\omega)$, et $e_2(\omega)$ en fonction de $\omega$, ne risque-t'on pas d'avoir des écritures trops lourdes plus tard. Qu'en est-il des expressions utilisées dans les thèses et articles précédents: ne risque t-on pas une incohérence ? 
+\end{enumerate}
+
+
+
+\subsection{Inpirées de la thèse de D. Balasoiu}
+
+
+%----------------------------------------------------------------------------------------
+%	ASSIGNMENT CONTENT - SECTION 3
+%----------------------------------------------------------------------------------------
+
+\section{Sujet explorables}
+
+\begin{enumerate}
+  \item Rajouter le caratère déformable aux floes dans le modèle granulaire \parencite[p.12]{rabatel:tel-01293341}.
+  \item Vu que le coefficient de détermination est fixé de facon empirique, on pourrait déterminer ce coefficient en fonction de l’endommagement subi par le floe et des éventuelles fractures se propageant dans le floe à partir d’une situation de collision \parencite[p.14]{rabatel:tel-01293341}.
+  
+\end{enumerate}
 
 % %-------------------------------------------------------------------------------
 % %							THE BIBLIOGRAPHY
 % %-------------------------------------------------------------------------------
-% \clearpage   % Pour retirer les references de la bare de navigation
-% % \cite{CNRS} \cite{Kaggle} \cite{GitHub} \cite{JHU} \cite{Nguemdjo}
-% \printbibliography
-
-
-
-% %-------------------------------------------------------------------------------
-% %							THE BIBLIOGRAPHY
-% %-------------------------------------------------------------------------------
-% \clearpage   % Pour retirer les references de la bare de navigation
-% % \cite{CNRS} \cite{Kaggle} \cite{GitHub} \cite{JHU} \cite{Nguemdjo}
-% \printbibliography
+\clearpage   % Pour retirer les references de la bare de navigation
+\printbibliography
 
 
 \end{document}

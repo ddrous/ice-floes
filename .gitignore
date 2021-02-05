@@ -44,6 +44,10 @@ reports/matthias/*
 
 !reports/matthias/img/
 
+# Rapport toute semaine confondu
+!reports/weeks/img
+!reports/weeks/bib
+
 # Rapport semaine 1
 reports/weeks/1/*
 
