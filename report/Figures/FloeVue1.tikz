@@ -36,4 +36,4 @@
 
 \node[below right] (v15) at (-1.7,0.2) {$x$};
 
-\end{tikzpicture}}
+\end{tikzpicture}
