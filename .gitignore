@@ -8,6 +8,12 @@ reports/internship/*
 
 !reports/internship/Figures/
 
+reports/internship/Chapters/*
+reports/internship/Appendices/*
+
+!reports/internship/Chapters/
+!reports/internship/Appendices/
+
 !reports/internship/Chapters/Chapter1.tex
 !reports/internship/Chapters/Chapter2.tex
 !reports/internship/Chapters/Chapter3.tex
