@@ -1,18 +1,49 @@
-report/*
+# Rapport de stage
+reports/internship/*
 
-!report/main.tex
-!report/main.pdf
-!report/MastersDoctoralThesis.cls
-!report/bibliography.bib
+!reports/internship/main.tex
+!reports/internship/main.pdf
+!reports/internship/MastersDoctoralThesis.cls
+!reports/internship/bibliography.bib
 
-!report/Figures/
+!reports/internship/Figures/
 
-!report/Chapters/Chapter1.tex
-!report/Chapters/Chapter2.tex
-!report/Chapters/Chapter3.tex
-!report/Chapters/Chapter4.tex
-!report/Chapters/Chapter5.tex
-!report/Chapters/Chapter6.tex
+!reports/internship/Chapters/Chapter1.tex
+!reports/internship/Chapters/Chapter2.tex
+!reports/internship/Chapters/Chapter3.tex
+!reports/internship/Chapters/Chapter4.tex
+!reports/internship/Chapters/Chapter5.tex
+!reports/internship/Chapters/Chapter6.tex
 
-!report/Appendices/AppendixA.tex
-!report/Appendices/AppendixB.tex
+!reports/internship/Appendices/AppendixA.tex
+!reports/internship/Appendices/AppendixB.tex
+
+# Resume de these Dimitri
+reports/dimitri/*
+
+!reports/dimitri/main.tex
+!reports/dimitri/main.pdf
+!reports/dimitri/fphw.cls
+!reports/dimitri/bibliography.bib
+
+!reports/dimitri/img/
+
+# Resume de these Matthias
+reports/dimitri/*
+
+!reports/matthias/main.tex
+!reports/matthias/main.pdf
+!reports/matthias/fphw.cls
+!reports/matthias/bibliography.bib
+
+!reports/matthias/img/
+
+# Rapport semaine 1
+reports/weeks/1/*
+
+!reports/weeks/1/main.tex
+!reports/weeks/1/main.pdf
+!reports/weeks/1/fphw.cls
+!reports/weeks/1/bibliography.bib
+
+!reports/weeks/1/img/

@@ -1,0 +1,200 @@
+﻿%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% fphw Assignment
+% LaTeX Template
+% Version 1.0 (27/04/2019)
+%
+% This template originates from:
+% https://www.LaTeXTemplates.com
+%
+% Authors:
+% Class by Felipe Portales-Oliva (f.portales.oliva@gmail.com) with template 
+% content and modifications by Vel (vel@LaTeXTemplates.com)
+%
+% Template (this file) License:
+% CC BY-NC-SA 3.0 (http://creativecommons.org/licenses/by-nc-sa/3.0/)
+%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%----------------------------------------------------------------------------------------
+%	PACKAGES AND OTHER DOCUMENT CONFIGURATIONS
+%----------------------------------------------------------------------------------------
+
+\documentclass[
+  french,
+  % twocolumn,
+	10pt, % Default font size, values between 10pt-12pt are allowed
+	%letterpaper, % Uncomment for US letter paper size
+	%spanish, % Uncomment for Spanish
+]{fphw}
+
+\usepackage[fontsize=10.0]{scrextend} % Use this to force the fontsize
+
+%% Commands for numering paragraphs
+\renewcommand\thesection{\Roman{section}}
+\renewcommand\thesubsection{\thesection.\arabic{subsection}}
+\renewcommand*\thesubsubsection{%
+  \Roman{section}.\arabic{subsection}.\alph{subsubsection}%
+}
+
+ % \usepackage{fancyhdr}
+% Template-specific packages
+\usepackage{babel}
+\usepackage[utf8]{inputenc} % Required for inputting international characters
+% \usepackage{DejaVuSerifCondensed} 
+\usepackage[T1]{fontenc} % Output font encoding for international characters
+% \usepackage{mathpazo} % Use the Palatino font
+% \usepackage{tgschola} % Use the Palatino font
+% \usepackage{Alegreya}
+% \renewcommand*\oldstylenums[1]{{\AlegreyaOsF #1}}
+% \usepackage{iwona} % Use the Iwona font
+
+\usepackage{kpfonts}        %% For math only
+\usepackage{fontspec}       %% Because we are using XeTEX
+\setromanfont{Minion Pro}   %% For text (Minion Math is commercial)
+
+%-----------------------------------------------------------------------
+% \setromanfont{Meta Serif Pro}
+% \setsansfont{Fira Sans}
+% \setmonofont[Color={0019D4}]{Fira Code} 
+%-----------------------------------------------------------------------
+
+
+
+\usepackage{fancyvrb}
+\usepackage{fvextra}
+\newcommand\userinput[1]{\textbf{#1}}
+\newcommand\arguments[1]{\textit{#1}}
+
+\usepackage{amsmath}
+\usepackage{mathtools}
+\usepackage{xfrac} 
+
+\usepackage{graphicx} % Required for including images
+\usepackage[textfont=it,font=small]{caption}  %% To manage long captions in images
+\usepackage{subcaption}
+\captionsetup{justification=centering}
+
+\usepackage{float}
+\graphicspath{ {./img/} }
+
+\usepackage{booktabs} % Required for better horizontal rules in tables
+
+\usepackage{listings} % Required for insertion of code
+
+\usepackage{array} % Required for spacing in tabular environment
+
+\usepackage{enumerate} % To modify the enumerate environment
+
+\usepackage{amssymb}
+\usepackage{enumitem}	%% % To modify the itemize bullet character
+
+\newcommand{\tabhead}[1]{{\bfseries#1}}
+
+\usepackage{xcolor}
+\usepackage{listings}
+\colorlet{mygray}{black!30}
+\colorlet{mygreen}{green!60!blue}
+\colorlet{mymauve}{red!60!blue}
+\lstset{
+  backgroundcolor=\color{gray!10},  
+  basicstyle=\ttfamily,
+  columns=fullflexible,
+  breakatwhitespace=false,      
+  breaklines=true,                
+  captionpos=b,                    
+  commentstyle=\color{mygreen}, 
+  extendedchars=true,              
+  frame=single,                   
+  keepspaces=true,             
+  keywordstyle=\color{blue},      
+  language=c++,                 
+  numbers=none,                
+  numbersep=5pt,                   
+  numberstyle=\tiny\color{blue}, 
+  rulecolor=\color{mygray},        
+  showspaces=false,               
+  showtabs=false,                 
+  stepnumber=5,                  
+  stringstyle=\color{mymauve},    
+  tabsize=3,                      
+  title=\lstname                
+}
+
+\usepackage[linkcolor=blue,colorlinks=true]{hyperref}
+% \usepackage[colorlinks=true,urlcolor=blue]{hyperref}
+\hypersetup{citecolor=blue}
+
+\usepackage{cleveref}
+\usepackage{siunitx}
+\newcommand{\bvec}[1]{\bm{#1}}    %% For vector notation
+\newcommand{\myvec}[3]{\begin{pmatrix} #1  \\ #2 \\ #3 \end{pmatrix}}   %% vecteur 3d
+\newcommand{\mymat}[9]{\begin{pmatrix} #1 & #2 & #3 \\ #4 & #5 & #6 \\ #7 & #8 &#9 \end{pmatrix}}  %% Matrice 3*3
+
+\renewcommand{\vector}[4]{\begin{pmatrix} #1  \\ #2 \\ #3 \\ #4 \end{pmatrix}}   %% vecteur 3d
+% \newcommand{\mymatrix}[16]{\begin{pmatrix} #1 & #2 & #3 & #4 \\ #4 & #6 & #7 & #8 \\ #9 & #10 & #11 & #12 \\ #13 & #14 & #15 & #16 \end{pmatrix}}  %% Matrice 3*3
+
+\newcommand{\hquad}{\hspace{0.5em}} %% Bew command for half quad
+\setlength\parindent{0.65cm}	%% To remove all indentations
+
+% \setlength{\parskip}{1em}%
+% \setlength\parindent{0pt}
+
+\usepackage[backend=bibtex,style=authoryear,maxnames=2,natbib=true]{biblatex} % Use the bibtex backend with the authoryear citation style (which resembles APA)
+\addbibresource{bibliography.bib} % The filename of the bibliography
+\usepackage[autostyle=true]{csquotes} % Required to generate language-dependent quotes in the bibliography 
+% \renewcommand*{\bibfont}{\tiny} % Pour reduire la taille des references
+
+%----------------------------------------------------------------------------------------
+%	ASSIGNMENT INFORMATION
+%----------------------------------------------------------------------------------------
+
+\title{Résumé thèse Matthias} % Assignment title
+
+\author{Desmond Roussel Nzoyem} % Student name
+
+\date{\today} % Due date
+
+\institute{Université de Strasbourg \\ UFR de Mathématiques et Informatique} % Institute or school name
+
+\class{Stage M2} % Course or class name
+
+\professor{Pr. Stéphane Labbé} % Professor or teacher in charge of the assignment
+
+%----------------------------------------------------------------------------------------
+
+\begin{document}
+
+% \maketitle % Output the assignment title, created automatically using the information in the custom commands above
+
+%----------------------------------------------------------------------------------------
+%	ASSIGNMENT CONTENT - SECTION 1
+%----------------------------------------------------------------------------------------
+
+\renewcommand{\abstractname}{Introduction}
+\maketitle
+\begin{abstract}
+  \normalsize
+  No abstract
+\end{abstract}
+
+
+\section{Résultats de thèse}
+
+% %-------------------------------------------------------------------------------
+% %							THE BIBLIOGRAPHY
+% %-------------------------------------------------------------------------------
+% \clearpage   % Pour retirer les references de la bare de navigation
+% % \cite{CNRS} \cite{Kaggle} \cite{GitHub} \cite{JHU} \cite{Nguemdjo}
+% \printbibliography
+
+
+
+% %-------------------------------------------------------------------------------
+% %							THE BIBLIOGRAPHY
+% %-------------------------------------------------------------------------------
+% \clearpage   % Pour retirer les references de la bare de navigation
+% % \cite{CNRS} \cite{Kaggle} \cite{GitHub} \cite{JHU} \cite{Nguemdjo}
+% \printbibliography
+
+
+\end{document}
