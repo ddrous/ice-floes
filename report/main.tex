@@ -7,7 +7,7 @@
 %\UseRawInputEncoding
 %\DeclareUnicodeCharacter{00A0}{~}
 \documentclass[ 
-11pt, % The default document font size, options: 10pt, 11pt, 12pt
+12pt, % The default document font size, options: 10pt, 11pt, 12pt
 %oneside, % Two side (alternating margins) for binding by default, uncomment to switch to one side
 french, % ngerman for German
 singlespacing, % Single line spacing, alternatives: onehalfspacing or doublespacing
@@ -23,49 +23,14 @@ headsepline, % Uncomment to get a line under the header
 openany, %% Use this option to make chapters start on the next page, irrespective of whether it's an odd or even numbered page
 ]{MastersDoctoralThesis} % The class file specifying the document structure
 
-\usepackage{mathpazo} % Use the Palatino font by default
-% \usepackage[light,condensed,math]{iwona}  %% Comment above and uncomment this to use the Iwona font
+% \usepackage{mathpazo} % Use the Palatino font by default
+% \usepackage[charter]{mathdesign}
+
+\usepackage{kpfonts}        %% For math only
+\usepackage{fontspec}       %% Because we are using XeTEX
+\setromanfont{Minion Pro}   %% For text (Minion Math is commercial)
+
 \renewcommand{\emph}[1]{\textbf{\textit{#1}}} %% Use this to make \emph text bold (you lose all other properties of the command)
-
-%-----------------------------------------------------------------------
-
-%\usepackage[charter]{mathdesign}
-%\usepackage{fouriernc}
-%\usepackage{fourier}
-%\usepackage{eulervm}
-%\usepackage{arev}
-%\usepackage{arev}
-%\usepackage[varg]{txfonts}
-%\usepackage{kpfonts}
-%\usepackage[sb]{libertine}
-%\usepackage[sb]{libertine} % or \usepackage[sb]{libertinus}
-%\usepackage{libertinust1math} % slanted integrals, by default
-
-
-%\usepackage{fontspec}
-%\setromanfont{Meta Serif Pro}
-%\setsansfont{Fira Sans}
-%\setmonofont[Color={0019D4}]{Fira Code}
-
-%\usepackage{fontspec}
-%\usepackage{fontspec,realscripts}
-%\defaultfontfeatures{Ligatures=TeX}
-%\usepackage{unicode-math}
-%\setmainfont{Linux Libertine O} % Note the O
-
-%\setmainfont[BoldFont={Meta Serif Pro Bold}, 
-%ItalicFont={Meta Serif Pro BookIta},
-%BoldItalicFont={Meta Serif Pro BoldIta}
-%]{Meta Serif Pro Light} % Note the O
-%\setromanfont{Meta Serif Pro}
-%\setsansfont{Fira Sans}
-%\setmonofont[Color={0019D4}]{Fira Code}
-
-%\setmathfont{Libertinus Math}
-%\usepackage{eulervm}
-%\usepackage{mathpazo}
-%\usepackage{newtxtext}
-%\usepackage{newtxmath}
 
 \newcommand{\Run}{\mathbb{R}}
 \newcommand{\Rdeux}{\mathbb{R}^2}
@@ -74,8 +39,8 @@ openany, %% Use this option to make chapters start on the next page, irrespectiv
 \newcommand{\hmoins}{h_{-}}
 \newcommand{\eun}{e_1(\omega)}
 \newcommand{\edeux}{e_2(\omega)}
-%-----------------------------------------------------------------------
 
+%-----------------------------------------------------------------------
 
 % \setcounter{tocdepth}{4} %% Use this to set numbering depth for sections in the toc (already set in the Class)
 \setcounter{secnumdepth}{3} %% Use this to set numbering depth for sections in the whole document
@@ -89,29 +54,6 @@ openany, %% Use this option to make chapters start on the next page, irrespectiv
 \usepackage{tikz}
 \usetikzlibrary{patterns}
 \usepackage{tikzscale}
-
-%% TikZit preambule
-\usetikzlibrary{decorations.markings}
-\usetikzlibrary{shapes.geometric}
-\pagestyle{empty}
-\pgfdeclarelayer{edgelayer}
-\pgfdeclarelayer{nodelayer}
-\pgfsetlayers{edgelayer,nodelayer,main}
-
-%% TikZit default styles
-\tikzstyle{none}=[inner sep=0pt]
-
-\tikzstyle{rn}=[circle,fill=Red,draw=Black,line width=0.8 pt]
-\tikzstyle{gn}=[circle,fill=Lime,draw=Black,line width=0.8 pt]
-\tikzstyle{yn}=[circle,fill=Yellow,draw=Black,line width=0.8 pt]
-
-\tikzstyle{simple}=[-,draw=Black,line width=2.000]
-\tikzstyle{arrow}=[-,draw=Black,postaction={decorate},decoration={markings,mark=at position .5 with {\arrow{>}}},line width=2.000]
-\tikzstyle{tick}=[-,draw=Black,postaction={decorate},decoration={markings,mark=at position .5 with {\draw (0,-0.1) -- (0,0.1);}},line width=2.000]
-
-%% TikZit custom styles
-\tikzstyle{newstyle}=[-,draw=Green,line width=2.000]  %% You need to replace with whatever definition you are using
-
 
 %\usepackage{amssymb}
 %\usepackage{amsthm}
@@ -133,22 +75,12 @@ openany, %% Use this option to make chapters start on the next page, irrespectiv
 
 \usepackage{xcolor}   %% To add color to text
 
-%% Stupid characters to declare if you your code to compile
-% \DeclareUnicodeCharacter{25CF}{$\bullet$}
-% \DeclareUnicodeCharacter{251C}{\mbox{\kern.23em
-%   \vrule height2.2exdepth1exwidth.4pt\vrule height2.2ptdepth-1.8ptwidth.23em}}
-% \DeclareUnicodeCharacter{2500}{\mbox{\vrule height2.2ptdepth-1.8ptwidth.5em}}
-% \DeclareUnicodeCharacter{2514}{\mbox{\kern.23em
-%   \vrule height2.2exdepth-1.8ptwidth.4pt\vrule height2.2ptdepth-1.8ptwidth.23em}}
-% \DeclareUnicodeCharacter{202F}{FIX ME!!!!}
-
-% \usepackage[en-US]{datetime2}
-% \renewcommand{\today}{\DTMdate{2021-1-27}}
 
 %----------------------------------------------------------------------------------------
 %	MARGIN SETTINGS
 %----------------------------------------------------------------------------------------
 
+%% To have a uniform margin on all pages
 \geometry{
 	paper=a4paper, % Change to letterpaper for US letter
 	inner=0.75in, % Inner margin

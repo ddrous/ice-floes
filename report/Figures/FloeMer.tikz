@@ -1,7 +1,26 @@
-﻿\begin{tikzpicture}
-	\draw [fill=blue] (0,0) -- (10,0) -- (10,10) -- (0,10) -- cycle;
-
-	\draw [rounded corners,white,dashed,pattern=north west lines,pattern color=white] (2,6) rectagle (4,6);
+\begin{tikzpicture}
+	\footnotesize
+	
+	\draw [fill=cyan] (1,2.5) -- (10,2.5) -- (10,10) -- (1,10) -- cycle;
+	\node at (4,8) {\large mer ($\mathcal{M}$)};
+	
+	% \draw [white, rounded corners,fill=white,pattern=north west lines,pattern color=white] (2,4) rectangle (4,6);
+	\draw [white, rounded corners,fill=white] (2,4) rectangle (4,6);
 	\draw[rounded corners,white,fill=white,cm={cos(45) ,-sin(45) ,sin(45) ,cos(45) ,(2 cm,6 cm)} ] (2,6) -- (2,4) -- (4,4) -- (4,6)-- cycle;
 
-\end{tikzpicture}}
+	\node[below left] at (3,5.14) {$G(\omega)$};
+	\node[below right] at (7.4,7.38) {$G'(\omega)$};
+
+	\draw[<->] (3,6) node[left] {$e_1(\omega)$} --(3,5) -- (4,5) node[below] {$e_2(\omega)$}; 
+	\draw[<->] (6.9,8.1) node[left] {$e_1' (\omega)$} --(7.65,7.38) -- (8.35,8.15) node[right] {$e_2' (\omega)$}; 
+	
+	\draw [->, thick, red] (3,5) -- node[above,rotate=26] {\bfseries $u(t)$}  (7.65,7.38);
+	
+	\draw [<->, dashed] (9.1,9) -- (7.65,7.38) -- (9.5,7.38);
+	\draw [->, teal, thick] (8.2,7.38)  arc[start angle=0, end angle=45, radius=0.6];
+	\node [above right, teal] at (8.15,7.4) {\bfseries $\theta(t)$};
+	
+	\node at (3,3.5) {\Large $(F)$};
+	\node at (7.6,5.5) {\Large $(F_t)$};
+
+\end{tikzpicture}
