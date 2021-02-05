@@ -35,7 +35,7 @@ reports/dimitri/*
 !reports/dimitri/img/
 
 # Resume de these Matthias
-reports/dimitri/*
+reports/matthias/*
 
 !reports/matthias/main.tex
 !reports/matthias/main.pdf

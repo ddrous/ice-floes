@@ -1,0 +1,266 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% fphw Assignment
+% LaTeX Template
+% Version 1.0 (27/04/2019)
+%
+% This template originates from:
+% https://www.LaTeXTemplates.com
+%
+% Authors:
+% Class by Felipe Portales-Oliva (f.portales.oliva@gmail.com) with template 
+% content and modifications by Vel (vel@LaTeXTemplates.com)
+%
+% Template (this file) License:
+% CC BY-NC-SA 3.0 (http://creativecommons.org/licenses/by-nc-sa/3.0/)
+%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%----------------------------------------------------------------------------------------
+%	PACKAGES AND OTHER DOCUMENT CONFIGURATIONS
+%----------------------------------------------------------------------------------------
+
+\documentclass[
+  french,
+  % twocolumn,
+	10pt, % Default font size, values between 10pt-12pt are allowed
+	%letterpaper, % Uncomment for US letter paper size
+	%spanish, % Uncomment for Spanish
+]{fphw}
+
+\usepackage[fontsize=10.0]{scrextend} % Use this to force the fontsize
+
+%% Commands for numering paragraphs
+\renewcommand\thesection{\Roman{section}}
+\renewcommand\thesubsection{\thesection.\arabic{subsection}}
+\renewcommand*\thesubsubsection{%
+  \Roman{section}.\arabic{subsection}.\alph{subsubsection}%
+}
+
+ % \usepackage{fancyhdr}
+% Template-specific packages
+\usepackage{babel}
+\usepackage[utf8]{inputenc} % Required for inputting international characters
+% \usepackage{DejaVuSerifCondensed} 
+\usepackage[T1]{fontenc} % Output font encoding for international characters
+% \usepackage{mathpazo} % Use the Palatino font
+% \usepackage{tgschola} % Use the Palatino font
+% \usepackage{Alegreya}
+% \renewcommand*\oldstylenums[1]{{\AlegreyaOsF #1}}
+% \usepackage{iwona} % Use the Iwona font
+
+\usepackage{kpfonts}        %% For math only
+\usepackage{fontspec}       %% Because we are using XeTEX
+\setromanfont{Minion Pro}   %% For text (Minion Math is commercial)
+
+%-----------------------------------------------------------------------
+% \setromanfont{Meta Serif Pro}
+% \setsansfont{Fira Sans}
+% \setmonofont[Color={0019D4}]{Fira Code} 
+%-----------------------------------------------------------------------
+
+
+
+\usepackage{fancyvrb}
+\usepackage{fvextra}
+\newcommand\userinput[1]{\textbf{#1}}
+\newcommand\arguments[1]{\textit{#1}}
+
+\usepackage{amsmath}
+\usepackage{mathtools}
+\usepackage{xfrac} 
+
+\usepackage{graphicx} % Required for including images
+\usepackage[textfont=it,font=small]{caption}  %% To manage long captions in images
+\usepackage{subcaption}
+\captionsetup{justification=centering}
+
+\usepackage{float}
+\graphicspath{ {./img/} }
+
+\usepackage{booktabs} % Required for better horizontal rules in tables
+
+\usepackage{listings} % Required for insertion of code
+
+\usepackage{array} % Required for spacing in tabular environment
+
+\usepackage{enumerate} % To modify the enumerate environment
+
+\usepackage{amssymb}
+\usepackage{enumitem}	%% % To modify the itemize bullet character
+
+\newcommand{\tabhead}[1]{{\bfseries#1}}
+
+\usepackage{xcolor}
+\usepackage{listings}
+\colorlet{mygray}{black!30}
+\colorlet{mygreen}{green!60!blue}
+\colorlet{mymauve}{red!60!blue}
+\lstset{
+  backgroundcolor=\color{gray!10},  
+  basicstyle=\ttfamily,
+  columns=fullflexible,
+  breakatwhitespace=false,      
+  breaklines=true,                
+  captionpos=b,                    
+  commentstyle=\color{mygreen}, 
+  extendedchars=true,              
+  frame=single,                   
+  keepspaces=true,             
+  keywordstyle=\color{blue},      
+  language=c++,                 
+  numbers=none,                
+  numbersep=5pt,                   
+  numberstyle=\tiny\color{blue}, 
+  rulecolor=\color{mygray},        
+  showspaces=false,               
+  showtabs=false,                 
+  stepnumber=5,                  
+  stringstyle=\color{mymauve},    
+  tabsize=3,                      
+  title=\lstname                
+}
+
+\usepackage[linkcolor=blue,colorlinks=true]{hyperref}
+% \usepackage[colorlinks=true,urlcolor=blue]{hyperref}
+\hypersetup{citecolor=blue}
+
+\usepackage{cleveref}
+\usepackage{siunitx}
+\newcommand{\bvec}[1]{\bm{#1}}    %% For vector notation
+\newcommand{\myvec}[3]{\begin{pmatrix} #1  \\ #2 \\ #3 \end{pmatrix}}   %% vecteur 3d
+\newcommand{\mymat}[9]{\begin{pmatrix} #1 & #2 & #3 \\ #4 & #5 & #6 \\ #7 & #8 &#9 \end{pmatrix}}  %% Matrice 3*3
+
+\renewcommand{\vector}[4]{\begin{pmatrix} #1  \\ #2 \\ #3 \\ #4 \end{pmatrix}}   %% vecteur 3d
+% \newcommand{\mymatrix}[16]{\begin{pmatrix} #1 & #2 & #3 & #4 \\ #4 & #6 & #7 & #8 \\ #9 & #10 & #11 & #12 \\ #13 & #14 & #15 & #16 \end{pmatrix}}  %% Matrice 3*3
+
+\newcommand{\hquad}{\hspace{0.5em}} %% Bew command for half quad
+\setlength\parindent{0.65cm}	%% To remove all indentations
+
+% \setlength{\parskip}{1em}%
+% \setlength\parindent{0pt}
+
+\usepackage[backend=bibtex,style=authoryear,maxnames=2,natbib=true]{biblatex} % Use the bibtex backend with the authoryear citation style (which resembles APA)
+\addbibresource{bibliography.bib} % The filename of the bibliography
+\usepackage[autostyle=true]{csquotes} % Required to generate language-dependent quotes in the bibliography 
+% \renewcommand*{\bibfont}{\tiny} % Pour reduire la taille des references
+
+%----------------------------------------------------------------------------------------
+%	ASSIGNMENT INFORMATION
+%----------------------------------------------------------------------------------------
+
+\title{Résumé thèse Dimitri} % Assignment title
+
+\author{Desmond Roussel Nzoyem} % Student name
+
+\date{\today} % Due date
+
+\institute{Université de Strasbourg \\ UFR de Mathématiques et Informatique} % Institute or school name
+
+\class{Stage M2} % Course or class name
+
+\professor{Pr. Stéphane Labbé} % Professor or teacher in charge of the assignment
+
+%----------------------------------------------------------------------------------------
+
+\begin{document}
+
+% \maketitle % Output the assignment title, created automatically using the information in the custom commands above
+
+%----------------------------------------------------------------------------------------
+%	ASSIGNMENT CONTENT - SECTION 1
+%----------------------------------------------------------------------------------------
+
+\renewcommand{\abstractname}{Introduction}
+\maketitle
+\begin{abstract}
+  \normalsize
+  No abstract
+\end{abstract}
+
+
+\section{Résultats de thèse}
+
+Il existe trois modèles:
+\begin{enumerate}
+  \item le modèle discret: modlelisation a peeite echelle
+  \item le modele continu: a grande echelle
+  \item le modele granulaire:
+\end{enumerate}
+
+Le modele granulaire est important car:
+\begin{enumerate}
+  \item previsions climatiques: sur des grandes echelles de temps et d'espace (actuellement, ce modele utilise le modele continue)
+  \item prevision a court terme: exploitation de nouvelles routes du a la fonte. Dans la zone marginale, les floes de glace:
+  \begin{itemize}
+    \item une epaisseur de l'ordre du metre
+    \item une taille variable (10m - 1km)
+  \end{itemize}
+\end{enumerate}
+
+Avant, l'intensité du contact était modélisée par:
+\begin{itemize}
+  \item coefficient de friction et 
+  \item un coefficient de restitution
+\end{itemize}
+
+Onjectifs de la these:
+\begin{itemize}
+  \item \textbf{on a des conditions de Dirichlet au bord, et on cherche a connaitre la fracture qui en resulte}: remplacer le coefficient de restitution du contact rigide en couplant ce modèle granulaire avec un modèle de fracture des floes, qui prend en compte le phénomène de percussion (le floes est condiere non pas comme un materiau rigide, mais elastique).
+  Ensiote, Utiliser un mpdele varaitionnel comme celui de G. A. Francfort et J.-J. Marigo. Mais d'un point de vue numerique, ces methodes variationneles demandent trop de finesse. Pour le modele adapté a notre etude, on fait des hypotheses:
+  \begin{enumerate}
+    \item epaisseur negligeable:  un modele bidimensionnel --> hypothese des contraintes planes --> la convergence au sens de Mosco.
+    \item les fracture sont des segments de droite, minimiser directement la fonctionnelle d’énergie totale, sans recourir à une approximation de type champ de phase
+  \end{enumerate}
+  \item \textbf{percussion:} nous cherchons à obtenir une expression du mouvement du bord d’un floe lorsque celui-ci percute un autre objet. On derive une limite temporelle et deux limites spatiales. La gamma-convergence permet d'obtenir la convergenc des problemes de miimisation associés.
+\end{itemize}
+
+
+
+\section{Chapitre 1}
+
+Le modèle de Griffith presente la fracture comme une comptetition entre \textbf{l’énergie élastique} et \textbf{l’énergie requise pour la création d’une surface au sein du matériau}. Il de souffre d’imperfections
+notables :
+\begin{itemize}
+  \item il est incapable de prévoir la nucléation de fractures, 
+  \item ainsi que le chemin pris par celles-ci.
+\end{itemize}
+
+\textcolor{red}{
+Je ne comprend pas le modele 1.3.2: Par quoi exactement remplace-t-on le terme $$\int_{\Omega} \vert u-g \vert^2$$
+}
+
+
+\section{Chapitre 2}
+
+(Partie 2.3.1, p.49)
+Deja est-ce qu'on peut confondre l'éergie totale à l'énergie elastique. En fait le $E_{tot}$ c'est l'énergie élastique ou pas ?
+
+Une fois que $A_{\sigma}$ a été defini et qu'on se rend compte que cet ensemble n'est pas regulier; On décide d'appliquer le remede qui consiste a etendre la fracture : $\sigma = \sigma_1 + \sigma_2$, et d; appliquer des conditions de transmission. Mais je ne comprends pas:
+\begin{itemize}
+  \item Pourquoi le bord de Dirichelet est divisé en deux ? Quand on impose un dépalcement sur les bords, on ne sais pas ou va se creer la fracture, non ? Réponse: Soit $\sigma_1$ separe al fracture, soit $\sigma_2$ le fait; sinon on a deux composnates connexes, qu'on triare separement.  
+  \item La frontière de l'espace $\Omega \backslash \sigma$ n'est plus $C^1$. Es-ce que cela ne cause pas de probleme supplementaires?  
+\end{itemize}
+
+La section 2.3.2 (existence) est à refaire.
+
+Pas d'existence pour le modèle quasi-statique (section 2.3.3), car l'espace variationnel $E_{\gamma}$ n'est pas fermé.
+
+La gamma-convergencce intervien au Théorème 2.4.3., pour montrer que la suite de solution numeriques converge vers la solution analytique. 
+
+
+\section{PARTIE 2}
+
+Question: A quoi correspond le zéro dans la notation $\tau_{n,0}$?
+
+Un enregistrement video de la soutenance de M. Dimitri Balasiou? 
+
+
+% %-------------------------------------------------------------------------------
+% %							THE BIBLIOGRAPHY
+% %-------------------------------------------------------------------------------
+% \clearpage   % Pour retirer les references de la bare de navigation
+% % \cite{CNRS} \cite{Kaggle} \cite{GitHub} \cite{JHU} \cite{Nguemdjo}
+% \printbibliography
+
+
+\end{document}
