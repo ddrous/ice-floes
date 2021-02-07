@@ -211,8 +211,13 @@ L'algorithme ne repose pas sur les méthodes classiques de dynamique moléculair
   \item Le coefficient de restitution $\varepsilon$ détermine le caratère élastique ou inélastique de la collision;
   \item Le repère absolu $\mathcal{R}_{abs}$ est euclidien, ce qui empèche de prendre en compte la rotondité de la terre (rondeur);
   \item L'aipaisseur $h$ du floe peut varier en espace, mais pas en temps, vu que les floes sont considéres rigide, et on a négliger les effets thermodynamiques.
+  \item La forme d’une condition de complémentarité en vitesse impulsion pour garantir l’existence de solutions au problème du contact.
+  \item Les équations du moment linéaire et du moment angulaire en vitesse-impulsion; car il y a l’avantage de pouvoir exprimer la force de friction de Coulomb directement par rapport à la vitesse. Il n’est pas nécessaire de connaître la nature
+  du contact.
+  \item Les lois de contacts utilisées sont des lois implicites \footnote{Une loi de contact est explicites quand les réactions sont connues et calculées en fonction de données comme la distance entre les floes et implicites quand les forces ou les réactions sont inconnues.} afin de chercher une formulation en vitesse impulsion et conserver une physique réaliste du contact (Pas de loi de Hertz, ni Coulomb, etc.) (page 31)
+  \item La loi de conntact utilisée loi est appelée condition unilatérale car elle permet aux floes de se séparer, mais interdit l’interpénétration (p. 32).
+  \item Grâce à la formulation en problème linéaire de complémentarité, il a montré capables de montrer qu’il existe des vitesses solutions pour toutes configurations de contact avec friction de Coulomb (p. 38). 
 \end{itemize}
-
 
 %----------------------------------------------------------------------------------------
 %	ASSIGNMENT CONTENT - CONCLUSION
