@@ -132,16 +132,17 @@
 \renewcommand{\vector}[4]{\begin{pmatrix} #1  \\ #2 \\ #3 \\ #4 \end{pmatrix}}   %% vecteur 4d
 % \newcommand{\mymatrix}[16]{\begin{pmatrix} #1 & #2 & #3 & #4 \\ #4 & #6 & #7 & #8 \\ #9 & #10 & #11 & #12 \\ #13 & #14 & #15 & #16 \end{pmatrix}}  %% Matrice 3*3
 
-\newcommand{\hquad}{\hspace{0.5em}} %% Bew command for half quad
-% \setlength\parindent{0pt}	%% To remove all indentations
-
-% \usepackage[backend=bibtex,style=alphabetic,maxnames=2,natbib=true]{biblatex} % Use the bibtex backend with the alphabetic citation style (compact APA-like)
-\usepackage[backend=bibtex,style=authoryear,maxnames=2,natbib=true]{biblatex} % Use the bibtex backend with the authoryear citation style (which resembles APA)
+\usepackage[backend=bibtex,style=alphabetic,maxnames=2,natbib=true]{biblatex} % Use the bibtex backend with the alphabetic citation style (compact APA-like)
+% \usepackage[backend=bibtex,style=authoryear,maxnames=2,natbib=true]{biblatex} % Use the bibtex backend with the authoryear citation style (which resembles APA)
 \addbibresource{../bib/bibliography.bib} % The filename of the bibliography
 \usepackage[autostyle=true]{csquotes} % Required to generate language-dependent quotes in the bibliography 
 % \renewcommand*{\bibfont}{\tiny} % Pour reduire la taille des references
 
 \usepackage[useregional=numeric]{datetime2}
+
+\newcommand{\hquad}{\hspace{0.5em}} %% Bew command for half quad
+\newcommand*\diff{\mathop{}\!\mathrm{d}}
+% \setlength\parindent{0pt}	%% To remove all indentations
 
 %----------------------------------------------------------------------------------------
 %	ASSIGNMENT INFORMATION
@@ -166,28 +167,33 @@
 \maketitle % Output the assignment title, created automatically using the information in the custom commands above
 
 %----------------------------------------------------------------------------------------
+%	ASSIGNMENT CONTENT - INTRO
+%----------------------------------------------------------------------------------------
+
+
+Cette première semaine fut d'adaptation et d'appropriation du travail précédents. Il s'agissait principalement de lire et comprendre les précendentes thèses. Les principales taches qui ont etées effectuées, les diffulutés rencontrées, ainsi que quelques pistes d'exploration pour la suite du stage sont proésentées ci-bas. 
+
+%----------------------------------------------------------------------------------------
 %	ASSIGNMENT CONTENT - SECTION 1
 %----------------------------------------------------------------------------------------
 
 \section{Travail effectué}
-
-Les principales taches qui ont etées effectuées cette semaine sont présentées ci-bas. Il s'agissait principalement de lire des documents afin de définir les sujets explorables durant le stage.
 
 \begin{enumerate}
   \item Mise en pace du \href{https://github.com/desmond-rn/ice-floes}{dépot GutHub} \textbf{privé} pour: 
   \begin{itemize}
     \item le suivi de la rédaction des differents documents (rapport de stage, de semaines, de thèses, etc.);
     \item le travail à distance plus aisé.
-  \textit{Donnez l'acces au répository.} 
+  \textit{Donnez l'acces au répository. Pour l'instant, un système d'intégration continu n'est pas mis en place.} 
   \end{itemize}
   \item Lecture de l'article de Matthias et al. \parencite{rabatel2015dynamics}
   \item Lecture de la thèse de Matthias \parencite{rabatel2015thesis}:
   \begin{itemize}
     \item Lecture de l'introduction, et du chapitre 1;
-    \item Révision du cours de mécanique du solide afin de comprendre le formalisme de Newton-Euler. Le livre intitilé "COMPUTATIONAL DYNAMICS" \parencite{shabana2009computational} a été très instructif. En particulier, les sections suivantes ont été explorées:
+    \item Révision du cours de mécanique du solide afin de comprendre le formalisme de Newton-Euler. Le livre intitilé "COMPUTATIONAL DYNAMICS" \parencite{shabana2009computational} a été très instructif. En particulier, les parties suivantes ont été explorées:
     \begin{itemize}
-      \item Chapter 3 : KINEMITCS (sous-sections 1, 2, 3, et 4);
-      \item Chapter 4 : FORMS OF THE DYNAMIC EQUATIONS (sous-sections 1 et 2);
+      \item Chapter 3 : KINEMITCS (sections 1, 2, 3, et 4);
+      \item Chapter 4 : FORMS OF THE DYNAMIC EQUATIONS (sections 1 et 2);
     \end{itemize}
     \item rédaction d'un résumé succint de la these: \href{https://github.com/desmond-rn/ice-floes/blob/master/reports/matthias/main.pdf}{à cette addresse.} 
   \end{itemize}
@@ -199,9 +205,12 @@ Les principales taches qui ont etées effectuées cette semaine sont présentée
 
 \section{Difficultés rencontrées}
 
-% \subsection{Inpirées de la thèse de M. Rabatel}
+\textbf{\textit{Les question suivantes sont totalement ou partiellement inpirées de la thèse de M. Rabatel}}
+
 \begin{enumerate}
-  \item En exprimant les propriétés du floe $G(\omega)$, $e_1(\omega)$, et $e_2(\omega)$ en fonction de $\omega$, ne risque-t'on pas d'avoir des écritures trops lourdes plus tard. Qu'en est-il des expressions utilisées dans les thèses et articles précédents: ne risque t-on pas une incohérence ? 
+  \item En exprimant les propriétés du floe $G(\omega)$, $e_1(\omega)$, et $e_2(\omega)$ en fonction de $\omega$, ne risque-t'on pas d'avoir des écritures trops lourdes plus tard. Qu'en est-il des expressions utilisées dans les thèses et articles précédents: ne risque t-on pas une incohérence ?
+  \item A l'équation (1.1.2) de la thèse \parencite[p.16]{rabatel2015thesis}, la quantité $F_i(t)$ n'a pas été définie. Désigne-t-elle effectivement la somme des forces volumiques exercées sur le floe $i$ ? Autrement dit, a-ton $F_i(t) = \int_{\Omega_i(t)} F_P(t) \diff v$ ?
+  \item Sur les hypothèses admises quant à l'interaction entre les floes, il est marqué que "L’interaction est une relation symétrique et \underline{\textbf{transitive}}." \parencite[p.18]{rabatel2015thesis}. Celà veut-il dire qu'un floe $\Omega_i$ peut etre en contact avec un floe $\Omega_j$ à travers un troisieme floe $\Omega_k$? 
 \end{enumerate}
 
 
@@ -218,7 +227,6 @@ Les principales taches qui ont etées effectuées cette semaine sont présentée
 \begin{enumerate}
   \item Rajouter le caratère déformable aux floes dans le modèle granulaire \parencite[p.12]{rabatel2015thesis}.
   \item Vu que le coefficient de détermination est fixé de facon empirique, on pourrait déterminer ce coefficient en fonction de l’endommagement subi par le floe et des éventuelles fractures se propageant dans le floe à partir d’une situation de collision \parencite[p.14]{rabatel2015thesis}.
-  
 \end{enumerate}
 
 % %-------------------------------------------------------------------------------
