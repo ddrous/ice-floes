@@ -12,7 +12,7 @@
 
 \subsection{Modélisation d'un floe de glace}
 
-Nous commensons par présenter une modélisation mathématique d'une plaque de glace (appelé floe) sur la mer. Six variables sont nécésaires pour décrire un floe sur la mer (voir figure 1): 
+Nous commensons par présenter une modélisation mathématique d'une plaque de glace (appelé floe) sur la mer. Six variables (locales) sont nécésaires pour décrire un floe sur la mer (voir figure 1): 
 \begin{itemize}
     \item Un ouvert connexe $\omega \in \Rdeux$ décrivant la section longitidunale du floe;
     \item Deux fonction $\hplus, \hmoins \in \mathcal{F}(\omega, \Run)$ décrivant l'épasseur du floe, telle que $\forall x \in \omega, \hmoins(x) \leq \hplus(x)$;
@@ -68,25 +68,33 @@ Les vecteur $e_1(\omega)$ et $e_2(\omega)$ sont liés à $\omega$, et pointent v
 \]
 où $\Vert \cdot \Vert$ désigne la norme euclidienne de $\Rdeux$. Notons que $\sigma_1 \neq \sigma_2$, et $\eun \cdot \edeux = 0$ de facon à ce que la base $(\eun, \edeux)$ soit directe.
 
-Un floe $F = (\omega, \eun, \edeux, G(\omega), \hmoins, \hplus)$ se déplace sur la mer\footnote{Pour l'instant, la mer est considérée comme un ouvert dans $\Rdeux$. Plus tard, nous prendrons en compte sont épaisseur lorsque nous modelserons la mer par une sphère} $\mathcal{M} \in \Rdeux$. Au temps $t$ après une translation de vecteur $u(t)$ (et de matrice $T_{u(t)}$), et une rotation de vecteur $\theta(t)$ (et de matrice $R_{\theta(t)}$), on obtient le floe $F_t$ défini par (voir figure 3):
+Un floe $F = (\omega, \eun, \edeux, G(\omega), \hmoins, \hplus)$ se déplace sur la mer\footnote{Pour l'instant, la mer est considérée comme un ouvert dans $\Rdeux$. Plus tard, nous prendrons en compte sont épaisseur lorsque nous la modelserons par une sphère} $\mathcal{M} \in \Rdeux$. Au temps $t$ après une translation de vecteur $u(t)$ (et de matrice $\mathsf{T}_{u(t)}$), et une rotation de vecteur $\theta(t)$ (et de matrice $\bmat{R}_{\theta(t)}$), on obtient le floe $F_t$ défini par (voir figure 3):
 \[
-    F_t = (T_{u(t)}R_{\theta(t)}\omega, T_{u(t)}R_{\theta(t)}\eun, T_{u(t)}R_{\theta(t)}\edeux, T_{u(t)}R_{\theta(t)}G(\omega), \hmoins, \hplus) \,.
+    F_t = (\mathsf{T}_{u(t)}\mathsf{R}_{\theta(t)}\omega, T_{u(t)}R_{\theta(t)}\eun, T_{u(t)}R_{\theta(t)}\edeux, T_{u(t)}R_{\theta(t)}G(\omega), \hmoins, \hplus) \,.
 \]
 \emph{REMPALCER CES TRANSFORMATION ENCOMBRANTES PAR UN prime SIMPLE !}
+
+\begin{figure}[!h]
+    \centering
+    % \input{Figures/Epaisseur.tikz}
+    \includegraphics[width=.4\textwidth]{FloeMer.tikz}
+    \caption{Illustration du mouvement d'un floe de glace $F$ dans la mer, après une translation de vecteur $u(t)$ et une rotation d'angle $\theta(t)$, pour obtenir le floe $F_t$. On observe la transformation des propriétés du floe, en partucilier les vecteurs $e_1(\omega)$ et $e_2(\omega)$ qui restent liés au floe.}
+\end{figure}
 
 
 Lors de leur mouvements sur la surface de la mer, les floes se fracturent sous l'effet des vents et des courants océaniques. Nous nous interreserons donc au phénomène de percussion en vue de l' initialisation des fractures dans les floes de glace. 
 
 
-\begin{figure}
+Afin de décrire le mouvement des floes de glace sur la mer, nous devons nous munir d'un repère abosulu, que notons $\mathcal{R}_{abs} = (O, \bm i, \bm j, \bm k)$. le repère associé au floe $\Omega_i$ sera noté $\mathcal{R}_{\Omega^i} = (O, \bm \eun, \bvec \edeux, \bvec k)$. Dans ce repere absolu, le floe possède 3 dégrés de libertés: l'absice et l'ordonné de son centre de gravité $G^i(\omega)$, et l'orientation du floe donné par l'angle $\theta^i (t)$ (voir \cref{fig:FloeRepere}). 
+
+\begin{figure}[!h]
     \centering
     % \input{Figures/Epaisseur.tikz}
-    \includegraphics[width=.6\textwidth]{FloeMer.tikz}
-    \caption{Illustration du mouvement d'un floe de glace $F$ dans la mer, après une translation de vecteur $u(t)$ et une rotation d'angle $\theta(t)$, pour obtenir le floe $F_t$. On observe la transformation des propriétés du floe, en partucilier les vecteurs $e_1(\omega)$ et $e_2(\omega)$ qui restent liés au floe.}
+    \includegraphics[width=.5\textwidth]{FloeRepere.tikz}
+    \caption{Positionnement d'un floe de glace $\Omega^i$ dans le repère absolu $\mathcal{R}_{abs}$.}
+    \label{fig:FloeRepere}
 \end{figure}
 
-
-\subsection{Cinétique d'un floe}
 
 \textit{DEFINIR LE REPERE aBSOLUE DU FLOE EN 2D, AVEC LE REPERE LOCAL. ECRIRE LE VECTEUR POSITION, ET ECRIRE LES EQUATIONS DE NEWTON-EULER.}
 
@@ -96,3 +104,51 @@ Lors de leur mouvements sur la surface de la mer, les floes se fracturent sous l
 
 %----------------------------------------------------------------------------------------
 \section{État de l'art}
+
+Une fois le modèle défini, il nous faut établir les équations décrivant la dynamique du floe, et celle de son environnment. Les travaux de \cite{rabatel2015thesis} et \cite{balasoiu2020thesis} on extensivement traité le problème de modélisation dynmaique et de simulation d'un assemblage de floe cde glace. Nous résumons ici les principales idées de leurs raisonnements, tout en présentant l'état de l'art dans ce domaine.
+
+\subsection{Le modèle du floe}
+
+\subsubsection{La cinetique du floe}
+
+L'approche discrète décrite dans \parencite{rabatel2015thesis} consiste a définir le mouvement de chaque floe. Les obstacles sont des floes aux mêmes propriètés que les floes de galce, à la seule différence qu'ils ont une masse (volumique) infinie. Dans \parencite{rabatel2015thesis}, l'auteur travaille dans un repère orthormé direct $\mathcal{R}_{abs} = (O, \bm i, \bm j, \bm k)$, cependant, la mer est considérée plane, et le mouvement du floe peut être décrit dans le plan $\mathcal{P} = (O, \bm i, \bm j)$. On désigna la vitesse angulaire du floe $\Omega^i$ par 
+$$
+\bvec{\uptheta}^i(t) = \theta^i(t)\bvec{k} = (0,0,\theta^i(t))^T \,.
+$$
+Soit $P$ de coordonné $x$ un point quelconque de $\P \subset \Rdeux$. Sa vitesse dans le repère $\R_{abs}$ est donnée est donnée par la formule de Varignon:
+$$
+\dot{P}(t) = \dot{G}^i(t) + \bm{\uptheta}^i(t) \wedge \bvec{G^iP} \,,
+$$
+où le symbole $\wedge$ représente le produit vectoriel dans $\Rtrois$. La masse (constante) du floe rigide indéformable est donnée par 
+$$
+M^i = \rho^i \int_{\Omega^i(t)} \hplus^i (x) \diff x \,.
+$$
+Ensuite, l'auteur défni :
+\begin{itemize}
+    \item la somme des force par unité de volume qui s'applique au centre de masse du floe $\Omega^i$: $$\bvec{F}^i = \rho^i \int_{\Omega^i(t)} \bvec{F}(x) dx \,.$$
+    \item le moment cinetique\footnote{du à l'accélération du floe} en $G$: $$L^i = \rho^i \intO{i} \bvec{GP} \wedge \dot{\bvec{P}}(t) \diff x \,.$$
+    \item le moment dynamique\footnote{du aux forces extérieurs exercées sur le floe} en $G$: $$\bvec \mathfrak{M}^i = \intO{i} \bvec{GP} \wedge \bvec{F}(x) \diff x \,.$$
+\end{itemize}
+Sous le formalisme de Newton-Euler, \citeauthor{rabatel2015thesis} montre que chaque floe $\Omega^i$ vérifie:
+$$
+% \begin{align}
+    \begin{cases}
+        M^i \frac{\diff \dot{\bvec{G}}_i(t)}{\diff t} &= \bvec{F}^i \\
+        \mathcal{I}^i \frac{\diff \dot{\bvec{\uptheta}}_i(t)}{\diff t} &= \bvec{\mathfrak{M}}^i
+    \end{cases}
+% \end{align}
+$$
+
+
+\subsubsection{L'interaction entre les floes}
+
+\subsubsection{Formulation en problème linéaire de complémentarité}
+
+\subsubsection{Conservation de l'énergie cinétique}
+
+\subsubsection{Traitement des conditions aux bords}
+
+\subsection{Le modèle de l'environment}
+
+
+

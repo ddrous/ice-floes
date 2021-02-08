@@ -30,23 +30,15 @@ openany, %% Use this option to make chapters start on the next page, irrespectiv
 \usepackage{fontspec}       %% Because we are using XeTEX
 \setromanfont{Minion Pro}   %% For text (Minion Math is commercial)
 
-\renewcommand{\emph}[1]{\textbf{\textit{#1}}} %% Use this to make \emph text bold (you lose all other properties of the command)
 
-\newcommand{\Run}{\mathbb{R}}
-\newcommand{\Rdeux}{\mathbb{R}^2}
-\newcommand{\Rtrois}{\mathbb{R}^3}
-\newcommand{\hplus}{h_{+}}
-\newcommand{\hmoins}{h_{-}}
-\newcommand{\eun}{e_1(\omega)}
-\newcommand{\edeux}{e_2(\omega)}
-
-%-----------------------------------------------------------------------
 
 % \setcounter{tocdepth}{4} %% Use this to set numbering depth for sections in the toc (already set in the Class)
 \setcounter{secnumdepth}{3} %% Use this to set numbering depth for sections in the whole document
 
 \graphicspath{ {./Figures/} } %% To load all images in this document from the Figures directory
 \DeclareGraphicsExtensions{.pdf,.png}  %% Use to this to set the priority for extensions leading
+\usepackage[font=small,labelfont=bf]{caption}
+% \captionsetup[figure]{font=it}
 \usepackage{subcaption} %% Use to make subgraphics
 \usepackage{float} %% Use this to control where the images are placed compared to thier related text
 \usepackage{multirow}
@@ -59,8 +51,6 @@ openany, %% Use this option to make chapters start on the next page, irrespectiv
 %\usepackage{amsthm}
 \usepackage{amsmath,bm,mathtools} %% Use this to include the "align" environment in witch equations can be made easier
 \usepackage{physics} %% To have physical terms like the divergence operator
-\newcommand{\bvec}[1]{\mathbf{#1}}  %% Use this to make you vectors look bolded
-
 
 %\usepackage[backend=bibtex,style=numeric,maxnames=2,natbib=true]{biblatex} % Use the bibtex backend with the numeric citation style
 \usepackage[backend=bibtex,style=authoryear,maxnames=2,natbib=true]{biblatex} % Use the bibtex backend with the authoryear citation style (which resembles APA)
@@ -74,6 +64,31 @@ openany, %% Use this option to make chapters start on the next page, irrespectiv
 \usepackage{indentfirst}  %% For indentation
 
 \usepackage{xcolor}   %% To add color to text
+
+\usepackage{hyperref}
+\usepackage{cleveref} %% To reference stuf
+\usepackage{upgreek}
+
+%----------------------------------------------------------------------------------------
+
+\renewcommand{\emph}[1]{\textbf{\textit{#1}}} %% Use this to make \emph text bold (you lose all other properties of the command)
+
+\newcommand{\Run}{\mathbb{R}}
+\newcommand{\Rdeux}{\mathbb{R}^2}
+\newcommand{\Rtrois}{\mathbb{R}^3}
+\newcommand{\hplus}{h_{+}}
+\newcommand{\hmoins}{h_{-}}
+\newcommand{\eun}{\bm{e_1}(\omega)}
+\newcommand{\edeux}{\bm{e_2}(\omega)}
+
+\newcommand{\bvec}[1]{\bm{\mathrm{#1}}}  %% Use this to make vectors
+\newcommand{\bmat}[1]{\bm{\mathsf{#1}}}   %% Use this to make tensors
+
+\newcommand{\R}{\mathcal{R}}
+\renewcommand{\P}{\mathcal{P}}
+
+\newcommand{\diff}{\,\differential}
+\newcommand{\intO}[1]{\int_{\Omega^{#1}(t)}}
 
 
 %----------------------------------------------------------------------------------------

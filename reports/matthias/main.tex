@@ -217,6 +217,19 @@ L'algorithme ne repose pas sur les méthodes classiques de dynamique moléculair
   \item Les lois de contacts utilisées sont des lois implicites \footnote{Une loi de contact est explicites quand les réactions sont connues et calculées en fonction de données comme la distance entre les floes et implicites quand les forces ou les réactions sont inconnues.} afin de chercher une formulation en vitesse impulsion et conserver une physique réaliste du contact (Pas de loi de Hertz, ni Coulomb, etc.) (page 31)
   \item La loi de conntact utilisée loi est appelée condition unilatérale car elle permet aux floes de se séparer, mais interdit l’interpénétration (p. 32).
   \item Grâce à la formulation en problème linéaire de complémentarité, il a montré capables de montrer qu’il existe des vitesses solutions pour toutes configurations de contact avec friction de Coulomb (p. 38). 
+  \item la dynamique régulière c'est sans collisions; et la dynamique non régulière, c´est avec les collisions.
+\end{itemize}
+
+\subsection{Le modèle de l'environment}
+
+\section{Simulation numerique}
+\begin{itemize}
+  \item chaque floe, qu’il soit grand ou petit, est maillé avec le même nombre d’éléments finis (environ 25 par floe). Ceci afin de reduire le cout informatique.
+\end{itemize}
+
+\begin{itemize}
+  \item Concernant la force coriolis, le régime de trainé sous forme quadratique a été choisi pour considérer des régimes du fluide éventuellement
+  turbulents. 
 \end{itemize}
 
 %----------------------------------------------------------------------------------------
@@ -235,6 +248,8 @@ Les points forts du modèle:
 Les points faibles:
 \begin{enumerate}
   \item ne gère pas la rhéologie\footnote{La rhéologie est l'étude de la déformation et de l'écoulement de la matière sous l'effet d'une contrainte appliquée.} de la glace: les floes sont des solides purement rigides (ils ne se déforment pas) et la dissipation d’énergie cinétique durant la collision est décrite en utilisant un coefficient purement empirique
+  \item Lors du traitement des contacts, l'auteur a choisi de priviliier la consistance énergétique et la non interpénétration\footnote{D'apres l'auteur, \textit{"traiter le contact à partir de lois non régulières ne permet pas d’obtenir des solutions satisfaisant à la fois la non interpénétration, la friction de Coulomb et une consistance énergétique !"}}; cela en utilisant une solution $W^N$, dont le principal avantage est qu’elle n’entraîne pas d’augmentation d’énergie cinétique après contact. Cependant, ces vitesses possèdent une faiblesse : elles ne sont solutions que sous certaines conditions, comme le fait que les chocs soient frontaux et qu’il n’y ait pas d’apport des forces extérieures autres que les forces de contact durant la
+  collision.  
 \end{enumerate}
 
 
