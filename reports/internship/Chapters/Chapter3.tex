@@ -127,20 +127,56 @@ Ensuite, l'auteur défni :
 \begin{itemize}
     \item la somme des force par unité de volume qui s'applique au centre de masse du floe $\Omega^i$: $$\bvec{F}^i = \rho^i \int_{\Omega^i(t)} \bvec{F}(x) dx \,.$$
     \item le moment cinetique\footnote{du à l'accélération du floe} en $G$: $$L^i = \rho^i \intO{i} \bvec{GP} \wedge \dot{\bvec{P}}(t) \diff x \,.$$
-    \item le moment dynamique\footnote{du aux forces extérieurs exercées sur le floe} en $G$: $$\bvec \mathfrak{M}^i = \intO{i} \bvec{GP} \wedge \bvec{F}(x) \diff x \,.$$
+    \item le moment dynamique\footnote{du aux forces extérieurs exercées sur le floe} en $G$: $$\bvec{\mathfrak{M}}^i = \intO{i} \bvec{GP} \wedge \bvec{F}(x) \diff x \,.$$
 \end{itemize}
 Sous le formalisme de Newton-Euler, \citeauthor{rabatel2015thesis} montre que chaque floe $\Omega^i$ vérifie:
 $$
 % \begin{align}
     \begin{cases}
-        M^i \frac{\diff \dot{\bvec{G}}_i(t)}{\diff t} &= \bvec{F}^i \\
-        \mathcal{I}^i \frac{\diff \dot{\bvec{\uptheta}}_i(t)}{\diff t} &= \bvec{\mathfrak{M}}^i
-    \end{cases}
+        M^i \frac{\diff \dot{\bvec{G}}^i(t)}{\diff t} &= \bvec{F}^i \\
+        \mathcal{I}^i \frac{\diff \dot{\bvec{\uptheta}}^i(t)}{\diff t} &= \bvec{\mathfrak{M}}^i
+    \end{cases} \,,
 % \end{align}
 $$
+qui se réecrit facilement sous la forme 
+\begin{align}    
+    \mathcal{M}^i \frac{\diff W^i(t)}{\diff t} = \mathcal{H}^i(t) \,,
+\end{align}
+avec 
+$$
+\mathcal{M}^i = 
+\begin{pmatrix}
+    M^i & 0 & 0 \\ 0 & M^i & 0 \\ 0 & 0 & \mathcal{I}^i
+\end{pmatrix} \,,
+W^i(t) = 
+\begin{pmatrix}
+    \dot{\bvec{G}}(t) \\ \dot{\theta}^i(t)
+\end{pmatrix} \,
+\text{et } \mathcal{H}^i(t) = 
+\begin{pmatrix}
+    \bvec{F}^i(t) \\ \mathfrak{M}^i(t)
+\end{pmatrix} \,.
+$$
+Pour un système composé de $n$ floes, l'équation précédente doit être satisfaite pour tous les floes. \cite[p.18]{rabatel2015thesis} montre que cela revient au système d'équations
+\begin{align}    
+    \mathcal{M} \frac{\diff W(t)}{\diff t} = \mathcal{H}(t) \,,
+\end{align}
+avec 
+$$
+\mathcal{M} = (\mathcal{M}^i)_{1\leq i \leq n } \,,
+\mathcal{W}(t) = (\mathcal{W}^i(t))_{1\leq i \leq n } \, \text{et }
+\mathcal{M}(t) = (\mathcal{M}^i(t))_{1\leq i \leq n }  \,.
+$$
+L'énergie cinétique du floe $\Omega^i$ quant à elle sera donné par:
+$$
+E^i(t) = \frac{1}{2}M^i \dot{G}^i(t)^2 + \frac{1}{2}\mathfrak{I}^i \dot{\theta}^i(t)^2 \,. 
+$$ 
+
 
 
 \subsubsection{L'interaction entre les floes}
+
+
 
 \subsubsection{Formulation en problème linéaire de complémentarité}
 
