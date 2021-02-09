@@ -139,6 +139,7 @@
 % \renewcommand*{\bibfont}{\tiny} % Pour reduire la taille des references
 
 \usepackage[useregional=numeric]{datetime2}
+\usepackage[normalem]{ulem}
 
 \newcommand{\hquad}{\hspace{0.5em}} %% Bew command for half quad
 \newcommand*\diff{\mathop{}\!\mathrm{d}}
@@ -148,8 +149,8 @@
 %	ASSIGNMENT INFORMATION
 %----------------------------------------------------------------------------------------
 
-% \title{Compte rendu semaine \#1} % Assignment title
-\title{Difficultés rencontrées} % Assignment title
+\title{Compte rendu semaine \#1} % Assignment title
+% \title{Difficultés rencontrées} % Assignment title
 
 \author{Desmond Roussel Nzoyem} % Student name
 
@@ -172,42 +173,44 @@
 %----------------------------------------------------------------------------------------
 
 
-% Cette première semaine fut d'adaptation et d'appropriation du travail précédents. Il s'agissait principalement de lire et comprendre les précendentes thèses. Les principales taches qui ont etées effectuées, les diffulutés rencontrées, ainsi que quelques pistes d'exploration pour la suite du stage sont proésentées ci-bas. 
+Cette première semaine fut une d'appropriation des travaux précédents. Il s'agissait principalement de lire et comprendre les thèses de M. Rabatel et D. Balasoiu. Les principales tâches qui ont étés effectués, les difficultés rencontrées, ainsi que quelques pistes d'exploration pour la suite du stage sont présentées ci-bas. 
 
 
 %----------------------------------------------------------------------------------------
 %	ASSIGNMENT CONTENT - SECTION 1
 %----------------------------------------------------------------------------------------
 
-% \section{Travail effectué}
+\section{Travail effectué}
 
-% \begin{enumerate}
-%   \item Mise en pace du \href{https://github.com/desmond-rn/ice-floes}{dépot GutHub} \textbf{privé} pour: 
-%   \begin{itemize}
-%     \item le suivi de la rédaction des differents documents (rapport de stage, de semaines, de thèses, etc.);
-%     \item le travail à distance plus aisé.
-%   \textit{Donnez l'acces au répository. Pour l'instant, un système d'intégration continu n'est pas mis en place.} 
-%   \end{itemize}
-%   \item Lecture de l'article de Matthias et al. \parencite{rabatel2015dynamics}
-%   \item Lecture de la thèse de Matthias \parencite{rabatel2015thesis}:
-%   \begin{itemize}
-%     \item Lecture de l'introduction, et du chapitre 1, partie 1: \textbf{le modèle du floe};
-%     \item Révision du cours de mécanique du solide afin de comprendre le formalisme de Newton-Euler. Le livre intitilé "COMPUTATIONAL DYNAMICS" \parencite{shabana2009computational} a été très instructif. En particulier, les parties suivantes ont été explorées:
-%     \begin{itemize}
-%       \item Chapter 3 : KINEMITCS (sections 1, 2, 3, et 4);
-%       \item Chapter 4 : FORMS OF THE DYNAMIC EQUATIONS (sections 1 et 2);
-%     \end{itemize}
-%     \item rédaction d'un résumé succint de la these: \href{https://github.com/desmond-rn/ice-floes/blob/master/reports/matthias/main.pdf}{à cette addresse.} 
-%   \end{itemize}
-% \end{enumerate}
+\begin{enumerate}
+  \item Mise en place du \href{https://github.com/desmond-rn/ice-floes}{dépot GutHub} \textbf{privé} pour : 
+  \begin{itemize}
+    \item le suivi de la rédaction des différents documents (rapport de stage, de semaines, de thèses, etc.) ;
+    \item le travail à distance plus aisé.
+  % \textit{Donnez l'acces au répository. Pour l'instant, un système d'intégration continu n'est pas mis en place.} 
+  \end{itemize}
+  \item Lecture de l'article de M. Rabatel et al. \parencite{rabatel2015dynamics}
+  \item Lecture de la thèse de M. Rabatel \parencite{rabatel2015thesis}:
+  \begin{itemize}
+    \item Lecture de l'introduction, et du chapitre 1, partie 1 : \textbf{le modèle du floe};
+    \item Début de lecture du chapitre 2 ;
+    \item Révision du cours de mécanique du solide afin de comprendre le formalisme de Newton-Euler. Le livre intitulé "COMPUTATIONAL DYNAMICS" \parencite{shabana2009computational} a été très instructif. En particulier, les parties suivantes ont été explorées :
+    \begin{itemize}
+      \item Chapter 3 : KINEMITCS (sections 1, 2, 3, et 4) ;
+      \item Chapter 4 : FORMS OF THE DYNAMIC EQUATIONS (sections 1 et 2) ;
+    \end{itemize}
+    \item rédaction (en cours) d'un résumé succinct de la thèse : \href{https://github.com/desmond-rn/ice-floes/blob/master/reports/matthias/main.pdf}{à cette addresse.}; 
+  \end{itemize}
+  \item Apprentissage et utilisation des principales fonctionnalités du module TIKZ.   
+\end{enumerate}
 
 %----------------------------------------------------------------------------------------
 %	ASSIGNMENT CONTENT - SECTION 2
 %----------------------------------------------------------------------------------------
 
-% \section{Difficultés rencontrées}
+\section{Difficultés rencontrées}
 
-\textbf{\textit{Les question suivantes sont totalement ou partiellement inspirées de la thèse de M. Rabatel}}
+\textbf{\textit{Les question suivantes sont totalement ou partiellement inspirées de la thèse de M. Rabatel. Celles qui sont barrées sont celles pour lesquelles une réponse a été trouvée.}}
 
 \begin{enumerate}
   \item En exprimant les propriétés du floe $G(\omega)$, $e_1(\omega)$, et $e_2(\omega)$ en fonction de $\omega$, ne risque-t-on pas d'avoir des écritures trop lourdes plus tard ? Qu'en est-il des expressions utilisées dans les thèses et articles précédents : ne risque-t-on pas une incohérence ?
@@ -222,13 +225,13 @@
 
   \item Je ne comprends pas les conditions de complémentarité utilisées ; en particulier, celle de la page 33 \parencite[p.33]{rabatel2015thesis}. Il en est de même du théorème 1.1.6 (existence de solutions pour le problème linéaire de complémentarité), et sa preuve \parencite[p.36]{rabatel2015thesis}.
 
-  \item Je n'ai pas non plus compris la mise en place pour la conservation de l’énergie cinétique ; mais cela est dû aux à mes nombreuses lacunes qui précèdent. Je comprendrais probablement mieux après une clarification des différentes questions, et une révision de la mécanique du contact.
+  \item \sout{Je n'ai pas non plus compris la mise en place pour la conservation de l’énergie cinétique ; mais cela est dû aux à mes nombreuses lacunes qui précèdent. Je comprendrais probablement mieux après une clarification des différentes questions, et une révision de la mécanique du contact.}
 
-  \item Quitte à lire toutes les références indiquées dans la thèse, pouvez-vous recommander un livre sur la mécanique du contact (pour débutant), dans lequel les différents termes sont définis (la loi de Newton, la loi de Poisson, etc.) ?
+  \item \sout{Quitte à lire toutes les références indiquées dans la thèse, pouvez-vous recommander un livre sur la mécanique du contact (pour débutant), dans lequel les différents termes sont définis (la loi de Newton, la loi de Poisson, etc.) ?}
   
-  \item Je ne comprends pas non plus la définition des conditions périodiques aux bords \parencite[p.44]{rabatel2015thesis}.
+  \item \sout{Je ne comprends pas non plus la définition des conditions périodiques aux bords \parencite[p.44]{rabatel2015thesis}.}
 
-  \item En lisant l'état de l'art, j'ai fréquemment du mal a repérer les notions qui seront utilisés dans la thèse, et les notions qui ne seront pas ; et j'avance \textbf{trop lentement}. Y a t'il une astuce pour identifier les notions importantes et aller plus vite ?
+  \item \sout{En lisant l'état de l'art, j'ai fréquemment du mal a repérer les notions qui seront utilisés dans la thèse, et les notions qui ne seront pas ; et j'avance \textbf{trop lentement}. Y a t'il une astuce pour identifier les notions importantes et aller plus vite ?}
 \end{enumerate}
 
 
@@ -238,14 +241,14 @@
 
 %----------------------------------------------------------------------------------------
 %	ASSIGNMENT CONTENT - SECTION 3
-%----------------------------------------------------------------------------------------
+% ----------------------------------------------------------------------------------------
 
-% \section{Sujet explorables}
+\section{Sujet explorables}
 
-% \begin{enumerate}
-%   \item Rajouter le caratère déformable aux floes dans le modèle granulaire \parencite[p.12]{rabatel2015thesis}.
-%   \item Vu que le coefficient de détermination est fixé de facon empirique, on pourrait déterminer ce coefficient en fonction de l’endommagement subi par le floe et des éventuelles fractures se propageant dans le floe à partir d’une situation de collision \parencite[p.14]{rabatel2015thesis}.
-% \end{enumerate}
+\begin{enumerate}
+  \item Rajouter le caractère déformable aux floes dans le modèle granulaire \parencite[p.12]{rabatel2015thesis}.
+  \item Vu que le coefficient de restitution est fixé de façon empirique, on pourrait déterminer ce coefficient en fonction de l’endommagement subi par le floe et des éventuelles fractures se propageant dans le floe après une situation de collision \parencite[p.14]{rabatel2015thesis}.
+\end{enumerate}
 
 % %-------------------------------------------------------------------------------
 % %							THE BIBLIOGRAPHY

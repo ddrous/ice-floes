@@ -1,7 +1,7 @@
 ﻿\begin{tikzpicture}
 	\footnotesize
 	
-	\draw [fill=cyan] (1,2.5) -- (10,2.5) -- (10,10) -- (1,10) -- cycle;
+	\draw [fill=cyan] (1,3.5) -- (10,3.5) -- (10,10) -- (1,10) -- cycle;
 	\node at (3,9) {\large mer $\mathcal{M}$};
 	
 	% \draw [white, rounded corners,fill=white,pattern=north west lines,pattern color=white] (2,4) rectangle (4,6);
