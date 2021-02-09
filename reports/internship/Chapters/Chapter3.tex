@@ -158,7 +158,7 @@ W^i(t) =
 \end{pmatrix} \,.
 $$
 Pour un système composé de $n$ floes, l'équation précédente doit être satisfaite pour tous les floes. \cite[p.18]{rabatel2015thesis} montre que cela revient au système d'équations
-\begin{align}    
+\begin{align} \label{eq:bilan1}
     \mathcal{M} \frac{\diff W(t)}{\diff t} = \mathcal{H}(t) \,,
 \end{align}
 avec 
@@ -176,9 +176,51 @@ $$
 
 \subsubsection{L'interaction entre les floes}
 
+Le domaine de la mécanique du contact s'est grandemen développé ces dernier siècles, avec plusieurs scientifique qui ont tenté de décrire décrire le phénomène de contact entre des coprs. Le modèle décrit par \parencite[p.5892]{rabatel2015dynamics} utilise deux conditions de complémentarité pour déterminer les vitesses des floes après le contact. 
+
+La primière est une condition de Signorini\parencite{signorini1933sopra} pour s'assurer de la non-interpénétration\footnote{Deux floes s'interpénètre si la "distance" entre ces deux floes est négative.} des floes. Pour écrire ces conditions, il faut au préalable écrire le problememe de contact entre floes comme un problème implcite, où les inconnus sont les impulsions après le choc. \citeauthor{rabatel2015thesis} se base donc sur les travaux de Delassus (1917), Moreau (63), (Pfeiffer and Glocker, 1996), [Stewart and Trinkle, 1996; Stewart, 2000; Anitescu and Potra, 1997; Anitescu et al., 1999]. Dans \parencite[p.5892]{rabatel2015dynamics}, le problème de complémentarité a ensuite résolu en utlisant l'algorithme de Lemke [Cottle et al., 1992, Alg. 6.3.1]. 
+
+\textit{IMAGE D'UNE COLLISION EN Pj}
+
+Soit $P_j$, ($j \in \{1,\ldots,n\}$) un point de contact entre les floes $\Omega_k$ et $\Omega_l$. Nous notons $\bvec{F}_{kj}(t)$ la force de contact du floe $\Omega_k$ au floe $\Omega_l$ appliquée en $P_j$. Par convention, une matrice de contact $\bmat{M_c}$ est définie telle que son coefficient $c_kj$ vaut:
+\begin{itemize}
+    \item $0$ si le point de contact $P_j$ n’est pas un point de contact du floe $\Omega_k$;
+    \item $-1$ si le point de contact $P_j$ est un point de contact entre les floes $\Omega_k$ et $\Omega_l$ avec $k < l$;
+    \item $1$ si le point de contact $P_j$ est un point de contact entre les floes $\Omega_k$ et $\Omega_l$ avec $k > l$.
+\end{itemize}
+En notant $E_k$ l’ensemble des points de contact du floe $\Omega_k$ au temps t, \parencite[p.26]{rabatel2015thesis} définit la résultante des forces de contact $\bvec{F}^c_k(t)$, au floe $\Omega_k$ comme :
+$$
+\bvec{F}^c_k(t) = \sum_{j \in E_k} c_{jk} \bvec{F}_{kj}(t) 
+$$
+En rajoutent ces forces aux forces extérieures lors du bilan des forces à l'\cref{eq:bilan1}, on obtient, pour un floe $\Omega_k(t)$ :
+\begin{align} \label{eq:bilan1}
+    \mathcal{M} \frac{\diff W(t)}{\diff t} = \mathcal{H}(t) + \sum_{j \in E_k} \begin{pmatrix}
+        \bvec{F}_{kj}(t) \\ \bvec{G^kP_j} \wedge \bvec{F}_{kj}(t) 
+    \end{pmatrix} \,.
+\end{align}
 
 
 \subsubsection{Formulation en problème linéaire de complémentarité}
+
+Il existe deux principales manières de formuler le problème du contact entre deux solides rigides. L'auteur de \parencite{rabatel2015thesis} opte pour le formulisme vitesse-impulsion, au détriment du formalisme accéleration-force. En effet, L’approche en vitesse impulsion apporte donc l’avantage de pouvoir exprimer la force de friction de Coulomb directement par rapport à la vitesse. Il n’est pas nécessaire de connaître la nature du contact. 
+Il nous faut donc définir les notions d'impulsion. Sur un intervalle de temps $\delta t^*$, s’il y a un contact au point $P_j$, entre les floes $\Omega_k$ et $\Omega_l$, nous dirons que le floe $\Omega_k$ a subi un choc provenant du floe $\Omega_l$ au point de contact $P_k$ caractérisé par l’impulsion :
+$$
+\bvec{\mathcal{I}}_{kj} = \int_{\delta t^*} c_{kj} \bvec{F}_{kj}(t) \diff t \,.
+$$ 
+\citeauthor{rabatel2015thesis} fait donc apparaître les impulsions dans les équations des moments \cref*{eq:bilan1} pour le floe $\Omega_k$ sur l’intervalle temporel $\delta t^*$:
+$$
+\mathcal{M}_k \int_{\dtstar} \dot{W}_k(t) \diff t = \int_{\dtstar} \mathcal{H}(t) \diff t + \sum_{j \in E_k} \begin{pmatrix}
+    \bvec{\mathcal{I}}_{kj} \\ \bvec{G_kP_j} \wedge \bvec{\mathcal{I}}_{kj} 
+\end{pmatrix} \,.
+$$
+En écrivant $\dtstar = [t^{-}, t^{+}]$, on peut donc introduire les inconnues $\beta$, $\lambda \in (\Rdeux)^m$ pour le problème de contact  
+\begin{align}
+    \mathcal{M}_k \left( W(t^{+}) - W(t^{-}) \right) = \int_{\dtstar} \mathcal{H}(t) \diff t + \bmat{B}\beta + \bmat{J}\lambda \,,
+\end{align}
+où $\bmat{B}$ sont deux matrices telle que \dots (equation 1.1.14 de la these)
+
+Il devient posible de formuler le problème de contact sans interpénétration par un problème lineaire de complémentarité:
+(equation 1.1.22) de la these
 
 \subsubsection{Conservation de l'énergie cinétique}
 
