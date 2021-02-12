@@ -299,11 +299,6 @@ avec
 \end{align*}
 Le problème consiste alors à trouver les vitesses après contact $W(t^{+})$, à l’aide des composantes inconnues tangentielle et normale des impulsions dans les repères de contact $(\tilde{\beta}\, \gamma)$, elles-mêmes inconnues du système.
 
-\subsection{Simulation}
- 
-Pour simuler la dynamique des floes de glace soumis a des forces exterieurs ET possiblement des collisions, il faut intégrer la dynamique régulière (entre deux collisions), et la dynamque non régulière; et il existe deux principales methodes pour la discretisation en temps dans de tels ṕroblèmes. La methode \textbf{time-stepping} (voir [Aca13] pour les schema de Moreau [Mor85a, Jea99], et de Schatzman-Paoli [PS02a, PS02b] par exemple, pour lesquels une convergence a pu etre exhibée à partir de la convergence en graphe de Moreau [Mor78]) offrent l'avantage de mieux traiter les points d'accumulation \parencite{rabatel2015thesis}; et d'etre plus performant sur des problemes de multiples contacts. Cependant, \citeauthor{rabatel2015thesis} pour le schema \textbf{event-driven} opte pour la précision de la localisation des collisions et la facilité de manipulation. En plus, elles permettent d’utiliser des schémas d’intégration existant d’ordre élevé pour des équations différentielles ordinaires. le seuil de collision choisi est sufisament grand pour eviter de traiter les collisions une par une. le schema utilisé pour intégrer l'equation \cref{eq:bilan1} est un schéma du type Euler explicite, pour sa facilité d’implémentation, sa facilité à prédire la localisation en espace et en temps des futures collisions et enfin sa capacité à dépasser les problèmes de points d’accumulation.
-
-
 
 \subsubsection{Consistance énergétique}
 D'après l'auteur de \parencite[p.42]{rabatel2015thesis}, traiter le problème de contact à partir de lois non régulières ne permet pas d’obtenir des solutions satisfaisant à la fois la non-interpénétration, la friction de Coulomb et une consistance énergétique. Le problème a donc été divisé en une phase de compression et une phase de décompression suivant la loi de Poisson. La phase de compression modélise la capacité maximale des
@@ -316,7 +311,55 @@ où $W^c$ représente les vitesses des floes après la phase de compression, et 
 \subsubsection{Traitement des conditions aux bords}
 
 \subsection{Le modèle de l'environnement}
+Définit $\bvec{U}_a$ et $\bvec{U}_w$. 
 
+\subsection{Simulation}
+ 
+\subsubsection{Discretisation temporelle}
+
+Pour simuler la dynamique des floes de glace soumis a des forces exterieurs ET possiblement des collisions, il faut intégrer la dynamique régulière (entre deux collisions), et la dynamque non régulière; et il existe deux principales methodes pour la discretisation en temps dans de tels ṕroblèmes. La methode \textbf{time-stepping} (voir [Aca13] pour les schema de Moreau [Mor85a, Jea99], et de Schatzman-Paoli [PS02a, PS02b] par exemple, pour lesquels une convergence a pu etre exhibée à partir de la convergence en graphe de Moreau [Mor78]) offrent l'avantage de mieux traiter les points d'accumulation \parencite{rabatel2015thesis}; et d'etre plus performant sur des problemes de multiples contacts. Cependant, \citeauthor{rabatel2015thesis} pour le schema \textbf{event-driven} opte pour la précision de la localisation des collisions et la facilité de manipulation. En plus, elles permettent d’utiliser des schémas d’intégration existant d’ordre élevé pour des équations différentielles ordinaires. le seuil de collision choisi est sufisament grand pour eviter de traiter les collisions une par une. le schema utilisé pour intégrer l'equation \cref{eq:bilan1} est un schéma du type Euler explicite, pour sa facilité d’implémentation, sa facilité à prédire la localisation en espace et en temps des futures collisions et enfin sa capacité à dépasser les problèmes de points d’accumulation. 
+
+La simulation par la méthode event-driven demande la définition d'un pas de temps maximal pour lequel le schéma reste stable. Le pas de temps $\Delta t_max$ sera utilisé s
+s'il aucune collision n'est détectée entre les instants $t$ et $\Delta t$. En se référent sur un modèle idéalisé 1D, \citeauthor{rabatel2015thesis} distingue deux critère pour la stabilité du schéma numérique au temps $t$ :
+\begin{itemize}
+    \item lorsque la vitesse caractéristique des floes $V_c(t) = N_a \bvec{U}_a(t) + \bvec{U}_w(t)$ est constante sur l'intervalle de simulation $I$, alors pour:  
+    \begin{align} \label{eq:dtmax1}
+        \Delta t \leq \Delta t_max = \min{ \left(\frac{\rho}{2 \vert \bvec{U}_a(t) \vert \sqrt{\rho_a C_a \rho_w C_w}},   \frac{2K_t}{L_t} \right)}
+    \end{align}
+    avec 
+    $$
+    \text{avec } L_t = \rho^{-1} \rho_w C_w \left( N_a^2 \bvec{U}_a^2 + (N_a\bvec{U}_a + 2 \bvec{U}_w)^2 \right) \,, \text{et } K_t = \vert V_c(t) \vert \text{ constant, }
+    $$
+    le schéma est stabe i.e $\dot G (t + \Delta t) \in [-K_t, K_t] = [-K_{t + \Delta t}, K_{t + \Delta t}]$ ;
+    \item lorsque les variations de $V_c(t)$ entraînent une augmentation de $K_t$ au cours du temps. La propriété de stabilité reste vérifiée car $$\dot G (t + \Delta t) \in [-K_t, K_t] \in [-K_{t + \Delta t}, K_{t + \Delta t}] \,;$$
+    \item lorsque les variations de $V_c(t)$ entraînent une diminution stricte
+    de $K_t$ au cours du temps, alors la condition de stabilité dans les deux cas précédent ne peut etre vérifiée. \citeauthor{rabatel2015thesis} introduit donc une seconde définition de la stabilité pour traiter ce cas. Il remarque que pour 
+    \begin{align} \label{eq:dtmax2}
+    \Delta t_{max} \leq \begin{cases}
+        \frac{-2x}{\tilde{L}_t^{-}} \text{  si  } x \in  ]-\infty, K_{t+\Delta t}] \\
+        \frac{-2x}{-\tilde{L}_t^{+}} \text{  si  } x \in  ]K_{t+\Delta t}, +\infty]
+    \end{cases}\end{align}
+    avec \begin{align*} \tilde{L}_t^{-} =  \rho^{-1} \rho_w C_w \left[ N_a^2 \bvec{U}_a(t+\Delta t)^2 - (\bvec{U}_w(t + \Delta t) - x)^2 \right] \\ \tilde{L}_t^{+} =  \rho^{-1} \rho_w C_w \left[ N_a^2 \bvec{U}_a(t+\Delta t)^2 + (\bvec{U}_w(t + \Delta t) - x)^2 \right] \,,
+     \end{align*}
+    on a la diminution de la vitesse des floes.
+\end{itemize} 
+En conslusions, pour une vitesse infinitésimale initiale $\dot{G}(0) \in [-K_0, K_0]$, pour tout $t \in I$, et pour tout $\Delta t_{max}$ vérifiant les \cref{eq:dtmax1,eq:dtmax2}, nous avons les vitesses des floes majorées par :
+$$
+\max_{t \in I}{K_t}
+$$
+\citeauthor{rabatel2015thesis} choisi donc de prendre 
+$$
+\Delta t_{max} = \min{ \left( \frac{3}{4} \frac{ -2 \left( \max_{t \in I}{K_t} \right)}{ \max_{t \in I}{\tilde{L}_t^{-}}}, \frac{3}{4} \frac{2 \left( \max_{t \in I}{K_t} \right) }{ \max_{t \in I}{-\tilde{L}_t^{+}}}, \frac{\rho}{2 \left(  \max_{t \in I}{  \vert \bvec{U}_a(t) \vert } \right)  \sqrt{\rho_a C_a \rho_w C_w}} \right)}
+$$
+pour s'assurer que le modèle idéalisé vérifie les critères stabilité définis.
+
+\subsubsection{Détection des collisions en espace}
+
+Des deux méthodes principales usilisées dans la littérature pour la détection des voisins, \citeauthor{rabatel2015thesis} a choisi la méthode de \textbf{hierachie de volumes englobants} facilité de mise en place et pour son efficacité même avec de grands ratios de tailles. L'alternative était la méthode de \textbf{partitionnement de l'espace} qui elle, souffre de plusiuers défaut non surmontables pour le modèle développé. Les méthodes de volumes englobants consistent à englober le contour de l’objet par des volumes à des échelles de plus en plus fines pour améliorer la détection.
+
+
+
+\textit{REFAIRE LA FIGURE 2.2}
 
 \subsection{Critique de la thèse}
 Bien que les travaux de \citeauthor{rabatel2015thesis} on été testés et validés sur plusieurs configuration: 
