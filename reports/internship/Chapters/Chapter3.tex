@@ -101,7 +101,8 @@ Lors de leur mouvements sur la surface de la mer, les floes se fracturent sous l
 
 
 %----------------------------------------------------------------------------------------
-\section{État de l'art}
+
+\section{Résumé de thèse de M. Rabatel}
 
 Une fois le modèle défini, il nous faut établir les équations décrivant la dynamique du floe, et celle de son environnement. Les travaux de \cite{rabatel2015thesis} et \cite{balasoiu2020thesis} ont extensivement traité le problème de modélisation dynamique et de simulation d'un assemblage de floe de glace. Nous résumons ici les principales idées de leurs raisonnements, tout en présentant l'état de l'art dans ce domaine.
 
@@ -190,8 +191,7 @@ traité.  Il a donc fallu attendre les années 80 avec l'essort des méthodes LC
 
 
 Pour traiter le problème de collision entre les floes, les glaciologues retiennent une multitude de  modèles principalement intégrés aux milieux continus. Par exemple, dans les articles de Solomon [Sol70], ceux de Hibler [HI79] et ceux de Bratchie [Bra84], la force résultante des interactions est due à une contrainte interne. On note aussi les modèles basés sur théorie des flux de particules. Dans
-[SHL86, Hop85] par exemple, les collisions ne sont pas détectées précisément et les paramètres décrivant la collision sont déterminés par une méthode de Monte Carlo. L'introduction de ces déformations dans les modèles discrets de la banquise a été initié dans les années 90 par Hopkins [Hop96], et récement par Herman et Wilchinsky [Her11, WFH10]. Cependant, elles sont basées sur
-la régularisation des lois de contact. Avant les travaux de \citeauthor{rabatel2015thesis}, il n'existait pas de modèle discret de banquise en utilisant une dynamique du contact non régulière.
+[SHL86, Hop85] par exemple, les collisions ne sont pas détectées précisément et les paramètres décrivant la collision sont déterminés par une méthode de Monte Carlo. L'introduction de ces déformations dans les modèles discrets de la banquise a été initié dans les années 90 par Hopkins [Hop96], et récement par Herman et Wilchinsky [Her11, WFH10]. Cependant, elles sont basées sur la régularisation des lois de contact. Avant les travaux de \citeauthor{rabatel2015thesis}, il n'existait pas de modèle discret de banquise en utilisant une dynamique du contact non régulière.
 
 
 Le modèle décrit par \parencite[p.5892]{rabatel2015dynamics} utilise deux conditions de complémentarité pour déterminer les vitesses des floes après le contact. La première est une condition de Signorini \parencite{signorini1933sopra} pour s'assurer de la non-interpénétration\footnote{Deux floes s'interpénètre si la "distance" entre ces deux floes est négative.} des floes. Pour décrire ces conditions, il faut au préalable écrire le problème de contact entre floes comme un problème implicite, où les inconnus sont les impulsions après le choc\footnote{Contrairement aux loi de contacts explicites (Hertz, Hooke, Coulomb), les loi implcites ne necessitent pas la connaissance de la nature du contact entre les floes (glissement ou accroche).}. Pour cette condition de complémentarité, \citeauthor{rabatel2015thesis} se base donc sur les travaux de Delassus (1917), Moreau (63), (Pfeiffer and Glocker, 1996). \citeauthor{rabatel2015thesis} se base ensuite sur les travaux de [Stewart and Trinkle, 1996] pour décrire une deuxième condition de complémentarité vérifiant la loi de fraction de Coulomb. Dans \parencite[p.5892]{rabatel2015dynamics}complémentarité. Le problème résultant a ensuite résolu en utilisant un algorithme de Lemke [Cottle et al., 1992, Alg. 6.3.1]. 
@@ -314,7 +314,7 @@ où $W^c$ représente les vitesses des floes après la phase de compression, et 
 
 % \subsubsection{Traitement des conditions aux bords}
 
-\subsection{Le modèle de l'environnement}
+\subsubsection{Le modèle de l'environnement}
 L’environnement est l’ensemble des forces extérieures qui agissent sur les floes hormis les forces de contact qui sont décrites dans la partie précédente. Ces principales forces sont:
 \begin{itemize}
     \item La force de Coriolis $\bvec{\mathfrak{F}}_c$ donnée pour un floe $\Omega_i(t)$ par:
