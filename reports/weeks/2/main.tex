@@ -125,7 +125,6 @@
 
 \usepackage{cleveref}
 \usepackage{siunitx}
-\newcommand{\bvec}[1]{\bm{#1}}    %% For vector notation
 \newcommand{\myvec}[3]{\begin{pmatrix} #1  \\ #2 \\ #3 \end{pmatrix}}   %% vecteur 3d
 \newcommand{\mymat}[9]{\begin{pmatrix} #1 & #2 & #3 \\ #4 & #5 & #6 \\ #7 & #8 &#9 \end{pmatrix}}  %% Matrice 3*3
 
@@ -144,6 +143,8 @@
 \newcommand{\hquad}{\hspace{0.5em}} %% Bew command for half quad
 \newcommand*\diff{\mathop{}\!\mathrm{d}}
 % \setlength\parindent{0pt}	%% To remove all indentations
+\newcommand{\bvec}[1]{\bm{\mathrm{#1}}}  %% Use this to make vectors
+\newcommand{\bmat}[1]{\bm{\mathsf{#1}}}   %% Use this to make tensors
 
 %----------------------------------------------------------------------------------------
 %	ASSIGNMENT INFORMATION
@@ -195,6 +196,7 @@ Cette deuxième semaine fut:
 \begin{enumerate}
   \item Le problème de complémentarité avec la loi de Newton : équation (1.1.27) \parencite[p.41]{rabatel2015thesis}. Je ne comprends plus sa signification lorsqu'on ajoute le terme $\varepsilon J^T W(t^{-})$.
   \item À la figure 1.6 \parencite[p.43]{rabatel2015thesis}, est-il possible de calculer l'énergie cinétique $E(t^+)$ sans avoir au préalable calculé $W(t^+)$.
+  \item Dans les cas $(iv)$ de \parencite[p.79]{rabatel2015thesis}, le contact est ponctuel et $PQ \notin \mathcal{N}_P$. Mais ce cas semble ne pas être considéré dans les simulations d'après le dernier paragraphe de la page $80$. Es-ce bien le cas ?
 \end{enumerate}
 
 

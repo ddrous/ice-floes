@@ -358,8 +358,62 @@ pour s'assurer que le modèle idéalisé vérifie les critères stabilité défi
 Des deux méthodes principales usilisées dans la littérature pour la détection des voisins, \citeauthor{rabatel2015thesis} a choisi la méthode de \textbf{hierachie de volumes englobants} facilité de mise en place et pour son efficacité même avec de grands ratios de tailles. L'alternative était la méthode de \textbf{partitionnement de l'espace} qui elle, souffre de plusiuers défaut non surmontables pour le modèle développé. Les méthodes de volumes englobants consistent à englober le contour de l’objet par des volumes à des échelles de plus en plus fines pour améliorer la détection.
 
 
-
 \textit{REFAIRE LA FIGURE 2.2}
+
+
+\subsubsection{Détection des contacts en temps}
+Il s'agit ici de trouver le pas de temps optimal i.e. un pas de temps $\Delta t$ pour lequel la configuration des floes ne contenant pas d’interpénétrations sur l’intervalle de temps $[t, t + \Delta t]$ et, pour tout $\varepsilon > 0$, contient au moins une interpénétration sur l’intervalle de temps $[t + \Delta t, t + \Delta t + \varepsilon]$ \parencite[p.87]{rabatel2015thesis}.
+Lorsque le critère de collision n’est pas vérifié, \citeauthor{rabatel2015thesis} montre qu'il suffit de prendre 
+$$
+\Delta t_{i,j} = -\frac{-\delta_{i,j(t) - tol_3}}{\bvec{A}_{ij}(t) \cdot \left( \dot{G}_i(t) - \dot{G}_j(t) \right)} \,,
+$$
+avec 
+$$
+\bvec{A}_{i,j}(t) = \frac{C_{0,i}(t) - C_{0,i}(t)}{d\left(C_{0,i}(t), C_{0,i}(t) \right)} \,, \text{ et  } \quad tol_3 = \frac{\xi}{20} \,.
+$$
+Lorsque le critère de collision est vérifié, il faut plutot prendre 
+$$
+\Delta t_{i,j} = \frac{\min{\left( \eta_i, \eta_j \right) - tol_3}}{\Gamma(t)} \,,
+$$
+avec 
+$$
+\Gamma(t) = \max{\left( \Vert \dot{Q}_i^{i,j}(t) \Vert , \, \Vert \dot{Q}_j^{j,i}(t) \Vert  \right)} \,,
+$$
+où $\dot{Q}_i^{i,j}$ représente la distance parcourue par un point de $\Omega_i (t)$ relativement à $\Omega_j (t)$.
+
+Une fois ce $\Delta t_{i,j}$ assurant la non-interpénétration trouvé, on peut donc de choisir 
+$$
+\Delta t = \min{\left( \Delta t_{max} , \min_{ \substack{ (i,j) \in \left\{ 1,\ldots,n \right\}^2 \\ i \neq j}}{\Delta t_{i,j}} \right)} \,.
+$$
+
+
+\subsubsection{Construction des repères de contacts}
+
+La construction d'un repere de contact n'est effectuée que lorsque le contact entre deux floes $\Omega_k$ et $\Omega_l$ est linéique \parencite[p.79]{rabatel2015thesis}, ou ponctuel et le vecteur porté par les points en contacts appartient au cone normal de $P$. La normale $\bvec{N}$ est alors déterminée comme le vecteur unité dirigé par $\bvec{PQ}$. Si $Q$ n’est pas unique, on se retrouve dans la situation où il peut exister plusieurs repères de contact pour un point de contact. Dans les autres cas, le repère de contact associé au point $P$ n’est pas construit et $P$ n’est pas considéré dans le traitement des contacts \parencite[p.80]{rabatel2015thesis}.
+
+
+\subsubsection{Simulation des événements collisions}
+
+Une fois les voisins détectés et les repères de contact construits, on peu passer à la prochaine étape qui consiste en la simulation de évènements de collisions. Ici, plusieurs choix s'offrent à \citeauthor{rabatel2015thesis} : les méthodes dites de \textbf{régularisations}, les méthodes dites \textbf{itératives}, et les méthodes dites \textbf{de pivots} \parencite[p.82]{rabatel2015thesis}. La prmière est adaptée aux modèles régularisants, ce qui n'est le cas de notre modèle. La deuxième par contre a extensivement étés utilisées dans la litterature; on peu citer Moreau [MP88, Mor99, Jea99], Aitken [Ait50]. Malheuresement, dès que la matrice $A$ du problème de complémentarité à résoudre n'est plus symmétrique, ce deuxième groupe de techniques ne s'avère pas efficace. \citeauthor{rabatel2015thesis} choisi donc l'algorithme Lemke pour lequel il existe des preuves de convergence lorsque la matrice $A$ est co-positive. Bien qu'il soit performant, il faut neanmoins noter que l’algorithme de Lemke étant une
+technique globale, c’est-à-dire traitant les contacts simultanément, il ne garantit pas une bonne propagation du contact.
+
+\subsubsection{Optimisations}
+
+La pemiere optimisation apporte est celle sur les distances de collision: deux floes sont en contact si la distance entre-eux n'est pas nulle, mais supérieure à un seul appelée distance de collision.
+
+La deuxième concerne la condition de non-interpenetration \parencite[p.85]{rabatel2015thesis}. EN cas de congenstion, il est difficile que les floes décollent après contact. En insistant que $\bmat{J}^T W(t^+) > 0$ après collision, on risque ne pas avoir de solution pour le problème linéaire de complémentarité associé. \citeauthor{rabatel2015thesis} relaxe donc la condition de Signorini en définissant un réel $c$ et l'ensemble des vitesses admissibles devient:
+$$
+V_c = \left\{ w \in \mathbb{R}^{3n} \, | \, \bmat{J}^T w \geq c \right\} \,.
+$$
+Une troisième optimisation concernant la définition de la notion d'erreur et de tolérance a été implementée. La quatrième consiste en la résolution d'un LCP en trois entatives (avec trois algorithmes de Lemke différents) même si cela augmente les coup de calculs \parencite[p.86]{rabatel2015thesis}. Si cette optimisation ne s'avère pas suffisance, une dernière optimisation consiste en la modification aléatoire de cetains coeficients de la matrice $A$, la permuation des lignes afin d'éviter des zeros sur la diagonale, la définition de la notion de contact actif.
+
+
+\subsection{Validation des résultats}
+
+Les résultats ont été validés à travers plusieurs problèmes. Nous citons des exemples classique tels que la boîte glissante, le berceau de Newton, le canon de Newton, la balle rebondissante, etc. Il a ensuite été validé sur des scénarios simples de dérive libre soumise à des courants océanique et atmosphérique et des scénarios simples de collision. En effet, nous avons vérifié que le comportement d’un objet simulé est cohérent avec le comportement théorique et avec les observations. Des telles exploitations telles que la La dérive dans un canal étroit, pour des floes en bassins a été étudié. Aussi, la dérive soumise à un vent et un courant variable avec des vitesses du vent provenant de \textbf{ERAinterim}, à partir du modèle glace de mer et océan \textbf{TOPAZ}.
+
+
+
 
 \subsection{Critique de la thèse}
 Bien que les travaux de \citeauthor{rabatel2015thesis} on été testés et validés sur plusieurs configuration: 
