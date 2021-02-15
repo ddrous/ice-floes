@@ -105,7 +105,7 @@ Lors de leur mouvements sur la surface de la mer, les floes se fracturent sous l
 
 Une fois le modèle défini, il nous faut établir les équations décrivant la dynamique du floe, et celle de son environnement. Les travaux de \cite{rabatel2015thesis} et \cite{balasoiu2020thesis} ont extensivement traité le problème de modélisation dynamique et de simulation d'un assemblage de floe de glace. Nous résumons ici les principales idées de leurs raisonnements, tout en présentant l'état de l'art dans ce domaine.
 
-\subsection{Le modèle du floe}
+\subsection{Modélisation Théorique de la Dynamique des Glaces de Mer}
 
 \subsubsection{La cinétique du floe}
 
@@ -180,8 +180,6 @@ Le domaine de la mécanique du contact s'est grandement développé ces derniers
     \item la loi de friction de Coulomb (references): afin de modéliser le comportement de friction pendant une collision. Cette condition est portée par la composante tangentielle de la force de contact.
 \end{itemize}
 
-\textit{DESSIN DE LA LOI DE COULOMB, ET PEU ETRE CELLE DE POISSON}
-
 \noindent Afin de traiter ces problemes de contact, deux approches principales ont été developpées par les scientifiques: l'approche non-régulière et l'approche de r;egularisation des lois de contact. 
 
 Parmis les pioniers dans l'approche de régularisation pour la résolution de la condition unilatérale de Signorini, nous pourvons citer Hertz; Nevins et Whitney [NW72, Whi77], Moore [MW88b]; Ces méthodes se sont largement répandues dans les études liées à la robotique, à la réalité virtuelle ou encore dans les opérations assistées par ordinateur, pour simuler un grand nombre d’objets en contact en petites ou grandes déformations comme des habits, des cheveux ou encore des organes (voir [WW90, VCMT95, BW98, RGF+ 04]). Concernant la seconde, la loi de friction de Coulomb, la discontinuité entre les phases de glissement et non glissement a été traitée de différentes façons; en utilisant la notion de coefficeint de restitution, ou des modeles masse-ressorts. 
@@ -198,9 +196,15 @@ la régularisation des lois de contact. Avant les travaux de \citeauthor{rabatel
 
 Le modèle décrit par \parencite[p.5892]{rabatel2015dynamics} utilise deux conditions de complémentarité pour déterminer les vitesses des floes après le contact. La première est une condition de Signorini \parencite{signorini1933sopra} pour s'assurer de la non-interpénétration\footnote{Deux floes s'interpénètre si la "distance" entre ces deux floes est négative.} des floes. Pour décrire ces conditions, il faut au préalable écrire le problème de contact entre floes comme un problème implicite, où les inconnus sont les impulsions après le choc\footnote{Contrairement aux loi de contacts explicites (Hertz, Hooke, Coulomb), les loi implcites ne necessitent pas la connaissance de la nature du contact entre les floes (glissement ou accroche).}. Pour cette condition de complémentarité, \citeauthor{rabatel2015thesis} se base donc sur les travaux de Delassus (1917), Moreau (63), (Pfeiffer and Glocker, 1996). \citeauthor{rabatel2015thesis} se base ensuite sur les travaux de [Stewart and Trinkle, 1996] pour décrire une deuxième condition de complémentarité vérifiant la loi de fraction de Coulomb. Dans \parencite[p.5892]{rabatel2015dynamics}complémentarité. Le problème résultant a ensuite résolu en utilisant un algorithme de Lemke [Cottle et al., 1992, Alg. 6.3.1]. 
 
-\textit{IMAGE D'UNE COLLISION EN Pj}
+\begin{figure}[!h]
+    \centering
+    % \input{Figures/Epaisseur.tikz}
+    \includegraphics[width=.28\textwidth]{Collision1.png}
+    \caption{Interaction entre deux floes $\Omega_k$ et $\Omega_l$ au point $P_j$ \parencite[p.26]{rabatel2015thesis}.}
+    \label{fig:Collision1}
+\end{figure}
 
-Soit $P_j$, ($j \in \{1,\ldots,n\}$) un point de contact entre les floes $\Omega_k$ et $\Omega_l$. Nous notons $\bvec{F}_{kj}(t)$ la force de contact du floe $\Omega_k$ au floe $\Omega_l$ appliquée en $P_j$. Par convention, une matrice de contact $\bmat{M_c}$ est définie telle que son coefficient $c_kj$ vaut :
+Soit $P_j$, ($j \in \{1,\ldots,n\}$) un point de contact entre les floes $\Omega_k$ et $\Omega_l$ (voir \cref{fig:Collision1}). Nous notons $\bvec{F}_{kj}(t)$ la force de contact du floe $\Omega_k$ au floe $\Omega_l$ appliquée en $P_j$. Par convention, une matrice de contact $\bmat{M_c}$ est définie telle que son coefficient $c_kj$ vaut :
 \begin{itemize}
     \item $0\,\,\,\,\,\, $ si le point de contact $P_j$ n’est pas un point de contact du floe $\Omega_k$ ;
     \item $-1$ si le point de contact $P_j$ est un point de contact entre les floes $\Omega_k$ et $\Omega_l$ avec $k < l$ ;
@@ -236,14 +240,14 @@ En écrivant $\dtstar = [t^{-}, t^{+}]$, on peut donc introduire les inconnues $
 \end{align}
 où $\bmat{B}$ et $\bmat{J}$ sont deux matrices de $(\Rtrois)^{n \times m}$telle que
 \begin{align*}
-    \bmat{B} = (d_{kj})_{\substack{1 \leq k \leq n \\ 1 \leq j \leq m}} \,, \quad d_{kj} = 
+    \bmat{B} = (d_{kj})_{\substack{1 \leq k \leq n \\ 1 \leq j \leq m}} \,, \quad d_{kj} = \,
     \begin{cases}
         0 \in \Rtrois &\text{ si } P_j \text{ n'est pas un point de contact de } \Omega_k \\
         \begin{pmatrix}
             c_{kj} \bvec{T}_{j} \\ c_{kj} \bvec{P}_j\bvec{G}_k \wedge \bvec{T}_j 
         \end{pmatrix} &\text{ si } P_j \text{ est un point de contact de } \Omega_k
     \end{cases} \,, \\
-    \bmat{J} = (s_{kj})_{\substack{1 \leq k \leq n \\ 1 \leq j \leq m}} \,, \quad s_{kj} = 
+    \bmat{J} = (s_{kj})_{\substack{1 \leq k \leq n \\ 1 \leq j \leq m}} \,, \quad s_{kj} = \,
     \begin{cases}
         0 \in \Rtrois &\text{ si } P_j \text{ n'est pas un point de contact de } \Omega_k \\
         \begin{pmatrix}
@@ -255,7 +259,7 @@ Les matrices $\bmat{B}$ et $\bmat{J}$ sont obtenues par décomposition des force
 
 Afin de modéliser la friction dans une collision qui respecte la loi de Coulomb, \parencite{rabatel2015thesis} se base sur les travaux de Stewart et Trinkle (96) qui définissent une condition de complémentarité reliant la composante tangentielle $\beta_j$ de l'impulsion appliquée au point $P_j$, la composante normale $\lambda_j$, la vitesse relative tangentielle du point $P_j$ et le coefficient de friction $\mu$. On introduit le vecteur $\tilde{\beta}$ contenant les composantes de l'impulsion tangentielle dans chacune des directions possible de glissement $\bvec{T}_j$ et $-\bvec{T}_j$. Il devient alors possible de formuler le problème de contact (sur tout le système $S$) sans interpénétration par le problème linéaire de complémentarité :
 \begin{align} \label{eq:bilan3}
-\begin{cases} \quad
+\begin{cases} \,\,
     \begin{pmatrix}
         0 \\ \bvec{w} \\ \gamma \\ \sigma 
     \end{pmatrix} =  
@@ -295,9 +299,9 @@ avec
         1 \text{   si } j = 2(i-1) + 1 \text{ ou } j=2(i-1) + 2 \\
         0 \text{   sinon} 
     \end{cases} \,,\\
-    &D = (\bvec{B}_1 \vert - \bvec{B}_1 \vert \ldots \vert \bvec{B}_m \vert -\bvec{B}_m) \, \quad \text{ avec } \bvec{B}_j \text{ la colonne } j \text{ de la matrice } \bmat{B} \,.
+    &D = (\bvec{B}_1 \vert - \bvec{B}_1 \vert \ldots \vert \bvec{B}_m \vert -\bvec{B}_m) \, \text{   avec } \bvec{B}_j \text{ la colonne } j \text{ de la matrice } \bmat{B} \,.
 \end{align*}
-Le problème consiste alors à trouver les vitesses après contact $W(t^{+})$, à l’aide des composantes inconnues tangentielle et normale des impulsions dans les repères de contact $(\tilde{\beta}\, \gamma)$, elles-mêmes inconnues du système.
+Le problème consiste alors à trouver les vitesses après contact $W(t^{+})$, à l’aide des composantes inconnues tangentielle et normale des impulsions dans les repères de contact $(\tilde{\beta}\, \gamma)$, elles-mêmes inconnues du système.  
 
 
 \subsubsection{Consistance énergétique}
@@ -308,12 +312,35 @@ W^N = (1 + \varepsilon)W^{c} - \varepsilon W(t^{-}) \,,
 $$
 où $W^c$ représente les vitesses des floes après la phase de compression, et $\varepsilon$ le coefficient de restitution pour les contacts considérés inélastiques.
 
-\subsubsection{Traitement des conditions aux bords}
+% \subsubsection{Traitement des conditions aux bords}
 
 \subsection{Le modèle de l'environnement}
-Définit $\bvec{U}_a$ et $\bvec{U}_w$. 
+L’environnement est l’ensemble des forces extérieures qui agissent sur les floes hormis les forces de contact qui sont décrites dans la partie précédente. Ces principales forces sont:
+\begin{itemize}
+    \item La force de Coriolis $\bvec{\mathfrak{F}}_c$ donnée pour un floe $\Omega_i(t)$ par:
+    $$
+    \bvec{\mathfrak{F}}_{c,i}(t) = -f\bvec{k} \wedge \dot{\bvec G}_i(t) \,,
+    $$
+    avec $f$ le paramètre de Coriolis et $\bvec{k}$ le vecteur dirigé vers le haut du repère absolu $\mathcal{R}_{abs}$.
+    \item Les forces de trainée associées au vent $\bvec{\tau}_a(t)$ et celle associée à l'océan $\bvec{\tau}_w(t)$: 
+    \begin{align*}
+        \bvec{\tau}_a(t) &= \rho_a C_a \Vert \bvec{U}_a(t) \Vert \bvec{U}_a(t) \,, \\        
+        \bvec{\tau}_w(t,P) &= \rho_w C_w \Vert \bvec{U}_w(t) - \dot{P}(t) \Vert \left(\bvec{U}_w(t) - \dot{P}(t) \right) \,,
+    \end{align*}
+    avec $\rho$ la masse volumique du fluide (l'indice $a$ pour l'air et $w$ pour l'eau) et $C$ un coefficient de traînée sans dimension (voir [HI86]) ; $\bvec{U}_a$, $\bvec{U}_w$, $\dot{P}(t)$ respectivement la vitesse du vent à l'interface glace/fluide, la vitesse du courant oceanique à l'interface glace/fluide, et la vitesse d'un point $P$ du floe. 
+\end{itemize}
 
-\subsection{Simulation}
+Le modèle de dynamique régulière définit en \cref{eq:bilan1} peut se voire expliciter:
+\begin{align*}
+    \begin{cases}
+            M_i \frac{\diff \dot{\bvec{G}}_i(t)}{\diff{t}} &= M_i \mathfrak{F}_{c,i}(t) + \int_{\Omega_i(t)} \bvec{\tau}_a(t) + \bvec{\tau}_w(t,P) \diff s \,,\\
+            \mathcal{I}_i \frac{\diff \dot{\theta}_i(t)}{\diff t} &= \int_{\Omega_i(t)} \bvec{G}_i\bvec{P} \wedge \left(\bvec{\tau}_a(t) + \bvec{\tau}_w(t,P)\right) \diff s \,.
+    \end{cases}
+\end{align*} 
+L'algorithme décrivant en détail le processus de collision ainsi que la consistance énergétique se trouve à la page 43 du document \parencite{rabatel2015thesis}.
+
+
+\subsection{Méthodes Numériques et Algorithmiques Pour la Résolution de la Dynamique des Glaces de Mer}
  
 \subsubsection{Discretisation temporelle}
 
@@ -324,14 +351,14 @@ s'il aucune collision n'est détectée entre les instants $t$ et $\Delta t$. En 
 \begin{itemize}
     \item lorsque la vitesse caractéristique des floes $V_c(t) = N_a \bvec{U}_a(t) + \bvec{U}_w(t)$ est constante sur l'intervalle de simulation $I$, alors pour:  
     \begin{align} \label{eq:dtmax1}
-        \Delta t \leq \Delta t_max = \min{ \left(\frac{\rho}{2 \vert \bvec{U}_a(t) \vert \sqrt{\rho_a C_a \rho_w C_w}},   \frac{2K_t}{L_t} \right)}
+        \Delta t \leq \Delta t_{max} = \min{ \left(\frac{\rho}{2 \vert \bvec{U}_a(t) \vert \sqrt{\rho_a C_a \rho_w C_w}} \,, \,\frac{2K_t}{L_t} \right)}
     \end{align}
     avec 
     $$
     \text{avec } L_t = \rho^{-1} \rho_w C_w \left( N_a^2 \bvec{U}_a^2 + (N_a\bvec{U}_a + 2 \bvec{U}_w)^2 \right) \,, \text{et } K_t = \vert V_c(t) \vert \text{ constant, }
     $$
-    le schéma est stabe i.e $\dot G (t + \Delta t) \in [-K_t, K_t] = [-K_{t + \Delta t}, K_{t + \Delta t}]$ ;
-    \item lorsque les variations de $V_c(t)$ entraînent une augmentation de $K_t$ au cours du temps. La propriété de stabilité reste vérifiée car $$\dot G (t + \Delta t) \in [-K_t, K_t] \in [-K_{t + \Delta t}, K_{t + \Delta t}] \,;$$
+    le schéma est stabe i.e $\dot{\bvec{G}} (t + \Delta t) \in [-K_t, K_t] = [-K_{t + \Delta t}, K_{t + \Delta t}]$ ;
+    \item lorsque les variations de $V_c(t)$ entraînent une augmentation de $K_t$ au cours du temps. La propriété de stabilité reste vérifiée car $$\dot{\bvec{G}} (t + \Delta t) \in [-K_t, K_t] \in [-K_{t + \Delta t}, K_{t + \Delta t}] \,;$$
     \item lorsque les variations de $V_c(t)$ entraînent une diminution stricte
     de $K_t$ au cours du temps, alors la condition de stabilité dans les deux cas précédent ne peut etre vérifiée. \citeauthor{rabatel2015thesis} introduit donc une seconde définition de la stabilité pour traiter ce cas. Il remarque que pour 
     \begin{align} \label{eq:dtmax2}
@@ -351,21 +378,26 @@ $$
 $$
 \Delta t_{max} = \min{ \left( \frac{3}{4} \frac{ -2 \left( \max_{t \in I}{K_t} \right)}{ \max_{t \in I}{\tilde{L}_t^{-}}}, \frac{3}{4} \frac{2 \left( \max_{t \in I}{K_t} \right) }{ \max_{t \in I}{-\tilde{L}_t^{+}}}, \frac{\rho}{2 \left(  \max_{t \in I}{  \vert \bvec{U}_a(t) \vert } \right)  \sqrt{\rho_a C_a \rho_w C_w}} \right)}
 $$
-pour s'assurer que le modèle idéalisé vérifie les critères stabilité définis.
+pour s'assurer que le modèle idéalisé vérifie les critères stabilité définis. 
+Notons que le procédé global d’intégration de la dynamique pour le modèle se situe à la figure 2.2 du document \parencite[p.60]{rabatel2015thesis}, le schéma est repri à la \cref{fig:Algo1}.
+
+\begin{figure}[!h]
+    \centering
+    \includegraphics[width=.48\textwidth]{Algo1.png}
+    \caption{Procédé global d’intégration de la dynamique pour notre modèle \parencite[p.60]{rabatel2015thesis}.}
+    \label{fig:Algo1}
+\end{figure}
+
 
 \subsubsection{Détection des collisions en espace}
 
 Des deux méthodes principales usilisées dans la littérature pour la détection des voisins, \citeauthor{rabatel2015thesis} a choisi la méthode de \textbf{hierachie de volumes englobants} facilité de mise en place et pour son efficacité même avec de grands ratios de tailles. L'alternative était la méthode de \textbf{partitionnement de l'espace} qui elle, souffre de plusiuers défaut non surmontables pour le modèle développé. Les méthodes de volumes englobants consistent à englober le contour de l’objet par des volumes à des échelles de plus en plus fines pour améliorer la détection.
 
-
-\textit{REFAIRE LA FIGURE 2.2}
-
-
 \subsubsection{Détection des contacts en temps}
 Il s'agit ici de trouver le pas de temps optimal i.e. un pas de temps $\Delta t$ pour lequel la configuration des floes ne contenant pas d’interpénétrations sur l’intervalle de temps $[t, t + \Delta t]$ et, pour tout $\varepsilon > 0$, contient au moins une interpénétration sur l’intervalle de temps $[t + \Delta t, t + \Delta t + \varepsilon]$ \parencite[p.87]{rabatel2015thesis}.
 Lorsque le critère de collision n’est pas vérifié, \citeauthor{rabatel2015thesis} montre qu'il suffit de prendre 
 $$
-\Delta t_{i,j} = -\frac{-\delta_{i,j(t) - tol_3}}{\bvec{A}_{ij}(t) \cdot \left( \dot{G}_i(t) - \dot{G}_j(t) \right)} \,,
+\Delta t_{i,j} = -\frac{-\delta_{i,j(t)} - tol_3}{\bvec{A}_{ij}(t) \cdot \left( \dot{G}_i(t) - \dot{G}_j(t) \right)} \,,
 $$
 avec 
 $$
@@ -377,19 +409,19 @@ $$
 $$
 avec 
 $$
-\Gamma(t) = \max{\left( \Vert \dot{Q}_i^{i,j}(t) \Vert , \, \Vert \dot{Q}_j^{j,i}(t) \Vert  \right)} \,,
+\Gamma(t) = \max{\left( \Vert \dot{Q}_i^{i,j}(t) \Vert \,, \, \Vert \dot{Q}_j^{j,i}(t) \Vert  \right)} \,,
 $$
 où $\dot{Q}_i^{i,j}$ représente la distance parcourue par un point de $\Omega_i (t)$ relativement à $\Omega_j (t)$.
 
 Une fois ce $\Delta t_{i,j}$ assurant la non-interpénétration trouvé, on peut donc de choisir 
 $$
-\Delta t = \min{\left( \Delta t_{max} , \min_{ \substack{ (i,j) \in \left\{ 1,\ldots,n \right\}^2 \\ i \neq j}}{\Delta t_{i,j}} \right)} \,.
+\Delta t = \min{\left( \Delta t_{max} \,, \min_{ \substack{ (i,j) \in \left\{ 1,\ldots,n \right\}^2 \\ i \neq j}}{\Delta t_{i,j}} \right)} \,.
 $$
-
+Le lecteur est renvoyé au document \parencite[p.91]{rabatel2015thesis} pour plus de détails sur la détection des contacts en temps.
 
 \subsubsection{Construction des repères de contacts}
 
-La construction d'un repere de contact n'est effectuée que lorsque le contact entre deux floes $\Omega_k$ et $\Omega_l$ est linéique \parencite[p.79]{rabatel2015thesis}, ou ponctuel et le vecteur porté par les points en contacts appartient au cone normal de $P$. La normale $\bvec{N}$ est alors déterminée comme le vecteur unité dirigé par $\bvec{PQ}$. Si $Q$ n’est pas unique, on se retrouve dans la situation où il peut exister plusieurs repères de contact pour un point de contact. Dans les autres cas, le repère de contact associé au point $P$ n’est pas construit et $P$ n’est pas considéré dans le traitement des contacts \parencite[p.80]{rabatel2015thesis}.
+La construction d'un repere de contact n'est effectuée que lorsque le contact entre deux floes $\Omega_k$ et $\Omega_l$ est linéique \parencite[p.79]{rabatel2015thesis}, ou ponctuel et le vecteur porté par les points en contacts appartient au cone normal de $P$. La normale $\bvec{N}$ est alors déterminée comme le vecteur unité dirigé par $\bvec{PQ}$. Si $Q$ n’est pas unique, on se retrouve dans la situation où il peut exister plusieurs repères de contact pour un point de contact. Dans les autres cas, le repère de contact associé au point $P$ n’est pas construit et $P$ n’est pas considéré dans le traitement des contacts \parencite[p.80]{rabatel2015thesis}. L'algorithme de detection des points de contacts afin de construire les repère de contact est explicité dans le document \parencite[p.76]{rabatel2015thesis}. 
 
 
 \subsubsection{Simulation des événements collisions}
@@ -408,28 +440,38 @@ $$
 Une troisième optimisation concernant la définition de la notion d'erreur et de tolérance a été implementée. La quatrième consiste en la résolution d'un LCP en trois entatives (avec trois algorithmes de Lemke différents) même si cela augmente les coup de calculs \parencite[p.86]{rabatel2015thesis}. Si cette optimisation ne s'avère pas suffisance, une dernière optimisation consiste en la modification aléatoire de cetains coeficients de la matrice $A$, la permuation des lignes afin d'éviter des zeros sur la diagonale, la définition de la notion de contact actif.
 
 
-\subsection{Validation des résultats}
+\subsection{Validations et Exploitations du Modèle}
 
-Les résultats ont été validés à travers plusieurs problèmes. Nous citons des exemples classique tels que la boîte glissante, le berceau de Newton, le canon de Newton, la balle rebondissante, etc. Il a ensuite été validé sur des scénarios simples de dérive libre soumise à des courants océanique et atmosphérique et des scénarios simples de collision. En effet, nous avons vérifié que le comportement d’un objet simulé est cohérent avec le comportement théorique et avec les observations. Des telles exploitations telles que la La dérive dans un canal étroit, pour des floes en bassins a été étudié. Aussi, la dérive soumise à un vent et un courant variable avec des vitesses du vent provenant de \textbf{ERAinterim}, à partir du modèle glace de mer et océan \textbf{TOPAZ}.
-
-
-
-
-\subsection{Critique de la thèse}
-Bien que les travaux de \citeauthor{rabatel2015thesis} on été testés et validés sur plusieurs configuration: 
+Les résultats ont été validés à travers plusieurs problèmes. Nous citons des exemples classique tels que la boîte glissante, le berceau de Newton, le canon de Newton, la balle rebondissante, etc. Il a ensuite été validé sur des scénarios simples de dérive libre soumise à des courants océanique et atmosphérique et des scénarios simples de collision. En effet, il a été vérifié que le comportement d’un objet simulé est cohérent avec le comportement théorique et avec les observations. Les principes phsiques suivants ont ainsi pu être testé par \citeauthor{rabatel2015thesis}:
 \begin{itemize}
     \item la conservation de la symétrie d’une configuration
     \item la satisfaction du modèle de Coulomb
     \item le traitement d’un point d’accumulation
     \item la cohérence temporelle ou la propagation des ondes de choc
     \item la conservation de l’énergie cinétique
-\end{itemize}
-il reste des points qui ne sont pas traités dans la thèse:
-Voir résumé précement fait
+\end{itemize} 
+Des telles exploitations telles que la dérive dans un canal étroit, pour des floes en bassins a été étudié. Aussi, la dérive soumise à un vent et un courant variable avec des vitesses du vent provenant de \textbf{ERAinterim}, à partir du modèle glace de mer et océan \textbf{TOPAZ}.
+
+\begin{figure}[!h]
+    \centering
+    \includegraphics[width=.28\textwidth]{Derive.png}
+    \caption{Configuration à l’instant initial pour le scénario de dérive dans un canal étroit \parencite[p.124]{rabatel2015thesis}.}
+    \label{fig:Derive}
+\end{figure}
+
+\begin{figure}[!h]
+    \centering
+    \includegraphics[width=.68\textwidth]{DeriveSol.png}
+    \caption{Quelques résultats obtenus à deus heures différentes de la configuration des floes pour différentes valeurs du coefficient de restitution $\varepsilon$ \parencite[p.126]{rabatel2015thesis}.}
+    \label{fig:DeriveSol}
+\end{figure}
+
+\subsection{Discussion}
+Bien que les travaux de \citeauthor{rabatel2015thesis} on été testés et validés sur plusieurs configuration différentes, il reste néanmoins des points qui ne sont pas traités, et qui on e tres clairement été soulignés dans la thèse \parencite{rabatel2015thesis} :
 \begin{enumerate}
+    \item le modèle ne gère pas la rhéologie\footnote{La rhéologie est l'étude de la déformation et de l'écoulement de la matière sous l'effet d'une contrainte appliquée.} de la glace: les floes sont des solides purement rigides (ils ne se déforment pas) et la dissipation d’énergie cinétique durant la collision est décrite en utilisant un coefficient purement empirique collision.  
     \item La loi de contact utilisée pour le glissement [Ste96], bien que tres riche, ne prends en compte toutes les vitesses possibles de deplacment. La construction d’une loi qui donnerait accès à la région entière, demanderait de prendre en compte un grand nombre de phénomènes intrinsèques aux contacts. Leur compréhension et leur rôle à chacun est difficile à déterminer. 
     \item les coefficient de friction et de restitution utilisées sont limitants. En realité, il n’est pas possible de prendre en compte ou d'interpreter mathematique certains effets lors du contact. par exemple, avec la dispertion de l'énergie (voir [NB14]). Cette dispersion est la conséquence de certains effets vibratoires à travers une chaîne de contact. Seuls les effets de dissipation dus aux phénomènes locaux comme l’endommagement, la viscosité ou la plasticité sont pris en compte à travers l’utilisation des coefficients de restitution et de friction.
-    \item Les vitesses obtenues après la phase de decompression afin d'assurer la disipation de l'energie cinetique possèdent une faiblesse (Rab, p.41): elles ne sont solutions que sous certaines conditions, comme le fait que les chocs soient frontaux
-    et qu’il n’y ait pas d’apport des forces extérieures autres que les forces de contact durant la collision.
+    \item Les vitesses obtenues après la phase de decompression afin d'assurer la disipation de l'energie cinetique possèdent une faiblesse (Rab, p.41): elles ne sont solutions que sous certaines conditions, comme le fait que les chocs soient frontaux et qu’il n’y ait pas d’apport des forces extérieures autres que les forces de contact durant la collision.
 \end{enumerate}
 
