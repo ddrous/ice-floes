@@ -19,9 +19,9 @@ Nous commençons par présenter une modélisation mathématique d'une plaque de 
     \item Deux vecteurs $\eun$ et $\edeux$ formant une base sur $\omega$.
 \end{itemize}
 
-\begin{figure}[!h]
+\begin{figure}[!ht]
     \centering
-    \begin{subfigure}[b]{0.45\textwidth}
+    \begin{subfigure}[b]{0.35\textwidth}
         \centering
         % \input{Figures/FloeVue1.tex}
         \includegraphics[width=.8\textwidth]{FloeVue1.tikz} 
@@ -29,7 +29,7 @@ Nous commençons par présenter une modélisation mathématique d'une plaque de 
         \label{fig:floe1}
     \end{subfigure}
     % \hfill
-    \begin{subfigure}[b]{0.45\textwidth}
+    \begin{subfigure}[b]{0.35\textwidth}
         \centering
         % \input{Figures/FloeVue2.tex} 
         \includegraphics[width=.8\textwidth]{FloeVue2.tikz} 
@@ -52,7 +52,7 @@ Les fonctions $\hmoins$ et $\hplus$ permettent de définir trois quantités (voi
     \item La plus faible épaisseur : $\underline{h}^* = \inf_{x\in\omega}{ \vert \hplus(x) - \hmoins(x) \vert}$. 
 \end{itemize}
 
-\begin{figure}[!h]
+\begin{figure}[!ht]
     \centering
     % \input{Figures/Epaisseur.tikz}
     \includegraphics[width=.6\textwidth]{h.tikz}
@@ -91,7 +91,7 @@ C'est cette dernière notation mettant en exergue la dépendance avec le temps q
 
 Lors de leur mouvements sur la surface de la mer, les floes se fracturent sous l'effet des vents et des courants océaniques, des phénomènes thermodynamiques, etc. Nous nous intéresserons donc au phénomène de percussion en vue de l'initialisation des fractures dans les floes de glace. Afin de décrire le mouvement des floes de glace sur la mer, nous devons nous munir d'un repère absolu, que nous notons $\mathcal{R}_{abs} = (O, \bvec i, \bvec j, \bvec k)$. Le repère associé au floe $\Omega_i$ sera noté $\mathcal{R}_{\Omega_i} = (O, \bm \eun, \bvec \edeux, \bvec k)$. Dans ce repère absolu, le floe possède 3 degrés de libertés : l'abscisse et l'ordonné de son centre de gravité $G_i(\omega)$, et son orientation donnée par l'angle $\theta_i (t)$ (voir \cref{fig:FloeRepere}). 
 
-\begin{figure}[!h]
+\begin{figure}[!ht]
     \centering
     % \input{Figures/Epaisseur.tikz}
     \includegraphics[width=.5\textwidth]{FloeRepere.tikz}
@@ -183,7 +183,7 @@ Le domaine de la mécanique du contact s'est grandement développé ces derniers
 
 \noindent Afin de traiter ces problèmes de contact, deux approches principales ont été d'enveloppées par les scientifiques : l'approche non-régulière et l'approche de régularisation des lois de contact. 
 
-Parmi les pionniers dans l'\textbf{approche de régularisation} pour la résolution de la condition unilatérale de Signorini, nous pouvons citer Hertz ; Nevins et Whitney \parencite{nevins1972force,whitney1977force}, Moore \parencite{moore1988collision} ; Ces méthodes se sont largement répandues dans les études liées à la robotique, à la réalité virtuelle ou encore dans les opérations assistées par ordinateur, pour simuler un grand nombre d’objets en contact en petites ou grandes déformations, comme des habits, des cheveux ou encore des organes (voir \parencite{witkin1990fast,volino1995versatile,baraffandrew,raghupathi2004intestinal}). Concernant la seconde, la loi de friction de Coulomb, la discontinuité entre les phases de glissement et non-glissement a été traitée de différentes façons ; en utilisant la notion de coefficient de restitution, ou des modèles masse-ressorts. 
+Parmi les pionniers dans l'\textbf{approche de régularisation} pour la résolution de la condition unilatérale de Signorini, nous pouvons citer Hertz ; Nevins et Whitney \parencite{nevins1972force,whitney1977force}, Moore \parencite{moore1988collision}. Ces méthodes se sont largement répandues dans les études liées à la robotique, à la réalité virtuelle ou encore dans les opérations assistées par ordinateur, pour simuler un grand nombre d’objets en contact en petites ou grandes déformations, comme des habits, des cheveux ou encore des organes (voir \parencite{witkin1990fast,volino1995versatile,baraffandrew,raghupathi2004intestinal}). Concernant la seconde, la loi de friction de Coulomb, la discontinuité entre les phases de glissement et non-glissement a été traitée de différentes façons ; en utilisant la notion de coefficient de restitution, ou des modèles masse-ressorts. 
  
 L'\textbf{approche non-régulière} a été développée en utilisant les concepts d'inclusion différentielles ; ceci afin de traiter la condition de Signorini. Moreau \parencite{moreau1985standard}, Aubin \parencite{aubin2012differential} et Monteiro Marques \parencite{monteiro1985chocs}, ont montré des résultats d’existence et d’unicité de solutions du problème sans friction. Puis, des résultats similaires ont été établis pour le contact unique avec friction (voir \parencite{moreau1986dynamique,monteiro1988inclusoes,panagiotopoulos2012inequality,jean1985system,monteiro1994existence}). Cependant, cette notion d'inclusion différentielle est difficile à manipuler ; c'est, d'après \citeauthor{rabatel2015thesis} la raison pour laquelle le problème du contact multiple avec friction reste encore très peu traité. Il a donc fallu attendre les années 80 avec l'essor des méthodes LCP pour donner un nouveau souffle à l'approche non régulière. Nous pouvons citer ici les travaux de Lötstedt qui fournit des preuves d’existence et d’unicité pour le contact avec la friction de Coulomb (voir \parencite{lotstedt1981coulomb,lotstedt1982mechanical,lotstedt1982time}). On cite aussi Klarbring et Pang, pour leur apport sur le plan des méthodes de programmations. \parencite{rabatel2015thesis} a opté pour cette approche car elle facilite la construction des solutions à partir d’algorithmes tels que ceux de Lemke (voir \parencite{lemke1978some}). \citeauthor{rabatel2015thesis} s'inspire aussi des travaux de Baraff \parencite{baraff1993issues}, qui écrit les forces de contact dans les repères locaux aux points de contact. Ces repères sont définis par la normale et la tangente aux points de contact. La condition de complémentarité se résume comme ceci : "\textit{S’il y a contact alors la réaction est strictement positive et l’accélération relative nulle, et s’il n’y a pas contact l’accélération relative est strictement positive et la réaction nulle.}". Cependant, les travaux de Baraff sur l'existence de solutions sont limités par l'approche accélération-force, et le coefficient de friction qui sont utilisés. En utilisant des formulations en vitesse et impulsion, les chercheurs ont réussi à démontrer l’existence de solutions pour toute configuration à contacts multiples avec n’importe quel coefficient de friction.
 
@@ -193,7 +193,7 @@ Pour traiter le problème de collision entre les floes, les glaciologues retienn
 
 Le modèle décrit par \parencite[p.5892]{rabatel2015dynamics} utilise deux conditions de complémentarité pour déterminer les vitesses des floes après le contact. La première est une condition de Signorini \parencite{signorini1933sopra} pour s'assurer de la non-interpénétration\footnote{Deux floes s'interpénètre si la "distance" entre ces deux floes est négative.} des floes. Pour décrire ces conditions, il faut au préalable écrire le problème de contact entre floes comme un problème implicite, où les inconnus sont les impulsions après le choc\footnote{Contrairement aux lois de contacts explicites (Hertz, Hooke, Coulomb), les lois implicites ne nécessitent pas la connaissance de la nature du contact entre les floes (glissement ou accroche).}. Pour cette deuxième condition de complémentarité, \citeauthor{rabatel2015thesis} se base sur les travaux de Stewart et Trinkle \parencite{stewart1996implicit} afin d'en extraire une condition qui vérifie la loi de friction de Coulomb. Le problème résultant a ensuite été résolu en utilisant des algorithmes de Lemke. 
 
-\begin{figure}[!h]
+\begin{figure}[!ht]
     \centering
     % \input{Figures/Epaisseur.tikz}
     \includegraphics[width=.28\textwidth]{Collision1.png}
@@ -212,7 +212,7 @@ $$
 \bvec{F}^c_k(t) = \sum_{j \in E_k} c_{jk} \bvec{F}_{kj}(t) \,.
 $$
 En rajoutent ces forces aux forces extérieures lors du bilan des forces à l'\cref{eq:bilan1}, pour un floe $\Omega_k(t)$, on obtient :
-\begin{align} \label{eq:bilan1}
+\begin{align} \label{eq:bilan4}
     \mathcal{M} \frac{\diff W(t)}{\diff t} = \mathcal{H}(t) + \sum_{j \in E_k} \begin{pmatrix}
         \bvec{F}_{kj}(t) \\ \bvec{G^kP_j} \wedge \bvec{F}_{kj}(t) 
     \end{pmatrix} \,.
@@ -380,7 +380,7 @@ $$
 pour s'assurer que le modèle idéalisé vérifie les critères de stabilité définis. 
 Notons que le procédé global d’intégration de la dynamique pour le modèle se situe à la figure 2.2 du document \parencite[p.60]{rabatel2015thesis}, le schéma est repris à la \cref{fig:Algo1}.
 
-\begin{figure}[!h]
+\begin{figure}[!ht]
     \centering
     \includegraphics[width=.62\textwidth]{Algo1.png}
     \caption{Procédé global d’intégration de la dynamique pour notre modèle \parencite[p.60]{rabatel2015thesis}.}
@@ -451,14 +451,14 @@ Les résultats ont été validés à travers plusieurs expériences. Nous citons
 \end{itemize} 
 Des telles exploitations telles que la dérive dans un canal étroit, pour des floes en bassins a été étudié (voir \cref{fig:Derive,fig:DeriveSol}). Aussi, la dérive soumise à un vent et un courant variable avec des vitesses du vent provenant de \textbf{ERAinterim}, à partir du modèle glace de mer et océan \textbf{TOPAZ} a été étudiée.
 
-\begin{figure}[!h]
+\begin{figure}[!ht]
     \centering
     \includegraphics[width=.28\textwidth]{Derive.png}
     \caption{Configuration à l’instant initial pour le scénario de dérive dans un canal étroit \parencite[p.124]{rabatel2015thesis}.}
     \label{fig:Derive}
 \end{figure}
 
-\begin{figure}[!h]
+\begin{figure}[!ht]
     \centering
     \includegraphics[width=.68\textwidth]{DeriveSol.png}
     \caption{Quelques résultats obtenus à deux heures différentes de la configuration des floes pour différentes valeurs du coefficient de restitution $\varepsilon$ \parencite[p.126]{rabatel2015thesis}.}
@@ -474,3 +474,20 @@ Bien que les travaux de \citeauthor{rabatel2015thesis} ont été testés et vali
     \item Les vitesses obtenues après la phase de décompression afin d'assurer la dissipation de l'énergie cinétique possèdent une faiblesse : elles ne sont solutions que sous certaines conditions, comme le fait que les chocs soient frontaux et qu’il n’y ait pas d’apport des forces extérieures autres que les forces de contact durant la collision \parencite[p.41]{rabatel2015thesis}.
 \end{enumerate}
 
+
+%----------------------------------------------------------------------------------------
+
+\section{Résumé de thèse de D. Balasoiu}
+
+Les travaux de D. Balasoiu concernent la modélisation et la simulation du comportement mécanique de floes de glace \parencite{balasoiu2020thesis}. Il s'agit d'une amélioration des travaux de M. Rabatel, S. Labbé, et J. Weiss \parencite{rabatel2015thesis,rabatel2015dynamics} prenant en compte la fracture des floes. Précisément, ce travail se focalise sur l’initiation de la fracture, ainsi que la prédiction du chemin que la fracture emprunte. Jusqu’à présent, les floes étaient considérés comme des corps rigides ; dans sa thèse, \citeauthor{balasoiu2020thesis} les considère comme des corps élastiques. Son travail est divisé en deux parties. Il commence par proposer un modèle efficace pour la fracture fragile d’un floe de glace, lorsque celui-ci est soumis à un déplacement de son bord (i.e. à une condition au bord de type Dirichlet). Puis, dans un second temps, il cherche à obtenir l’expression du déplacement au bord d’un floe qui percute un autre floe ou une structure solide.
+
+\subsection{Théorie de la fracture : état de l’art} 
+
+
+\subsection{Discussion}
+
+Plusieurs hypothèses sont faites dans la thèse :
+\begin{enumerate}
+    \item Le modèle suppose que les floes sont d’épaisseur négligeable devant leur extension horizontale ; autrement dit, les déformations du floe de glace peuvent être étudiées en deux dimensions.
+    \item Le modèle restreint l’ensemble des fractures admissibles à celui des segments de droites.
+\end{enumerate}

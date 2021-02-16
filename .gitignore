@@ -62,3 +62,10 @@ reports/weeks/2/*
 !reports/weeks/2/main.tex
 !reports/weeks/2/main.pdf
 !reports/weeks/2/fphw.cls
+
+# Rapport semaine 3
+reports/weeks/3/*
+
+!reports/weeks/3/main.tex
+!reports/weeks/3/main.pdf
+!reports/weeks/3/fphw.cls

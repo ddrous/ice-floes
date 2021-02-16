@@ -147,12 +147,12 @@
 %	ASSIGNMENT INFORMATION
 %----------------------------------------------------------------------------------------
 
-\title{Compte rendu semaine \#2} % Assignment title
+\title{Compte rendu semaine \#3} % Assignment title
 % \title{Difficultés rencontrées} % Assignment title
 
 \author{Desmond Roussel Nzoyem} % Student name
 
-\date{\DTMdisplaydate{2021}{2}{10}{-1} - \DTMdisplaydate{2021}{2}{16}{-1}} % Due date
+\date{\DTMdisplaydate{2021}{2}{17}{-1} - \DTMdisplaydate{2021}{2}{23}{-1}} % Due date
 
 \institute{Sorbonne Université \\ Laboratoire Jacques-Louis Lions} % Institute or school name
 
@@ -171,7 +171,7 @@
 %----------------------------------------------------------------------------------------
 
 
-L'objectif de cette semaine fut la compréhension complète du modèle de dynamique des floes de glace rigides développé dans la thèse de M. Rabatel \parencite{rabatel2015thesis}. L'objectif a globalement été atteint, même si quelques points restent non résolus. Certains de ces points (par exemple la définition des conditions aux bords, les interactions dans la ZIR, etc.) ne pourront être clairement compris qu'après analyse du code de calcul.
+L'objectif de cette semaine fut 
 
 
 %----------------------------------------------------------------------------------------
@@ -180,14 +180,6 @@ L'objectif de cette semaine fut la compréhension complète du modèle de dynami
 
 \section{Tâches effectuées}
 
-\begin{enumerate}
-  \item Lecture du chapitre 2 de la thèse de M. Rabatel \parencite{rabatel2015thesis}.
-  \item Lecture du chapitre 3 de la thèse de M. Rabatel \parencite{rabatel2015thesis}.
-  \item Début de lecture de la thèse de D. Balasoiu \parencite{balasoiu2020thesis}.
-  \item Continuation de rédaction de l'état de l'art pour le rapport de stage.
-  \item Rédaction du rapport pour la semaine $2$ de stage.
-\end{enumerate}
-
 
 %----------------------------------------------------------------------------------------
 %	ASSIGNMENT CONTENT - SECTION 2
@@ -195,14 +187,7 @@ L'objectif de cette semaine fut la compréhension complète du modèle de dynami
 
 \section{Difficultés rencontrées}
 
-\textbf{\textit{Les questions suivantes sont totalement ou partiellement inspirées de la thèse de M. Rabatel. Celles qui sont barrées sont celles pour lesquelles une réponse a été obtenue.}}
-
-\begin{enumerate}
-  \item \sout{Le problème de complémentarité avec la loi de Newton : équation (1.1.27) \parencite[p.41]{rabatel2015thesis}. Je ne comprends plus sa signification lorsqu'on ajoute le terme $\varepsilon J^T W(t^{-})$.}
-  \item À la figure 1.6 \parencite[p.43]{rabatel2015thesis}, est-il possible de calculer l'énergie cinétique $E(t^+)$ sans avoir au préalable calculé $W(t^+)$ ?
-  \item Dans les cas $(iv)$ de \parencite[p.79]{rabatel2015thesis}, le contact est ponctuel et $\bvec{PQ} \notin \mathcal{N}_P$. Mais ce cas semble ne pas être considéré dans les simulations d'après le dernier paragraphe de la page $80$. Es-ce bien le cas ?
-\end{enumerate}
-
+\textbf{\textit{Les questions suivantes sont totalement ou partiellement inspirées de la thèse de D. Balasoiu. Celles qui sont barrées sont celles pour lesquelles une réponse a été trouvée.}}
 
 
 %----------------------------------------------------------------------------------------
@@ -211,10 +196,16 @@ L'objectif de cette semaine fut la compréhension complète du modèle de dynami
 
 \section{Sujets explorables}
 
+D'après \parencite{balasoiu2020thesis}, ces questions restent ouvertes à l'issue de la thèse :
 \begin{enumerate}
-  \item Rajouter le caractère déformable aux floes dans le modèle granulaire \parencite[p.12]{rabatel2015thesis}.
-  \item Vu que le coefficient de restitution est fixé de façon empirique, on pourrait déterminer ce coefficient en fonction de l’endommagement subi par le floe et des éventuelles fractures se propageant dans le floe après une situation de collision \parencite[p.14]{rabatel2015thesis}.
-  \item Intégrer la notion de contact actif \parencite[p.86]{rabatel2015thesis} dans le modèle, et refaire le test du berceau de Newton \parencite[p.108]{rabatel2015thesis}.
+  \item Deux des limites souhaitées ont été obtenues, mais il resterait à dériver de l’équation différentielle le comportement du système masse-ressort sur son bord lors d’une percussion.
+  \item mesurer le coefficient de restitution du nouveau modèle et de calibrer les nouveaux paramètres physiques comme
+  la ténacité de la glace, en menant des expériences dans un bassin réfrigéré où flottent des blocs de glace.
+  \item Procéder à des tests dans un bassin à glace en s’appuyant sur le projet européen HYDRALAB+.
+  \item Modélisation de phénomènes tels que l’écrasement et la création de \textit{ridges};
+  \item Actuellement, les modèles granulaires et continus n’interagissent pas
+  entre eux. Il serait intéressant de développer un modèle multi-échelles, en couplant ces deux modèles.
+  
 \end{enumerate}
 
 % %-------------------------------------------------------------------------------
