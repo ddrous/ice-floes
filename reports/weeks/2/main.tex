@@ -28,24 +28,19 @@
 ]{fphw}
 
 % \usepackage[fontsize=10.0]{scrextend} % Use this to force the fontsize
-%% Commands for numering paragraphs
+
+%% Commands for numbering paragraphs
 \renewcommand\thesection{\Roman{section}}
 \renewcommand\thesubsection{\thesection.\arabic{subsection}}
 \renewcommand*\thesubsubsection{%
   \Roman{section}.\arabic{subsection}.\alph{subsubsection}%
 }
 
- % \usepackage{fancyhdr}
 % Template-specific packages
 \usepackage{babel}
 \usepackage[utf8]{inputenc} % Required for inputting international characters
 % \usepackage{DejaVuSerifCondensed} 
 \usepackage[T1]{fontenc} % Output font encoding for international characters
-% \usepackage{mathpazo} % Use the Palatino font
-% \usepackage{tgschola} % Use the Palatino font
-% \usepackage{Alegreya}
-% \renewcommand*\oldstylenums[1]{{\AlegreyaOsF #1}}
-% \usepackage{iwona} % Use the Iwona font
 
 \usepackage{kpfonts}        %% For math only
 \usepackage{fontspec}       %% Because we are using XeTEX
@@ -56,8 +51,6 @@
 % \setsansfont{Fira Sans}
 % \setmonofont[Color={0019D4}]{Fira Code} 
 %-----------------------------------------------------------------------
-
-
 
 \usepackage{fancyvrb}
 \usepackage{fvextra}
@@ -125,11 +118,7 @@
 
 \usepackage{cleveref}
 \usepackage{siunitx}
-\newcommand{\myvec}[3]{\begin{pmatrix} #1  \\ #2 \\ #3 \end{pmatrix}}   %% vecteur 3d
-\newcommand{\mymat}[9]{\begin{pmatrix} #1 & #2 & #3 \\ #4 & #5 & #6 \\ #7 & #8 &#9 \end{pmatrix}}  %% Matrice 3*3
-
-\renewcommand{\vector}[4]{\begin{pmatrix} #1  \\ #2 \\ #3 \\ #4 \end{pmatrix}}   %% vecteur 4d
-% \newcommand{\mymatrix}[16]{\begin{pmatrix} #1 & #2 & #3 & #4 \\ #4 & #6 & #7 & #8 \\ #9 & #10 & #11 & #12 \\ #13 & #14 & #15 & #16 \end{pmatrix}}  %% Matrice 3*3
+\usepackage{bm}
 
 \usepackage[backend=bibtex,style=alphabetic,maxnames=2,natbib=true]{biblatex} % Use the bibtex backend with the alphabetic citation style (compact APA-like)
 % \usepackage[backend=bibtex,style=authoryear,maxnames=2,natbib=true]{biblatex} % Use the bibtex backend with the authoryear citation style (which resembles APA)
@@ -139,6 +128,14 @@
 
 \usepackage[useregional=numeric]{datetime2}
 \usepackage[normalem]{ulem}
+
+% %-------------------------------------------------------------------------------
+
+\newcommand{\myvec}[3]{\begin{pmatrix} #1  \\ #2 \\ #3 \end{pmatrix}}   %% vecteur 3d
+\newcommand{\mymat}[9]{\begin{pmatrix} #1 & #2 & #3 \\ #4 & #5 & #6 \\ #7 & #8 &#9 \end{pmatrix}}  %% Matrice 3*3
+
+\renewcommand{\vector}[4]{\begin{pmatrix} #1  \\ #2 \\ #3 \\ #4 \end{pmatrix}}   %% vecteur 4d
+% \newcommand{\mymatrix}[16]{\begin{pmatrix} #1 & #2 & #3 & #4 \\ #4 & #6 & #7 & #8 \\ #9 & #10 & #11 & #12 \\ #13 & #14 & #15 & #16 \end{pmatrix}}  %% Matrice 3*3
 
 \newcommand{\hquad}{\hspace{0.5em}} %% Bew command for half quad
 \newcommand*\diff{\mathop{}\!\mathrm{d}}
@@ -174,7 +171,7 @@
 %----------------------------------------------------------------------------------------
 
 
-Cette deuxième semaine fut: 
+L'objectif de cette semaine fut la compréhension complète du modèle de dynamique des floes de glace rigides développé dans la thèse de M. Rabatel \parencite{rabatel2015thesis}. L'objectif a globalement été atteint, même si quelques points restent non résolus. Certains de ces points (par exemple la définition des conditions aux bords, les interactions dans la ZIR, etc.) ne pourront être clairement compris qu'après analyse du code de calcul.
 
 
 %----------------------------------------------------------------------------------------
@@ -183,6 +180,12 @@ Cette deuxième semaine fut:
 
 \section{Travail effectué}
 
+\begin{enumerate}
+  \item Lecture du chapitre 2 de la thèse.
+  \item Lecture du chapitre 3 de la thèse.
+  \item Continuation de rédaction de l'état de l'art pour le rapport de stage.
+  \item Rédaction du rapport pour la semaine $2$ de stage.
+\end{enumerate}
 
 
 %----------------------------------------------------------------------------------------
@@ -194,14 +197,11 @@ Cette deuxième semaine fut:
 \textbf{\textit{Les questions suivantes sont totalement ou partiellement inspirées de la thèse de M. Rabatel. Celles qui sont barrées sont celles pour lesquelles une réponse a été trouvée.}}
 
 \begin{enumerate}
-  \item Le problème de complémentarité avec la loi de Newton : équation (1.1.27) \parencite[p.41]{rabatel2015thesis}. Je ne comprends plus sa signification lorsqu'on ajoute le terme $\varepsilon J^T W(t^{-})$.
-  \item À la figure 1.6 \parencite[p.43]{rabatel2015thesis}, est-il possible de calculer l'énergie cinétique $E(t^+)$ sans avoir au préalable calculé $W(t^+)$.
-  \item Dans les cas $(iv)$ de \parencite[p.79]{rabatel2015thesis}, le contact est ponctuel et $PQ \notin \mathcal{N}_P$. Mais ce cas semble ne pas être considéré dans les simulations d'après le dernier paragraphe de la page $80$. Es-ce bien le cas ?
+  \item \sout{Le problème de complémentarité avec la loi de Newton : équation (1.1.27) \parencite[p.41]{rabatel2015thesis}. Je ne comprends plus sa signification lorsqu'on ajoute le terme $\varepsilon J^T W(t^{-})$.}
+  \item À la figure 1.6 \parencite[p.43]{rabatel2015thesis}, est-il possible de calculer l'énergie cinétique $E(t^+)$ sans avoir au préalable calculé $W(t^+)$ ?
+  \item Dans les cas $(iv)$ de \parencite[p.79]{rabatel2015thesis}, le contact est ponctuel et $\bvec{PQ} \notin \mathcal{N}_P$. Mais ce cas semble ne pas être considéré dans les simulations d'après le dernier paragraphe de la page $80$. Es-ce bien le cas ?
 \end{enumerate}
 
-
-
-% \subsection{Inpirées de la thèse de D. Balasoiu}
 
 
 %----------------------------------------------------------------------------------------
@@ -211,7 +211,9 @@ Cette deuxième semaine fut:
 \section{Sujet explorables}
 
 \begin{enumerate}
-  \item Intégrer la notion de contact actif dans le modèle, et refaire le test du berceau de Newton.
+  \item Rajouter le caractère déformable aux floes dans le modèle granulaire \parencite[p.12]{rabatel2015thesis}.
+  \item Vu que le coefficient de restitution est fixé de façon empirique, on pourrait déterminer ce coefficient en fonction de l’endommagement subi par le floe et des éventuelles fractures se propageant dans le floe après une situation de collision \parencite[p.14]{rabatel2015thesis}.
+  \item Intégrer la notion de contact actif \parencite[p.86]{rabatel2015thesis} dans le modèle, et refaire le test du berceau de Newton \parencite[p.108]{rabatel2015thesis}.
 \end{enumerate}
 
 % %-------------------------------------------------------------------------------
