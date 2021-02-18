@@ -488,6 +488,57 @@ Les travaux de D. Balasoiu concernent la modélisation et la simulation du compo
  
 La théorie de fracture la plus répendue de nos jous est due à A.A. Griffith  Dans ses travaux[Gri21], in invalide les résultats que C. Inglis [Ing13] qui ne tennaient pas en compte la taille de la fracture ; il présente donc la croissance d'une faille comme une compétition d'énergie entre l'énergie élastique\footnote{Énergie relâchée lorsqu’un défaut subit un accroissement} et l'énergie de surface\footnote{Énergie nécessaire à la création des deux nouvelles surfaces – les bords de la fissure}. 
 
+Le critère de Griffith est un critère thermodynamique qui stipule que la la fracture progresse si et seulement si cela permet au matériau d’atteindre un état de moindre énergie. En effet, sur un matériau élastique $\Omega$ dont la frontière est subidiviée en deux zones $\partial \Omega_D$, et $\partial \Omega_N$, on pose \parencite[p.31]{balasoiu2020thesis} :
+\begin{align*}
+    E_{el} &= \int_{\Omega} W (x, e(u)) \diff x     \\
+    \mathcal{P}(t,\sigma(t)) &= \int_{\Omega \backslash \sigma(t) } W (x, \nabla\varphi (t, \sigma(t))) \diff x - \mathcal{F}(t,\sigma(t)) \\
+    \mathcal{F}(t,\sigma(t)) &= \int_{\Omega} f_v (x)\cdot \varphi \diff x + \int_{\partial\Omega_N} f_s (x) \cdot \varphi \diff x
+\end{align*}
+où 
+\begin{itemize}
+    \item $E_{el}$ est l'énergie élastique du matériau sans faille.
+    \item $\sigma(t)$ représente la fracture au temps $t$, supposée à l'équilibre.
+    \item $\mathcal{P}$ l’énergie potentielle du matériau qui possède une fracture de taille $\sigma(t)$ au temps $t$.
+    \item $e(u)$ est le tenseur de Green-St Venant, qui représente la déformation locale du matériau.
+    \item $\varphi = \identity + u$ représente le déplacement du mátériau supposé suffisamment régulier.
+    \item $W$ est la densité d’énergie du matériau élastique, supposé hyper-élastique.
+    \item $f_s$ est la contrainte surfacique appliquée sur le bord $\partial \Omega_N$.
+    \item $f_v$ est le champ de force volumique appliquée sur $\Omega$.
+\end{itemize}
+D'après le critère de Griffith \parencite[p.32]{balasoiu2020thesis}, la fonction $\sigma(t)$ doit vérifier:
+\begin{enumerate}
+    \item $\dfrac{\diff \sigma(t)}{\diff t} \geq 0$;
+    \item $-\dfrac{\diff \mathcal{P}}{\diff \sigma} (t,\sigma(t)) \leq k$;
+    \item $\dfrac{\diff \sigma(t)}{\diff t} > 0 \Rightarrow -\dfrac{\diff \mathcal{P}}{\diff \sigma} (t,\sigma(t)) = k$.
+\end{enumerate}
+
+\begin{figure}[!ht]
+    \centering
+    \includegraphics[width=.8\textwidth]{Griffith.png}
+    \caption{Illustration du critère de Griffith \parencite{gross2017fracture}. ($\Pi$ et $\Gamma$ représentent les énergie élastiques et de fracture respectivement. \textit{Cette figure est à refaire manuellement!})}
+    \label{fig:Griffith}
+\end{figure}
+Une illustration de ce critère peut être observée à la \cref{fig:Griffith}. Comme mentionné plus haut, ce modèle souffre de problèmes de nuclaetion et de prédiction de la fracture. Pour contouner le problème de nucleation, les mécaniciens considèrent que tout matérixu possède des micro-fissures, et ce sont ces dernières qui sont a l'origine des fissure observables à l'oeil. Quant au problème du chemin emprenté par la fracture, A. Chambolle, G. Francfort et J.-J. Marigo [CFM09] montrent que les critères d'Irwin [Irw57] sont invalides car, ils impliquent que, dans un matériau homogène et isotrope, le chemin de la fracture ne peut être courbé.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 \subsection{Discussion}
 
 Plusieurs hypothèses sont faites dans la thèse :
