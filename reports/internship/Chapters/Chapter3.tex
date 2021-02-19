@@ -520,12 +520,75 @@ D'après le critère de Griffith \parencite[p.32]{balasoiu2020thesis}, la foncti
 \end{figure}
 Une illustration de ce critère peut être observée à la \cref{fig:Griffith}. Comme mentionné plus haut, ce modèle souffre de problèmes de nuclaetion et de prédiction de la fracture. Pour contouner le problème de nucleation, les mécaniciens considèrent que tout matérixu possède des micro-fissures, et ce sont ces dernières qui sont a l'origine des fissure observables à l'oeil. Quant au problème du chemin emprenté par la fracture, A. Chambolle, G. Francfort et J.-J. Marigo [CFM09] montrent que les critères d'Irwin [Irw57] sont invalides car, ils impliquent que, dans un matériau homogène et isotrope, le chemin de la fracture ne peut être courbé.
 
-Le modèle proposé par Francfort et Marigo [FM98], suit un résultat théorique du à De Giorgi, M. Carriero et A. Leaci [DCL89], qui prouvent le théorème d’existence de minimum pour la fonctionnelle de Mumford-Shah qui intervient dans la détection des contours d’une image. Présentons les données géamoétriques du problème \parencite[p.35]{balasoiu2020thesis}.
+Le modèle proposé par Francfort et Marigo [FM98], suit un résultat théorique du à De Giorgi, M. Carriero et A. Leaci [DCL89], qui prouvent le théorème d’existence de minimum pour la fonctionnelle de Mumford-Shah qui intervient dans la détection des contours d’une image. Présentons les données géamoétriques du problème \parencite[p.35]{balasoiu2020thesis}. Soit $\Omega \subset \mathbb{R}^N$ un ouvert connexe, dont la frontière $\partial \Omega$ est suffisamment lisse. On partitionne sa frontière:
+$$
+\partial \Omega = \partial \Omega_D \cup  \partial \Omega_N \,,
+$$
+ou $\partial \Omega_D$ et $\partial \Omega_N$ sont les bords où l’on applique respectivement des conditions de Dirichlet et de Neumann. Sur la partie Dirichlet, on applique un déplacement du bord noté $U_D$, tandis que l’on laisse libre la partie de Neumann. On suppose également que le matériau est soumis à un champ de force volumique $f_v$. On suppose que $\Omega$ est un matériau hyper-élastique, dont la densité d’énergie est notée $W$. Ainsi, lorsque le matériau $\Omega$ subit (sans fracture) une déformation $\varphi = u + \identity$ suffisamment lisse, son énergie élastique vaut :
+$$
+\eel(u) = \int_{\Omega} W(x,e(u)) \diff x \,,
+$$
+où l’on a noté $u$ le champ de déplacement du matériau, et $e(u)$ son gradient symétrisé. On notera l’énergie élastique du matériau qui présente une fracture $\sigma$ :
+$$
+\eel(u,\sigma) = \inf_{u\in V_{U_D, \sigma}}{\int_{\Omega \backslash \sigma} W(x,e(u)) \diff x} \,,
+$$
+où l’on a défini l’espace fonctionnel $V_{U_D,\sigma}$ ,σ par :
+$$
+V_{U_D,\sigma} = \left\{ u \in H^1(\Omega \backslash \sigma, \mathbb{R}^N) \, \rvert \, u = U_D \text{ sur } \partial \Omega_D \right\} \,.
+$$
+Francfort et Marigo proposent l’énergie de fracture suivante sur $\partial \Omega_D$ :
+$$
+\efrac(\sigma) = \int_{\sigma} k(x) \diff \mathcal{H}^{N-1} \,,
+$$
+où le champ scalaire k(x) traduit la rigidité du matériau, et est supposée strictement positive sur tout le matériau ; $\mathcal{H}^{N-1}$ représente la mesure de Haussdorf de dimension $N-1$, qui peut être comprise comme la longueur du contour pour $N=2$.
+
+Ainsi, l’énergie totale du matériau vaut :
+\begin{align*}
+\etot(u,\sigma) &= \eel(u,\sigma) + \efrac(\sigma) \\
+&= \int_{\Omega \backslash \sigma} W(x,e(u)) \diff x + \int_{\sigma} k(x) \diff \mathcal{H}^{N-1} \,,
+\end{align*}
+où $\sigma$ est une union dénombrable d'ensembles rectifiables. Ainsi donc, une solution du problème de fracture est un minimum de la fonctionnelle $\etot$. Rappelons que dans le cas d'un mouvement antiplan, \citeauthor{balasoiu2020thesis} montre, dans le cas d'un mouvement antiplan\footnote{Un mouvement \textbf{antiplan} est mouvement pour lequel le champ de déplacement $u$ est porté par un vecteur constant.}, que ce modèle est quasiment identique au modèle de De Giorgi, M. Carriero et A. Leaci, pour lequel un théorème d'existence a pu être exhibé.
+
+La méthode numérique employée est la méthode à champ de phases. Elle repose sur la notion de $\Gamma$-convergence, en particulier sur le résultat de \textbf{convergence des minimums}. On remplace l'inconnue $\sigma$ par une suite de fonctions lisses $v_\varepsilon$ [AT90]. Par exemple, dans le cas du traitement d'image, pour la fonctionnelle de Mumford-Shah dont se sont inspiré Bourdin, Francfort et Marigo, on constate d'après Ambrosio et Tortorelli [AT90] que la suite de fonctionnelle
+$$
+G_{\varepsilon}() = \int_{\Omega} \left( \vert u-g \vert^2 + (v^2 + \eta_{\varepsilon}) \vert \nabla u \vert^2 + \varepsilon \vert \nabla v \vert^2 + \frac{(v-1)^2}{4\varepsilon} \right) \diff x \,,
+$$
+$\Gamma$-converge vers la fonctionnelle limite 
+$$
+G_f = \int_{\Omega} \vert u-g \vert^2 + \vert \nabla u \vert^2 \diff x + \mathcal{H}^{N-1}(S_u) \,,
+$$
+où $g:\Omega \mapsto [0,1]$ est la fonction de contraste de l’image, et $\mathcal{H}^{N-1}(S_u)$ est la restriction de la mesure de Hausdorff à l’ensemble des sauts de $u$, noté $S_u$, qui est un ensemble mesurable et composé d’une union dénombrable d’ensembles rectifiables \parencite[pp.33-35]{balasoiu2020thesis}.
+
+Plusieurs études numériques reposant sur ce résultat de $\Gamma$-convergence sont disponibles dans la littérature. On cite par exemple ici les résultats obtenus dans [Nag+19] à la \cref{fig:PhaseField}.
+
+\begin{figure}[!ht]
+    \centering
+    \begin{subfigure}[b]{0.9\textwidth}
+        \centering
+        \includegraphics[width=\textwidth]{PhaseField1.png} 
+        \caption{Croissance d’une fracture}
+        \label{fig:PhaseField1}
+    \end{subfigure}
+    \begin{subfigure}[b]{0.9\textwidth}
+        \centering
+        \includegraphics[width=\textwidth]{PhaseField2.png} 
+        \caption{Bifurcation d’une fracture}
+        \label{fig:PhaseField2}
+    \end{subfigure}
+    \begin{subfigure}[b]{0.9\textwidth}
+        \centering
+        \includegraphics[width=\textwidth]{PhaseField3.png} 
+        \caption{Branchement d’une fracture}
+        \label{fig:PhaseField3}
+    \end{subfigure}
+       \caption{Trois résultats némériques obtenus dans [Nag+19] à l'aide d'une discrétisation éléments finis (hp-FEM) et volume finis en ne remaillant le domaine que lorsque c'est nécéssaire.}
+       \label{fig:PhaseField}
+\end{figure}
 
 
 
 
-
+ 
 
 
 
