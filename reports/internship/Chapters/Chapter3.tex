@@ -486,7 +486,7 @@ Les travaux de D. Balasoiu concernent la modélisation et la simulation du compo
 
 \subsection{Théorie de la fracture : état de l’art} 
  
-La théorie de fracture la plus répendue de nos jous est due à A.A. Griffith  Dans ses travaux[Gri21], in invalide les résultats que C. Inglis [Ing13] qui ne tennaient pas en compte la taille de la fracture ; il présente donc la croissance d'une faille comme une compétition d'énergie entre l'énergie élastique\footnote{Énergie relâchée lorsqu’un défaut subit un accroissement} et l'énergie de surface\footnote{Énergie nécessaire à la création des deux nouvelles surfaces – les bords de la fissure}. 
+La théorie de fracture la plus répendue de nos jous est due à A.A. Griffith  Dans ses travaux[Gri21], in invalide les résultats que C. Inglis [Ing13] qui ne tennaient pas en compte la taille de la fracture ; il présente donc la croissance d'une faille comme une compétition d'énergie entre l'énergie élastique\footnote{Énergie relâchée lorsqu’un défaut subit un accroissement. Cette énergie diminue durant la fracture.} et l'énergie de surface\footnote{Énergie nécessaire à la création des deux nouvelles surfaces – les bords de la fissure. Cette énergie augmente avec l'accroissement de la fracture.}. 
 
 Le critère de Griffith est un critère thermodynamique qui stipule que la la fracture progresse si et seulement si cela permet au matériau d’atteindre un état de moindre énergie. En effet, sur un matériau élastique $\Omega$ dont la frontière est subidiviée en deux zones $\partial \Omega_D$, et $\partial \Omega_N$, on pose \parencite[p.31]{balasoiu2020thesis} :
 \begin{align*}
@@ -586,7 +586,28 @@ Plusieurs études numériques reposant sur ce résultat de $\Gamma$-convergence 
 \end{figure}
 
 
+\subsection{Un modèle de fracture variationnel et efficace} 
 
+Le modèle présenté dans la section précédente n'est pas adapté à notre étude. \citeauthor{balasoiu2020thesis} a donc développé une modèle qui ne nécessite pas de fonctionnelle lissée, comme l'on fait plusieurs modèles de glaciologie (voir [LLL15]), en supposant que les fractures sont des segments. Une résultat d'existence (dans les cas où le floe n'est pas encore fracturé) est prouvé à l'aide de la convergence de Mosco. De plus, \citeauthor{balasoiu2020thesis} introduit un problème d’évolution quasi-statique en appliquant progressivement la condition de Dirichlet sur une partie du bord du floe. Les fractures obtenues par ce problème d’évolution sont ainsi des lignes brisées. Le résultat d'existence n'a pas été prouvé pour ce cas. Concernant le coté numérique, une méthode \textit{meshless}\footnote{Car l’ensemble discrétisé des fractures admissibles ne dépend pas du maillage utilisé.} est proposée.
+
+Les modifications apportées pour traiter le modèle statique sont décrites ci-bas. Lorsqu'on fixe la fracture $\sigma$, l'énergie élastique prend la forme :
+\begin{align*}
+\eel (\cdot,\sigma): &A_{\sigma} \rightarrow \mathbb{R} \\
+&u \mapsto \int_{\Omega \backslash \sigma} Ae(u) : e(u) \diff x \,,
+\end{align*}
+où $A$ représente le tenseur de Lamé du matériau, i.e.
+$$
+    \forall e \in M_2{\mathbb{R}}, \quad Ae = \lambda \text{ tr }(e)I_2 + 2\mu e \,,
+$$ 
+où $\lambda$ et $\mu$ sont les coefficients de Lamé du matériau ; et l'ensemble des déplacements admissibles $A_{\sigma}$ est :
+$$
+A_{\sigma} = \left\{  u \in H^1(\Omega \backslash \sigma \, \mathbb{R}^2) \, \rvert \, u=U_D \text{ sur } \partial \Omega_D \backslash \sigma \text{ et } (u^+ - u^{-}) \cdot \nu \text{ sur } \sigma \right\} \,,
+$$
+avec $u^{+}$ et $u^{−}$ les traces de $u$ respectivement dans la direction de $\nu$ (normale à la fracture orientée du bord vers le centre de $\Omega$) et $−\nu$. On note la présence d'une condition de type Signorini:
+$$
+(u^+ - u^{-}) \cdot \nu \geq 0 \text{  sur  } \sigma
+$$
+L'énergie totale s'écrit
 
  
 
