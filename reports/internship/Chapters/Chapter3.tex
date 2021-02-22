@@ -590,10 +590,10 @@ Plusieurs études numériques reposant sur ce résultat de $\Gamma$-convergence 
 
 Le modèle présenté dans la section précédente n'est pas adapté à notre étude. \citeauthor{balasoiu2020thesis} a donc développé une modèle qui ne nécessite pas de fonctionnelle lissée, comme l'on fait plusieurs modèles de glaciologie (voir [LLL15]), en supposant que les fractures sont des segments. Une résultat d'existence (dans les cas où le floe n'est pas encore fracturé) est prouvé à l'aide de la convergence de Mosco. De plus, \citeauthor{balasoiu2020thesis} introduit un problème d’évolution quasi-statique en appliquant progressivement la condition de Dirichlet sur une partie du bord du floe. Les fractures obtenues par ce problème d’évolution sont ainsi des lignes brisées. Le résultat d'existence n'a pas été prouvé pour ce cas. Concernant le coté numérique, une méthode \textit{meshless}\footnote{Car l’ensemble discrétisé des fractures admissibles ne dépend pas du maillage utilisé.} est proposée.
 
-Les modifications apportées pour traiter le modèle statique sont décrites ci-bas. Lorsqu'on fixe la fracture $\sigma$, l'énergie élastique prend la forme :
+Les modifications apportées pour traiter le modèle statique (dans $\Rdeux$) sont décrites ci-bas. Lorsqu'on fixe la fracture $\sigma$, l'énergie élastique prend la forme :
 \begin{align*}
-\eel (\cdot,\sigma): &A_{\sigma} \rightarrow \mathbb{R} \\
-&u \mapsto \int_{\Omega \backslash \sigma} Ae(u) : e(u) \diff x \,,
+\eel (\cdot,\sigma): \, A_{\sigma} &\rightarrow \mathbb{R} \\
+u &\mapsto \int_{\Omega \backslash \sigma} Ae(u) : e(u) \diff x \,,
 \end{align*}
 où $A$ représente le tenseur de Lamé du matériau, i.e.
 $$
@@ -603,19 +603,45 @@ où $\lambda$ et $\mu$ sont les coefficients de Lamé du matériau ; et l'ensemb
 $$
 A_{\sigma} = \left\{  u \in H^1(\Omega \backslash \sigma \, \mathbb{R}^2) \, \rvert \, u=U_D \text{ sur } \partial \Omega_D \backslash \sigma \text{ et } (u^+ - u^{-}) \cdot \nu \text{ sur } \sigma \right\} \,,
 $$
-avec $u^{+}$ et $u^{−}$ les traces de $u$ respectivement dans la direction de $\nu$ (normale à la fracture orientée du bord vers le centre de $\Omega$) et $−\nu$. On note la présence d'une condition de type Signorini:
+avec $u^{+}$ et $u^{−}$ les restrictions de $u$ aux régions $\Omega^{+}$ et $\Omega^{-}$ respectivement (obtenues par extension de la fracture $\sigma$ de facon à ce qu'elle soit traversnte \parencite[p.50]{balasoiu2020thesis}). $\nu$ (normale à la fracture orientée du bord vers le centre de $\Omega$) et $−\nu$. On note la présence d'une condition de type Signorini:
 $$
 (u^+ - u^{-}) \cdot \nu \geq 0 \text{  sur  } \sigma
 $$
 L'énergie totale s'écrit
+\begin{align*}
+\etot : \,\bigcup_{\sigma \in \Sigma } A_{\sigma} \times \left\{ \sigma \right\} &\rightarrow \mathbb{R} \\
+ u &\mapsto \int_{\Omega \backslash \sigma} Ae(u) : e(u) \diff x + k\mathcal{H}^1(\sigma)\,,
+\end{align*}
+où $\Sigma$ représenté l'ensemble les segments orientés partant de la frontière donné par 
+$$
+\Sigma = \left\{ [a,b] \in \mathbb{R}^2 \, \lvert \, a \in \partial\Omega, b\in \overline{\Omega}, ]a,b[ \in \Omega\right\} \,.
+$$
+Une solution de notre modèle de fracture fragile est un couple $(u, \sigma)$ qui vérifie
+$$
+\etot(u,\sigma) = \min_{\sigma \in \Sigma}{\min_{u\in A_{\sigma}}{\etot(u,\sigma)}} \,.
+$$
+Ensuite, \citeauthor{balasoiu2020thesis} remarque aussi que la solution n'est pas unique. Il définit ensuite un problème de d'évolution quasi-statique à la manière de [FM98], en considérant un chargement un problème de chargement monotone : 
+$$
+U_D(t) = tU_D \,.
+$$
+On note $\overline{\Sigma}$ l’ensemble des lignes brisées de $\Omega$, sans point d’auto-intersection et qui partent de la frontière. On note également $\text{end}(\sigma)$ la fin d’une ligne brisée $\sigma \in  \overline{\Sigma}$.
+On définit maintenant \parencite[p.48]{balasoiu2020thesis}, pour toute ligne brisée $\sigma \in  \overline{\Sigma}$ l’ensemble des fractures admissibles partant de $\sigma$ :
+$$
+\Sigma_{\emptyset} = \Sigma \,, \quad \Sigma_{\sigma} = \left\{ \sigma \cup [a,b] \in \mathbb{R}^2 \, \lvert \, a = \text{end}(\sigma), b\in \overline{\Omega}, ]a,b[ \in \Omega\backslash \sigma \right\} \,.
+$$
+On définit également l'ensemble des déplacements admissibles associées:
+$$
+A_{t,\sigma} = \left\{  u \in H^1(\Omega \backslash \sigma \, \mathbb{R}^2) \, \rvert \, u=tU_D \text{ sur } \partial \Omega_D \backslash \sigma \text{ et } (u^+ - u^{-}) \cdot \nu \text{ sur } \sigma \right\} \,,
+$$
+pout tout $t \in [0,1]$ et pour toute ligne brisée $\sigma$. De ces définitions, on peut en exhiber un problème d'évolution discret, et un problème d'évolution continue en faisant tendre $t$ vers $0$. Le problème d’évolution continue admet des solutions, comme limite de solutions des problèmes d’évolutions discrets [MT02 ; Cha03].
 
- 
+Lorsque la fracture est fixée, \citeauthor{balasoiu2020thesis} prouve l’existence de solutions à notre problème de minimisation, en utilisant la théorie des inégalités variationnelles, l'inégalité de Korn [Cia94], le théorème de Lions-Stampacchia [LS67]. Pour le cas statique, il montre que le problème statique a des solutions lorsque l’ouvert n’est pas encore fracturé, ceci en se servant principalement de la convergence de Mosco. Pour le modèle quasi-statique, un résultat d'existence n'a pas été trouvé, et une conhjecture pour une ligne brisée qui possède un point d'auto-intersection.
 
 
 
+\subsection{Étude asymptotique d’un réseau de ressorts régulier} 
 
-
-
+Dans ce chapitre, \citeauthor{balasoiu2020halthesis} souhaite approcher l’énergie élastique d’un matériau continu par l’énergie élastique d’un réseau de ressorts, dans un cadre statique, lorsque celui-ci est soumis à un déplacement de son bord. Autrement dit, nous ne nous intéressons pas au mouvement des particules, nous n’étudions que l’état d’équilibre du réseau de ressorts.
 
 
 
