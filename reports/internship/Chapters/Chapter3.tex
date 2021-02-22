@@ -643,8 +643,50 @@ Lorsque la fracture est fixée, \citeauthor{balasoiu2020thesis} prouve l’exist
 
 Dans ce chapitre, \citeauthor{balasoiu2020halthesis} souhaite approcher l’énergie élastique d’un matériau continu par l’énergie élastique d’un réseau de ressorts, dans un cadre statique, lorsque celui-ci est soumis à un déplacement de son bord. Autrement dit, nous ne nous intéressons pas au mouvement des particules, nous n’étudions que l’état d’équilibre du réseau de ressorts.
 
+Commencions par des quqlques définitions pour le maillage sur un floe. Pour définir un réseau de ressort $\tau$, on défini l'ensemble de ses points $\tau_0$ disposées en forme de grille. 
+$$
+\tau_0 = \Omega \cap \mathbb{Z}^2
+$$
+De facon similaire, l'ensemble des arrete se nomme $\tau_1$, et l'ensemble des cellules $\tau_2$. Le réseau $\tau$ est obtenu à partir de $\tau_0$ en tracant les cotés de chaque carrés ; à la frontière, on trace les diagonales des carrés incomplets. On note $W (\tau, \Rdeux)$ l’ensemble des fonctions de $\tau_0$ dans $\Rdeux$. On définit également deux triangulations de $\omega$ à partir de $τ$, en prenant respectivement les diagonales des carrés dans les directions $e_x + e_y$ et $e_x − e_y$. On note ces triangulations $\tilde{\tau}$ et $\hat{\tau}$ respectivement. 
 
+Afin d'éviter les déformations qui envoient deux points voisins sur le même point, on définit avec l'ensemble des déplacements admissibles 
+$$
+\wadm(\tau, \Rdeux) =   \left\{ u\in W(\tau, \Rdeux) \mid \forall w \in \tau_2, \forall q_1, q_2 \in \tau_0 \cap \overline{\omega}, q_1 \neq q_2, \quad q_1 + u(q_1) \neq q_2 + u(q_2)  \right\} \,,
+$$
+Sur chaque arête $\nu ∈ \tau_1$, on place un ressort de longueur à vide $l_{\nu} = \vert \nu \vert$, et de raideur $k_{\nu}$ (voir \cref{fig:Ressort1}). Si$ \varphi \in W (\tau, \Rdeux)$ est une déformation du réseau de ressorts, et $u = \varphi − \identity$ est le déplacement associé, l’énergie élastique de traction de l’assemblage
+\begin{align*}
+    R_{\tau}(u) &= R_{\tau}(\varphi - \text{Id}) \\
+    &= \sum_{\nu \in \tau_1} \frac{k_{\nu}}{2} \left( \vert \varphi(\nu) \vert - \vert \nu \vert  \right)^2
+\end{align*}
+En chaque point du maillage, on ajoute un ressort de torsion, d'angle de repos $\frac{\pi}{2}$, et de raideur $G \vert \nu \vert^2$ (voir \cref{fig:Ressort2}). L’énergie élastique de torsion de l’assemblage vaut
+\begin{align*}
+    T_{\tau}(u) &= T_{\tau}(\varphi - \text{Id}) \\
+    &= \sum_{c \in \tau_2} \sum_{\substack{\nu_1, \nu_2 \in c\cap\tau_1 \\ \nu_1 \cap \nu_2 \in \tau_0}} \frac{G \vert\nu \vert^2}{4} \left(  \angle(\varphi(e_{\nu_1}),\varphi(e_{\nu_2})) - \frac{\pi}{2}  \right)^2 \,,
+\end{align*}
+avec $\angle(\cdot,\cdot)$ l'angle entre deux vecteurs du plan. On note enfin
+$$
+E_{\tau} = R_{\tau} + T_{\tau}
+$$
+l'énergie totale du réseau.
 
+\begin{figure}[!ht]
+    \centering
+    \begin{subfigure}[b]{0.3\textwidth}
+        \centering
+        \includegraphics[width=\textwidth]{Ressort1.png} 
+        \caption{Réseau de ressorts régulier}
+        \label{fig:Ressort1}
+    \end{subfigure}
+    \hspace*{30pt}
+    \begin{subfigure}[b]{0.3\textwidth}
+        \centering
+        \includegraphics[width=\textwidth]{Ressort2.png} 
+        \caption{Réseau de ressorts régulier avec torsion}
+        \label{fig:Ressort2}
+    \end{subfigure}
+       \caption{Réseau de ressort considéré durant cette étude.}
+       \label{fig:Reseau}
+\end{figure}
 
 
 
