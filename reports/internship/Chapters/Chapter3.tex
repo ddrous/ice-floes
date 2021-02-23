@@ -486,9 +486,9 @@ Les travaux de D. Balasoiu concernent la modélisation et la simulation du compo
 
 \subsection{Théorie de la fracture : état de l’art} 
  
-La théorie de fracture la plus répendue de nos jous est due à A.A. Griffith  Dans ses travaux[Gri21], in invalide les résultats que C. Inglis [Ing13] qui ne tennaient pas en compte la taille de la fracture ; il présente donc la croissance d'une faille comme une compétition d'énergie entre l'énergie élastique\footnote{Énergie relâchée lorsqu’un défaut subit un accroissement. Cette énergie diminue durant la fracture.} et l'énergie de surface\footnote{Énergie nécessaire à la création des deux nouvelles surfaces – les bords de la fissure. Cette énergie augmente avec l'accroissement de la fracture.}. 
+La théorie de fracture la plus répandue de nos jours est due à A.A. Griffith. Dans ses travaux[Gri21], in invalide les résultats que C. Inglis [Ing13] qui ne tenaient pas en compte la taille de la fracture ; il présente donc la croissance d'une faille comme une compétition d'énergie entre l'énergie élastique\footnote{Énergie relâchée lorsqu’un défaut subit un accroissement. Cette énergie diminue durant la fracture.} et l'énergie de surface\footnote{Énergie nécessaire à la création des deux nouvelles surfaces – les bords de la fissure. Cette énergie augmente avec l'accroissement de la fracture.}. 
 
-Le critère de Griffith est un critère thermodynamique qui stipule que la la fracture progresse si et seulement si cela permet au matériau d’atteindre un état de moindre énergie. En effet, sur un matériau élastique $\Omega$ dont la frontière est subidiviée en deux zones $\partial \Omega_D$, et $\partial \Omega_N$, on pose \parencite[p.31]{balasoiu2020thesis} :
+Le critère de Griffith est un critère thermodynamique qui stipule que la fracture progresse si et seulement si cela permet au matériau d’atteindre un état de moindre énergie. En effet, sur un matériau élastique $\Omega$ dont la frontière est subdivisée en deux zones $\partial \Omega_D$, et $\partial \Omega_N$, on pose \parencite[p.31]{balasoiu2020thesis} :
 \begin{align*}
     E_{el} &= \int_{\Omega} W (x, e(u)) \diff x     \\
     \mathcal{P}(t,\sigma(t)) &= \int_{\Omega \backslash \sigma(t) } W (x, \nabla\varphi (t, \sigma(t))) \diff x - \mathcal{F}(t,\sigma(t)) \\
@@ -500,31 +500,31 @@ où
     \item $\sigma(t)$ représente la fracture au temps $t$, supposée à l'équilibre.
     \item $\mathcal{P}$ l’énergie potentielle du matériau qui possède une fracture de taille $\sigma(t)$ au temps $t$.
     \item $e(u)$ est le tenseur de Green-St Venant, qui représente la déformation locale du matériau.
-    \item $\varphi = \identity + u$ représente le déplacement du mátériau supposé suffisamment régulier.
+    \item $\varphi = \identity + u$ représente le déplacement du matériau supposé suffisamment régulier.
     \item $W$ est la densité d’énergie du matériau élastique, supposé hyper-élastique.
     \item $f_s$ est la contrainte surfacique appliquée sur le bord $\partial \Omega_N$.
     \item $f_v$ est le champ de force volumique appliquée sur $\Omega$.
 \end{itemize}
-D'après le critère de Griffith \parencite[p.32]{balasoiu2020thesis}, la fonction $\sigma(t)$ doit vérifier:
+D'après le critère de Griffith \parencite[p.32]{balasoiu2020thesis}, la fonction $\sigma(t)$ doit vérifier :
 \begin{enumerate}
-    \item $\dfrac{\diff \sigma(t)}{\diff t} \geq 0$;
-    \item $-\dfrac{\diff \mathcal{P}}{\diff \sigma} (t,\sigma(t)) \leq k$;
+    \item $\dfrac{\diff \sigma(t)}{\diff t} \geq 0$ ;
+    \item $-\dfrac{\diff \mathcal{P}}{\diff \sigma} (t,\sigma(t)) \leq k$ ;
     \item $\dfrac{\diff \sigma(t)}{\diff t} > 0 \Rightarrow -\dfrac{\diff \mathcal{P}}{\diff \sigma} (t,\sigma(t)) = k$.
 \end{enumerate}
 
 \begin{figure}[!ht]
     \centering
     \includegraphics[width=.8\textwidth]{Griffith.png}
-    \caption{Illustration du critère de Griffith \parencite{gross2017fracture}. ($\Pi$ et $\Gamma$ représentent les énergie potentielles et de fracture respectivement. \textit{Cette figure est à refaire manuellement!})}
+    \caption{Illustration du critère de Griffith \parencite{gross2017fracture}. ($\Pi$ et $\Gamma$ représentent les énergies potentielles et de fracture respectivement. \textit{Cette figure est à refaire manuellement !})}
     \label{fig:Griffith}
 \end{figure}
-Une illustration de ce critère peut être observée à la \cref{fig:Griffith}. Comme mentionné plus haut, ce modèle souffre de problèmes de nuclaetion et de prédiction de la fracture. Pour contouner le problème de nucleation, les mécaniciens considèrent que tout matérixu possède des micro-fissures, et ce sont ces dernières qui sont a l'origine des fissure observables à l'oeil. Quant au problème du chemin emprenté par la fracture, A. Chambolle, G. Francfort et J.-J. Marigo [CFM09] montrent que les critères d'Irwin [Irw57] sont invalides car, ils impliquent que, dans un matériau homogène et isotrope, le chemin de la fracture ne peut être courbé.
+Une illustration de ce critère peut être observée à la \cref{fig:Griffith}. Comme mentionné plus haut, ce modèle souffre de problèmes de nucléation et de prédiction de la fracture. Pour contourner le problème de nucléation, les mécaniciens considèrent que tout matériau possède des microfissures, et ce sont ces dernières qui sont à l'origine des fissures observables à l'\oe{}il. Quant au problème du chemin emprunté par la fracture, A. Chambolle, G. Francfort et J.-J. Marigo [CFM09] montrent que les critères d'Irwin [Irw57] sont invalides car, ils impliquent que, dans un matériau homogène et isotrope, le chemin de la fracture ne peut être courbé.
 
-Le modèle proposé par Francfort et Marigo [FM98], suit un résultat théorique du à De Giorgi, M. Carriero et A. Leaci [DCL89], qui prouvent le théorème d’existence de minimum pour la fonctionnelle de Mumford-Shah qui intervient dans la détection des contours d’une image. Présentons les données géamoétriques du problème \parencite[p.35]{balasoiu2020thesis}. Soit $\Omega \subset \mathbb{R}^N$ un ouvert connexe, dont la frontière $\partial \Omega$ est suffisamment lisse. On partitionne sa frontière:
+Le modèle proposé par Francfort et Marigo [FM98], suit un résultat théorique dû à De Giorgi, M. Carriero et A. Leaci [DCL89], qui prouvent le théorème d’existence d'un minimum pour la fonctionnelle de Mumford-Shah qui intervient dans la détection des contours d’une image. Présentons les données géométriques du problème \parencite[p.35]{balasoiu2020thesis}. Soit $\Omega \subset \mathbb{R}^N$ un ouvert connexe, dont la frontière $\partial \Omega$ est suffisamment lisse. On partitionne sa frontière :
 $$
 \partial \Omega = \partial \Omega_D \cup  \partial \Omega_N \,,
 $$
-ou $\partial \Omega_D$ et $\partial \Omega_N$ sont les bords où l’on applique respectivement des conditions de Dirichlet et de Neumann. Sur la partie Dirichlet, on applique un déplacement du bord noté $U_D$, tandis que l’on laisse libre la partie de Neumann. On suppose également que le matériau est soumis à un champ de force volumique $f_v$. On suppose que $\Omega$ est un matériau hyper-élastique, dont la densité d’énergie est notée $W$. Ainsi, lorsque le matériau $\Omega$ subit (sans fracture) une déformation $\varphi = u + \identity$ suffisamment lisse, son énergie élastique vaut :
+où $\partial \Omega_D$ et $\partial \Omega_N$ sont les bords où l’on applique respectivement des conditions de Dirichlet et de Neumann. Sur la partie Dirichlet, on applique un déplacement du bord noté $U_D$, tandis que l’on laisse libre la partie de Neumann. On suppose également que le matériau est soumis à un champ de force volumique $f_v$. On suppose que $\Omega$ est un matériau hyper-élastique, dont la densité d’énergie est notée $W$. Ainsi, lorsque le matériau $\Omega$ subit (sans fracture) une déformation $\varphi = u + \identity$ suffisamment lisse, son énergie élastique vaut :
 $$
 \eel(u) = \int_{\Omega} W(x,e(u)) \diff x \,,
 $$
@@ -540,14 +540,14 @@ Francfort et Marigo proposent l’énergie de fracture suivante sur $\partial \O
 $$
 \efrac(\sigma) = \int_{\sigma} k(x) \diff \mathcal{H}^{N-1} \,,
 $$
-où le champ scalaire k(x) traduit la rigidité du matériau, et est supposée strictement positive sur tout le matériau ; $\mathcal{H}^{N-1}$ représente la mesure de Haussdorf de dimension $N-1$, qui peut être comprise comme la longueur du contour pour $N=2$.
+où le champ scalaire $k(x)$ traduit la rigidité du matériau, et est supposée strictement positive sur tout le matériau ; $\mathcal{H}^{N-1}$ représente la mesure de Haussdorf de dimension $N-1$, qui peut être comprise comme la longueur du contour pour $N=2$.
 
 Ainsi, l’énergie totale du matériau vaut :
 \begin{align*}
 \etot(u,\sigma) &= \eel(u,\sigma) + \efrac(\sigma) \\
 &= \int_{\Omega \backslash \sigma} W(x,e(u)) \diff x + \int_{\sigma} k(x) \diff \mathcal{H}^{N-1} \,,
 \end{align*}
-où $\sigma$ est une union dénombrable d'ensembles rectifiables. Ainsi donc, une solution du problème de fracture est un minimum de la fonctionnelle $\etot$. Rappelons que dans le cas d'un mouvement antiplan, \citeauthor{balasoiu2020thesis} montre, dans le cas d'un mouvement antiplan\footnote{Un mouvement \textbf{antiplan} est mouvement pour lequel le champ de déplacement $u$ est porté par un vecteur constant.}, que ce modèle est quasiment identique au modèle de De Giorgi, M. Carriero et A. Leaci, pour lequel un théorème d'existence a pu être exhibé.
+où $\sigma$ est une union dénombrable d'ensembles rectifiables. Ainsi donc, une solution du problème de fracture est un minimum de la fonctionnelle $\etot$. Signalons que \citeauthor{balasoiu2020thesis} montre, dans le cas d'un mouvement antiplan\footnote{Un mouvement \textbf{antiplan} est mouvement pour lequel le champ de déplacement $u$ est porté par un vecteur constant.}, que le modèle est quasiment identique au modèle de De Giorgi, M. Carriero et A. Leaci, pour lequel un théorème d'existence a pu être exhibé.
 
 La méthode numérique employée est la méthode à champ de phases. Elle repose sur la notion de $\Gamma$-convergence, en particulier sur le résultat de \textbf{convergence des minimums}. On remplace l'inconnue $\sigma$ par une suite de fonctions lisses $v_\varepsilon$ [AT90]. Par exemple, dans le cas du traitement d'image, pour la fonctionnelle de Mumford-Shah dont se sont inspiré Bourdin, Francfort et Marigo, on constate d'après Ambrosio et Tortorelli [AT90] que la suite de fonctionnelle
 $$
@@ -581,14 +581,14 @@ Plusieurs études numériques reposant sur ce résultat de $\Gamma$-convergence 
         \caption{Branchement d’une fracture}
         \label{fig:PhaseField3}
     \end{subfigure}
-       \caption{Trois résultats némériques obtenus dans [Nag+19] à l'aide d'une discrétisation éléments finis (hp-FEM) et volume finis en ne remaillant le domaine que lorsque c'est nécéssaire.}
+       \caption{Trois résultats numériques obtenus dans [Nag+19] à l'aide d'une discrétisation éléments finis (hp-FEM) et volumes finis en ne remaillant le domaine que lorsque c'est nécessaire.}
        \label{fig:PhaseField}
 \end{figure}
 
 
 \subsection{Un modèle de fracture variationnel et efficace} 
 
-Le modèle présenté dans la section précédente n'est pas adapté à notre étude. \citeauthor{balasoiu2020thesis} a donc développé une modèle qui ne nécessite pas de fonctionnelle lissée, comme l'on fait plusieurs modèles de glaciologie (voir [LLL15]), en supposant que les fractures sont des segments. Une résultat d'existence (dans les cas où le floe n'est pas encore fracturé) est prouvé à l'aide de la convergence de Mosco. De plus, \citeauthor{balasoiu2020thesis} introduit un problème d’évolution quasi-statique en appliquant progressivement la condition de Dirichlet sur une partie du bord du floe. Les fractures obtenues par ce problème d’évolution sont ainsi des lignes brisées. Le résultat d'existence n'a pas été prouvé pour ce cas. Concernant le coté numérique, une méthode \textit{meshless}\footnote{Car l’ensemble discrétisé des fractures admissibles ne dépend pas du maillage utilisé.} est proposée.
+Le modèle présenté dans la section précédente n'est pas adapté à notre étude. \citeauthor{balasoiu2020thesis} a donc développé un modèle qui ne nécessite pas de fonctionnelle lissée, comme l'on fait plusieurs modèles de glaciologie (voir [LLL15]), en supposant que les fractures sont des segments. Un résultat d'existence (dans les cas où le floe n'est pas encore fracturé) est prouvé à l'aide de la convergence de Mosco. De plus, \citeauthor{balasoiu2020thesis} introduit un problème d’évolution quasi-statique en appliquant progressivement la condition de Dirichlet sur une partie du bord du floe. Les fractures obtenues par ce problème d’évolution sont ainsi des lignes brisées. Le résultat d'existence n'a pas été prouvé pour ce cas. Concernant le côté numérique, une méthode \textit{meshless}\footnote{Car l’ensemble discrétisé des fractures admissibles ne dépend pas du maillage utilisé.} est proposée.
 
 Les modifications apportées pour traiter le modèle statique (dans $\Rdeux$) sont décrites ci-bas. Lorsqu'on fixe la fracture $\sigma$, l'énergie élastique prend la forme :
 \begin{align*}
@@ -603,7 +603,7 @@ où $\lambda$ et $\mu$ sont les coefficients de Lamé du matériau ; et l'ensemb
 $$
 A_{\sigma} = \left\{  u \in H^1(\Omega \backslash \sigma \, \mathbb{R}^2) \, \rvert \, u=U_D \text{ sur } \partial \Omega_D \backslash \sigma \text{ et } (u^+ - u^{-}) \cdot \nu \text{ sur } \sigma \right\} \,,
 $$
-avec $u^{+}$ et $u^{−}$ les restrictions de $u$ aux régions $\Omega^{+}$ et $\Omega^{-}$ respectivement (obtenues par extension de la fracture $\sigma$ de facon à ce qu'elle soit traversnte \parencite[p.50]{balasoiu2020thesis}). $\nu$ (normale à la fracture orientée du bord vers le centre de $\Omega$) et $−\nu$. On note la présence d'une condition de type Signorini:
+avec $u^{+}$ et $u^{−}$ les restrictions de $u$ aux régions $\Omega^{+}$ et $\Omega^{-}$ respectivement (obtenues par extension de la fracture $\sigma$ de façon à ce qu'elle soit traversante \parencite[p.50]{balasoiu2020thesis}). $\nu$ (normale à la fracture orientée du bord vers le centre de $\Omega$) et $−\nu$. On note la présence d'une condition de type Signorini :
 $$
 (u^+ - u^{-}) \cdot \nu \geq 0 \text{  sur  } \sigma
 $$
@@ -612,7 +612,7 @@ L'énergie totale s'écrit
 \etot : \,\bigcup_{\sigma \in \Sigma } A_{\sigma} \times \left\{ \sigma \right\} &\rightarrow \mathbb{R} \\
  u &\mapsto \int_{\Omega \backslash \sigma} Ae(u) : e(u) \diff x + k\mathcal{H}^1(\sigma)\,,
 \end{align*}
-où $\Sigma$ représenté l'ensemble les segments orientés partant de la frontière donné par 
+où $\Sigma$ représenté l'ensemble les segments orientés partant de la frontière donnée par 
 $$
 \Sigma = \left\{ [a,b] \in \mathbb{R}^2 \, \lvert \, a \in \partial\Omega, b\in \overline{\Omega}, ]a,b[ \in \Omega\right\} \,.
 $$
@@ -620,7 +620,7 @@ Une solution de notre modèle de fracture fragile est un couple $(u, \sigma)$ qu
 $$
 \etot(u,\sigma) = \min_{\sigma \in \Sigma}{\min_{u\in A_{\sigma}}{\etot(u,\sigma)}} \,.
 $$
-Ensuite, \citeauthor{balasoiu2020thesis} remarque aussi que la solution n'est pas unique. Il définit ensuite un problème de d'évolution quasi-statique à la manière de [FM98], en considérant un chargement un problème de chargement monotone : 
+Ensuite, \citeauthor{balasoiu2020thesis} remarque que la solution n'est pas unique. Il définit donc un problème de d'évolution quasi-statique à la manière de [FM98], en considérant un problème de chargement monotone : 
 $$
 U_D(t) = tU_D \,.
 $$
@@ -629,13 +629,13 @@ On définit maintenant \parencite[p.48]{balasoiu2020thesis}, pour toute ligne br
 $$
 \Sigma_{\emptyset} = \Sigma \,, \quad \Sigma_{\sigma} = \left\{ \sigma \cup [a,b] \in \mathbb{R}^2 \, \lvert \, a = \text{end}(\sigma), b\in \overline{\Omega}, ]a,b[ \in \Omega\backslash \sigma \right\} \,.
 $$
-On définit également l'ensemble des déplacements admissibles associées:
+On définit également l'ensemble des déplacements admissibles associées :
 $$
 A_{t,\sigma} = \left\{  u \in H^1(\Omega \backslash \sigma \, \mathbb{R}^2) \, \rvert \, u=tU_D \text{ sur } \partial \Omega_D \backslash \sigma \text{ et } (u^+ - u^{-}) \cdot \nu \text{ sur } \sigma \right\} \,,
 $$
-pout tout $t \in [0,1]$ et pour toute ligne brisée $\sigma$. De ces définitions, on peut en exhiber un problème d'évolution discret, et un problème d'évolution continue en faisant tendre $t$ vers $0$. Le problème d’évolution continue admet des solutions, comme limite de solutions des problèmes d’évolutions discrets [MT02 ; Cha03].
+pour tout $t \in [0,1]$ et pour toute ligne brisée $\sigma$. De ces définitions, on peut en exhiber un problème d'évolution discret, et un problème d'évolution continue en faisant tendre $t$ vers $0$. Le problème d’évolution continue admet des solutions, comme limite de solutions des problèmes d’évolutions discrets [MT02 ; Cha03].
 
-Lorsque la fracture est fixée, \citeauthor{balasoiu2020thesis} prouve l’existence de solutions à notre problème de minimisation, en utilisant la théorie des inégalités variationnelles, l'inégalité de Korn [Cia94], le théorème de Lions-Stampacchia [LS67]. Pour le cas statique, il montre que le problème statique a des solutions lorsque l’ouvert n’est pas encore fracturé, ceci en se servant principalement de la convergence de Mosco. Pour le modèle quasi-statique, un résultat d'existence n'a pas été trouvé, et une conhjecture pour une ligne brisée qui possède un point d'auto-intersection.
+Lorsque la fracture est fixée, \citeauthor{balasoiu2020thesis} prouve l’existence de solutions à notre problème de minimisation, en utilisant la théorie des inégalités variationnelles, l'inégalité de Korn [Cia94], le théorème de Lions-Stampacchia [LS67]. Pour le cas statique, il montre que le problème statique a des solutions lorsque l’ouvert n’est pas encore fracturé, ceci en se servant principalement de la convergence de Mosco. Pour le modèle quasi-statique, un résultat d'existence n'a pas été trouvé, et une conjecture pour une ligne brisée qui possède un point d'auto-intersection a été proposée.
 
 
 
@@ -643,17 +643,17 @@ Lorsque la fracture est fixée, \citeauthor{balasoiu2020thesis} prouve l’exist
 
 Dans ce chapitre, \citeauthor{balasoiu2020halthesis} souhaite approcher l’énergie élastique d’un matériau continu par l’énergie élastique d’un réseau de ressorts, dans un cadre statique, lorsque celui-ci est soumis à un déplacement de son bord. Autrement dit, nous ne nous intéressons pas au mouvement des particules, nous n’étudions que l’état d’équilibre du réseau de ressorts.
 
-Commencions par des quqlques définitions pour le maillage sur un floe. Pour définir un réseau de ressort $\tau$, on défini l'ensemble de ses points $\tau_0$ disposées en forme de grille. 
+Commencions par quelques définitions pour le maillage sur un floe. Pour définir un réseau de ressort $\tau$, on définit l'ensemble de ses points $\tau_0$ disposées en forme de grille. 
 $$
 \tau_0 = \Omega \cap \mathbb{Z}^2
 $$
-De facon similaire, l'ensemble des arrete se nomme $\tau_1$, et l'ensemble des cellules $\tau_2$. Le réseau $\tau$ est obtenu à partir de $\tau_0$ en tracant les cotés de chaque carrés ; à la frontière, on trace les diagonales des carrés incomplets. On note $W (\tau, \Rdeux)$ l’ensemble des fonctions de $\tau_0$ dans $\Rdeux$. On définit également deux triangulations de $\omega$ à partir de $τ$, en prenant respectivement les diagonales des carrés dans les directions $e_x + e_y$ et $e_x − e_y$. On note ces triangulations $\tilde{\tau}$ et $\hat{\tau}$ respectivement. 
+De façon similaire, l'ensemble des arrêtes se nomme $\tau_1$, et l'ensemble des cellules $\tau_2$. Le réseau $\tau$ est obtenu à partir de $\tau_0$ en traçant les côtés de chaque carré ; à la frontière, on trace les diagonales des carrés incomplets. On note $W (\tau, \Rdeux)$ l’ensemble des fonctions de $\tau_0$ dans $\Rdeux$. On définit également deux triangulations de $\omega$ à partir de $τ$, en prenant respectivement les diagonales des carrés dans les directions $e_x + e_y$ et $e_x − e_y$. On note ces triangulations $\tilde{\tau}$ et $\hat{\tau}$ respectivement. 
 
 Afin d'éviter les déformations qui envoient deux points voisins sur le même point, on définit avec l'ensemble des déplacements admissibles 
 $$
 \wadm(\tau, \Rdeux) =   \left\{ u\in W(\tau, \Rdeux) \mid \forall w \in \tau_2, \forall q_1, q_2 \in \tau_0 \cap \overline{\omega}, q_1 \neq q_2, \quad q_1 + u(q_1) \neq q_2 + u(q_2)  \right\} \,,
 $$
-Sur chaque arête $\nu ∈ \tau_1$, on place un ressort de longueur à vide $l_{\nu} = \vert \nu \vert$, et de raideur $k_{\nu}$ (voir \cref{fig:Ressort1}). Si$ \varphi \in W (\tau, \Rdeux)$ est une déformation du réseau de ressorts, et $u = \varphi − \identity$ est le déplacement associé, l’énergie élastique de traction de l’assemblage
+Sur chaque arête $\nu ∈ \tau_1$, on place un ressort de longueur à vide $l_{\nu} = \vert \nu \vert$, et de raideur $k_{\nu}$ (voir \cref{fig:Ressort1}). Si $\varphi \in W (\tau, \Rdeux)$ est une déformation du réseau de ressorts, et $u = \varphi − \identity$ est le déplacement associé, l’énergie élastique de traction de l’assemblage
 \begin{align*}
     R_{\tau}(u) &= R_{\tau}(\varphi - \text{Id}) \\
     &= \sum_{\nu \in \tau_1} \frac{k_{\nu}}{2} \left( \vert \varphi(\nu) \vert - \vert \nu \vert  \right)^2
@@ -688,7 +688,45 @@ l'énergie totale du réseau.
        \label{fig:Reseau}
 \end{figure}
 
+Ensuite, \citeauthor{balasoiu2020halthesis} considère la suite $\tau_n$ de réseau défini, comme aux paragraphes précédents par 
+$$
+\tau_{n,0} = \Omega \cap \frac{1}{n} \mathbb{Z}^2 \,.
+$$
+On rappelle que $k_1$, $k_2$ représentent les constantes de raideurs des ressorts sur les arrêtes du réseau dans les deux directions de $\Omega$, et $G$ la constante de torsion des ressorts aux n\oe{}uds. Sur le maillage $\tau_n$, après définition des énergies redimensionnées élastiques de traction $R_n$, et de torsion $T_n$, \parencite[p.91]{balasoiu2020halthesis} montre les théorèmes suivants. 
 
+\begin{theorem}[$\Gamma$-convergence]
+    \label{theo:gammaconv}
+    La suite d'énergie redimensionnée $(E_n)_{n\in\mathbb{N}}$ $\Gamma$-converge, pour la topologie faible de $H^1(\Omega, \mathbb{R}^2)$, vers la fonctionnelle limite :
+    \begin{align*}
+        \eel : H^1(\Omega, \mathbb{R}^2) &\rightarrow \mathbb{R} \\
+        &u \mapsto \frac{1}{2} \int_{\Omega} C_h e(u):e(u) \diff x \,,
+    \end{align*}
+    avec $C_h$ le tenseur de rigidité du matériau homogénéisé, qui vérifie :
+    $$
+    C_{h,ijkl}M:M = k_1 M^2_{1,1} + k_2 M^2_{2,2} + 16G(M_{1,2} + M_{2,1})^2 \,,
+    $$
+    De plus, ce tenseur est celui d’un matériau élastique homogène et isotrope si et seulement si l’on a $k_1 = k_2 = k = 8G$. Dans ce cas, on a :
+    $$
+    \eel(u) = \frac{1}{2} \int_{\Omega} K_{\lambda, \mu}e(u) : e(u) \diff x \,,
+    $$
+    avec :
+    $\lambda = 0$, et $\mu = \frac{k}{2}$.
+\end{theorem}
+
+
+\begin{theorem}[Équi-coercivité]
+    Soit $(\tau_n)_{n\in\mathbb{N}}$ une suite de maillages du plan, et $(u_n) \in \mathbb{N}$ une suite de déplacements admissibles de $H^1(\Omega, \mathbb{R}^2)$, i.e. vérifiant :
+    $$
+        \forall n \in \mathbb{N}, \quad u_n \in \wadm (\tau_n, \mathbb{R}^2) \,.
+    $$
+    On suppose de plus que cette suite de déplacement est bornée pour l’énergie :
+    $$
+    \exists C > 0 , \forall n \in \mathbb{N}, \quad E_{n}(u_n) \leq C \,.
+    $$
+    Alors la suite $(u_n)_{n \in \mathbb{N}}$ est bornée dans $H^1(\Omega, \mathbb{R}^2)$.
+\end{theorem}
+
+Le \cref{theo:gammaconv} permet de constater que le tenseur de rigidité obtenu, lorsqu’il est isotrope, a un coefficient de Poisson nul\footnote{Cela correspond par exemple à un étirement longitudinal du réseau de ressorts, sans effet (amincissement ou épaississement) sur la section transversale.}. \citeauthor{balasoiu2020halthesis} a donc proposé un calcul formel de la limite simple de la suite d’énergies discrètes dans le cas ou le réseau de ressorts serait stochastique, de loi isotrope. En particulier, il trouve dans ce cas un coefficient de Poisson fixe de $1/4$.
 
 
 \subsection{Discussion}
