@@ -182,6 +182,8 @@ Cette semaine je continue la lecture de la thèse de D. Balasoiu \parencite{bala
 
 \begin{enumerate}
   \item Continuation de lecture du chapitre 3 de \parencite{balasoiu2020halthesis}.
+  \item Lecture des annexes de la thèse.
+  \item Relecture (rapide) des chapitres précédents. 
 \end{enumerate}
 
 %----------------------------------------------------------------------------------------
@@ -190,14 +192,27 @@ Cette semaine je continue la lecture de la thèse de D. Balasoiu \parencite{bala
 
 \section{Difficultés rencontrées}
 
+\textit{Toutes ces questions concernent la proposition 3.3.1 de \parencite[p.93]{balasoiu2020halthesis}.}
+
 \begin{enumerate}
-  \item Comment est orienté le vecteur $e_\nu$ ? Cette quantité apparait pour la première fois au niveau de la définition de l'énergie élastique de torsion \parencite[p.91]{balasoiu2020halthesis}. 
-  \item Pouvez-vous s'il vous plait m'aiclairer sur le début de la démonstration de la propositon 3.3.1 \parencite[p.93]{balasoiu2020halthesis} ?
+  \item \sout{Comment est orienté le vecteur $e_\nu$ ? Cette quantité apparait pour la première fois au niveau de la définition de l'énergie élastique de torsion \parencite[p.91]{balasoiu2020halthesis}.} 
+  \item \sout{Pouvez-vous s'il vous plait m'éclairer sur le début de la démonstration de la proposition 3.3.1 \parencite[p.93]{balasoiu2020halthesis} ?}
+  % \begin{figure}[H]
+  %   \centering
+  %   \includegraphics[width=0.7\textwidth]{Propo1.png}
+  %   \caption{Difficulté à la proposition 3.3.1}
+  % \end{figure}
+  \item Je me suis rendu compte que je n'avais pas correctement lu la proposition 3.3.1.. En effet, c'est écrit "\textit{Soit $\varphi : W(\tau, \mathbb{R}^2) \rightarrow \mathbb{R}^2$} \ldots ". S'agit-il d'une erreur ? Puisque dans l'annexe B, l'ensemble de départ pour $\varphi$ est $\overline{\Omega}$.
+  \item Toujours au tout début de la démonstration de la proposition 3.3.1, il me semble que l'égalité $$\vert \varphi (\nu) \vert = \vert \nu \vert \times \Vert \nabla \cdot e_{\nu} \Vert$$ a été utilisée (voir figure 1 ci-bas). Je ne comprends pas son origine.
   \begin{figure}[H]
     \centering
-    \includegraphics[width=0.7\textwidth]{Propo1.png}
-    \caption{Difficulté à la proposition 3.3.1}
+    \includegraphics[width=0.4\textwidth]{Propo12.png}
+    \caption{Début de démonstration de la proposition 3.3.1 \parencite[p.93]{balasoiu2020halthesis}.}
   \end{figure}
+  % \textit{Pouvez-vous aussi confirmer que dans toute la thèse, quand on écrit juste $\nabla \varphi$, il s'agit en effet du gradient au point $\nu$, i.e. $\nabla \varphi(\nu)$?}
+  \item Des simples $\vert \cdot \vert$ et des doubles $\Vert \cdot \Vert$ barres sont utilisées pour les normes. Conformément à votre réponse pour la question 2 ci-haut (mercredi), la quantité $\Vert \nabla \varphi \cdot e_{\nu} \Vert$ est un vecteur de $\mathbb{R}^2$, au même titre que $\nu$ ou $\varphi(\nu)$. Ne s'agit-il pas de la même norme ?
+  \item Pouvez-vous confirmer que la notation $R_{1,\tau}$ pour le \textbf{premier} ordre du développement limité de $R_{\tau}$ ne désigne pas forcément l'ordre \textbf{1 (un)}? Et qu'il s'agit en fait du degré du monôme de plus faible degré dans le développement limité de $R_{\tau}$?
+  \item Ensuite, \citeauthor{balasoiu2020halthesis} dit que la fonctionnelle $R_{1,tau}$ est \textbf{quadratique}. En regardant l'expression obtenue en fonction de $e(u)$, je peux voire le caractère quadratique en fonction de $\nabla u$, mais pas en fonction de $u$. En plus, je ne vois pas ce que cette assertion apporte à la démonstration, surtout que l'existence d'un développement en série entière pour $R_{2,\tau}$ repose sur l'hypothèse "\textit{$u$ suffisamment petit}", et donc $\lim_{k \to \infty} R_{2,\tau}(u) = 0$ i.e. (rayon de convergence non nul).
 \end{enumerate}
 
 %----------------------------------------------------------------------------------------
