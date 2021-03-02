@@ -150,7 +150,7 @@
 \title{Compte rendu semaine \#4} % Assignment title
 % \title{Difficultés rencontrées} % Assignment title
 
-\author{Desmond Roussel Nzoyem} % Student name
+\author{Roussel Desmond Nzoyem} % Student name
 
 \date{\DTMdisplaydate{2021}{2}{24}{-1} - \DTMdisplaydate{2021}{3}{2}{-1}} % Due date
 
@@ -171,7 +171,7 @@
 %----------------------------------------------------------------------------------------
 
 
-Cette semaine je continue la lecture de la thèse de D. Balasoiu \parencite{balasoiu2020halthesis}. Comme je l'ai mentionné dans le rapport de la semaine 3, la compréhension est particulièrement difficile. Et je pense qu'il est impératif que je comprenne le Chapitre 3 et ses démonstrations avant d'avancer avec les processus stochastiques. Pour l'instant je suis bloqué à la section 3.2.2, et j'ai besoin d'aide pour avancer.
+Cette semaine j'ai continué la lecture de la thèse de D. Balasoiu \parencite{balasoiu2020halthesis}. Comme je l'ai mentionné dans le rapport de la semaine 3, la compréhension est particulièrement difficile. Au terme de ce premier mois de stage, je commence tout juste la partie sur les processus stochastiques. Je n'ai pas remarqué de pistes supplémentaires à explorer dans le stage.
 
 
 %----------------------------------------------------------------------------------------
@@ -180,10 +180,13 @@ Cette semaine je continue la lecture de la thèse de D. Balasoiu \parencite{bala
 
 \section{Tâches effectuées}
 
+\textit{Dans l'ordre chronologique, voici les taches que j'ai effectuées :}
 \begin{enumerate}
-  \item Continuation de lecture du chapitre 3 de \parencite{balasoiu2020halthesis}.
-  \item Lecture des annexes de la thèse.
-  \item Relecture (rapide) des chapitres précédents. 
+  \item Lecture du chapitre 3, et "démonstration" de la proposition 3.3.1 \parencite[p.93]{balasoiu2020halthesis}.
+  \item Lecture des annexes de la thèse \parencite{balasoiu2020halthesis}.
+  \item Relecture (rapide) des chapitres 1 et 2 \parencite{balasoiu2020halthesis}.
+  \item Lecture du chapitre 4 (sans vraiment comprendre). Plusieurs outils de \textbf{théorie de la mesure}, de \textbf{probabilité appliquée}, de \textbf{géométrie stochastique}, \textbf{etc}. sont nécessaires pour comprendre. 
+  \item Lecture du chapitre 1 du livre \parencite{chiu2013stochastic} cité à plusieurs reprises dans le chapitre 4 de la thèse \parencite{balasoiu2020halthesis}. 
 \end{enumerate}
 
 %----------------------------------------------------------------------------------------
@@ -192,7 +195,7 @@ Cette semaine je continue la lecture de la thèse de D. Balasoiu \parencite{bala
 
 \section{Difficultés rencontrées}
 
-\textit{Toutes ces questions concernent la proposition 3.3.1 de \parencite[p.93]{balasoiu2020halthesis}.}
+\textit{La majorité de ces questions concernent la proposition 3.3.1 de \parencite[p.93]{balasoiu2020halthesis}.}
 
 \begin{enumerate}
   \item \sout{Comment est orienté le vecteur $e_\nu$ ? Cette quantité apparait pour la première fois au niveau de la définition de l'énergie élastique de torsion \parencite[p.91]{balasoiu2020halthesis}.} 
@@ -211,8 +214,8 @@ Cette semaine je continue la lecture de la thèse de D. Balasoiu \parencite{bala
   \end{figure}
   % \textit{Pouvez-vous aussi confirmer que dans toute la thèse, quand on écrit juste $\nabla \varphi$, il s'agit en effet du gradient au point $\nu$, i.e. $\nabla \varphi(\nu)$?}
   \item Des simples $\vert \cdot \vert$ et des doubles $\Vert \cdot \Vert$ barres sont utilisées pour les normes. Conformément à votre réponse pour la question 2 ci-haut (mercredi), la quantité $\Vert \nabla \varphi \cdot e_{\nu} \Vert$ est un vecteur de $\mathbb{R}^2$, au même titre que $\nu$ ou $\varphi(\nu)$. Ne s'agit-il pas de la même norme ?
-  \item Pouvez-vous confirmer que la notation $R_{1,\tau}$ pour le \textbf{premier} ordre du développement limité de $R_{\tau}$ ne désigne pas forcément l'ordre \textbf{1 (un)}? Et qu'il s'agit en fait du degré du monôme de plus faible degré dans le développement limité de $R_{\tau}$?
-  \item Ensuite, \citeauthor{balasoiu2020halthesis} dit que la fonctionnelle $R_{1,tau}$ est \textbf{quadratique}. En regardant l'expression obtenue en fonction de $e(u)$, je peux voire le caractère quadratique en fonction de $\nabla u$, mais pas en fonction de $u$. En plus, je ne vois pas ce que cette assertion apporte à la démonstration, surtout que l'existence d'un développement en série entière pour $R_{2,\tau}$ repose sur l'hypothèse "\textit{$u$ suffisamment petit}", et donc $\lim_{k \to \infty} R_{2,\tau}(u) = 0$ i.e. (rayon de convergence non nul).
+  \item Pouvez-vous confirmer que la notation $R_{1,\tau}$ pour le \textbf{premier} ordre du développement limité de $R_{\tau}$ ne désigne pas forcément l'ordre \textbf{1 (un)}? Et qu'il s'agit en fait du degré du monôme de plus faible degré dans le développement limité de $R_{\tau}$ ?
+  \item Ensuite, \citeauthor{balasoiu2020halthesis} dit que la fonctionnelle $R_{1,\tau}$ est \textbf{quadratique}. En regardant l'expression obtenue en fonction de $e(u)$, je peux voire le caractère quadratique en fonction de $\nabla u$, mais pas en fonction de $u$. En plus, je ne vois pas ce que cette assertion apporte à la démonstration, surtout que l'existence d'un développement en série entière pour $R_{2,\tau}$ repose sur l'hypothèse "\textit{$u$ suffisamment petit}", et donc $\lim_{k \to \infty} R_{2,\tau}(u) = 0$ i.e. (rayon de convergence non nul).
 \end{enumerate}
 
 %----------------------------------------------------------------------------------------
