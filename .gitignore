@@ -77,3 +77,10 @@ reports/weeks/4/*
 !reports/weeks/4/main.pdf
 !reports/weeks/4/fphw.cls
 
+# Rapport semaine 5
+reports/weeks/5/*
+
+!reports/weeks/5/main.tex
+!reports/weeks/5/main.pdf
+!reports/weeks/5/fphw.cls
+
