@@ -756,11 +756,128 @@ obtenues dans cette suite de processus de maillages. Ce contrôle nous sera util
 
 \subsection{Résultat de quasi-staticité à grande raideur} 
 
-Ce chapitre propose un résultat de quasi-staticité d’un réseau de ressorts percuté par un objet ponctuel lorsque la raideur du système et sa masse totale tendent vers l’infini. Lors de la collision de floes de glaces, la vitesse relative des floes (de l’ordre de grandeur de la dizaine de centimètres par seconde, voir [RWMB09]) est bien inférieure à la vitesse de propagation des ondes élastiques dans la glace (de l’ordre de grandeur de 1800 mètres par seconde pour les
-ondes de cisaillement, voir [Mar+19]). \citeauthor{balasoiu2020halthesis} montrons que, lors de la percussion d’un réseau
-masse-ressort par un objet solide, les effets dynamiques disparaissent lorsque la raideur des ressorts tend vers l’infini. Autrement dit, nous montrons que le réseau limite, de raideur infinie, est à chaque instant dans un état d’équilibre. Plus précisément, nous observerons que le système différentiel qui modélise la percussion s’écrit comme le couplage de deux sous-systèmes. Le premier, dit \textbf{système intérieur} (SI), est à évolution rapide et modélise la propagation des ondes élastiques dans le système masse-ressort. Le second, dit \textbf{système extérieur} (SE), est à évolution lente et modélise la pénétration de l’objet solide dans le système masse-ressorts.
+Ce chapitre propose un résultat de quasi-staticité d’un réseau de ressorts percuté par un objet ponctuel lorsque la raideur du système et sa masse totale tendent vers l’infini. Lors de la collision de floes de glaces, la vitesse relative des floes (de l’ordre de grandeur de la dizaine de centimètres par seconde, voir [RWMB09]) est bien inférieure à la vitesse de propagation des ondes élastiques dans la glace (de l’ordre de grandeur de 1800 mètres par seconde pour les ondes de cisaillement, voir [Mar+19]). \citeauthor{balasoiu2020halthesis} montrons que, lors de la percussion d’un réseau masse-ressort par un objet solide, les effets dynamiques disparaissent lorsque la raideur des ressorts tend vers l’infini. Autrement dit, nous montrons que le réseau limite, de raideur infinie, est à chaque instant dans un état d’équilibre. Plus précisément, nous observerons que le système différentiel qui modélise la percussion s’écrit comme le couplage de deux sous-systèmes. Le premier, dit \textbf{système intérieur} (SI), est à évolution rapide et modélise la propagation des ondes élastiques dans le système masse-ressort. Le second, dit \textbf{système extérieur} (SE), est à évolution lente et modélise la pénétration de l’objet solide dans le système masse-ressorts.
 
+On étudie le phénomène de percussion d’un système masse-ressort de n + 1 particules, chacune de masse $m$, par un objet ponctuel $P$ de masse $M$. Le système masse-ressort utilisé est de constante de raideur $k>0$, et de constante de viscosité $\mu>0$. Soit $\tau \in \mathcal{T} (\Rdeux)$ une triangulation compacte et connexe du plan. En chaque noeud $q \in \tau_0$, on place une masse ponctuelle $m$ (voir \cref{fig:masseressort}). Sur chaque arrête $\omega \in \tau_1$ de $\tau$, on place en parallèle :
+\begin{enumerate}
+    \item un ressort de longueur à l’équilibre $\omega$ et de raideur $k$,\
+    \item un dissipateur visqueux, de viscosité $\mu$.
+\end{enumerate}
+\begin{figure}[!h]
+    \centering
+    \frame{\includegraphics[width=0.5\textwidth]{MasseRessort.png}}
+    \caption{Système élémentaire masse-ressort utilisé.}
+    \label{fig:masseressort}
+\end{figure}
+On suppose qu’à l’instant $t = 0$, le système masse-ressorts est à l’équilibre, et qu’il est percuté par la masse ponctuelle $P$ au point $q_0 \in \partial\tau_0$. On note $v_0$ la vitesse du point $P$ lors
+de la collision. On suppose également que le système $\{q0, P\}$ \textbf{devient inséparable}, de masse $m + M$.
+Sur le maillage $\tau$ , on note $\tau_0$ l’ensemble des noeuds du système. On a donc :
+$$\tau_0 = \{q_0, . . . , q_n \} \,,$$
+où les $q_i$ sont les coordonnées des masses. On rappelle que le système est à l’équilibre au temps $t = 0$. On note $a, b \in \mathcal{M}_{2,n+1} (\Run)$ les vecteurs de positions et vitesses initiales définis
+par :
+$$
+\begin{cases}
+    a = (q_0(0), \ldots, q_n(0)) \,, \\
+    b = (v_0,0,\ldots,0) \,.
+\end{cases}
+$$
+On note de plus $C \in \mathcal{M}_{n+1}(\Run)$ la matrice de connectivité :
+$$
+∀0 \leq i < j \leq n + 1, C_{i,j} = C_{j,i} =
+\begin{cases}
+    1 si q_i \in \mathcal{V}(q_j) \,,
+    0 sinon,
+\end{cases}
+$$
+où $\mathcal{V}(q)$ désigne l’ensemble des voisins de la particule $q \in \tau_0$. On note encore $L_{ij} \in \mathcal{M}_{n+1} (\Run)$ la matrice de longueurs à l’équilibre dont l’expression est déduite de $τ_0$; et $u_{ij}$ le vecteur unitaire (s'il existe) dans la direction de l'arete entre $q_i$ et $q_j$. On obtient le système différentiel suivant en appliquant l'équation d'Euler-Newton sur les moments linéaires, et en exprimant la force de frotement du dispositif visqueux en fonction de $\dot q$ :
+\begin{align} \tag{$E$} \label{eq:e}
+\begin{dcases}
+    \bvec{\ddot{q}}_0 = \sum_{j=0}^{n}C_{0j} \left[  \frac{k}{M+m} \left( \Vert \bvec{q}_j - \bvec{q}_0 \Vert - L_{0j} \right) \bvec{u}_{0j} -\frac{\mu}{M+m} \left\langle \bvec{\dot{q}}_j - \bvec{\dot{q}}_0\,, \bvec{u}_{0j}  \right\rangle  \bvec{u}_{0j}  \right] \,, &\qquad \text{(SE)} \\
+    \bvec{\ddot{q}}_i = \sum_{j=0}^{n}C_{ij} \left[  \frac{k}{m} \left( \Vert \bvec{q}_j - \bvec{q}_i \Vert - L_{ij} \right) \bvec{u}_{ij} -\frac{\mu}{m} \left\langle \bvec{\dot{q}}_j - \bvec{\dot{q}}_i\,, \bvec{u}_{ij}  \right\rangle  \bvec{u}_{ij}  \right] \,, \quad \forall 1 \leq i \leq n \,. &\qquad \text{(SI)}
+\end{dcases}
+\end{align}
 
+D'un point de vue énergétique, on a loi de conservation de l'énergie suivante:
+\begin{align*}
+    \eel(t) + E_{\text{c}}(t) + E_{\text{r}}(t) = E_0
+\end{align*}
+où $\eel(t), E_{\text{c}}$, et $E_{\text{r}}$ désignent respectivement l'énergie élastique du système, l'énergie cinétique, et l'énergie disipée par les frotement visqueux \parencite[p.188]{balasoiu2020halthesis}. $E_0$ désigne l'énergie intiale du système donnée par 
+$$
+E_0 = \frac{1}{2}(M+m)\Vert \bvec{v}_0 \Vert^2 \,.
+$$
+Sous ces hypothèses et ces définitions, \citeauthor{balasoiu2020halthesis} obtient le théorème d'existence globale suivant.
+\begin{theorem}[Existence d'une solution globale] \label{th:solglob}
+    On suppose que les conditions initiales adjointes au système \cref{eq:e} vérifient la condition énergétique :
+    $$
+    E_0 < \frac{k}{4} \left( \inf_{\omega \in \tau_1} \vert \omega \vert \right)^2 \,.
+    $$
+    Alors, le problème de Cauchy est bien posé\footnote{Le système est bien posé si deux particules voisines restent à une distance $c > 0$ l’une de l’autre.} et ses solutions sont globales.
+\end{theorem}
+
+Ensuite, afin d'obtenir un système a grande raideur et de supprimer la perturbations liées à la propagation des ondes élastiques, \citeauthor{balasoiu2020halthesis} introduit une dépendance en $\varepsilon$ des constantes physiques du système : $k_\varepsilon$ , $M_\varepsilon$ et $\mu_\varepsilon$. En posant 
+$$
+k_\varepsilon = \frac{k}{\varepsilon} \,, \quad M_\varepsilon = \frac{M}{\varepsilon^2} \, \quad \mu_\varepsilon = \frac{\mu}{\varepsilon} \,,
+$$
+le système masse-ressort se réecrit :
+\begin{align} \tag{$E_{\varepsilon}$} \label{eq:eeps}
+\begin{dcases}
+    \bvec{\ddot{q}}_0 = \sum_{j=0}^{n}C_{0j} \left[  \frac{k}{M+\varepsilon^2 m} \left( \Vert \bvec{q}_j - \bvec{q}_0 \Vert - L_{0j} \right) \bvec{u}_{0j} - \varepsilon\frac{\mu}{M+\varepsilon^2 m} \left\langle \bvec{\dot{q}}_j - \bvec{\dot{q}}_0\,, \bvec{u}_{0j}  \right\rangle  \bvec{u}_{0j}  \right] \,, \\
+    \varepsilon^2 \bvec{\ddot{q}}_i = \sum_{j=0}^{n}C_{ij} \left[  \frac{k}{m} \left( \Vert \bvec{q}_j - \bvec{q}_i \Vert - L_{ij} \right) \bvec{u}_{ij} - \varepsilon \frac{\mu}{m} \left\langle \bvec{\dot{q}}_j - \bvec{\dot{q}}_i\,, \bvec{u}_{ij}  \right\rangle  \bvec{u}_{ij}  \right] \,, \quad \forall 1 \leq i \leq n \,. 
+\end{dcases}
+\end{align}
+On écrit également le système limite :
+\begin{align} \tag{$E_{lim}$} \label{eq:elim}
+\begin{dcases}
+    \bvec{\ddot{q}}_0 = \sum_{j=0}^{n}C_{0j}  \frac{k}{M} \left( \Vert \bvec{q}_j - \bvec{q}_0 \Vert - L_{0j} \right) \bvec{u}_{0j}  \\
+    \bvec{0} = \sum_{j=0}^{n}C_{ij} \frac{k}{m} \left( \Vert \bvec{q}_j - \bvec{q}_i \Vert - L_{ij} \right) \bvec{u}_{ij} \,, \quad \forall 1 \leq i \leq n \,.
+\end{dcases}
+\end{align}
+Ce problème est un problème de perturbation singulière, pour lequel \citeauthor{balasoiu2020halthesis} prouve le théorème de limite quasi-statique ci-bas (en se servant principalement du théorème classique de A.N.Tikhonov [Tik52 ; Hop66]).
+\begin{theorem}[Limite quasi-statique]
+    Les solutions $ \bvec q_\varepsilon$ et $\bvec q$ respectivement des systèmes perturbé \cref{eq:eeps} et limite \cref{eq:elim} munis des conditions initales\footnote{Des conditions initiales satisfaisant le \cref{th:solglob}.} existent, sont uniques, et globales.
+    De plus, on a :
+    $$
+    \lim_{\varepsilon \rightarrow 0} \bvec q_{\varepsilon}(t) = \bvec q(t) \,, \quad \forall t \in \mathbb{R}^+ \,.
+    $$
+\end{theorem}
+
+Du point de vue numérique, les simulations ont permis de comprendre l’influence des différents paramètres physiques présents (masse des deux objets, raideur des ressorts, vitesse d’impact ...). De plus, le code Python et HTML/CSS developpé fournira une bonne base pour analyser la localisation des vecteurs propres du système dynamique et identifier ceux qui agissent sur un déplacement du bord. Le principal résultat numérique utilisé est le suivant. À $\varepsilon > 0$ fixé, on note $(\lambda_i (\varepsilon))i \in \{0,...,4n+3\}$ les valeurs propres de l’opérateur associé à la linéarisation du système \cref{eq:eeps} autour de sa position d’équilibre, et on les ordonne ainsi:
+$$
+0 \geq \mathfrak{R}(\lambda_8(\varepsilon)) \geq \mathfrak{R}(\lambda_9(\varepsilon)) \geq \ldots \geq \mathfrak{R}(\lambda_{4n+3}(\varepsilon)) \,.
+$$
+Nous définissons le saut spectral νε associé au système \cref{eq:eeps} de la manière suivante :
+$$
+\nu_{\varepsilon} = \frac{\mathfrak{R}(\lambda_{12}(\varepsilon))}{\mathfrak{R}(\lambda_{11}(\varepsilon))} \,.
+$$
+Ce saut représente l’écart entre les quatre premières valeurs propres non nulles du système, qui correspondent au système lent (SE), et la première valeur propre du système rapide (SI). Après avoir tracé le saut spectral $\nu_{\epsilon}$ pour différentes triangulations $\tau$ (cf. \cref{fig:res3} pour un exemple), \citeauthor{balasoiu2020halthesis} constate qu'il s'agit de droites dont la pentes ne dépendent ni du tirage, ni de l’intensité du processus de Poisson-Delaunay. Il propose donc l’expression suivante pour $\nu_{\varepsilon}$ :
+$$
+\ln(\nu_{\varepsilon}) = a_0(\tau) + \alpha \ln(\varepsilon) \,,
+$$
+avec $a_0 (\tau)$ une quantité qui dépend du maillage $\tau$, et $\alpha$ une constante universelle, indépen-
+dante de $\tau$ et $\varepsilon$ numériquement estimée à la valeur :
+$$\alpha = −2 \pm 10^{−3} \,.$$
+La figure 6.4 ci-dessous ont été obtenue, pour un processus de Poisson-Delaunay d’intensité $500 000$, l’histogramme de la valeur de $a_0$ associée sur $1 000$ tirages (cf.\cref{fig:res2}).
+\begin{figure}[H]
+    \centering
+    \begin{subfigure}{0.29\textwidth}
+        \includegraphics[width=\textwidth]{Res3.png}
+        \caption{Saut spectral en fonction de la perturbation, en échelle log-log, sur dix tirages d’un processus de Poisson-Delaunay d’intensité $1000$.}
+        \label{fig:res3}
+    \end{subfigure}
+    \begin{subfigure}{0.3\textwidth}
+        \includegraphics[width=\textwidth]{Res1.png}
+        \caption{Histogrammes du paramètre $a_0$, sur $10 000$ tirages d’un processus de Poisson-Delaunay d’intensité $2500$.}
+    \end{subfigure}
+    \begin{subfigure}{0.3\textwidth}
+        \includegraphics[width=\textwidth]{Res2.png}
+        \caption{Histogramme du paramètre $a_0$ sur $1 000$ tirages d’un processus de Poisson-Delaunay d’intensité $500 000$}
+        \label{fig:res2}
+    \end{subfigure}
+    % \decoRule
+    \caption{Principaux résultats numériques obtenus \parencite[p.199]{balasoiu2020halthesis}.}
+\end{figure}
+\noindent Ces résultats semblent indiquer, à grande échelle au moins, que $a_0(\tau)$ prend ses valeurs entre $0.9$ et $2.5$. Nous observons également l’émergence de deux pics pour certaines
+intensités. Il semblerait que le pic de valeur moyenne la plus faible gagne en fréquence de représentation, jusqu’à concentrer la quasi-totalité des cas pour l’intensité de $500 000$.
 
 
 

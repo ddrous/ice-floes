@@ -412,7 +412,9 @@ KOMA-script documentation for details.}]{fancyhdr}
 %----------------------------------------------------------------------------------------
 
 \usepackage{xcolor}
+\colorlet{mdtRed}{red!85!black}
 \colorlet{mdtGreen}{green!40!black}
+\colorlet{mdtBlue}{blue!90!black}
 \newcommand{\acknowledgementname}{Remerciements}
 \providecaptionname{american,australian,british,canadian,english,newzealand,UKenglish,USenglish} {\acknowledgementname}{Acknowledgements} % Acknowledgement text for English countries
 \providecaptionname{german,ngerman,austrian,naustrian}{\acknowledgementname}{Danksagung} % Acknowledgement text for Germanic countries
@@ -526,8 +528,8 @@ bookmarksopen=true,
 bookmarksopenlevel=0,
 hypertexnames=false,
 colorlinks=true,% Set to false to disable coloring links
-citecolor=magenta,% The color of citations
-linkcolor=purple,% The color of references to document elements (sections, figures, etc)
+citecolor=mdtBlue,% The color of citations
+linkcolor=mdtRed,% The color of references to document elements (sections, figures, etc)
 urlcolor=mdtGreen,% The color of hyperlinks (URLs)
 pdfstartview={FitV},
 unicode,

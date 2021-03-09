@@ -37,7 +37,8 @@ openany, %% Use this option to make chapters start on the next page, irrespectiv
 
 \graphicspath{ {./Figures/} } %% To load all images in this document from the Figures directory
 \DeclareGraphicsExtensions{.pdf,.png}  %% Use to this to set the priority for extensions leading
-\usepackage[font=small,labelfont=bf]{caption}
+\usepackage[font=sf,labelfont=bf]{caption}
+\usepackage[font=sf]{floatrow}  %% For other floet content
 % \captionsetup[figure]{font=it}
 \usepackage{subcaption} %% Use to make subgraphics
 \usepackage{float} %% Use this to control where the images are placed compared to thier related text
@@ -100,6 +101,7 @@ openany, %% Use this option to make chapters start on the next page, irrespectiv
 \newcommand{\wadm}{W_{\text{adm}}}
 
 \newtheorem{theorem}{Theorem}
+\numberwithin{theorem}{section}  %% Pour numeroter par section
 
 %----------------------------------------------------------------------------------------
 %	MARGIN SETTINGS
@@ -124,7 +126,7 @@ openany, %% Use this option to make chapters start on the next page, irrespectiv
 \supervisor{\href{http://mduprez.perso.math.cnrs.fr/}{Stéphane \textsc{Labbé}}} % Your supervisor's name, this is used in the title page, print it elsewhere with \supname
 \examiner{Christophe \textsc{Prud'homme}} % Your examiner's name, this is not currently used anywhere in the template, print it elsewhere with \examname
 \degree{master 2 CSMI} % Your degree name, this is used in the title page and abstract, print it elsewhere with \degreename
-\author{Desmond Roussel \textsc{Nzoyem}} % Your name, this is used in the title page and abstract, print it elsewhere with \authorname
+\author{Roussel Desmond \textsc{Nzoyem}} % Your name, this is used in the title page and abstract, print it elsewhere with \authorname
 \addresses{} % Your address, this is not currently used anywhere in the template, print it elsewhere with \addressname
 
 \subject{Mathématiques appliquées} % Your subject area, this is not currently used anywhere in the template, print it elsewhere with \subjectname
