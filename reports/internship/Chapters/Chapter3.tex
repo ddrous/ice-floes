@@ -6,7 +6,7 @@
 \label{Chapter3} % For referencing the chapter elsewhere, use \ref{Chapter3} 
 
 
-% %----------------------------------------------------------------------------------------
+% %%----------------------------------------------------------------------------------------
 
 % \section{Position du problème}
 % \label{sec:position}
@@ -100,7 +100,7 @@
 % \end{figure}
 
 
-% %----------------------------------------------------------------------------------------
+% %%----------------------------------------------------------------------------------------
 
 % \section{Résumé de thèse de M. Rabatel}
 
@@ -474,261 +474,258 @@
 %     \item Les vitesses obtenues après la phase de décompression afin d'assurer la dissipation de l'énergie cinétique possèdent une faiblesse : elles ne sont solutions que sous certaines conditions, comme le fait que les chocs soient frontaux et qu’il n’y ait pas d’apport des forces extérieures autres que les forces de contact durant la collision \parencite[p.41]{rabatel2015thesis}.
 % \end{enumerate}
 
-% %----------------------------------------------------------------------------------------
 
 
+% \section{Résumé de thèse de D. Balasoiu}
 
-%----------------------------------------------------------------------------------------
+% Les travaux de D. Balasoiu concernent la modélisation et la simulation du comportement mécanique de floes de glace \parencite{balasoiu2020thesis}. Il s'agit d'une amélioration des travaux de M. Rabatel, S. Labbé, et J. Weiss \parencite{rabatel2015thesis,rabatel2015dynamics} prenant en compte la fracture des floes. Précisément, ce travail se focalise sur l’initiation de la fracture, ainsi que la prédiction du chemin que la fracture emprunte. Jusqu’à présent, les floes étaient considérés comme des corps rigides ; dans sa thèse, \citeauthor{balasoiu2020thesis} les considère comme des corps élastiques. Son travail est divisé en deux parties. Il commence par proposer un modèle efficace pour la fracture fragile d’un floe de glace, lorsque celui-ci est soumis à un déplacement de son bord (i.e. à une condition au bord de type Dirichlet). Puis, dans un second temps, il cherche à obtenir l’expression du déplacement au bord d’un floe qui percute un autre floe ou une structure solide.
 
-\section{Résumé de thèse de D. Balasoiu}
-
-Les travaux de D. Balasoiu concernent la modélisation et la simulation du comportement mécanique de floes de glace \parencite{balasoiu2020thesis}. Il s'agit d'une amélioration des travaux de M. Rabatel, S. Labbé, et J. Weiss \parencite{rabatel2015thesis,rabatel2015dynamics} prenant en compte la fracture des floes. Précisément, ce travail se focalise sur l’initiation de la fracture, ainsi que la prédiction du chemin que la fracture emprunte. Jusqu’à présent, les floes étaient considérés comme des corps rigides ; dans sa thèse, \citeauthor{balasoiu2020thesis} les considère comme des corps élastiques. Son travail est divisé en deux parties. Il commence par proposer un modèle efficace pour la fracture fragile d’un floe de glace, lorsque celui-ci est soumis à un déplacement de son bord (i.e. à une condition au bord de type Dirichlet). Puis, dans un second temps, il cherche à obtenir l’expression du déplacement au bord d’un floe qui percute un autre floe ou une structure solide.
-
-\subsection{Théorie de la fracture : état de l’art} 
+% \subsection{Théorie de la fracture : état de l’art} 
  
-La théorie de fracture la plus répandue de nos jours est due à A.A. Griffith. Dans ses travaux[Gri21], in invalide les résultats que C. Inglis [Ing13] qui ne tenaient pas en compte la taille de la fracture ; il présente donc la croissance d'une faille comme une compétition d'énergie entre l'énergie élastique\footnote{Énergie relâchée lorsqu’un défaut subit un accroissement. Cette énergie diminue durant la fracture.} et l'énergie de surface\footnote{Énergie nécessaire à la création des deux nouvelles surfaces – les bords de la fissure. Cette énergie augmente avec l'accroissement de la fracture.}. 
+% La théorie de fracture la plus répandue de nos jours est due à A.A. Griffith. Dans ses travaux[Gri21], in invalide les résultats que C. Inglis [Ing13] qui ne tenaient pas en compte la taille de la fracture ; il présente donc la croissance d'une faille comme une compétition d'énergie entre l'énergie élastique\footnote{Énergie relâchée lorsqu’un défaut subit un accroissement. Cette énergie diminue durant la fracture.} et l'énergie de surface\footnote{Énergie nécessaire à la création des deux nouvelles surfaces – les bords de la fissure. Cette énergie augmente avec l'accroissement de la fracture.}. 
 
-Le critère de Griffith est un critère thermodynamique qui stipule que la fracture progresse si et seulement si cela permet au matériau d’atteindre un état de moindre énergie. En effet, sur un matériau élastique $\Omega$ dont la frontière est subdivisée en deux zones $\partial \Omega_D$, et $\partial \Omega_N$, on pose \parencite[p.31]{balasoiu2020thesis} :
-\begin{align*}
-    E_{el} &= \int_{\Omega} W (x, e(u)) \diff x     \\
-    \mathcal{P}(t,\sigma(t)) &= \int_{\Omega \backslash \sigma(t) } W (x, \nabla\varphi (t, \sigma(t))) \diff x - \mathcal{F}(t,\sigma(t)) \\
-    \mathcal{F}(t,\sigma(t)) &= \int_{\Omega} f_v (x)\cdot \varphi \diff x + \int_{\partial\Omega_N} f_s (x) \cdot \varphi \diff x
-\end{align*}
-où 
-\begin{itemize}
-    \item $E_{el}$ est l'énergie élastique du matériau sans faille.
-    \item $\sigma(t)$ représente la fracture au temps $t$, supposée à l'équilibre.
-    \item $\mathcal{P}$ l’énergie potentielle du matériau qui possède une fracture de taille $\sigma(t)$ au temps $t$.
-    \item $e(u)$ est le tenseur de Green-St Venant, qui représente la déformation locale du matériau.
-    \item $\varphi = \identity + u$ représente le déplacement du matériau supposé suffisamment régulier.
-    \item $W$ est la densité d’énergie du matériau élastique, supposé hyper-élastique.
-    \item $f_s$ est la contrainte surfacique appliquée sur le bord $\partial \Omega_N$.
-    \item $f_v$ est le champ de force volumique appliquée sur $\Omega$.
-\end{itemize}
-D'après le critère de Griffith \parencite[p.32]{balasoiu2020thesis}, la fonction $\sigma(t)$ doit vérifier :
-\begin{enumerate}
-    \item $\dfrac{\diff \sigma(t)}{\diff t} \geq 0$ ;
-    \item $-\dfrac{\diff \mathcal{P}}{\diff \sigma} (t,\sigma(t)) \leq k$ ;
-    \item $\dfrac{\diff \sigma(t)}{\diff t} > 0 \Rightarrow -\dfrac{\diff \mathcal{P}}{\diff \sigma} (t,\sigma(t)) = k$.
-\end{enumerate}
+% Le critère de Griffith est un critère thermodynamique qui stipule que la fracture progresse si et seulement si cela permet au matériau d’atteindre un état de moindre énergie. En effet, sur un matériau élastique $\Omega$ dont la frontière est subdivisée en deux zones $\partial \Omega_D$, et $\partial \Omega_N$, on pose \parencite[p.31]{balasoiu2020thesis} :
+% \begin{align*}
+%     E_{el} &= \int_{\Omega} W (x, e(u)) \diff x     \\
+%     \mathcal{P}(t,\sigma(t)) &= \int_{\Omega \backslash \sigma(t) } W (x, \nabla\varphi (t, \sigma(t))) \diff x - \mathcal{F}(t,\sigma(t)) \\
+%     \mathcal{F}(t,\sigma(t)) &= \int_{\Omega} f_v (x)\cdot \varphi \diff x + \int_{\partial\Omega_N} f_s (x) \cdot \varphi \diff x
+% \end{align*}
+% où 
+% \begin{itemize}
+%     \item $E_{el}$ est l'énergie élastique du matériau sans faille.
+%     \item $\sigma(t)$ représente la fracture au temps $t$, supposée à l'équilibre.
+%     \item $\mathcal{P}$ l’énergie potentielle du matériau qui possède une fracture de taille $\sigma(t)$ au temps $t$.
+%     \item $e(u)$ est le tenseur de Green-St Venant, qui représente la déformation locale du matériau.
+%     \item $\varphi = \identity + u$ représente le déplacement du matériau supposé suffisamment régulier.
+%     \item $W$ est la densité d’énergie du matériau élastique, supposé hyper-élastique.
+%     \item $f_s$ est la contrainte surfacique appliquée sur le bord $\partial \Omega_N$.
+%     \item $f_v$ est le champ de force volumique appliquée sur $\Omega$.
+% \end{itemize}
+% D'après le critère de Griffith \parencite[p.32]{balasoiu2020thesis}, la fonction $\sigma(t)$ doit vérifier :
+% \begin{enumerate}
+%     \item $\dfrac{\diff \sigma(t)}{\diff t} \geq 0$ ;
+%     \item $-\dfrac{\diff \mathcal{P}}{\diff \sigma} (t,\sigma(t)) \leq k$ ;
+%     \item $\dfrac{\diff \sigma(t)}{\diff t} > 0 \Rightarrow -\dfrac{\diff \mathcal{P}}{\diff \sigma} (t,\sigma(t)) = k$.
+% \end{enumerate}
 
-\begin{figure}[!ht]
-    \centering
-    \includegraphics[width=.8\textwidth]{Griffith.png}
-    \caption{Illustration du critère de Griffith \parencite{gross2017fracture}. ($\Pi$ et $\Gamma$ représentent les énergies potentielles et de fracture respectivement. \textit{Cette figure est à refaire manuellement !})}
-    \label{fig:Griffith}
-\end{figure}
-Une illustration de ce critère peut être observée à la \cref{fig:Griffith}. Comme mentionné plus haut, ce modèle souffre de problèmes de nucléation et de prédiction de la fracture. Pour contourner le problème de nucléation, les mécaniciens considèrent que tout matériau possède des microfissures, et ce sont ces dernières qui sont à l'origine des fissures observables à l'\oe{}il. Quant au problème du chemin emprunté par la fracture, A. Chambolle, G. Francfort et J.-J. Marigo [CFM09] montrent que les critères d'Irwin [Irw57] sont invalides car, ils impliquent que, dans un matériau homogène et isotrope, le chemin de la fracture ne peut être courbé.
+% \begin{figure}[!ht]
+%     \centering
+%     \includegraphics[width=.8\textwidth]{Griffith.png}
+%     \caption{Illustration du critère de Griffith \parencite{gross2017fracture}. ($\Pi$ et $\Gamma$ représentent les énergies potentielles et de fracture respectivement. \textit{Cette figure est à refaire manuellement !})}
+%     \label{fig:Griffith}
+% \end{figure}
+% Une illustration de ce critère peut être observée à la \cref{fig:Griffith}. Comme mentionné plus haut, ce modèle souffre de problèmes de nucléation et de prédiction de la fracture. Pour contourner le problème de nucléation, les mécaniciens considèrent que tout matériau possède des microfissures, et ce sont ces dernières qui sont à l'origine des fissures observables à l'\oe{}il. Quant au problème du chemin emprunté par la fracture, A. Chambolle, G. Francfort et J.-J. Marigo [CFM09] montrent que les critères d'Irwin [Irw57] sont invalides car, ils impliquent que, dans un matériau homogène et isotrope, le chemin de la fracture ne peut être courbé.
 
-Le modèle proposé par Francfort et Marigo [FM98], suit un résultat théorique dû à De Giorgi, M. Carriero et A. Leaci [DCL89], qui prouvent le théorème d’existence d'un minimum pour la fonctionnelle de Mumford-Shah qui intervient dans la détection des contours d’une image. Présentons les données géométriques du problème \parencite[p.35]{balasoiu2020thesis}. Soit $\Omega \subset \mathbb{R}^N$ un ouvert connexe, dont la frontière $\partial \Omega$ est suffisamment lisse. On partitionne sa frontière :
-$$
-\partial \Omega = \partial \Omega_D \cup  \partial \Omega_N \,,
-$$
-où $\partial \Omega_D$ et $\partial \Omega_N$ sont les bords où l’on applique respectivement des conditions de Dirichlet et de Neumann. Sur la partie Dirichlet, on applique un déplacement du bord noté $U_D$, tandis que l’on laisse libre la partie de Neumann. On suppose également que le matériau est soumis à un champ de force volumique $f_v$. On suppose que $\Omega$ est un matériau hyper-élastique, dont la densité d’énergie est notée $W$. Ainsi, lorsque le matériau $\Omega$ subit (sans fracture) une déformation $\varphi = u + \identity$ suffisamment lisse, son énergie élastique vaut :
-$$
-\eel(u) = \int_{\Omega} W(x,e(u)) \diff x \,,
-$$
-où l’on a noté $u$ le champ de déplacement du matériau, et $e(u)$ son gradient symétrisé. On notera l’énergie élastique du matériau qui présente une fracture $\sigma$ :
-$$
-\eel(u,\sigma) = \inf_{u\in V_{U_D, \sigma}}{\int_{\Omega \backslash \sigma} W(x,e(u)) \diff x} \,,
-$$
-où l’on a défini l’espace fonctionnel $V_{U_D,\sigma}$ ,σ par :
-$$
-V_{U_D,\sigma} = \left\{ u \in H^1(\Omega \backslash \sigma, \mathbb{R}^N) \, \rvert \, u = U_D \text{ sur } \partial \Omega_D \right\} \,.
-$$
-Francfort et Marigo proposent l’énergie de fracture suivante sur $\partial \Omega_D$ :
-$$
-\efrac(\sigma) = \int_{\sigma} k(x) \diff \mathcal{H}^{N-1} \,,
-$$
-où le champ scalaire $k(x)$ traduit la rigidité du matériau, et est supposée strictement positive sur tout le matériau ; $\mathcal{H}^{N-1}$ représente la mesure de Haussdorf de dimension $N-1$, qui peut être comprise comme la longueur du contour pour $N=2$.
+% Le modèle proposé par Francfort et Marigo [FM98], suit un résultat théorique dû à De Giorgi, M. Carriero et A. Leaci [DCL89], qui prouvent le théorème d’existence d'un minimum pour la fonctionnelle de Mumford-Shah qui intervient dans la détection des contours d’une image. Présentons les données géométriques du problème \parencite[p.35]{balasoiu2020thesis}. Soit $\Omega \subset \mathbb{R}^N$ un ouvert connexe, dont la frontière $\partial \Omega$ est suffisamment lisse. On partitionne sa frontière :
+% $$
+% \partial \Omega = \partial \Omega_D \cup  \partial \Omega_N \,,
+% $$
+% où $\partial \Omega_D$ et $\partial \Omega_N$ sont les bords où l’on applique respectivement des conditions de Dirichlet et de Neumann. Sur la partie Dirichlet, on applique un déplacement du bord noté $U_D$, tandis que l’on laisse libre la partie de Neumann. On suppose également que le matériau est soumis à un champ de force volumique $f_v$. On suppose que $\Omega$ est un matériau hyper-élastique, dont la densité d’énergie est notée $W$. Ainsi, lorsque le matériau $\Omega$ subit (sans fracture) une déformation $\varphi = u + \identity$ suffisamment lisse, son énergie élastique vaut :
+% $$
+% \eel(u) = \int_{\Omega} W(x,e(u)) \diff x \,,
+% $$
+% où l’on a noté $u$ le champ de déplacement du matériau, et $e(u)$ son gradient symétrisé. On notera l’énergie élastique du matériau qui présente une fracture $\sigma$ :
+% $$
+% \eel(u,\sigma) = \inf_{u\in V_{U_D, \sigma}}{\int_{\Omega \backslash \sigma} W(x,e(u)) \diff x} \,,
+% $$
+% où l’on a défini l’espace fonctionnel $V_{U_D,\sigma}$ ,σ par :
+% $$
+% V_{U_D,\sigma} = \left\{ u \in H^1(\Omega \backslash \sigma, \mathbb{R}^N) \, \rvert \, u = U_D \text{ sur } \partial \Omega_D \right\} \,.
+% $$
+% Francfort et Marigo proposent l’énergie de fracture suivante sur $\partial \Omega_D$ :
+% $$
+% \efrac(\sigma) = \int_{\sigma} k(x) \diff \mathcal{H}^{N-1} \,,
+% $$
+% où le champ scalaire $k(x)$ traduit la rigidité du matériau, et est supposée strictement positive sur tout le matériau ; $\mathcal{H}^{N-1}$ représente la mesure de Haussdorf de dimension $N-1$, qui peut être comprise comme la longueur du contour pour $N=2$.
 
-Ainsi, l’énergie totale du matériau vaut :
-\begin{align*}
-\etot(u,\sigma) &= \eel(u,\sigma) + \efrac(\sigma) \\
-&= \int_{\Omega \backslash \sigma} W(x,e(u)) \diff x + \int_{\sigma} k(x) \diff \mathcal{H}^{N-1} \,,
-\end{align*}
-où $\sigma$ est une union dénombrable d'ensembles rectifiables. Ainsi donc, une solution du problème de fracture est un minimum de la fonctionnelle $\etot$. Signalons que \citeauthor{balasoiu2020thesis} montre, dans le cas d'un mouvement antiplan\footnote{Un mouvement \textbf{antiplan} est mouvement pour lequel le champ de déplacement $u$ est porté par un vecteur constant.}, que le modèle est quasiment identique au modèle de De Giorgi, M. Carriero et A. Leaci, pour lequel un théorème d'existence a pu être exhibé.
+% Ainsi, l’énergie totale du matériau vaut :
+% \begin{align*}
+% \etot(u,\sigma) &= \eel(u,\sigma) + \efrac(\sigma) \\
+% &= \int_{\Omega \backslash \sigma} W(x,e(u)) \diff x + \int_{\sigma} k(x) \diff \mathcal{H}^{N-1} \,,
+% \end{align*}
+% où $\sigma$ est une union dénombrable d'ensembles rectifiables. Ainsi donc, une solution du problème de fracture est un minimum de la fonctionnelle $\etot$. Signalons que \citeauthor{balasoiu2020thesis} montre, dans le cas d'un mouvement antiplan\footnote{Un mouvement \textbf{antiplan} est mouvement pour lequel le champ de déplacement $u$ est porté par un vecteur constant.}, que le modèle est quasiment identique au modèle de De Giorgi, M. Carriero et A. Leaci, pour lequel un théorème d'existence a pu être exhibé.
 
-La méthode numérique employée est la méthode à champ de phases. Elle repose sur la notion de $\Gamma$-convergence, en particulier sur le résultat de \textbf{convergence des minimums}. On remplace l'inconnue $\sigma$ par une suite de fonctions lisses $v_\varepsilon$ [AT90]. Par exemple, dans le cas du traitement d'image, pour la fonctionnelle de Mumford-Shah dont se sont inspiré Bourdin, Francfort et Marigo, on constate d'après Ambrosio et Tortorelli [AT90] que la suite de fonctionnelle
-$$
-G_{\varepsilon}() = \int_{\Omega} \left( \vert u-g \vert^2 + (v^2 + \eta_{\varepsilon}) \vert \nabla u \vert^2 + \varepsilon \vert \nabla v \vert^2 + \frac{(v-1)^2}{4\varepsilon} \right) \diff x \,,
-$$
-$\Gamma$-converge vers la fonctionnelle limite 
-$$
-G_f = \int_{\Omega} \vert u-g \vert^2 + \vert \nabla u \vert^2 \diff x + \mathcal{H}^{N-1}(S_u) \,,
-$$
-où $g:\Omega \mapsto [0,1]$ est la fonction de contraste de l’image, et $\mathcal{H}^{N-1}(S_u)$ est la restriction de la mesure de Hausdorff à l’ensemble des sauts de $u$, noté $S_u$, qui est un ensemble mesurable et composé d’une union dénombrable d’ensembles rectifiables \parencite[pp.33-35]{balasoiu2020thesis}.
+% La méthode numérique employée est la méthode à champ de phases. Elle repose sur la notion de $\Gamma$-convergence, en particulier sur le résultat de \textbf{convergence des minimums}. On remplace l'inconnue $\sigma$ par une suite de fonctions lisses $v_\varepsilon$ [AT90]. Par exemple, dans le cas du traitement d'image, pour la fonctionnelle de Mumford-Shah dont se sont inspiré Bourdin, Francfort et Marigo, on constate d'après Ambrosio et Tortorelli [AT90] que la suite de fonctionnelle
+% $$
+% G_{\varepsilon}() = \int_{\Omega} \left( \vert u-g \vert^2 + (v^2 + \eta_{\varepsilon}) \vert \nabla u \vert^2 + \varepsilon \vert \nabla v \vert^2 + \frac{(v-1)^2}{4\varepsilon} \right) \diff x \,,
+% $$
+% $\Gamma$-converge vers la fonctionnelle limite 
+% $$
+% G_f = \int_{\Omega} \vert u-g \vert^2 + \vert \nabla u \vert^2 \diff x + \mathcal{H}^{N-1}(S_u) \,,
+% $$
+% où $g:\Omega \mapsto [0,1]$ est la fonction de contraste de l’image, et $\mathcal{H}^{N-1}(S_u)$ est la restriction de la mesure de Hausdorff à l’ensemble des sauts de $u$, noté $S_u$, qui est un ensemble mesurable et composé d’une union dénombrable d’ensembles rectifiables \parencite[pp.33-35]{balasoiu2020thesis}.
 
-Plusieurs études numériques reposant sur ce résultat de $\Gamma$-convergence sont disponibles dans la littérature. On cite par exemple ici les résultats obtenus dans [Nag+19] à la \cref{fig:PhaseField}.
+% Plusieurs études numériques reposant sur ce résultat de $\Gamma$-convergence sont disponibles dans la littérature. On cite par exemple ici les résultats obtenus dans [Nag+19] à la \cref{fig:PhaseField}.
 
-\begin{figure}[!ht]
-    \centering
-    \begin{subfigure}[b]{0.9\textwidth}
-        \centering
-        \includegraphics[width=\textwidth]{PhaseField1.png} 
-        \caption{Croissance d’une fracture}
-        \label{fig:PhaseField1}
-    \end{subfigure}
-    \begin{subfigure}[b]{0.9\textwidth}
-        \centering
-        \includegraphics[width=\textwidth]{PhaseField2.png} 
-        \caption{Bifurcation d’une fracture}
-        \label{fig:PhaseField2}
-    \end{subfigure}
-    \begin{subfigure}[b]{0.9\textwidth}
-        \centering
-        \includegraphics[width=\textwidth]{PhaseField3.png} 
-        \caption{Branchement d’une fracture}
-        \label{fig:PhaseField3}
-    \end{subfigure}
-       \caption{Trois résultats numériques obtenus dans [Nag+19] à l'aide d'une discrétisation éléments finis (hp-FEM) et volumes finis en ne remaillant le domaine que lorsque c'est nécessaire.}
-       \label{fig:PhaseField}
-\end{figure}
-
-
-\subsection{Un modèle de fracture variationnel et efficace} 
-
-Le modèle présenté dans la section précédente n'est pas adapté à notre étude. \citeauthor{balasoiu2020thesis} a donc développé un modèle qui ne nécessite pas de fonctionnelle lissée, comme l'on fait plusieurs modèles de glaciologie (voir [LLL15]), en supposant que les fractures sont des segments. Un résultat d'existence (dans les cas où le floe n'est pas encore fracturé) est prouvé à l'aide de la convergence de Mosco. De plus, \citeauthor{balasoiu2020thesis} introduit un problème d’évolution quasi-statique en appliquant progressivement la condition de Dirichlet sur une partie du bord du floe. Les fractures obtenues par ce problème d’évolution sont ainsi des lignes brisées. Le résultat d'existence n'a pas été prouvé pour ce cas. Concernant le côté numérique, une méthode \textit{meshless}\footnote{Car l’ensemble discrétisé des fractures admissibles ne dépend pas du maillage utilisé.} est proposée.
-
-Les modifications apportées pour traiter le modèle statique (dans $\Rdeux$) sont décrites ci-bas. Lorsqu'on fixe la fracture $\sigma$, l'énergie élastique prend la forme :
-\begin{align*}
-\eel (\cdot,\sigma): \, A_{\sigma} &\rightarrow \mathbb{R} \\
-u &\mapsto \int_{\Omega \backslash \sigma} Ae(u) : e(u) \diff x \,,
-\end{align*}
-où $A$ représente le tenseur de Lamé du matériau, i.e.
-$$
-    \forall e \in M_2{\mathbb{R}}, \quad Ae = \lambda \text{ tr }(e)I_2 + 2\mu e \,,
-$$ 
-où $\lambda$ et $\mu$ sont les coefficients de Lamé du matériau ; et l'ensemble des déplacements admissibles $A_{\sigma}$ est :
-$$
-A_{\sigma} = \left\{  u \in H^1(\Omega \backslash \sigma \, \mathbb{R}^2) \, \rvert \, u=U_D \text{ sur } \partial \Omega_D \backslash \sigma \text{ et } (u^+ - u^{-}) \cdot \nu \text{ sur } \sigma \right\} \,,
-$$
-avec $u^{+}$ et $u^{−}$ les restrictions de $u$ aux régions $\Omega^{+}$ et $\Omega^{-}$ respectivement (obtenues par extension de la fracture $\sigma$ de façon à ce qu'elle soit traversante \parencite[p.50]{balasoiu2020thesis}). $\nu$ (normale à la fracture orientée du bord vers le centre de $\Omega$) et $−\nu$. On note la présence d'une condition de type Signorini :
-$$
-(u^+ - u^{-}) \cdot \nu \geq 0 \text{  sur  } \sigma
-$$
-L'énergie totale s'écrit
-\begin{align*}
-\etot : \,\bigcup_{\sigma \in \Sigma } A_{\sigma} \times \left\{ \sigma \right\} &\rightarrow \mathbb{R} \\
- u &\mapsto \int_{\Omega \backslash \sigma} Ae(u) : e(u) \diff x + k\mathcal{H}^1(\sigma)\,,
-\end{align*}
-où $\Sigma$ représenté l'ensemble les segments orientés partant de la frontière donnée par 
-$$
-\Sigma = \left\{ [a,b] \in \mathbb{R}^2 \, \lvert \, a \in \partial\Omega, b\in \overline{\Omega}, ]a,b[ \in \Omega\right\} \,.
-$$
-Une solution de notre modèle de fracture fragile est un couple $(u, \sigma)$ qui vérifie
-$$
-\etot(u,\sigma) = \min_{\sigma \in \Sigma}{\min_{u\in A_{\sigma}}{\etot(u,\sigma)}} \,.
-$$
-Ensuite, \citeauthor{balasoiu2020thesis} remarque que la solution n'est pas unique. Il définit donc un problème de d'évolution quasi-statique à la manière de [FM98], en considérant un problème de chargement monotone : 
-$$
-U_D(t) = tU_D \,.
-$$
-On note $\overline{\Sigma}$ l’ensemble des lignes brisées de $\Omega$, sans point d’auto-intersection et qui partent de la frontière. On note également $\text{end}(\sigma)$ la fin d’une ligne brisée $\sigma \in  \overline{\Sigma}$.
-On définit maintenant \parencite[p.48]{balasoiu2020thesis}, pour toute ligne brisée $\sigma \in  \overline{\Sigma}$ l’ensemble des fractures admissibles partant de $\sigma$ :
-$$
-\Sigma_{\emptyset} = \Sigma \,, \quad \Sigma_{\sigma} = \left\{ \sigma \cup [a,b] \in \mathbb{R}^2 \, \lvert \, a = \text{end}(\sigma), b\in \overline{\Omega}, ]a,b[ \in \Omega\backslash \sigma \right\} \,.
-$$
-On définit également l'ensemble des déplacements admissibles associées :
-$$
-A_{t,\sigma} = \left\{  u \in H^1(\Omega \backslash \sigma \, \mathbb{R}^2) \, \rvert \, u=tU_D \text{ sur } \partial \Omega_D \backslash \sigma \text{ et } (u^+ - u^{-}) \cdot \nu \text{ sur } \sigma \right\} \,,
-$$
-pour tout $t \in [0,1]$ et pour toute ligne brisée $\sigma$. De ces définitions, on peut en exhiber un problème d'évolution discret, et un problème d'évolution continue en faisant tendre $t$ vers $0$. Le problème d’évolution continue admet des solutions, comme limite de solutions des problèmes d’évolutions discrets [MT02 ; Cha03].
-
-Lorsque la fracture est fixée, \citeauthor{balasoiu2020thesis} prouve l’existence de solutions à notre problème de minimisation, en utilisant la théorie des inégalités variationnelles, l'inégalité de Korn [Cia94], le théorème de Lions-Stampacchia [LS67]. Pour le cas statique, il montre que le problème statique a des solutions lorsque l’ouvert n’est pas encore fracturé, ceci en se servant principalement de la convergence de Mosco. Pour le modèle quasi-statique, un résultat d'existence n'a pas été trouvé, et une conjecture pour une ligne brisée qui possède un point d'auto-intersection a été proposée.
+% \begin{figure}[!ht]
+%     \centering
+%     \begin{subfigure}[b]{0.9\textwidth}
+%         \centering
+%         \includegraphics[width=\textwidth]{PhaseField1.png} 
+%         \caption{Croissance d’une fracture}
+%         \label{fig:PhaseField1}
+%     \end{subfigure}
+%     \begin{subfigure}[b]{0.9\textwidth}
+%         \centering
+%         \includegraphics[width=\textwidth]{PhaseField2.png} 
+%         \caption{Bifurcation d’une fracture}
+%         \label{fig:PhaseField2}
+%     \end{subfigure}
+%     \begin{subfigure}[b]{0.9\textwidth}
+%         \centering
+%         \includegraphics[width=\textwidth]{PhaseField3.png} 
+%         \caption{Branchement d’une fracture}
+%         \label{fig:PhaseField3}
+%     \end{subfigure}
+%        \caption{Trois résultats numériques obtenus dans [Nag+19] à l'aide d'une discrétisation éléments finis (hp-FEM) et volumes finis en ne remaillant le domaine que lorsque c'est nécessaire.}
+%        \label{fig:PhaseField}
+% \end{figure}
 
 
+% \subsection{Un modèle de fracture variationnel et efficace} 
 
-\subsection{Étude asymptotique d’un réseau de ressorts régulier} 
+% Le modèle présenté dans la section précédente n'est pas adapté à notre étude. \citeauthor{balasoiu2020thesis} a donc développé un modèle qui ne nécessite pas de fonctionnelle lissée, comme l'on fait plusieurs modèles de glaciologie (voir [LLL15]), en supposant que les fractures sont des segments. Un résultat d'existence (dans les cas où le floe n'est pas encore fracturé) est prouvé à l'aide de la convergence de Mosco. De plus, \citeauthor{balasoiu2020thesis} introduit un problème d’évolution quasi-statique en appliquant progressivement la condition de Dirichlet sur une partie du bord du floe. Les fractures obtenues par ce problème d’évolution sont ainsi des lignes brisées. Le résultat d'existence n'a pas été prouvé pour ce cas. Concernant le côté numérique, une méthode \textit{meshless}\footnote{Car l’ensemble discrétisé des fractures admissibles ne dépend pas du maillage utilisé.} est proposée.
 
-Dans ce chapitre, \citeauthor{balasoiu2020halthesis} souhaite approcher l’énergie élastique d’un matériau continu par l’énergie élastique d’un réseau de ressorts, dans un cadre statique, lorsque celui-ci est soumis à un déplacement de son bord. Autrement dit, nous ne nous intéressons pas au mouvement des particules, nous n’étudions que l’état d’équilibre du réseau de ressorts.
+% Les modifications apportées pour traiter le modèle statique (dans $\Rdeux$) sont décrites ci-bas. Lorsqu'on fixe la fracture $\sigma$, l'énergie élastique prend la forme :
+% \begin{align*}
+% \eel (\cdot,\sigma): \, A_{\sigma} &\rightarrow \mathbb{R} \\
+% u &\mapsto \int_{\Omega \backslash \sigma} Ae(u) : e(u) \diff x \,,
+% \end{align*}
+% où $A$ représente le tenseur de Lamé du matériau, i.e.
+% $$
+%     \forall e \in M_2{\mathbb{R}}, \quad Ae = \lambda \text{ tr }(e)I_2 + 2\mu e \,,
+% $$ 
+% où $\lambda$ et $\mu$ sont les coefficients de Lamé du matériau ; et l'ensemble des déplacements admissibles $A_{\sigma}$ est :
+% $$
+% A_{\sigma} = \left\{  u \in H^1(\Omega \backslash \sigma \, \mathbb{R}^2) \, \rvert \, u=U_D \text{ sur } \partial \Omega_D \backslash \sigma \text{ et } (u^+ - u^{-}) \cdot \nu \text{ sur } \sigma \right\} \,,
+% $$
+% avec $u^{+}$ et $u^{−}$ les restrictions de $u$ aux régions $\Omega^{+}$ et $\Omega^{-}$ respectivement (obtenues par extension de la fracture $\sigma$ de façon à ce qu'elle soit traversante \parencite[p.50]{balasoiu2020thesis}). $\nu$ (normale à la fracture orientée du bord vers le centre de $\Omega$) et $−\nu$. On note la présence d'une condition de type Signorini :
+% $$
+% (u^+ - u^{-}) \cdot \nu \geq 0 \text{  sur  } \sigma
+% $$
+% L'énergie totale s'écrit
+% \begin{align*}
+% \etot : \,\bigcup_{\sigma \in \Sigma } A_{\sigma} \times \left\{ \sigma \right\} &\rightarrow \mathbb{R} \\
+%  u &\mapsto \int_{\Omega \backslash \sigma} Ae(u) : e(u) \diff x + k\mathcal{H}^1(\sigma)\,,
+% \end{align*}
+% où $\Sigma$ représenté l'ensemble les segments orientés partant de la frontière donnée par 
+% $$
+% \Sigma = \left\{ [a,b] \in \mathbb{R}^2 \, \lvert \, a \in \partial\Omega, b\in \overline{\Omega}, ]a,b[ \in \Omega\right\} \,.
+% $$
+% Une solution de notre modèle de fracture fragile est un couple $(u, \sigma)$ qui vérifie
+% $$
+% \etot(u,\sigma) = \min_{\sigma \in \Sigma}{\min_{u\in A_{\sigma}}{\etot(u,\sigma)}} \,.
+% $$
+% Ensuite, \citeauthor{balasoiu2020thesis} remarque que la solution n'est pas unique. Il définit donc un problème de d'évolution quasi-statique à la manière de [FM98], en considérant un problème de chargement monotone : 
+% $$
+% U_D(t) = tU_D \,.
+% $$
+% On note $\overline{\Sigma}$ l’ensemble des lignes brisées de $\Omega$, sans point d’auto-intersection et qui partent de la frontière. On note également $\text{end}(\sigma)$ la fin d’une ligne brisée $\sigma \in  \overline{\Sigma}$.
+% On définit maintenant \parencite[p.48]{balasoiu2020thesis}, pour toute ligne brisée $\sigma \in  \overline{\Sigma}$ l’ensemble des fractures admissibles partant de $\sigma$ :
+% $$
+% \Sigma_{\emptyset} = \Sigma \,, \quad \Sigma_{\sigma} = \left\{ \sigma \cup [a,b] \in \mathbb{R}^2 \, \lvert \, a = \text{end}(\sigma), b\in \overline{\Omega}, ]a,b[ \in \Omega\backslash \sigma \right\} \,.
+% $$
+% On définit également l'ensemble des déplacements admissibles associées :
+% $$
+% A_{t,\sigma} = \left\{  u \in H^1(\Omega \backslash \sigma \, \mathbb{R}^2) \, \rvert \, u=tU_D \text{ sur } \partial \Omega_D \backslash \sigma \text{ et } (u^+ - u^{-}) \cdot \nu \text{ sur } \sigma \right\} \,,
+% $$
+% pour tout $t \in [0,1]$ et pour toute ligne brisée $\sigma$. De ces définitions, on peut en exhiber un problème d'évolution discret, et un problème d'évolution continue en faisant tendre $t$ vers $0$. Le problème d’évolution continue admet des solutions, comme limite de solutions des problèmes d’évolutions discrets [MT02 ; Cha03].
 
-Commencions par quelques définitions pour le maillage sur un floe. Pour définir un réseau de ressort $\tau$, on définit l'ensemble de ses points $\tau_0$ disposées en forme de grille. 
-$$
-\tau_0 = \Omega \cap \mathbb{Z}^2
-$$
-De façon similaire, l'ensemble des arrêtes se nomme $\tau_1$, et l'ensemble des cellules $\tau_2$. Le réseau $\tau$ est obtenu à partir de $\tau_0$ en traçant les côtés de chaque carré ; à la frontière, on trace les diagonales des carrés incomplets. On note $W (\tau, \Rdeux)$ l’ensemble des fonctions de $\tau_0$ dans $\Rdeux$. On définit également deux triangulations de $\omega$ à partir de $τ$, en prenant respectivement les diagonales des carrés dans les directions $e_x + e_y$ et $e_x − e_y$. On note ces triangulations $\tilde{\tau}$ et $\hat{\tau}$ respectivement. 
-
-Afin d'éviter les déformations qui envoient deux points voisins sur le même point, on définit avec l'ensemble des déplacements admissibles 
-$$
-\wadm(\tau, \Rdeux) =   \left\{ u\in W(\tau, \Rdeux) \mid \forall w \in \tau_2, \forall q_1, q_2 \in \tau_0 \cap \overline{\omega}, q_1 \neq q_2, \quad q_1 + u(q_1) \neq q_2 + u(q_2)  \right\} \,,
-$$
-Sur chaque arête $\nu ∈ \tau_1$, on place un ressort de longueur à vide $l_{\nu} = \vert \nu \vert$, et de raideur $k_{\nu}$ (voir \cref{fig:Ressort1}). Si $\varphi \in W (\tau, \Rdeux)$ est une déformation du réseau de ressorts, et $u = \varphi − \identity$ est le déplacement associé, l’énergie élastique de traction de l’assemblage
-\begin{align*}
-    R_{\tau}(u) &= R_{\tau}(\varphi - \text{Id}) \\
-    &= \sum_{\nu \in \tau_1} \frac{k_{\nu}}{2} \left( \vert \varphi(\nu) \vert - \vert \nu \vert  \right)^2
-\end{align*}
-En chaque point du maillage, on ajoute un ressort de torsion, d'angle de repos $\frac{\pi}{2}$, et de raideur $G \vert \nu \vert^2$ (voir \cref{fig:Ressort2}). L’énergie élastique de torsion de l’assemblage vaut
-\begin{align*}
-    T_{\tau}(u) &= T_{\tau}(\varphi - \text{Id}) \\
-    &= \sum_{c \in \tau_2} \sum_{\substack{\nu_1, \nu_2 \in c\cap\tau_1 \\ \nu_1 \cap \nu_2 \in \tau_0}} \frac{G \vert\nu \vert^2}{4} \left(  \angle(\varphi(e_{\nu_1}),\varphi(e_{\nu_2})) - \frac{\pi}{2}  \right)^2 \,,
-\end{align*}
-avec $\angle(\cdot,\cdot)$ l'angle entre deux vecteurs du plan. On note enfin
-$$
-E_{\tau} = R_{\tau} + T_{\tau}
-$$
-l'énergie totale du réseau.
-
-\begin{figure}[!ht]
-    \centering
-    \begin{subfigure}[b]{0.3\textwidth}
-        \centering
-        \includegraphics[width=\textwidth]{Ressort1.png} 
-        \caption{Réseau de ressorts régulier}
-        \label{fig:Ressort1}
-    \end{subfigure}
-    \hspace*{30pt}
-    \begin{subfigure}[b]{0.3\textwidth}
-        \centering
-        \includegraphics[width=\textwidth]{Ressort2.png} 
-        \caption{Réseau de ressorts régulier avec torsion}
-        \label{fig:Ressort2}
-    \end{subfigure}
-       \caption{Réseau de ressort considéré durant cette étude.}
-       \label{fig:Reseau}
-\end{figure}
-
-Ensuite, \citeauthor{balasoiu2020halthesis} considère la suite $\tau_n$ de réseau défini, comme aux paragraphes précédents par 
-$$
-\tau_{n,0} = \Omega \cap \frac{1}{n} \mathbb{Z}^2 \,.
-$$
-On rappelle que $k_1$, $k_2$ représentent les constantes de raideurs des ressorts sur les arrêtes du réseau dans les deux directions de $\Omega$, et $G$ la constante de torsion des ressorts aux n\oe{}uds. Sur le maillage $\tau_n$, après définition des énergies redimensionnées élastiques de traction $R_n$, et de torsion $T_n$, \parencite[p.91]{balasoiu2020halthesis} montre les théorèmes suivants. 
-
-\begin{theorem}[$\Gamma$-convergence]
-    \label{theo:gammaconv}
-    La suite d'énergie redimensionnée $(E_n)_{n\in\mathbb{N}}$ $\Gamma$-converge, pour la topologie faible de $H^1(\Omega, \mathbb{R}^2)$, vers la fonctionnelle limite :
-    \begin{align*}
-        \eel : H^1(\Omega, \mathbb{R}^2) &\rightarrow \mathbb{R} \\
-        &u \mapsto \frac{1}{2} \int_{\Omega} C_h e(u):e(u) \diff x \,,
-    \end{align*}
-    avec $C_h$ le tenseur de rigidité du matériau homogénéisé, qui vérifie :
-    $$
-    C_{h,ijkl}M:M = k_1 M^2_{1,1} + k_2 M^2_{2,2} + 16G(M_{1,2} + M_{2,1})^2 \,,
-    $$
-    De plus, ce tenseur est celui d’un matériau élastique homogène et isotrope si et seulement si l’on a $k_1 = k_2 = k = 8G$. Dans ce cas, on a :
-    $$
-    \eel(u) = \frac{1}{2} \int_{\Omega} K_{\lambda, \mu}e(u) : e(u) \diff x \,,
-    $$
-    avec :
-    $\lambda = 0$, et $\mu = \frac{k}{2}$.
-\end{theorem}
+% Lorsque la fracture est fixée, \citeauthor{balasoiu2020thesis} prouve l’existence de solutions à notre problème de minimisation, en utilisant la théorie des inégalités variationnelles, l'inégalité de Korn [Cia94], le théorème de Lions-Stampacchia [LS67]. Pour le cas statique, il montre que le problème statique a des solutions lorsque l’ouvert n’est pas encore fracturé, ceci en se servant principalement de la convergence de Mosco. Pour le modèle quasi-statique, un résultat d'existence n'a pas été trouvé, et une conjecture pour une ligne brisée qui possède un point d'auto-intersection a été proposée.
 
 
-\begin{theorem}[Équi-coercivité]
-    Soit $(\tau_n)_{n\in\mathbb{N}}$ une suite de maillages du plan, et $(u_n) \in \mathbb{N}$ une suite de déplacements admissibles de $H^1(\Omega, \mathbb{R}^2)$, i.e. vérifiant :
-    $$
-        \forall n \in \mathbb{N}, \quad u_n \in \wadm (\tau_n, \mathbb{R}^2) \,.
-    $$
-    On suppose de plus que cette suite de déplacement est bornée pour l’énergie :
-    $$
-    \exists C > 0 , \forall n \in \mathbb{N}, \quad E_{n}(u_n) \leq C \,.
-    $$
-    Alors la suite $(u_n)_{n \in \mathbb{N}}$ est bornée dans $H^1(\Omega, \mathbb{R}^2)$.
-\end{theorem}
 
-Le \cref{theo:gammaconv} permet de constater que le tenseur de rigidité obtenu, lorsqu’il est isotrope, a un coefficient de Poisson nul\footnote{Cela correspond par exemple à un étirement longitudinal du réseau de ressorts, sans effet (amincissement ou épaississement) sur la section transversale.}. \citeauthor{balasoiu2020halthesis} a donc proposé un calcul formel de la limite simple de la suite d’énergies discrètes dans le cas ou le réseau de ressorts serait stochastique, de loi isotrope. En particulier, il trouve dans ce cas un coefficient de Poisson fixe de $1/4$.
+% \subsection{Étude asymptotique d’un réseau de ressorts régulier} 
+
+% Dans ce chapitre, \citeauthor{balasoiu2020halthesis} souhaite approcher l’énergie élastique d’un matériau continu par l’énergie élastique d’un réseau de ressorts, dans un cadre statique, lorsque celui-ci est soumis à un déplacement de son bord. Autrement dit, nous ne nous intéressons pas au mouvement des particules, nous n’étudions que l’état d’équilibre du réseau de ressorts.
+
+% Commencions par quelques définitions pour le maillage sur un floe. Pour définir un réseau de ressort $\tau$, on définit l'ensemble de ses points $\tau_0$ disposées en forme de grille. 
+% $$
+% \tau_0 = \Omega \cap \mathbb{Z}^2
+% $$
+% De façon similaire, l'ensemble des arrêtes se nomme $\tau_1$, et l'ensemble des cellules $\tau_2$. Le réseau $\tau$ est obtenu à partir de $\tau_0$ en traçant les côtés de chaque carré ; à la frontière, on trace les diagonales des carrés incomplets. On note $W (\tau, \Rdeux)$ l’ensemble des fonctions de $\tau_0$ dans $\Rdeux$. On définit également deux triangulations de $\omega$ à partir de $τ$, en prenant respectivement les diagonales des carrés dans les directions $e_x + e_y$ et $e_x − e_y$. On note ces triangulations $\tilde{\tau}$ et $\hat{\tau}$ respectivement. 
+
+% Afin d'éviter les déformations qui envoient deux points voisins sur le même point, on définit avec l'ensemble des déplacements admissibles 
+% $$
+% \wadm(\tau, \Rdeux) =   \left\{ u\in W(\tau, \Rdeux) \mid \forall w \in \tau_2, \forall q_1, q_2 \in \tau_0 \cap \overline{\omega}, q_1 \neq q_2, \quad q_1 + u(q_1) \neq q_2 + u(q_2)  \right\} \,,
+% $$
+% Sur chaque arête $\nu ∈ \tau_1$, on place un ressort de longueur à vide $l_{\nu} = \vert \nu \vert$, et de raideur $k_{\nu}$ (voir \cref{fig:Ressort1}). Si $\varphi \in W (\tau, \Rdeux)$ est une déformation du réseau de ressorts, et $u = \varphi − \identity$ est le déplacement associé, l’énergie élastique de traction de l’assemblage
+% \begin{align*}
+%     R_{\tau}(u) &= R_{\tau}(\varphi - \text{Id}) \\
+%     &= \sum_{\nu \in \tau_1} \frac{k_{\nu}}{2} \left( \vert \varphi(\nu) \vert - \vert \nu \vert  \right)^2
+% \end{align*}
+% En chaque point du maillage, on ajoute un ressort de torsion, d'angle de repos $\frac{\pi}{2}$, et de raideur $G \vert \nu \vert^2$ (voir \cref{fig:Ressort2}). L’énergie élastique de torsion de l’assemblage vaut
+% \begin{align*}
+%     T_{\tau}(u) &= T_{\tau}(\varphi - \text{Id}) \\
+%     &= \sum_{c \in \tau_2} \sum_{\substack{\nu_1, \nu_2 \in c\cap\tau_1 \\ \nu_1 \cap \nu_2 \in \tau_0}} \frac{G \vert\nu \vert^2}{4} \left(  \angle(\varphi(e_{\nu_1}),\varphi(e_{\nu_2})) - \frac{\pi}{2}  \right)^2 \,,
+% \end{align*}
+% avec $\angle(\cdot,\cdot)$ l'angle entre deux vecteurs du plan. On note enfin
+% $$
+% E_{\tau} = R_{\tau} + T_{\tau}
+% $$
+% l'énergie totale du réseau.
+
+% \begin{figure}[!ht]
+%     \centering
+%     \begin{subfigure}[b]{0.3\textwidth}
+%         \centering
+%         \includegraphics[width=\textwidth]{Ressort1.png} 
+%         \caption{Réseau de ressorts régulier}
+%         \label{fig:Ressort1}
+%     \end{subfigure}
+%     \hspace*{30pt}
+%     \begin{subfigure}[b]{0.3\textwidth}
+%         \centering
+%         \includegraphics[width=\textwidth]{Ressort2.png} 
+%         \caption{Réseau de ressorts régulier avec torsion}
+%         \label{fig:Ressort2}
+%     \end{subfigure}
+%        \caption{Réseau de ressort considéré durant cette étude.}
+%        \label{fig:Reseau}
+% \end{figure}
+
+% Ensuite, \citeauthor{balasoiu2020halthesis} considère la suite $\tau_n$ de réseau défini, comme aux paragraphes précédents par 
+% $$
+% \tau_{n,0} = \Omega \cap \frac{1}{n} \mathbb{Z}^2 \,.
+% $$
+% On rappelle que $k_1$, $k_2$ représentent les constantes de raideurs des ressorts sur les arrêtes du réseau dans les deux directions de $\Omega$, et $G$ la constante de torsion des ressorts aux n\oe{}uds. Sur le maillage $\tau_n$, après définition des énergies redimensionnées élastiques de traction $R_n$, et de torsion $T_n$, \parencite[p.91]{balasoiu2020halthesis} montre les théorèmes suivants. 
+
+% \begin{theorem}[$\Gamma$-convergence]
+%     \label{theo:gammaconv}
+%     La suite d'énergie redimensionnée $(E_n)_{n\in\mathbb{N}}$ $\Gamma$-converge, pour la topologie faible de $H^1(\Omega, \mathbb{R}^2)$, vers la fonctionnelle limite :
+%     \begin{align*}
+%         \eel : H^1(\Omega, \mathbb{R}^2) &\rightarrow \mathbb{R} \\
+%         &u \mapsto \frac{1}{2} \int_{\Omega} C_h e(u):e(u) \diff x \,,
+%     \end{align*}
+%     avec $C_h$ le tenseur de rigidité du matériau homogénéisé, qui vérifie :
+%     $$
+%     C_{h,ijkl}M:M = k_1 M^2_{1,1} + k_2 M^2_{2,2} + 16G(M_{1,2} + M_{2,1})^2 \,,
+%     $$
+%     De plus, ce tenseur est celui d’un matériau élastique homogène et isotrope si et seulement si l’on a $k_1 = k_2 = k = 8G$. Dans ce cas, on a :
+%     $$
+%     \eel(u) = \frac{1}{2} \int_{\Omega} K_{\lambda, \mu}e(u) : e(u) \diff x \,,
+%     $$
+%     avec :
+%     $\lambda = 0$, et $\mu = \frac{k}{2}$.
+% \end{theorem}
 
 
+% \begin{theorem}[Équi-coercivité]
+%     Soit $(\tau_n)_{n\in\mathbb{N}}$ une suite de maillages du plan, et $(u_n) \in \mathbb{N}$ une suite de déplacements admissibles de $H^1(\Omega, \mathbb{R}^2)$, i.e. vérifiant :
+%     $$
+%         \forall n \in \mathbb{N}, \quad u_n \in \wadm (\tau_n, \mathbb{R}^2) \,.
+%     $$
+%     On suppose de plus que cette suite de déplacement est bornée pour l’énergie :
+%     $$
+%     \exists C > 0 , \forall n \in \mathbb{N}, \quad E_{n}(u_n) \leq C \,.
+%     $$
+%     Alors la suite $(u_n)_{n \in \mathbb{N}}$ est bornée dans $H^1(\Omega, \mathbb{R}^2)$.
+% \end{theorem}
+
+% Le \cref{theo:gammaconv} permet de constater que le tenseur de rigidité obtenu, lorsqu’il est isotrope, a un coefficient de Poisson nul\footnote{Cela correspond par exemple à un étirement longitudinal du réseau de ressorts, sans effet (amincissement ou épaississement) sur la section transversale.}. \citeauthor{balasoiu2020halthesis} a donc proposé un calcul formel de la limite simple de la suite d’énergies discrètes dans le cas ou le réseau de ressorts serait stochastique, de loi isotrope. En particulier, il trouve dans ce cas un coefficient de Poisson fixe de $1/4$.
+
+
+% %%------------------------------------------------------------------------------
 
 
 \subsection{Un processus stochastique de maillages isotropes} 
@@ -753,10 +750,31 @@ La notions de processus poinctuel est un outil qui peut permettre de construire 
     \item $\mathfrak{N}$ est ensemble des parties localement finies de $\mathbb{R}^d$. Autrement dit, il s'agit de l'ensemble des motifs de points de $\mathbb{R}^d$;
     \item $\mathcal{N}$ est la plus petite tribu (sur $\mathfrak{N}$) qui rende mesurable les applications qui comptent le nombre de points du processus. 
 \end{itemize}
+Une fois le processus défini, on peut définir sa \textbf{mesure d'intensité} $\Lambda$:
+\begin{align*}    
+    \Lambda : \mathcal{B}(\mathbb{R}^d) &\rightarrow \overline{\mathbb{R}^+} \\
+    B & \mapsto \mathbb{E}(\Phi(B)) = \mathbb{E}(\text{Card } \Phi \cap B) \,,
+\end{align*}
+où $\mathbb{E}(F)$ désigne l'espérance de la variable aléatoire $F:\mathfrak{N}\rightarrow \mathbb{R}$.
+
+\textit{Ci-dessous, QUELQUES IMAGES DE PROCESSUS STOHASTIQUES.}
+
+La première formule de Campbell permet de relier la moyenne d’une somme sur les points du processus avec l’intensité du processus. En effet, soit $f:\mathbb{R}^d \rightarrow \mathbb{R}$ une fonction mesurable et positive, on a :
+$$
+\mathbb{E} \left( \sum_{x \in \Phi} f(x) \right) = \int_{\mathbb{R}^d} f(x) \diff \Lambda(x) \,.
+$$
 
 
-\textit{Ci-dessous, QUELQUES EXMAPLES DE PROCESSUS STOHASTIQUES.}
- 
+
+
+
+
+
+
+
+
+
+
 
 
 \subsection{Étude asymptotique d’un réseau de ressorts isotrope} 
@@ -766,130 +784,130 @@ La notions de processus poinctuel est un outil qui peut permettre de construire 
 
 
 
-\subsection{Résultat de quasi-staticité à grande raideur} 
+% \subsection{Résultat de quasi-staticité à grande raideur} 
 
-Ce chapitre propose un résultat de quasi-staticité d’un réseau de ressorts percuté par un objet ponctuel lorsque la raideur du système et sa masse totale tendent vers l’infini. Lors de la collision de floes de glaces, la vitesse relative des floes (de l’ordre de grandeur de la dizaine de centimètres par seconde, voir [RWMB09]) est bien inférieure à la vitesse de propagation des ondes élastiques dans la glace (de l’ordre de grandeur de 1800 mètres par seconde pour les ondes de cisaillement, voir [Mar+19]). \citeauthor{balasoiu2020halthesis} montrons que, lors de la percussion d’un réseau masse-ressort par un objet solide, les effets dynamiques disparaissent lorsque la raideur des ressorts tend vers l’infini. Autrement dit, nous montrons que le réseau limite, de raideur infinie, est à chaque instant dans un état d’équilibre. Plus précisément, nous observerons que le système différentiel qui modélise la percussion s’écrit comme le couplage de deux sous-systèmes. Le premier, dit \textbf{système intérieur} (SI), est à évolution rapide et modélise la propagation des ondes élastiques dans le système masse-ressort. Le second, dit \textbf{système extérieur} (SE), est à évolution lente et modélise la pénétration de l’objet solide dans le système masse-ressorts.
+% Ce chapitre propose un résultat de quasi-staticité d’un réseau de ressorts percuté par un objet ponctuel lorsque la raideur du système et sa masse totale tendent vers l’infini. Lors de la collision de floes de glaces, la vitesse relative des floes (de l’ordre de grandeur de la dizaine de centimètres par seconde, voir [RWMB09]) est bien inférieure à la vitesse de propagation des ondes élastiques dans la glace (de l’ordre de grandeur de 1800 mètres par seconde pour les ondes de cisaillement, voir [Mar+19]). \citeauthor{balasoiu2020halthesis} montrons que, lors de la percussion d’un réseau masse-ressort par un objet solide, les effets dynamiques disparaissent lorsque la raideur des ressorts tend vers l’infini. Autrement dit, nous montrons que le réseau limite, de raideur infinie, est à chaque instant dans un état d’équilibre. Plus précisément, nous observerons que le système différentiel qui modélise la percussion s’écrit comme le couplage de deux sous-systèmes. Le premier, dit \textbf{système intérieur} (SI), est à évolution rapide et modélise la propagation des ondes élastiques dans le système masse-ressort. Le second, dit \textbf{système extérieur} (SE), est à évolution lente et modélise la pénétration de l’objet solide dans le système masse-ressorts.
 
-On étudie le phénomène de percussion d’un système masse-ressort de n + 1 particules, chacune de masse $m$, par un objet ponctuel $P$ de masse $M$. Le système masse-ressort utilisé est de constante de raideur $k>0$, et de constante de viscosité $\mu>0$. Soit $\tau \in \mathcal{T} (\Rdeux)$ une triangulation compacte et connexe du plan. En chaque noeud $q \in \tau_0$, on place une masse ponctuelle $m$ (voir \cref{fig:masseressort}). Sur chaque arrête $\omega \in \tau_1$ de $\tau$, on place en parallèle :
-\begin{enumerate}
-    \item un ressort de longueur à l’équilibre $\omega$ et de raideur $k$,\
-    \item un dissipateur visqueux, de viscosité $\mu$.
-\end{enumerate}
-\begin{figure}[!h]
-    \centering
-    \frame{\includegraphics[width=0.5\textwidth]{MasseRessort.png}}
-    \caption{Système élémentaire masse-ressort utilisé.}
-    \label{fig:masseressort}
-\end{figure}
-On suppose qu’à l’instant $t = 0$, le système masse-ressorts est à l’équilibre, et qu’il est percuté par la masse ponctuelle $P$ au point $q_0 \in \partial\tau_0$. On note $v_0$ la vitesse du point $P$ lors
-de la collision. On suppose également que le système $\{q0, P\}$ \textbf{devient inséparable}, de masse $m + M$.
-Sur le maillage $\tau$ , on note $\tau_0$ l’ensemble des noeuds du système. On a donc :
-$$\tau_0 = \{q_0, . . . , q_n \} \,,$$
-où les $q_i$ sont les coordonnées des masses. On rappelle que le système est à l’équilibre au temps $t = 0$. On note $a, b \in \mathcal{M}_{2,n+1} (\Run)$ les vecteurs de positions et vitesses initiales définis
-par :
-$$
-\begin{cases}
-    a = (q_0(0), \ldots, q_n(0)) \,, \\
-    b = (v_0,0,\ldots,0) \,.
-\end{cases}
-$$
-On note de plus $C \in \mathcal{M}_{n+1}(\Run)$ la matrice de connectivité :
-$$
-∀0 \leq i < j \leq n + 1, C_{i,j} = C_{j,i} =
-\begin{cases}
-    1 si q_i \in \mathcal{V}(q_j) \,,
-    0 sinon,
-\end{cases}
-$$
-où $\mathcal{V}(q)$ désigne l’ensemble des voisins de la particule $q \in \tau_0$. On note encore $L_{ij} \in \mathcal{M}_{n+1} (\Run)$ la matrice de longueurs à l’équilibre dont l’expression est déduite de $τ_0$; et $u_{ij}$ le vecteur unitaire (s'il existe) dans la direction de l'arete entre $q_i$ et $q_j$. On obtient le système différentiel suivant en appliquant l'équation d'Euler-Newton sur les moments linéaires, et en exprimant la force de frotement du dispositif visqueux en fonction de $\dot q$ :
-\begin{align} \tag{$E$} \label{eq:e}
-\begin{dcases}
-    \bvec{\ddot{q}}_0 = \sum_{j=0}^{n}C_{0j} \left[  \frac{k}{M+m} \left( \Vert \bvec{q}_j - \bvec{q}_0 \Vert - L_{0j} \right) \bvec{u}_{0j} -\frac{\mu}{M+m} \left\langle \bvec{\dot{q}}_j - \bvec{\dot{q}}_0\,, \bvec{u}_{0j}  \right\rangle  \bvec{u}_{0j}  \right] \,, &\qquad \text{(SE)} \\
-    \bvec{\ddot{q}}_i = \sum_{j=0}^{n}C_{ij} \left[  \frac{k}{m} \left( \Vert \bvec{q}_j - \bvec{q}_i \Vert - L_{ij} \right) \bvec{u}_{ij} -\frac{\mu}{m} \left\langle \bvec{\dot{q}}_j - \bvec{\dot{q}}_i\,, \bvec{u}_{ij}  \right\rangle  \bvec{u}_{ij}  \right] \,, \quad \forall 1 \leq i \leq n \,. &\qquad \text{(SI)}
-\end{dcases}
-\end{align}
+% On étudie le phénomène de percussion d’un système masse-ressort de n + 1 particules, chacune de masse $m$, par un objet ponctuel $P$ de masse $M$. Le système masse-ressort utilisé est de constante de raideur $k>0$, et de constante de viscosité $\mu>0$. Soit $\tau \in \mathcal{T} (\Rdeux)$ une triangulation compacte et connexe du plan. En chaque noeud $q \in \tau_0$, on place une masse ponctuelle $m$ (voir \cref{fig:masseressort}). Sur chaque arrête $\omega \in \tau_1$ de $\tau$, on place en parallèle :
+% \begin{enumerate}
+%     \item un ressort de longueur à l’équilibre $\omega$ et de raideur $k$,\
+%     \item un dissipateur visqueux, de viscosité $\mu$.
+% \end{enumerate}
+% \begin{figure}[!h]
+%     \centering
+%     \frame{\includegraphics[width=0.5\textwidth]{MasseRessort.png}}
+%     \caption{Système élémentaire masse-ressort utilisé.}
+%     \label{fig:masseressort}
+% \end{figure}
+% On suppose qu’à l’instant $t = 0$, le système masse-ressorts est à l’équilibre, et qu’il est percuté par la masse ponctuelle $P$ au point $q_0 \in \partial\tau_0$. On note $v_0$ la vitesse du point $P$ lors
+% de la collision. On suppose également que le système $\{q0, P\}$ \textbf{devient inséparable}, de masse $m + M$.
+% Sur le maillage $\tau$ , on note $\tau_0$ l’ensemble des noeuds du système. On a donc :
+% $$\tau_0 = \{q_0, . . . , q_n \} \,,$$
+% où les $q_i$ sont les coordonnées des masses. On rappelle que le système est à l’équilibre au temps $t = 0$. On note $a, b \in \mathcal{M}_{2,n+1} (\Run)$ les vecteurs de positions et vitesses initiales définis
+% par :
+% $$
+% \begin{cases}
+%     a = (q_0(0), \ldots, q_n(0)) \,, \\
+%     b = (v_0,0,\ldots,0) \,.
+% \end{cases}
+% $$
+% On note de plus $C \in \mathcal{M}_{n+1}(\Run)$ la matrice de connectivité :
+% $$
+% ∀0 \leq i < j \leq n + 1, C_{i,j} = C_{j,i} =
+% \begin{cases}
+%     1 si q_i \in \mathcal{V}(q_j) \,,
+%     0 sinon,
+% \end{cases}
+% $$
+% où $\mathcal{V}(q)$ désigne l’ensemble des voisins de la particule $q \in \tau_0$. On note encore $L_{ij} \in \mathcal{M}_{n+1} (\Run)$ la matrice de longueurs à l’équilibre dont l’expression est déduite de $τ_0$; et $u_{ij}$ le vecteur unitaire (s'il existe) dans la direction de l'arete entre $q_i$ et $q_j$. On obtient le système différentiel suivant en appliquant l'équation d'Euler-Newton sur les moments linéaires, et en exprimant la force de frotement du dispositif visqueux en fonction de $\dot q$ :
+% \begin{align} \tag{$E$} \label{eq:e}
+% \begin{dcases}
+%     \bvec{\ddot{q}}_0 = \sum_{j=0}^{n}C_{0j} \left[  \frac{k}{M+m} \left( \Vert \bvec{q}_j - \bvec{q}_0 \Vert - L_{0j} \right) \bvec{u}_{0j} -\frac{\mu}{M+m} \left\langle \bvec{\dot{q}}_j - \bvec{\dot{q}}_0\,, \bvec{u}_{0j}  \right\rangle  \bvec{u}_{0j}  \right] \,, &\qquad \text{(SE)} \\
+%     \bvec{\ddot{q}}_i = \sum_{j=0}^{n}C_{ij} \left[  \frac{k}{m} \left( \Vert \bvec{q}_j - \bvec{q}_i \Vert - L_{ij} \right) \bvec{u}_{ij} -\frac{\mu}{m} \left\langle \bvec{\dot{q}}_j - \bvec{\dot{q}}_i\,, \bvec{u}_{ij}  \right\rangle  \bvec{u}_{ij}  \right] \,, \quad \forall 1 \leq i \leq n \,. &\qquad \text{(SI)}
+% \end{dcases}
+% \end{align}
 
-D'un point de vue énergétique, on a loi de conservation de l'énergie suivante:
-\begin{align*}
-    \eel(t) + E_{\text{c}}(t) + E_{\text{r}}(t) = E_0
-\end{align*}
-où $\eel(t), E_{\text{c}}$, et $E_{\text{r}}$ désignent respectivement l'énergie élastique du système, l'énergie cinétique, et l'énergie disipée par les frotement visqueux \parencite[p.188]{balasoiu2020halthesis}. $E_0$ désigne l'énergie intiale du système donnée par 
-$$
-E_0 = \frac{1}{2}(M+m)\Vert \bvec{v}_0 \Vert^2 \,.
-$$
-Sous ces hypothèses et ces définitions, \citeauthor{balasoiu2020halthesis} obtient le théorème d'existence globale suivant.
-\begin{theorem}[Existence d'une solution globale] \label{th:solglob}
-    On suppose que les conditions initiales adjointes au système \cref{eq:e} vérifient la condition énergétique :
-    $$
-    E_0 < \frac{k}{4} \left( \inf_{\omega \in \tau_1} \vert \omega \vert \right)^2 \,.
-    $$
-    Alors, le problème de Cauchy est bien posé\footnote{Le système est bien posé si deux particules voisines restent à une distance $c > 0$ l’une de l’autre.} et ses solutions sont globales.
-\end{theorem}
+% D'un point de vue énergétique, on a loi de conservation de l'énergie suivante:
+% \begin{align*}
+%     \eel(t) + E_{\text{c}}(t) + E_{\text{r}}(t) = E_0
+% \end{align*}
+% où $\eel(t), E_{\text{c}}$, et $E_{\text{r}}$ désignent respectivement l'énergie élastique du système, l'énergie cinétique, et l'énergie disipée par les frotement visqueux \parencite[p.188]{balasoiu2020halthesis}. $E_0$ désigne l'énergie intiale du système donnée par 
+% $$
+% E_0 = \frac{1}{2}(M+m)\Vert \bvec{v}_0 \Vert^2 \,.
+% $$
+% Sous ces hypothèses et ces définitions, \citeauthor{balasoiu2020halthesis} obtient le théorème d'existence globale suivant.
+% \begin{theorem}[Existence d'une solution globale] \label{th:solglob}
+%     On suppose que les conditions initiales adjointes au système \cref{eq:e} vérifient la condition énergétique :
+%     $$
+%     E_0 < \frac{k}{4} \left( \inf_{\omega \in \tau_1} \vert \omega \vert \right)^2 \,.
+%     $$
+%     Alors, le problème de Cauchy est bien posé\footnote{Le système est bien posé si deux particules voisines restent à une distance $c > 0$ l’une de l’autre.} et ses solutions sont globales.
+% \end{theorem}
 
-Ensuite, afin d'obtenir un système a grande raideur et de supprimer la perturbations liées à la propagation des ondes élastiques, \citeauthor{balasoiu2020halthesis} introduit une dépendance en $\varepsilon$ des constantes physiques du système : $k_\varepsilon$ , $M_\varepsilon$ et $\mu_\varepsilon$. En posant 
-$$
-k_\varepsilon = \frac{k}{\varepsilon} \,, \quad M_\varepsilon = \frac{M}{\varepsilon^2} \, \quad \mu_\varepsilon = \frac{\mu}{\varepsilon} \,,
-$$
-le système masse-ressort se réecrit :
-\begin{align} \tag{$E_{\varepsilon}$} \label{eq:eeps}
-\begin{dcases}
-    \bvec{\ddot{q}}_0 = \sum_{j=0}^{n}C_{0j} \left[  \frac{k}{M+\varepsilon^2 m} \left( \Vert \bvec{q}_j - \bvec{q}_0 \Vert - L_{0j} \right) \bvec{u}_{0j} - \varepsilon\frac{\mu}{M+\varepsilon^2 m} \left\langle \bvec{\dot{q}}_j - \bvec{\dot{q}}_0\,, \bvec{u}_{0j}  \right\rangle  \bvec{u}_{0j}  \right] \,, \\
-    \varepsilon^2 \bvec{\ddot{q}}_i = \sum_{j=0}^{n}C_{ij} \left[  \frac{k}{m} \left( \Vert \bvec{q}_j - \bvec{q}_i \Vert - L_{ij} \right) \bvec{u}_{ij} - \varepsilon \frac{\mu}{m} \left\langle \bvec{\dot{q}}_j - \bvec{\dot{q}}_i\,, \bvec{u}_{ij}  \right\rangle  \bvec{u}_{ij}  \right] \,, \quad \forall 1 \leq i \leq n \,. 
-\end{dcases}
-\end{align}
-On écrit également le système limite :
-\begin{align} \tag{$E_{lim}$} \label{eq:elim}
-\begin{dcases}
-    \bvec{\ddot{q}}_0 = \sum_{j=0}^{n}C_{0j}  \frac{k}{M} \left( \Vert \bvec{q}_j - \bvec{q}_0 \Vert - L_{0j} \right) \bvec{u}_{0j}  \\
-    \bvec{0} = \sum_{j=0}^{n}C_{ij} \frac{k}{m} \left( \Vert \bvec{q}_j - \bvec{q}_i \Vert - L_{ij} \right) \bvec{u}_{ij} \,, \quad \forall 1 \leq i \leq n \,.
-\end{dcases}
-\end{align}
-Ce problème est un problème de perturbation singulière, pour lequel \citeauthor{balasoiu2020halthesis} prouve le théorème de limite quasi-statique ci-bas (en se servant principalement du théorème classique de A.N.Tikhonov [Tik52 ; Hop66]).
-\begin{theorem}[Limite quasi-statique]
-    Les solutions $ \bvec q_\varepsilon$ et $\bvec q$ respectivement des systèmes perturbé \cref{eq:eeps} et limite \cref{eq:elim} munis des conditions initales\footnote{Des conditions initiales satisfaisant le \cref{th:solglob}.} existent, sont uniques, et globales.
-    De plus, on a :
-    $$
-    \lim_{\varepsilon \rightarrow 0} \bvec q_{\varepsilon}(t) = \bvec q(t) \,, \quad \forall t \in \mathbb{R}^+ \,.
-    $$
-\end{theorem}
+% Ensuite, afin d'obtenir un système a grande raideur et de supprimer la perturbations liées à la propagation des ondes élastiques, \citeauthor{balasoiu2020halthesis} introduit une dépendance en $\varepsilon$ des constantes physiques du système : $k_\varepsilon$ , $M_\varepsilon$ et $\mu_\varepsilon$. En posant 
+% $$
+% k_\varepsilon = \frac{k}{\varepsilon} \,, \quad M_\varepsilon = \frac{M}{\varepsilon^2} \, \quad \mu_\varepsilon = \frac{\mu}{\varepsilon} \,,
+% $$
+% le système masse-ressort se réecrit :
+% \begin{align} \tag{$E_{\varepsilon}$} \label{eq:eeps}
+% \begin{dcases}
+%     \bvec{\ddot{q}}_0 = \sum_{j=0}^{n}C_{0j} \left[  \frac{k}{M+\varepsilon^2 m} \left( \Vert \bvec{q}_j - \bvec{q}_0 \Vert - L_{0j} \right) \bvec{u}_{0j} - \varepsilon\frac{\mu}{M+\varepsilon^2 m} \left\langle \bvec{\dot{q}}_j - \bvec{\dot{q}}_0\,, \bvec{u}_{0j}  \right\rangle  \bvec{u}_{0j}  \right] \,, \\
+%     \varepsilon^2 \bvec{\ddot{q}}_i = \sum_{j=0}^{n}C_{ij} \left[  \frac{k}{m} \left( \Vert \bvec{q}_j - \bvec{q}_i \Vert - L_{ij} \right) \bvec{u}_{ij} - \varepsilon \frac{\mu}{m} \left\langle \bvec{\dot{q}}_j - \bvec{\dot{q}}_i\,, \bvec{u}_{ij}  \right\rangle  \bvec{u}_{ij}  \right] \,, \quad \forall 1 \leq i \leq n \,. 
+% \end{dcases}
+% \end{align}
+% On écrit également le système limite :
+% \begin{align} \tag{$E_{lim}$} \label{eq:elim}
+% \begin{dcases}
+%     \bvec{\ddot{q}}_0 = \sum_{j=0}^{n}C_{0j}  \frac{k}{M} \left( \Vert \bvec{q}_j - \bvec{q}_0 \Vert - L_{0j} \right) \bvec{u}_{0j}  \\
+%     \bvec{0} = \sum_{j=0}^{n}C_{ij} \frac{k}{m} \left( \Vert \bvec{q}_j - \bvec{q}_i \Vert - L_{ij} \right) \bvec{u}_{ij} \,, \quad \forall 1 \leq i \leq n \,.
+% \end{dcases}
+% \end{align}
+% Ce problème est un problème de perturbation singulière, pour lequel \citeauthor{balasoiu2020halthesis} prouve le théorème de limite quasi-statique ci-bas (en se servant principalement du théorème classique de A.N.Tikhonov [Tik52 ; Hop66]).
+% \begin{theorem}[Limite quasi-statique]
+%     Les solutions $ \bvec q_\varepsilon$ et $\bvec q$ respectivement des systèmes perturbé \cref{eq:eeps} et limite \cref{eq:elim} munis des conditions initales\footnote{Des conditions initiales satisfaisant le \cref{th:solglob}.} existent, sont uniques, et globales.
+%     De plus, on a :
+%     $$
+%     \lim_{\varepsilon \rightarrow 0} \bvec q_{\varepsilon}(t) = \bvec q(t) \,, \quad \forall t \in \mathbb{R}^+ \,.
+%     $$
+% \end{theorem}
 
-Du point de vue numérique, les simulations ont permis de comprendre l’influence des différents paramètres physiques présents (masse des deux objets, raideur des ressorts, vitesse d’impact ...). De plus, le code Python et HTML/CSS developpé fournira une bonne base pour analyser la localisation des vecteurs propres du système dynamique et identifier ceux qui agissent sur un déplacement du bord. Le principal résultat numérique utilisé est le suivant. À $\varepsilon > 0$ fixé, on note $(\lambda_i (\varepsilon))i \in \{0,...,4n+3\}$ les valeurs propres de l’opérateur associé à la linéarisation du système \cref{eq:eeps} autour de sa position d’équilibre, et on les ordonne ainsi:
-$$
-0 \geq \mathfrak{R}(\lambda_8(\varepsilon)) \geq \mathfrak{R}(\lambda_9(\varepsilon)) \geq \ldots \geq \mathfrak{R}(\lambda_{4n+3}(\varepsilon)) \,.
-$$
-Nous définissons le saut spectral νε associé au système \cref{eq:eeps} de la manière suivante :
-$$
-\nu_{\varepsilon} = \frac{\mathfrak{R}(\lambda_{12}(\varepsilon))}{\mathfrak{R}(\lambda_{11}(\varepsilon))} \,.
-$$
-Ce saut représente l’écart entre les quatre premières valeurs propres non nulles du système, qui correspondent au système lent (SE), et la première valeur propre du système rapide (SI). Après avoir tracé le saut spectral $\nu_{\epsilon}$ pour différentes triangulations $\tau$ (cf. \cref{fig:res3} pour un exemple), \citeauthor{balasoiu2020halthesis} constate qu'il s'agit de droites dont la pentes ne dépendent ni du tirage, ni de l’intensité du processus de Poisson-Delaunay. Il propose donc l’expression suivante pour $\nu_{\varepsilon}$ :
-$$
-\ln(\nu_{\varepsilon}) = a_0(\tau) + \alpha \ln(\varepsilon) \,,
-$$
-avec $a_0 (\tau)$ une quantité qui dépend du maillage $\tau$, et $\alpha$ une constante universelle, indépen-
-dante de $\tau$ et $\varepsilon$ numériquement estimée à la valeur :
-$$\alpha = −2 \pm 10^{−3} \,.$$
-La figure 6.4 ci-dessous ont été obtenue, pour un processus de Poisson-Delaunay d’intensité $500 000$, l’histogramme de la valeur de $a_0$ associée sur $1 000$ tirages (cf.\cref{fig:res2}).
-\begin{figure}[H]
-    \centering
-    \begin{subfigure}{0.29\textwidth}
-        \includegraphics[width=\textwidth]{Res3.png}
-        \caption{Saut spectral en fonction de la perturbation, en échelle log-log, sur dix tirages d’un processus de Poisson-Delaunay d’intensité $1000$.}
-        \label{fig:res3}
-    \end{subfigure}
-    \begin{subfigure}{0.3\textwidth}
-        \includegraphics[width=\textwidth]{Res1.png}
-        \caption{Histogrammes du paramètre $a_0$, sur $10 000$ tirages d’un processus de Poisson-Delaunay d’intensité $2500$.}
-    \end{subfigure}
-    \begin{subfigure}{0.3\textwidth}
-        \includegraphics[width=\textwidth]{Res2.png}
-        \caption{Histogramme du paramètre $a_0$ sur $1 000$ tirages d’un processus de Poisson-Delaunay d’intensité $500 000$}
-        \label{fig:res2}
-    \end{subfigure}
-    % \decoRule
-    \caption{Principaux résultats numériques obtenus \parencite[p.199]{balasoiu2020halthesis}.}
-\end{figure}
-\noindent Ces résultats semblent indiquer, à grande échelle au moins, que $a_0(\tau)$ prend ses valeurs entre $0.9$ et $2.5$. Nous observons également l’émergence de deux pics pour certaines
-intensités. Il semblerait que le pic de valeur moyenne la plus faible gagne en fréquence de représentation, jusqu’à concentrer la quasi-totalité des cas pour l’intensité de $500 000$.
+% Du point de vue numérique, les simulations ont permis de comprendre l’influence des différents paramètres physiques présents (masse des deux objets, raideur des ressorts, vitesse d’impact ...). De plus, le code Python et HTML/CSS developpé fournira une bonne base pour analyser la localisation des vecteurs propres du système dynamique et identifier ceux qui agissent sur un déplacement du bord. Le principal résultat numérique utilisé est le suivant. À $\varepsilon > 0$ fixé, on note $(\lambda_i (\varepsilon))i \in \{0,...,4n+3\}$ les valeurs propres de l’opérateur associé à la linéarisation du système \cref{eq:eeps} autour de sa position d’équilibre, et on les ordonne ainsi:
+% $$
+% 0 \geq \mathfrak{R}(\lambda_8(\varepsilon)) \geq \mathfrak{R}(\lambda_9(\varepsilon)) \geq \ldots \geq \mathfrak{R}(\lambda_{4n+3}(\varepsilon)) \,.
+% $$
+% Nous définissons le saut spectral νε associé au système \cref{eq:eeps} de la manière suivante :
+% $$
+% \nu_{\varepsilon} = \frac{\mathfrak{R}(\lambda_{12}(\varepsilon))}{\mathfrak{R}(\lambda_{11}(\varepsilon))} \,.
+% $$
+% Ce saut représente l’écart entre les quatre premières valeurs propres non nulles du système, qui correspondent au système lent (SE), et la première valeur propre du système rapide (SI). Après avoir tracé le saut spectral $\nu_{\epsilon}$ pour différentes triangulations $\tau$ (cf. \cref{fig:res3} pour un exemple), \citeauthor{balasoiu2020halthesis} constate qu'il s'agit de droites dont la pentes ne dépendent ni du tirage, ni de l’intensité du processus de Poisson-Delaunay. Il propose donc l’expression suivante pour $\nu_{\varepsilon}$ :
+% $$
+% \ln(\nu_{\varepsilon}) = a_0(\tau) + \alpha \ln(\varepsilon) \,,
+% $$
+% avec $a_0 (\tau)$ une quantité qui dépend du maillage $\tau$, et $\alpha$ une constante universelle, indépen-
+% dante de $\tau$ et $\varepsilon$ numériquement estimée à la valeur :
+% $$\alpha = −2 \pm 10^{−3} \,.$$
+% La figure 6.4 ci-dessous ont été obtenue, pour un processus de Poisson-Delaunay d’intensité $500 000$, l’histogramme de la valeur de $a_0$ associée sur $1 000$ tirages (cf.\cref{fig:res2}).
+% \begin{figure}[H]
+%     \centering
+%     \begin{subfigure}{0.29\textwidth}
+%         \includegraphics[width=\textwidth]{Res3.png}
+%         \caption{Saut spectral en fonction de la perturbation, en échelle log-log, sur dix tirages d’un processus de Poisson-Delaunay d’intensité $1000$.}
+%         \label{fig:res3}
+%     \end{subfigure}
+%     \begin{subfigure}{0.3\textwidth}
+%         \includegraphics[width=\textwidth]{Res1.png}
+%         \caption{Histogrammes du paramètre $a_0$, sur $10 000$ tirages d’un processus de Poisson-Delaunay d’intensité $2500$.}
+%     \end{subfigure}
+%     \begin{subfigure}{0.3\textwidth}
+%         \includegraphics[width=\textwidth]{Res2.png}
+%         \caption{Histogramme du paramètre $a_0$ sur $1 000$ tirages d’un processus de Poisson-Delaunay d’intensité $500 000$}
+%         \label{fig:res2}
+%     \end{subfigure}
+%     % \decoRule
+%     \caption{Principaux résultats numériques obtenus \parencite[p.199]{balasoiu2020halthesis}.}
+% \end{figure}
+% \noindent Ces résultats semblent indiquer, à grande échelle au moins, que $a_0(\tau)$ prend ses valeurs entre $0.9$ et $2.5$. Nous observons également l’émergence de deux pics pour certaines
+% intensités. Il semblerait que le pic de valeur moyenne la plus faible gagne en fréquence de représentation, jusqu’à concentrer la quasi-totalité des cas pour l’intensité de $500 000$.
 
 
 

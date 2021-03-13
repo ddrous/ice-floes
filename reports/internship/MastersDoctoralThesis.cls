@@ -62,7 +62,7 @@
 \ProvideDocumentCommand{\autodot}{}{}
 \ProvideDocumentCommand{\mdtChapapp}{}{}
 \ProvideDocumentCommand{\chapteralign}{}{\raggedright}
-\ProvideDocumentCommand{\chapterfont}{}{\Huge\bfseries}
+\ProvideDocumentCommand{\chapterfontface}{}{\Huge\bfseries}
 \ProvideDocumentCommand{\chapterprefixfont}{}{\LARGE\bfseries}
 \DeclareDocumentCommand{\@makechapterhead}{ m }{%
 	\abovechapterskip
@@ -70,7 +70,7 @@
 		\ifnum \c@secnumdepth >\m@ne
 		\if@mainmatter
 		\ifbool{chapteroneline}{%
-			\chapterfont \mdtChapapp\thechapter\autodot\enspace
+			\chapterfontface \mdtChapapp\thechapter\autodot\enspace
 		}{%
 			\chapterprefixfont \@chapapp\space \thechapter
 			\par\nobreak
@@ -79,7 +79,7 @@
 		\fi
 		\fi
 		\interlinepenalty\@M%
-		\chapterfont #1\par\nobreak
+		\chapterfontface #1\par\nobreak
 		\chapterbelowskip
 	}
 	\thispagestyle{\chapter@p@gestyle}
@@ -89,7 +89,7 @@
 	{\parindent \z@ \chapteralign
 		\normalfont
 		\interlinepenalty\@M
-		\chapterfont  #1\par\nobreak
+		\chapterfontface  #1\par\nobreak
 		\chapterbelowskip
 	}
 	\thispagestyle{\chapter@p@gestyle}
