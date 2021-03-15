@@ -880,13 +880,17 @@ On commence par définir l’énergie élastique du réseau de ressorts de tract
 $$
 \forall i \in \mathbb{Z}/3\mathbb{Z}, \quad k_i = \frac{k}{\sin(\theta_i)} \,.
 $$
-Si $\varphi \in W (\tau, \Rdeux)$ est une déformation du réseau de ressort, et $u = \varphi− \identity$ est le déplacement associé, l’énergie élastique discrète de l’assemblage vaut :
+Si $\varphi \in W (\tau, \Rdeux)$ est une déformation du réseau de ressort, et $u = \varphi -
+\identity$ est le déplacement associé, l’énergie élastique discrète de l’assemblage vaut :
 $$
 R_{\tau}(u) = \sum_{t\in \tau_2} \sum_{i=1}^{3} \frac{k \vert \nu_i \vert^2}{2 \sin(\theta_i)} \left( \Vert \nabla \varphi e_{\nu_i} \Vert - 1 \right)^2 \,.
 $$
-On définit maintenant l’énergie $T_\tau$, et on renvoie aux \cref{fig:ressorts,fig:changement}. On note $G > 0$ la constante de rigidité de torsion du réseau. On place, sur chaque angle $θ_i$ de chaque triangle $t$ du maillage, un ressort de torsion de raideur $G_i$ :
+On définit maintenant l’énergie $T_\tau$, et on renvoie aux \cref{fig:ressorts,fig:changement}.
+On note $G > 0$ la constante de rigidité de torsion du réseau. On place, sur chaque angle
+$\theta_i$ de chaque triangle $t$ du maillage, un ressort de torsion de raideur $G_i$ :
 $$
-\forall i \in \mathbb{Z}/3\mathbb{Z}, \quad G_i = \frac{G \vert\nu_{i+1} \vert \vert\nu_{i+2} \vert}{\sin(\theta_i)} \,.
+\forall i \in \mathbb{Z}/3\mathbb{Z}, \quad G_i = \frac{G \vert\nu_{i+1} \vert \, \vert\nu_{i+2}
+    \vert}{\sin(\theta_i)} \,.
 $$
 On définit l’énergie élastique discrète de l’assemblage :
 $$
@@ -895,19 +899,109 @@ $$
 avec $\angle(\cdot,\cdot)$ l’angle entre deux vecteurs du plan.
 Ensuite, on étend les énergies élastiques définies sur les réseaux à $H^1(D, \Rdeux)$, en notant:
 \begin{align*}
-    R_\tau: H^1(D, \Rdeux) &\rightarrow \Run T_\tau: H^1(D, \Rdeux) && \rightarrow \Run \\
+    R_\tau: H^1(D, \Rdeux) &\rightarrow \Run  && T_\tau:
+    H^1(D, \Rdeux )  \rightarrow \Run \\
     u &\mapsto \begin{dcases}
         R_\tau (u) \text{ si } u \in W(\tau,\Rdeux) \,, \\
-        +\infty \text{ sinon }
+        +\infty \text{ sinon } \,,
     \end{dcases}
-    u&& \mapsto \begin{dcases}
+    && \qquad \qquad \quad \,\, \, u \mapsto \begin{dcases}
         T_\tau (u) \text{ si } u \in \wadm(\tau,\Rdeux) \,, \\
-        +\infty \text{ sinon }
+        +\infty \text{ sinon } \,,
     \end{dcases}
 \end{align*}
+On définit maintenant la suite d’énergies élastiques définies sur la suite des réseaux
+$(\tau_n)_{n \in \mathbb{N}}$. On introduit un changement d’échelle des énergies
+$(E_{\tau_n})_{n \in \mathbb{N}}$ pour prendre en compte
+l’hypothèse des petits déplacements. Soit $(\varepsilon_n)_{n \in \mathbb{N}}$ une suite
+positive qui tend vers $0$. On note, pour tout entier $n \in \mathbb{N}$ :
+\begin{align*}
+    R_\tau: H^1(D, \Rdeux) &\rightarrow \Run  && T_\tau:
+    H^1(D, \Rdeux )  \rightarrow \Run \\
+    u &\mapsto \varepsilon_n^{-2} R_{\tau_n}(\varepsilon_n u)\,,
+    && \qquad \qquad \quad \,\, \, u \mapsto \varepsilon_n^{-2} T_{\tau_n}(\varepsilon_n u)\,,
+\end{align*}
+et on pose: $$ E_n = R_n + T_n $$
+On donne enfin une version modifiée des suites fonctionnelles $(E_n)_{n \in \mathbb{N}}$ et $(T_n)
+_{n \in \mathbb{N}}$ qui prenne en compte une condition de Dirichlet sur le bord de $D$. Soit donc
+$v \in \text{ Lip}(\Rdeux, \Rdeux)$ la donnée du bord. On note :
+$$
+W_n^v(\tau, \Rdeux) =  \left\{ u\in \wadm(\tau, \Rdeux) \, \big| \, \forall p \in \tau_0, \text{
+    dist }(p,\partial D) \leq \lambda_n, \, \, u(p) = v(p)\, \right\}.
+$$
+On pose ensuite, pour tout entier $n \in \mathbb{N}$ :
+\begin{align*}
+    R_\tau^v: H^1(D, \Rdeux) &\rightarrow \Run  && T_\tau^v:
+    H^1(D, \Rdeux )  \rightarrow \Run \\
+    u &\mapsto \begin{dcases}
+        R_\tau (u) \text{ si } u \in W_n^v(\tau_n,\Rdeux) \,, \\
+        +\infty \text{ sinon } \,,
+    \end{dcases}
+    && \qquad \qquad \quad \,\, \, u \mapsto \begin{dcases}
+        T_\tau (u) \text{ si } u \in W_n^v(\tau_n,\Rdeux) \,, \\
+        +\infty \text{ sinon } \,,
+    \end{dcases}
+\end{align*}
+ainsi que $$ E_n^v = R_n^v + T_n^v \,. $$
 
+On énonce maintenant les trois théorèmes principaux du chapitre.
+\begin{theorem}[Convergence simple]
+    On a presque sûrement la propriété suivante. Pour  toute fonction $u \in C^1(D, \Rdeux)$, il
+    existe une suite de déplacements discrets $(u_n)_{n \in \mathbb{N}}$ admissibles, i.e. :
+    $$\forall n \in \mathbb{N}, \quad u_n \in \wadm (\tau_n, \Rdeux) \,,$$
+    et qui vérifie de plus :
+    $$\forall u \in  C^1 (D, \Rdeux), \quad E_n(u_n) \underset{n \rightarrow +\infty}
+    \longrightarrow E_s(u)\, $$
+    avec :
+    $$ E_s(u) = \int_{D} K_{\lambda,\mu} e(u):e(u) \diff x \,, $$
+    où $K_{\lambda,\mu}$ est le tenseur de Lamé du matériau, qui vérifie :
+    $$ \forall e \in M_2(\Run), \quad K_{\lambda,\mu} e: e \lambda \text{tr}(e)^2 + 2 \mu
+    \text{tr}(e)^2 \,, $$
+    avec $\lambda$ et $\mu$ les prmières et deuxième constantes de Lamé, qui valent :
+    $$ \lambda = \frac{32 k \vert A \vert}{9 \pi^2} + \frac{3G \vert A \vert}{4}\,, \quad \mu =
+    \frac{32 k \vert A \vert}{9 \pi^2} - \frac{3G \vert A \vert}{4} $$ \,.
+\end{theorem}
 
+\begin{theorem}[$\Gamma$-convergence]
+    Supposons que la suite de changements d’échelle $(\varepsilon_n)_{n \in \mathbb{N}}$ vérifie :
+    \[ \exists \alpha > 0, \quad \varepsilon_n = o\left(  \frac{1}{\lambda_n n^{1/2 + \alpha}}
+    \right) \,. \]
+    Alors, la suite de fonctionnelles redimensionnées $(E_n)_{n \in \mathbb{N}}$ $\,
+    \Gamma$-converge
+    presque sûrement vers la fonctionnelle $E_{\hom} : L^2(D, \Rdeux) \rightarrow
+    \mathbb{R}^+$ définie  par :
+    \begin{align*}
+        E_{\text{hom}}(u)  =
+        \begin{dcases}
+                          \int_{D} K_{\lambda_h,\mu_h} e(u):e(u) \diff x \text{   si } u \in H^1(D,
+                          \Rdeux) \,, \\
+                          + \infty \text{   sinon }\,,
+        \end{dcases}
+    \end{align*}
+    où $K_{\lambda,\mu}$ est le tenseur de Lamé du matériau, qui vérifie :
+    \[\forall e \in M_2(\Run), \quad K_{\lambda_h,\mu_h} e: e \lambda_h \text{tr}(e)^2 + 2 \mu_h
+    \text{tr}(e)^2 \,. \]
+    De plus, pour toute donnée au bord $v$ dans $\text{ Lip}(\Rdeux, \Rdeux)$, la suite de
+    fonctionnelles $(E^v_n)_{n \in \mathbb{N}}$ $\, \Gamma$-converge presque sûrement vers la
+    fonctionnelle  $E^v_{\hom} : L^2(D, \Rdeux) \rightarrow \mathbb{R}^+ $ définie par :
+    \begin{align*}
+        E^v_{\text{hom}}(u)  =  \begin{dcases}
+                          \int_D K_{\lambda_h,\mu_h} e(u):e(u) \diff x \text{   si } u - v \in
+                          H^1(D,
+                          \Rdeux) \,, \\
+                          + \infty \text{   sinon }\,.
+        \end{dcases}
+    \end{align*}
+\end{theorem}
 
+\begin{theorem}[Équi-coercivité]
+    Soit $(E_n)_{n \in \mathbb{N}}$ une suite de maillages du plan et $(u_n)_{n \in \mathbb{N}}$
+    une suite de déplacements admissibles de $H^1(\Omega, \Rdeux)$, i.e. vérifiant :
+    $$\forall n \in \mathbb{N}, u_n \in \wadm (\tau_n, \mathbb{R}^2) \,.$$
+    On suppose de plus que cette suite de déplacements est bornée pour l’énergie :
+    $$ \exists C > 0\,, \forall n \in \mathbb{N}, \quad E_n(u_n) \leq C \,. $$
+    Alors la suite $(u_n)_{n \in \mathbb{N}}$ est bornée dans $H^1(\Omega, \Rdeux)$.
+\end{theorem}
 
 % \subsection{Résultat de quasi-staticité à grande raideur} 
 
@@ -1047,8 +1141,10 @@ Ensuite, on étend les énergies élastiques définies sur les réseaux à $H^1(
 
 \subsection{Discussion}
 
-Plusieurs hypothèses sont faites dans la thèse :
+Plusieurs hypothèses sont faites dans la thèse :
 \begin{enumerate}
-    \item Le modèle suppose que les floes sont d’épaisseur négligeable devant leur extension horizontale ; autrement dit, les déformations du floe de glace peuvent être étudiées en deux dimensions.
+    \item Le modèle suppose que les floes sont d’épaisseur négligeable devant leur extension
+    horizontale ; autrement dit, les déformations du floe de glace peuvent être étudiées en deux
+    dimensions.
     \item Le modèle restreint l’ensemble des fractures admissibles à celui des segments de droites.
 \end{enumerate}
