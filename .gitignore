@@ -6,6 +6,7 @@ reports/internship/*
 !reports/internship/MastersDoctoralThesis.cls
 !reports/internship/bibliography.bib
 !reports/internship/bibliography_matthias.bib
+!reports/internship/bibliography_dimitri.bib
 
 !reports/internship/Figures/
 
@@ -83,4 +84,12 @@ reports/weeks/5/*
 !reports/weeks/5/main.tex
 !reports/weeks/5/main.pdf
 !reports/weeks/5/fphw.cls
+
+# Rapport semaine 6
+reports/weeks/6/*
+
+!reports/weeks/6/main.tex
+!reports/weeks/6/main.pdf
+!reports/weeks/6/fphw.cls
+
 

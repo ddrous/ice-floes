@@ -732,20 +732,10 @@
 
 \textit{Le résumé du chapitre écrit dans \parencite[p.136]{balasoiu2020halthesis} est le suivant. Ce chpitre fait appel à des outils fin de probabilé conditionnelle et de processus stochastiques, telles que \textbf{mesure et formules de Campbell}, \textbf{distribution de Palm}, etc. }
 
-Dans ce chapitre, \citeauthor{balasoiu2020halthesis} a construit un processus stochastique de maillage, qui à chaque tirage associe un maillage de Delaunay. il a également donné plusieurs formules de calcul, les deux formules de Campbell ainsi que la formule de Slivnyak-Mecke, qui permettent de calculer l’espérance d’une variable aléatoire qui s’écrit comme la somme d’une fonction en chaque point du maillage. Ces formules nous se montrerons très utiles pour le calcul de
-l’énergie élastique d’un réseau de ressorts basé sur ce processus de maillage.
-
-Les maillages construits suivent une loi isotrope. En moyenne sur les tirages, toutes les directions des arrêtes sont donc équitablement représentées. Un théorème ergodique permet de transférer cette isotropie moyenne en isotropie presque sure si l’on dilate le maillage, autrement dit si on le regarde de suffisamment loin.
-
-\citeauthor{balasoiu2020halthesis} montre aussi que, si l’on dilate le processus de Poisson-Delaunay initial et qu’on en restreint les réalisations à un domaine du plan, nous obtenons une suite de processus stochastiques dont les réalisations convergent presque sûrement vers le domaine fixé. Nous avons également donné un contrôle asymptotique de la taille minimale des mailles
-obtenues dans cette suite de processus de maillages. Ce contrôle nous sera utile dans le chapitre suivant, pour calibrer le redimensionnement utilisé pour traduire l’hypothèse des petits déplacements sur le réseau de ressorts.
+Dans ce chapitre, \citeauthor{balasoiu2020halthesis} a construit un processus stochastique de maillage, qui à chaque tirage associe un maillage de Delaunay. Il comence par donner plusieurs formules de calcul, les deux formules de Campbell ainsi que la formule de Slivnyak-Mecke, qui permettent de calculer l’espérance d’une variable aléatoire qui s’écrit comme la somme d’une fonction en chaque point du maillage. Ces formules nous se montrerons très utiles pour le calcul de l’énergie élastique d’un réseau de ressorts basé sur ce processus de maillage.
 
 
-
-\textit{SIMULATION D'UN PROCESSUS DE POISSON: https://hpaulkeeler.com/poisson-point-process-simulation/}
-
-
-La notions de processus poinctuel est un outil qui peut permettre de construire un ensemble de points dénombrable, sans point d'accumulation. \citeauthor{balasoiu2020halthesis} définit un \textbf{processus stochastique simple de $\mathbb{R}^d$} comme : une variable aléatoire $\Phi$ d’un espace de probabilités $(\Omega, \mathcal{A}, \mathbb{P})$ dans l’espace $(\mathfrak{N}, \mathcal{N})$. Elle induit une loi de probabilité $\mathbb{P}_\Phi$ sur $(\mathfrak{N}, \mathcal{N})$ : l’espace $(\mathfrak{N}, \mathcal{N}, \mathbb{P}_\Phi)$ est un espace de probabilités. Dans cette définition, nous avons:
+\noindent La notions de processus poinctuel est un outil qui peut permettre de construire un ensemble de points dénombrable, sans point d'accumulation. \citeauthor{balasoiu2020halthesis} définit un \textbf{processus stochastique simple de $\mathbb{R}^d$} comme : une variable aléatoire $\Phi$ d’un espace de probabilités $(\Omega, \mathcal{A}, \mathbb{P})$ dans l’espace $(\mathfrak{N}, \mathcal{N})$. Elle induit une loi de probabilité $\mathbb{P}_\Phi$ sur $(\mathfrak{N}, \mathcal{N})$ : l’espace $(\mathfrak{N}, \mathcal{N}, \mathbb{P}_\Phi)$ est un espace de probabilités. Dans cette définition, nous avons:  
 \begin{itemize}
     \item $\mathfrak{N}$ est ensemble des parties localement finies de $\mathbb{R}^d$. Autrement dit, il s'agit de l'ensemble des motifs de points de $\mathbb{R}^d$;
     \item $\mathcal{N}$ est la plus petite tribu (sur $\mathfrak{N}$) qui rende mesurable les applications qui comptent le nombre de points du processus. 
@@ -757,21 +747,91 @@ Une fois le processus défini, on peut définir sa \textbf{mesure d'intensité} 
 \end{align*}
 où $\mathbb{E}(F)$ désigne l'espérance de la variable aléatoire $F:\mathfrak{N}\rightarrow \mathbb{R}$.
 
-\textit{Ci-dessous, QUELQUES IMAGES DE PROCESSUS STOHASTIQUES.}
-
-La première formule de Campbell permet de relier la moyenne d’une somme sur les points du processus avec l’intensité du processus. En effet, soit $f:\mathbb{R}^d \rightarrow \mathbb{R}$ une fonction mesurable et positive, on a :
+\noindent La première formule de Campbell permet de relier la moyenne d’une somme sur les points du processus avec l’intensité du processus. En effet, soit $f:\mathbb{R}^d \rightarrow \mathbb{R}$ une fonction mesurable et positive, on a :
 $$
 \mathbb{E} \left( \sum_{x \in \Phi} f(x) \right) = \int_{\mathbb{R}^d} f(x) \diff \Lambda(x) \,.
 $$
+Un processus stochastique ponctuel $\Phi$ est dit de Poisson (cf. \cref{fig:poisson}) s'il vérifie les hypothèse suivantes
+: 
+\begin{enumerate}
+    \item $\Phi$ est à éparpillement indépendant, c’est à dire que si $(B_i)_{i \in {1,...,k}}$ sont des boréliens deux à deux disjoints ; alors les variables aléatoires $\Phi(B_i)$ sont indépendantes ;
+    \item pour tout $B$ borélien, la variable aléatoire $\Phi(B) = \text{Card } \Phi \cap B$ suit une loi de poisson de moyenne $\mu =  \lambda \nu_d(B)$ , c’est à dire que :
+    \[
+    \mathbb{P}(\Phi (B) = m) = \frac{\mu^m}{m!}\exp(-\mu) \,.
+    \]
+\end{enumerate}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=.4\textwidth]{Poisson.png}\
+    \caption{Tirages d’un processus de Poisson d’intensité $10$ sur le carré unité \parencite[p.137]{balasoiu2020halthesis}. En premier, le nombre de point est obtenu par une v.a. suivant une loi de Poisson d'espérence $10$. Ensuite les coordonnés des points sont obtenurs par simulation de deux v.a. suivant des lois uniformes \parencite{keeler2018simu}.}
+    \label{fig:poisson}
+\end{figure}
+
+\citeauthor{balasoiu2020halthesis} ne s'arète pas là. Il définit aussi les notions d'espace Polonais, mesure de compatage, et de convergence faible dièse. Ces notions sont importance vu la nécéssité d'associer un point du processus ponctuel à une marque, i.e. un simplexe de $\mathbb{R}^d$ dans notre cas. \citeauthor{balasoiu2020halthesis} introduit lea notions de mesure de Campbell, qui permet d'obtenir la seconde formule de Campbell. Ensuite il défnitit la distrbution de Palm, permettant ainsi d'obtenir la très importante formule de Campbell-Mecke:
+\[
+\mathbb{E} \left( \sum_{x \in \Phi} f(x,\Phi) \right) = \int_{\mathbb{R}^d} \int_{\mathfrak{N}} f(x,\varphi) \diff
+\mathbb{P}_x(\varphi) \diff \Lambda(x) \,.
+\]
+où $f:\mathbb{R}^d \times \mathfrak{N} \rightarrow \mathbb{R}$ est uine fonction, mesurable et positive. Lorsque le processus ponctuel $\Phi$ est stationaire d'intensité $\lambda$, on a:
+\[
+ \int_{\mathfrak{N}} \sum_{x \in \varphi} f(x,\varphi_{ - x}) \diff\mathbb{P}_\Phi(\varphi) = \lambda \int_{\mathbb{R}^d} \int_{\mathfrak{N}} f(x,\varphi) \diff
+\mathbb{P}_0(\varphi) \diff \Lambda(x) \,.
+\]
+où $\mathbb{P}_0$ désigne la distribution de Palm. Le résultant de Slynvyak-Mecke suivant est une généralisation de cette dernière formule, lorsque les processus $\Phi$ est de Poisson, et la fonction mesurable positive $f:(\mathbb{R}^d)^n \times \mathfrak{N} \rightarrow \mathbb{R}$ :
+\[
+\mathbb{E} \left( \sum_{x_1,\ldots,x_n \in \Phi} f(x_1,\ldots,x_n,\Phi) \right) = \frac{\lambda^n}{n!} \int_{(\mathbb{R}^d)^n} \mathbb{E} \left(f(x_1,\ldots,x_n,\Phi \cup \{ x_1,\ldots,x_n \}) \right) \diff x_1 \ldots \diff x_n \,.
+\]
+
+La prochaine etape consite en la présentation d'un \textbf{theoreme ergodique} qui lie la forme globale d’un seul tirage avec la forme moyenne en un point de plusieurs tirages. Ici aussi, \citeauthor{balasoiu2020halthesis} se base sur les travaux de D. J. Daley et D. Vere-Jones [DV08].
+\begin{theorem} \label{th:slmk}
+    Soit $\Phi$ un processus de Poisson, et $f$ une fonction mesurable et positive qui vérifie :
+    $$
+    \mathbb{E}\left( \sum_{x\in \Phi} f(\Phi_{-x}) \right) < +\infty \,.
+    $$
+    On note $B_n$ la boule de $\mathbb{R}^d$, centrée en $0$ et de rayon $n$. On a presque sûrement la formule
+    suivante :
+    $$
+    \lim_{n\rightarrow +\infty} \frac{1}{\Phi(B_n)} \sum_{x_i \in B_n \cap \Phi} f(\Phi_{-x_i}) = \int_{\mathfrak{N}} f(\varphi) d\mathbb{P}_0(x) \,. 
+    $$
+\end{theorem}
+
+Ensuite, \citeauthor{balasoiu2020halthesis} s'attaque aux notions de maillages et pavages, en particulier les \textbf{pavages de Voronoi} (cf. \cref{fig:vorodeloau}). Les maillages construits suivent une loi isotrope. En moyenne sur les tirages, toutes les directions des arrêtes sont donc équitablement représentées. Un théorème ergodique permetra de transférer cette isotropie moyenne en isotropie presque sure si l’on dilate le maillage, autrement dit si on le regarde de suffisamment loin. 
+
+\noindent Soit donc $\varphi \in \mathfrak{N}$ un ensemble localement fini de points. On appelle diagramme de Voronoi associé à $\varphi $ le pavage régulier de $\mathbb{R}^d$ par $(C(x))_{x\in \varphi}$ où la cellule $C(x)$ est définie par :
+$$
+C(x) = \left\{ y \in \mathbb{R}^d \, \big| \text{ dist }(y,x) < \inf_{z\in \varphi\backslash\{x\}}\text{ dist }(y,z) \right\} \,.
+$$
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=.5\textwidth]{VoronoiDelaunay.png}\
+    \caption{Ensemble de points avec les diagramme de Voronoi (à gauche) et Delaunay (à droite) associés
+    \parencite[p.138]{balasoiu2020halthesis}.}
+    \label{fig:vorodeloau}
+\end{figure}
+\noindent En utilisant la formule de Slivnyak-Mecke (cf. \cref{th:slmk}), \citeauthor{balasoiu2020halthesis} montre que si $\Phi$ est un processus de Poisson, alors les points de $\varphi$ sont presque sûrement en \textbf{position générale}\footnote{Voir définition 4.4.5 de la thèse \parencite[p.128]{balasoiu2020halthesis}.}. En corrolaire,si $\varphi$ est un ensemble de points en position générale, alors $\varphi$ est l’ensemble des sommets du \textbf{maillage de Delaunay}\footnote{Une triangularisation de Delaunay maximise le plus petit angle de l'ensemble des angles des triangles.} $D_\varphi$ construit sur le pavage de Voronoi $V_\varphi$.
 
 
+Ce chapitre se termine par la notion de convergence d'une suite de maillages. \citeauthor{balasoiu2020halthesis} montre que, si l’on dilate (cf. \cref{fig:maillage}) le processus de Poisson-Delaunay initial et qu’on en restreint les réalisations à un domaine du plan, nous obtenons une suite de processus stochastiques dont les réalisations convergent presque sûrement vers le domaine fixé. Il a également donné un contrôle asymptotique de la taille minimale des mailles obtenues dans cette suite de processus de maillages. Ce contrôle sera utile dans le chapitre suivant, pour calibrer le redimensionnement utilisé pour traduire l’hypothèse des petits déplacements sur le réseau de ressorts. 
 
-
-
-
-
-
-
+\noindent Soit donc $D \subset \mathbb{R}^d$ un domaine, i.e. un ouvert connexe, de l’espace. Soit $\Phi$ un processus ponctuel de l’espace qui suit une loi de Poisson d’intensité $1$. Soit $(\lambda_n )_{n\in N} \subset \mathbb{R}^{+}$ une suite positive, croissante et divergente. On définit, pour tout entier $n \in \mathbb{N}$, le processus ponctuel $\Phi_n$ par :
+$$
+\Phi_n = \frac{1}{\sqrt[d]{\lambda_n}}\Phi \,.
+$$
+On note $\tau_n$ (cf. \cref{fig:maillage}) le maillage par simplexe définit presque sûrement comme la triangulation de Delaunay du nuage de points $\Phi_n \cap D$ :
+$$\tau_n = \Theta_{\Phi_n \cap D} \,, $$
+ce qui permet d'obtenir le théorème suivant :
+\begin{theorem} \label{th:lambda}
+    Si la suite d’intensités $(\lambda_n)_{n \in \mathbb{N}}$ vérifie :
+    $$\exists k \in \mathbb{N}^\ast , \quad n^{1/k} = o(\lambda_n)\,,$$
+    alors, presque sûrement, la suite $(\tau_n)_{n \in \mathbb{N}}$ de maillages de $D$ converge uniformément vers $D$.
+\end{theorem}
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=.6\textwidth]{Maillage.png}\
+    \caption{Dilatation de l'ouvert $D$ \parencite[p.138]{balasoiu2020halthesis}.}
+    \label{fig:maillage}
+\end{figure}
 
 
 
@@ -779,8 +839,73 @@ $$
 
 \subsection{Étude asymptotique d’un réseau de ressorts isotrope} 
 
-\textit{IMAGE D'UN RESSORT TRIANGULAIRE fig 5.1} \\
-\textit{REECRIRE LE RESUME, ET LES DEUX THEOREMES QUI SONT MONTRÉS DANS CE CHAPITRE}
+Dans cette partie, \citeauthor{balasoiu2020halthesis} propose un second résultat d’approximation d’un matériau
+élastique par un réseau de ressorts. Dans la partie précédente, il avait proposé un résultat d’approximation d’un matériau élastique par un réseau régulier, à mailles carrées. Ici, les mailles seront triangulaires. Plus précisement Le réseau de ressorts que nous utiliserons dans ce chapitre est défini dans la section précédente, et repose sur la théorie des processus stochastiques ponctuels.
+Nous proposons dans ce chapitre un résultat de $\Gamma$-convergence de l’énergie élastique sur un réseau de ressorts, issu d’un processus stochastique de loi isotrope. 
+
+Dans cette section, on présente le réseau de ressorts utilisé pour approcher l’énergie élastique d’un matériel continu $D$. Il s'agit des mêmes définitions utilisées pour introduite le \cref{th:lambda} ci-haut, cette fois ci \underline{\textbf{en dimension $2$}}. On suppose que $D \subset \mathbb{R}^2$ est un domaine du plan, i.e. un ouvert du plan, qui est connexe et dont la frontière est lisse. On considère une triangulation quelconque $\tau$ du domaine $D$. On note $W (\tau, \mathbb{R}^2)$ l’espace des éléments finis $P1$ défini sur le maillage $\tau$. On note, comme précédemment, $ \wadm(\tau, \Rdeux)$ l’ensemble des déplacements admissibles :
+$$
+\wadm(\tau, \Rdeux) =  \left\{ u\in W(\tau, \Rdeux) \, \big| \, \forall w \in \tau_2, \forall q_1, q_2 \in \tau_0 \cap \overline{\omega}, q_1 \neq q_2, \quad q_1 + u(q_1) \neq q_2 + u(q_2)  \right\} 
+$$
+On souhaite construire un réseau de ressorts sur $\tau$ tel que l’énergie totale $E_\tau$ soit équi-coercive. Mais puisque l’on utilisera des triangulations construites sur un processus de Poisson, la coercivité n'est pas assurée. Pour remédier à ce manque de coercivité, on va placer sur $\tau$ deux types de ressorts : des \textbf{ressorts de traction} et des \textbf{ressorts de torsion}. Les constantes de raideur des ressorts de traction et de torsion dépendent des angles du triangle de base des ressorts, et elles tendent vers l’infini si l’angle correspondant tend vers $0$. Les constantes de rigidité des réseaux de ressorts sont supposées constantes. On note, comme au chapitres précédents, $R_\tau$ l’énergie du réseau de ressorts de traction, et $T_\tau$ l’énergie du
+réseau de ressorts de torsion. On note de plus :
+$$ E_\tau = R_\tau + T_\tau \,, $$
+l’énergie totale sur le réseau $\tau$. On note également, pour tout triangle $t \in \tau_2$ du maillage, $\nu_1$ , $\nu_2$ et $\nu_3$ ses trois cotés, ainsi que $\theta_1$, $\theta_2$ et $\theta_3$ les trois angles opposés (voir \cref{fig:triangle}).
+
+\begin{figure}[!h]
+    \begin{subfigure}{0.45\textwidth}
+        \centering
+        \frame{\includegraphics[width=\textwidth]{Triangle.png}}
+        \caption{Triangle du maillage \parencite[p.184]{balasoiu2020halthesis}.}
+        \label{fig:triangle}
+    \end{subfigure}
+    % \hfill
+    \begin{subfigure}{0.3\textwidth}
+        \centering
+        \frame{\includegraphics[width=\textwidth]{ChangementVar.png}}
+        \caption{Changement de variables dans un triangle \parencite[p.184]{balasoiu2020halthesis}.}
+        \label{fig:changement}
+    \end{subfigure}
+    \caption{Illustration des eléments du maillages, et des coodonnées.}
+\end{figure}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=.8\textwidth]{Ressorts.png}
+    \caption{Ressorts de traction (à gauche) et de torsion (à droite) \parencite[p.184]{balasoiu2020halthesis}.}
+    \label{fig:ressorts}
+\end{figure}
+
+On commence par définir l’énergie élastique du réseau de ressorts de traction $R_\tau$, et on renvoie à la \cref{fig:ressorts}. On note $k > 0$ la constante de rigidité du réseau. On place, sur chaque arrête $\nu_i$ de chaque triangle $t$ du maillage, un ressort de traction de longueur à vide $l_i = \vert \nu_i \vert$ et de raideur $k_i$, avec :
+$$
+\forall i \in \mathbb{Z}/3\mathbb{Z}, \quad k_i = \frac{k}{\sin(\theta_i)} \,.
+$$
+Si $\varphi \in W (\tau, \Rdeux)$ est une déformation du réseau de ressort, et $u = \varphi− \identity$ est le déplacement associé, l’énergie élastique discrète de l’assemblage vaut :
+$$
+R_{\tau}(u) = \sum_{t\in \tau_2} \sum_{i=1}^{3} \frac{k \vert \nu_i \vert^2}{2 \sin(\theta_i)} \left( \Vert \nabla \varphi e_{\nu_i} \Vert - 1 \right)^2 \,.
+$$
+On définit maintenant l’énergie $T_\tau$, et on renvoie aux \cref{fig:ressorts,fig:changement}. On note $G > 0$ la constante de rigidité de torsion du réseau. On place, sur chaque angle $θ_i$ de chaque triangle $t$ du maillage, un ressort de torsion de raideur $G_i$ :
+$$
+\forall i \in \mathbb{Z}/3\mathbb{Z}, \quad G_i = \frac{G \vert\nu_{i+1} \vert \vert\nu_{i+2} \vert}{\sin(\theta_i)} \,.
+$$
+On définit l’énergie élastique discrète de l’assemblage :
+$$
+T_\tau (u) = \sum_{t\in \tau_2} \sum_{i=1}^{3} \frac{G \vert\nu_{i+1} \vert \vert\nu_{i+2} \vert}{2\sin(\theta_i)} \left(  \angle(\varphi(\nu_{i+1}), \nu_{i+2}) - \angle(\nu_{i+1},\nu_{i+2})^2 \right) \,,
+$$
+avec $\angle(\cdot,\cdot)$ l’angle entre deux vecteurs du plan.
+Ensuite, on étend les énergies élastiques définies sur les réseaux à $H^1(D, \Rdeux)$, en notant:
+\begin{align*}
+    R_\tau: H^1(D, \Rdeux) &\rightarrow \Run T_\tau: H^1(D, \Rdeux) && \rightarrow \Run \\
+    u &\mapsto \begin{dcases}
+        R_\tau (u) \text{ si } u \in W(\tau,\Rdeux) \,, \\
+        +\infty \text{ sinon }
+    \end{dcases}
+    u&& \mapsto \begin{dcases}
+        T_\tau (u) \text{ si } u \in \wadm(\tau,\Rdeux) \,, \\
+        +\infty \text{ sinon }
+    \end{dcases}
+\end{align*}
+
 
 
 
