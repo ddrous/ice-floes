@@ -36,6 +36,9 @@
   \Roman{section}.\arabic{subsection}.\alph{subsubsection}%
 }
 
+\usepackage{sectsty}
+\sectionfont{\bfseries\Large\raggedright}
+
 % Template-specific packages
 \usepackage{babel}
 \usepackage[utf8]{inputenc} % Required for inputting international characters
@@ -171,35 +174,37 @@
 %----------------------------------------------------------------------------------------
 
 
-Cette semaine le travail a consisté essentiellement en la compréhension des notions de processus stochastiques.
+Cette semaine le travail a consisté essentiellement en la lectures des notions de géometrie et processus stochastiques. J'\/ai considéreablement avancé dessus, sans pour autant maitriser les concepts en profondeur. Actuellement je relis les démonstrations des chapitres 2 et 6 afin de débuter l'\/étude du choc entre deux floes de glace.
 
 
 %----------------------------------------------------------------------------------------
 %	ASSIGNMENT CONTENT - SECTION 1
 %----------------------------------------------------------------------------------------
 
-\section{Tâches effectuées}
+\section*{Tâches effectuées}
 
-\textit{Dans l'ordre chronologique, voici les taches que j'ai effectuées :}
+\textit{Dans l'\/ordre chronologique, voici les taches que j'\/ai effectuées :}
 \begin{enumerate}
-  \item Lecture coimplète du chapitre 4 du livre \parencite{balasoiu2020halthesis}.
+  \item Lecture du chapitre 4 du livre \parencite{balasoiu2020halthesis};
+  \item Lecture du chapitre 5 du livre \parencite{balasoiu2020halthesis};
+  \item Rédaction de l'\/état de l'\/art dans le rapport de stage. 
 \end{enumerate}
 
 %----------------------------------------------------------------------------------------
 %	ASSIGNMENT CONTENT - SECTION 2
 %----------------------------------------------------------------------------------------
 
-\section{Difficultés rencontrées}
+\section*{Difficultés rencontrées}
 
-\textit{Quelque questions afin de faciliter le relecture.}
+\textit{Quelque questions afin de faciliter la lecture.}
 
 \begin{enumerate}
-  \item Pouvez-vous m'expliquer la figure 4.3 de la thèse \parencite[p.188]{balasoiu2020halthesis}? Dans cette figure, pourvez-vous s'il vous plait clairifier: 
+  \item Pouvez-vous m'\/expliquer la figure 4.3 de la thèse \parencite[p.188]{balasoiu2020halthesis}? Dans cette figure, pourvez-vous s'\/il vous plait clairifier: 
   \begin{itemize}
     \item le domaine $D$;
     \item le maillage $\tau$ et la suite dilaté de maillages $\tau_n$;
-    \item L'élément $\lambda$;
-    \item L'élément $\Omega$.
+    \item L'\/élément $\lambda$;
+    \item L'\/élément $\Omega$.
   \end{itemize}
 \end{enumerate}
 
@@ -207,9 +212,10 @@ Cette semaine le travail a consisté essentiellement en la compréhension des no
 %	ASSIGNMENT CONTENT - SECTION 3
 % ----------------------------------------------------------------------------------------
 
-\section{Sujets explorables}
+\section*{Sujets explorables}
 \begin{enumerate}
-  \item Au chapitre 5, \citeauthor{balasoiu2020halthesis} a montré que la suite d’énergies élastiques $\Gamma$-converge vers une énergie limite. De plus, lorsque le redimensionnement est suffisamment rapide, il a montré que la $\Gamma$-limite s’écrit comme l’énergie d’un matériau élastique homogène et isotrope, soumis à l’hypothèse des petits déplacements. Cette énergie dépend donc de deux paramètres, les deux constantes de Lamé du matériau homogénéisé. Il serait intéressant d’adapter l’étude numérique [OAJ95] pour obtenir une expression des constantes de Lamé homogénéisées dans notre cas. Nous avons montré, et c’est l’étape la plus délicate, que la suite d’énergie est équi-coercive.
+  \item Au chapitre 5, \citeauthor{balasoiu2020halthesis} a montré que la suite d’énergies élastiques $\Gamma$-converge vers une énergie limite. De plus, lorsque le redimensionnement est suffisamment rapide, il a montré que la $\Gamma$-limite s’écrit comme l’énergie d’un matériau élastique homogène et isotrope, soumis à l’hypothèse des petits déplacements. Cette énergie dépend de deux paramètres, les deux constantes de Lamé du matériau homogénéisé. Il serait intéressant d'\/obtenir une expression des constantes de Lamé homogénéisées.
+  \item Exploration de la percussion entre deux floes de glace : étude des valeurs propres du système dynamique du chapitre 6; étude du déplacemnet de Dirichlet aux bord des floes, etc.
 \end{enumerate}
 
 
