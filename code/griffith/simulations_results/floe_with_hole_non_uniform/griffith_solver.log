@@ -1,0 +1,10 @@
+## Computations on mesh/square-with-hole-refined.msh
+Used args : Namespace(angular_step=0.1, boundary_point=None, boundary_step=None, circle_inclusion=None, constant_displacement=1000.0, fixed_time_step=None, fracture=None, interior_fast_init=True, interior_fast_step=True, interior_start_angle=None, interior_step=2.5, lengh_step=5.0, linear_displacement=None, mesh_file='mesh/square-with-hole-refined.msh', number_processes=4, picewise_linear_displacement=None, plot_displacement=False, plot_mesh=False, rotation_displacement=None, save_displacement=None, save_mesh=None, smart_time=True, toughness=1)
+ERROR    - Unexpected error  while computing next fracture
+ERROR    - Unexpected error  while computing next fracture
+ERROR    - Unexpected error  while computing next fracture
+ERROR    - Unexpected error with fracture Fracture on points : (38.39669511362014, 36.62911661331165) (34.80991465913959, 40.112650160065044)
+STATUS   - Time 0.001981845791413972 Fracture on points : (10.248336663487828, 41.27491677769723) (9.254990009536517, 46.1752496669083)
+STATUS   - Time 0.001981845791413972 Fracture on points : (10.248336663487828, 41.27491677769723) (9.254990009536517, 46.1752496669083) (9.254990009800064, 100.0)
+STATUS   - Time 0.001981845791413972 Fracture on points : (10.248336663285727, 0.0) (10.248336663487828, 41.27491677769723) (9.254990009536517, 46.1752496669083) (9.254990009800064, 100.0)
+Final Fracture : Fracture on points : (10.248336663285727, 0.0) (10.248336663487828, 41.27491677769723) (9.254990009536517, 46.1752496669083) (9.254990009800064, 100.0)

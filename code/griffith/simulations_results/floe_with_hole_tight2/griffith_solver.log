@@ -1,0 +1,30 @@
+## Computations on mesh/square-with-hole-tight.msh
+Used args : Namespace(angular_step=0.1, boundary_point=None, boundary_step=None, circle_inclusion=None, constant_displacement=1000.0, fixed_time_step=None, fracture=None, interior_fast_init=True, interior_fast_step=True, interior_start_angle=None, interior_step=2.5, lengh_step=8.0, linear_displacement=None, mesh_file='mesh/square-with-hole-tight.msh', number_processes=4, picewise_linear_displacement=None, plot_displacement=False, plot_mesh=False, rotation_displacement=None, save_displacement=None, save_mesh=None, smart_time=True, toughness=1)
+ERROR    - Unexpected error  while computing next fracture
+ERROR    - Unexpected error  while computing next fracture
+ERROR    - Unexpected error  while computing next fracture
+ERROR    - Unexpected error  while computing next fracture
+ERROR    - Unexpected error  while computing next fracture
+ERROR    - Unexpected error  while computing next fracture
+ERROR    - Unexpected error  while computing next fracture
+ERROR    - Unexpected error  while computing next fracture
+ERROR    - Unexpected error  while computing next fracture
+ERROR    - Unexpected error  while computing next fracture
+ERROR    - Unexpected error  while computing next fracture
+ERROR    - Unexpected error  while computing next fracture
+ERROR    - Unexpected error  while computing next fracture
+ERROR    - Unexpected error  while computing next fracture
+ERROR    - Unexpected error  while computing next fracture
+ERROR    - Unexpected error  while computing next fracture
+ERROR    - Unexpected error  while computing next fracture
+ERROR    - Unexpected error  while computing next fracture
+ERROR    - Unexpected error  while computing next fracture
+ERROR    - Unexpected error  while computing next fracture
+ERROR    - Unexpected error  while computing next fracture
+ERROR    - Unexpected error  while computing next fracture
+STATUS   - Time 0.0019153521642314491 Fracture on points : (38.09104041331332, 43.089327021745895) (35.72687876006003, 50.73201893476232)
+STATUS   - Time 0.0019153521642314491 Fracture on points : (38.09104041331332, 43.089327021745895) (35.72687876006003, 50.73201893476232) (35.726878760301304, 100.0)
+STATUS   - Time 0.0019153521642314491 Fracture on points : (38.09104041327414, 35.089327021745895) (38.09104041331332, 43.089327021745895) (35.72687876006003, 50.73201893476232) (35.726878760301304, 100.0)
+STATUS   - Time 0.0019153521642314491 Fracture on points : (38.88970774640978, 27.129293699517778) (38.09104041327414, 35.089327021745895) (38.09104041331332, 43.089327021745895) (35.72687876006003, 50.73201893476232) (35.726878760301304, 100.0)
+STATUS   - Time 0.0019578769520166785 Fracture on points : (38.889707746276905, 0.0) (38.88970774640978, 27.129293699517778) (38.09104041327414, 35.089327021745895) (38.09104041331332, 43.089327021745895) (35.72687876006003, 50.73201893476232) (35.726878760301304, 100.0)
+Final Fracture : Fracture on points : (38.889707746276905, 0.0) (38.88970774640978, 27.129293699517778) (38.09104041327414, 35.089327021745895) (38.09104041331332, 43.089327021745895) (35.72687876006003, 50.73201893476232) (35.726878760301304, 100.0)
