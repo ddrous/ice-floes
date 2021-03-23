@@ -96,4 +96,10 @@ reports/weeks/6/*
 !reports/weeks/6/main.pdf
 !reports/weeks/6/fphw.cls
 
+# Rapport semaine 7
+reports/weeks/7/*
+
+!reports/weeks/7/main.tex
+!reports/weeks/7/main.pdf
+!reports/weeks/7/fphw.cls
 
