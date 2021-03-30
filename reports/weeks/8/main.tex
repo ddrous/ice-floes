@@ -1,0 +1,222 @@
+﻿%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% fphw Assignment
+% LaTeX Template
+% Version 1.0 (27/04/2019)
+%
+% This template originates from:
+% https://www.LaTeXTemplates.com
+%
+% Authors:
+% Class by Felipe Portales-Oliva (f.portales.oliva@gmail.com) with template 
+% content and modifications by Vel (vel@LaTeXTemplates.com)
+%
+% Template (this file) License:
+% CC BY-NC-SA 3.0 (http://creativecommons.org/licenses/by-nc-sa/3.0/)
+%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%----------------------------------------------------------------------------------------
+%	PACKAGES AND OTHER DOCUMENT CONFIGURATIONS
+%----------------------------------------------------------------------------------------
+
+\documentclass[
+  french,
+  % twocolumn,
+	11pt, % Default font size, values between 10pt-12pt are allowed
+	%letterpaper, % Uncomment for US letter paper size
+	%spanish, % Uncomment for Spanish
+]{fphw}
+
+% \usepackage[fontsize=10.0]{scrextend} % Use this to force the fontsize
+
+%% Commands for numbering paragraphs
+\renewcommand\thesection{\Roman{section}}
+\renewcommand\thesubsection{\thesection.\arabic{subsection}}
+\renewcommand*\thesubsubsection{%
+  \Roman{section}.\arabic{subsection}.\alph{subsubsection}%
+}
+
+\usepackage{sectsty}
+\sectionfont{\bfseries\Large\raggedright}
+
+% Template-specific packages
+\usepackage{babel}
+\usepackage[utf8]{inputenc} % Required for inputting international characters
+% \usepackage{DejaVuSerifCondensed} 
+\usepackage[T1]{fontenc} % Output font encoding for international characters
+
+\usepackage{kpfonts}        %% For math only
+\usepackage{fontspec}       %% Because we are using XeTEX
+\setromanfont{Minion Pro}   %% For text (Minion Math is commercial)
+
+%-----------------------------------------------------------------------
+% \setromanfont{Meta Serif Pro}
+% \setsansfont{Fira Sans}
+% \setmonofont[Color={0019D4}]{Fira Code} 
+%-----------------------------------------------------------------------
+
+\usepackage{fancyvrb}
+\usepackage{fvextra}
+\newcommand\userinput[1]{\textbf{#1}}
+\newcommand\arguments[1]{\textit{#1}}
+
+\usepackage{amsmath}
+\usepackage{mathtools}
+\usepackage{xfrac} 
+
+\usepackage{graphicx} % Required for including images
+\usepackage[textfont=it,font=small]{caption}  %% To manage long captions in images
+\usepackage{subcaption}
+\captionsetup{justification=centering}
+
+\usepackage{float}
+\graphicspath{ {../img/} }
+
+\usepackage{booktabs} % Required for better horizontal rules in tables
+
+\usepackage{listings} % Required for insertion of code
+
+\usepackage{array} % Required for spacing in tabular environment
+
+\usepackage{enumerate} % To modify the enumerate environment
+
+\usepackage{amssymb}
+\usepackage{enumitem}	%% % To modify the itemize bullet character
+
+\newcommand{\tabhead}[1]{{\bfseries#1}}
+
+\usepackage{xcolor}
+\usepackage{listings}
+\colorlet{mygray}{black!30}
+\colorlet{mygreen}{green!60!blue}
+\colorlet{mymauve}{red!60!blue}
+\lstset{
+  backgroundcolor=\color{gray!10},  
+  basicstyle=\ttfamily,
+  columns=fullflexible,
+  breakatwhitespace=false,      
+  breaklines=true,                
+  captionpos=b,                    
+  commentstyle=\color{mygreen}, 
+  extendedchars=true,              
+  frame=single,                   
+  keepspaces=true,             
+  keywordstyle=\color{blue},      
+  language=c++,                 
+  numbers=none,                
+  numbersep=5pt,                   
+  numberstyle=\tiny\color{blue}, 
+  rulecolor=\color{mygray},        
+  showspaces=false,               
+  showtabs=false,                 
+  stepnumber=5,                  
+  stringstyle=\color{mymauve},    
+  tabsize=3,                      
+  title=\lstname                
+}
+
+\usepackage[linkcolor=blue,colorlinks=true]{hyperref}
+% \usepackage[colorlinks=true,urlcolor=blue]{hyperref}
+\hypersetup{citecolor=blue}
+
+\usepackage{cleveref}
+\usepackage{siunitx}
+\usepackage{bm}
+
+\usepackage[backend=bibtex,style=alphabetic,maxnames=2,natbib=true]{biblatex} % Use the bibtex backend with the alphabetic citation style (compact APA-like)
+% \usepackage[backend=bibtex,style=authoryear,maxnames=2,natbib=true]{biblatex} % Use the bibtex backend with the authoryear citation style (which resembles APA)
+\addbibresource{../bib/bibliography.bib} % The filename of the bibliography
+\usepackage[autostyle=true]{csquotes} % Required to generate language-dependent quotes in the bibliography 
+% \renewcommand*{\bibfont}{\tiny} % Pour reduire la taille des references
+
+\usepackage[useregional=numeric]{datetime2}
+\usepackage[normalem]{ulem}
+
+% %-------------------------------------------------------------------------------
+
+\newcommand{\myvec}[3]{\begin{pmatrix} #1  \\ #2 \\ #3 \end{pmatrix}}   %% vecteur 3d
+\newcommand{\mymat}[9]{\begin{pmatrix} #1 & #2 & #3 \\ #4 & #5 & #6 \\ #7 & #8 &#9 \end{pmatrix}}  %% Matrice 3*3
+
+\renewcommand{\vector}[4]{\begin{pmatrix} #1  \\ #2 \\ #3 \\ #4 \end{pmatrix}}   %% vecteur 4d
+% \newcommand{\mymatrix}[16]{\begin{pmatrix} #1 & #2 & #3 & #4 \\ #4 & #6 & #7 & #8 \\ #9 & #10 & #11 & #12 \\ #13 & #14 & #15 & #16 \end{pmatrix}}  %% Matrice 3*3
+
+\newcommand{\hquad}{\hspace{0.5em}} %% Bew command for half quad
+\newcommand*\diff{\mathop{}\!\mathrm{d}}
+% \setlength\parindent{0pt}	%% To remove all indentations
+\newcommand{\bvec}[1]{\bm{\mathrm{#1}}}  %% Use this to make vectors
+\newcommand{\bmat}[1]{\bm{\mathsf{#1}}}   %% Use this to make tensors
+
+%----------------------------------------------------------------------------------------
+%	ASSIGNMENT INFORMATION
+%----------------------------------------------------------------------------------------
+
+\title{Compte rendu semaine \#8} % Assignment title
+% \title{Difficultés rencontrées} % Assignment title
+
+\author{Roussel Desmond Nzoyem} % Student name
+
+\date{\DTMdisplaydate{2021}{3}{24}{-1} - \DTMdisplaydate{2021}{3}{30}{-1}} % Due date
+
+\institute{Sorbonne Université \\ Laboratoire Jacques-Louis Lions} % Institute or school name
+
+\class{Stage M2} % Course or class name
+
+\professor{Pr. Stéphane Labbé} % Professor or teacher in charge of the assignment
+
+%----------------------------------------------------------------------------------------
+
+\begin{document}
+
+\maketitle % Output the assignment title, created automatically using the information in the custom commands above
+
+%----------------------------------------------------------------------------------------
+%	ASSIGNMENT CONTENT - INTRO
+%----------------------------------------------------------------------------------------
+
+
+Cette semaine, j'ai continué à developper le modèle de percussion entre deux floes de glaces. J'ai une fois de plus itéré sur plusieurs modèles, et en ce moment, je n'en retiens que deux: le premiers, très similiare à celui que j'ai présenté la semaine dernière nécessite la clarification de quelques notions sur les travaux de Matthias (questions 1 et 2 ci-bas). Le deuxième est plus régulier, mais vraissemblablement plus compliqué. Dans tous les deux cas, je n'ai pas réussi à résoudre analytiquement le système (même avec seulement 3 noeuds par floes). Une résolution serait peut-etre possible en une dimension (2 noeuds par floes). 
+
+
+
+
+%----------------------------------------------------------------------------------------
+%	ASSIGNMENT CONTENT - SECTION 1
+%----------------------------------------------------------------------------------------
+
+\section*{Tâches effectuées}
+
+\begin{enumerate}
+  \item Relecture des thèses de Matthias et Dimitri \parencite{balasoiu2020halthesis,rabatel2015thesis} (juste les parties importantes pour la modélisation);
+  \item Lecture des articles indiqués, et d'autres travaux ayant trait au contact ponctuel entre deux solides (par exemple \parencite{lotstedt1981coulomb}, etc.);
+  \item Développemnt du modèle de percussion (voir \verb|rapport_de_stage.pdf|), essaies de résolution analytique, redéveloppement, etc. 
+\end{enumerate}
+
+
+%----------------------------------------------------------------------------------------
+%	ASSIGNMENT CONTENT - SECTION 2
+%----------------------------------------------------------------------------------------
+
+\section*{Difficultés rencontrées}
+
+\begin{enumerate}
+  \item J'ai du mal à définir une condition de non-interpénétration pour mon modèle. En fait je pensais m'inspirer de celle de Matthias \parencite[p.32]{rabatel2015thesis}, mais jusqu'aujoudh'ui je ne maitrise toujours pas complètement ce que la vitesse relative $V^{lk}_j$ représente. Pour des noeuds du ressorts (assimilables à leurs centres de masse respectifs), $V^{lk}_j$ revient simplement à la différence (pondéré par les coeficients $c_{jk}$) entre les vitesses absolues des noeuds, est-ce correct ? 
+  \item Toujours par rapport au modèle macroscopique de Matthias, j'ai remarqué que dans l'équation 1.1.22 \parencite[p.35]{rabatel2015thesis}, le terme $\mathfrak{N}$ dépend de $W(t)$ durant la colision. Ce terme est la somme de forces de Coriolis, de trainé de l'air et de la mer, qui dépend de l'état du floe durant la colision \parencite[p.49]{rabatel2015thesis}. Comment Matthias contourne-t-il ce problème ?
+  \item La plus grosse difficulté a été dans la résolution analytique du (des) système(s) obtenu. Meme en ne considérant que 3 noeuds par floes et en gardant l'un des floes imobile (voir \verb|rapport_de_stage.pdf|), les équations restent trop couplées pour moi. Le plus gros problème étant les dérivée de normes qui apparaissent. En 1D avec 2 noeuds par floes, ca serait probablement plus facile \footnote{En utilisant la conservation de la quantité de mouvement et de l'énergie totale du système.}, mais je ne sais pas si ca vaut la peine. Je pourrais aussi me lancer dans une résolution numérique, mais je pense que celà prendra un peu de temps. Du coup je voulais me rensigner sur ce sur quoi l'ingénieur que vous aller recruter prochainnement, et moi travaillerons (pour savoir s'il y aura le temps pour la résolution numérique). 
+\end{enumerate}
+
+%----------------------------------------------------------------------------------------
+%	ASSIGNMENT CONTENT - SECTION 3
+% ----------------------------------------------------------------------------------------
+
+% \section*{Sujets explorables}
+
+
+
+% %-------------------------------------------------------------------------------
+% %							THE BIBLIOGRAPHY
+% %-------------------------------------------------------------------------------
+\clearpage   % Pour retirer les references de la bare de navigation
+\printbibliography
+
+
+\end{document}
