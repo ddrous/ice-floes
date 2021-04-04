@@ -81,7 +81,7 @@ Ensuite, il nous faut introduire des conditions portant sur la conservation de l
 
 Nous effectuons ici une modélisation 1D complète. Un floe est modélisé par un système masse-ressort de deux noeuds.
 Le floe 1 est immobilisé face au mur, et le floe 2 approche à la vitesse $\bvec{v}_0$. On identifie les noeuds $q_0$
-et $p_0$ de la section précédente à leur masses respectives $m$ et $m'$ (voir \cref{fig:contact1d}).
+et $p_0$ de la section précédente à leur masses respectives $m$ et $m'$ (voir \ref{fig:contact1d}).
 \begin{figure}[!h]
     \centering
     \frame{\includegraphics[width=0.8\textwidth]{Percussion1D-Systeme}}
@@ -91,8 +91,9 @@ et $p_0$ de la section précédente à leur masses respectives $m$ et $m'$ (voir
 
 \noindent On suppose que durant la dynamique non régulière, les masses $m$ et $m'$ en contact forment une seule masse
 $m+m'$ dont
-le déplacement des donné par la variable $x_1$. Le déplacement de la masse $m'$ à l'autre bout du système est nommé
-$x_1$. La masse $m$ fixée au mur ne sera pas étudiée ici. Nous faisons à présent le bilan des forces qui s'exercent ces
+le déplacement des donné par la variable $x_1(t)$. Le déplacement de la masse $m'$ à l'autre bout du système est nommé
+$x_2(t)$. La masse $m$ fixée au mur ne sera pas étudiée ici. Nous faisons à présent le bilan des forces qui
+s'exercent ces
 deux masses.
 \begin{figure}[!h]
      \begin{subfigure}[b]{0.4\textwidth}
@@ -111,6 +112,7 @@ deux masses.
         \caption{Bilan des forces appliquée sur les noeuds du système.}
         \label{fig:bilan}
 \end{figure}
+
 En orientant convenablement le système (voir \cref{fig:contact1d}), on applique les lois de Newton-Euler linéaires
 pour obtenir les système suivant et ses conditions initiales \footnote{J'ai des doutes sur cette condition
 initiale. La  vitesse initiale de $x_1$ est-elle vraiment $0$?}:
@@ -118,10 +120,47 @@ initiale. La  vitesse initiale de $x_1$ est-elle vraiment $0$?}:
     \begin{dcases}
     (m+m')\ddot x_1 = kx_1 + \mu \dot x_1 - k'(x_2 - x_1) - \mu'(\dot x_2 - \dot x_1) \\
         m' \ddot x_2 =  k'(x_2 - x_1) + \mu'(\dot x_2 - \dot x_1) \\
+    \end{dcases}
+\end{align}
+À l'instant initial $t_0$, on a le système suivant
+\begin{align} \label{eq:percussion1d}
+    \begin{dcases}
     (x_1(t_0), x_2(t_0)) = (0,0) \\
     (\dot x_1(t_0), \dot x_2(t_0)) = (0,v_0)
     \end{dcases}
 \end{align}
+En posant $X = (x_1, x_2)^T \in \mathbb{R}^2$, l' \cref{eq:percussion1d} devient
+\begin{align}
+    \underbrace{\mymat{m+m'}{0}{0}{m'}}_{A} \myvec{\ddot{x}_1}{\ddot{x}_2} = \underbrace{\mymat{\mu +
+    \mu^\prime}{-\mu'}{-\mu'}{\mu'}}_{B}
+    \myvec{\dot{x}_1}{\dot{x}_2} + \underbrace{\mymat{k+k'}{-k'}{-k'}{k'}}_{C} \myvec{x_1}{x_2} \,.
+\end{align}
+Puisque $m, m'\neq 0$, la matrice $A$ est inversible et on obtient au final le problème de Cauchy suivant:
+
+\begin{align} \label{eq:percussion1d2}
+    \begin{dcases}
+        \ddot{X}(t) = B' \dot{X}(t) + C'X(t) \,, \\
+        (X(t_0), \dot X (t_0)) = \left( \myvec{0}{0}, \myvec{0}{v_0} \right) \,,
+    \end{dcases}
+\end{align}
+avec $B' = A^{-1}B$ et $C' = A^{-1}C$.
+
+\noindent Il s'agit la d'un suytème d'EDO du deuxième ordre à coefficients constants. Transformons le en un système du
+premier ordre pour
+une
+résolusiotn plus aisée. On pose donc $Y= (X, \dot X)^T = (x_1, x_2, \dot{x}_1, \dot{x}_2)^T \in \mathbb{R}^4$ et le
+système
+\ref{eq:percussion1d2}
+devient
+\begin{align}
+    \begin{dcases}
+        \dot{Y}(t)= E Y(t) \\
+        Y(t_0) = (0,0,0,v_0)^T
+    \end{dcases}
+\end{align}
+avec la matrice par blocs \[ E = \mymat{0}{I_2}{C'}{B'} \,, \] où $I_2$ désigne la matrice identité de
+$\mathbb{R}^{2\times2}$.
+
 
 
 
