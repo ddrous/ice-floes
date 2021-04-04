@@ -75,8 +75,60 @@ où $(\bvec{F}^{'}_i)_{0 \leq i \leq n'}$ sont définis de facon similaire à $\
 
 Ensuite, il nous faut introduire des conditions portant sur la conservation de l'énergie, et la condition de non-interpénétration de Signorini\dots
 
+
+
+\subsubsection*{Modélisation et simulation 1D}
+
+Nous effectuons ici une modélisation 1D complète. Un floe est modélisé par un système masse-ressort de deux noeuds.
+Le floe 1 est immobilisé face au mur, et le floe 2 approche à la vitesse $\bvec{v}_0$. On identifie les noeuds $q_0$
+et $p_0$ de la section précédente à leur masses respectives $m$ et $m'$ (voir \cref{fig:contact1d}).
+\begin{figure}[!h]
+    \centering
+    \frame{\includegraphics[width=0.8\textwidth]{Percussion1D-Systeme}}
+    \caption{Contact 1D entre deux floes.}
+    \label{fig:contact1d}
+\end{figure}
+
+\noindent On suppose que durant la dynamique non régulière, les masses $m$ et $m'$ en contact forment une seule masse
+$m+m'$ dont
+le déplacement des donné par la variable $x_1$. Le déplacement de la masse $m'$ à l'autre bout du système est nommé
+$x_1$. La masse $m$ fixée au mur ne sera pas étudiée ici. Nous faisons à présent le bilan des forces qui s'exercent ces
+deux masses.
+\begin{figure}[!h]
+     \begin{subfigure}[b]{0.4\textwidth}
+         \centering
+         \frame{\includegraphics[width=\textwidth]{Percussion1D-Masse1}}
+         \caption{Sur $m+m'$.}
+         \label{fig:bilan1}
+     \end{subfigure}
+%     \hfill
+     \begin{subfigure}[b]{0.3\textwidth}
+         \centering
+         \frame{\includegraphics[width=\textwidth]{Percussion1D-Masse2}}
+         \caption{Sur $m'$.}
+         \label{fig:bilan2}
+     \end{subfigure}
+        \caption{Bilan des forces appliquée sur les noeuds du système.}
+        \label{fig:bilan}
+\end{figure}
+En orientant convenablement le système (voir \cref{fig:contact1d}), on applique les lois de Newton-Euler linéaires
+pour obtenir les système suivant et ses conditions initiales \footnote{J'ai des doutes sur cette condition
+initiale. La  vitesse initiale de $x_1$ est-elle vraiment $0$?}:
+\begin{align}
+    \begin{dcases}
+    (m+m')\ddot x_1 = kx_1 + \mu \dot x_1 - k'(x_2 - x_1) - \mu'(\dot x_2 - \dot x_1) \\
+        m' \ddot x_2 =  k'(x_2 - x_1) + \mu'(\dot x_2 - \dot x_1) \\
+    (x_1(t_0), x_2(t_0)) = (0,0) \\
+    (\dot x_1(t_0), \dot x_2(t_0)) = (0,v_0)
+    \end{dcases}
+\end{align}
+
+
+
+
+
 \section{Les apports du stage}
 
-\begin{itemize}
-    \item L' utilisation de TIKZ
-\end{itemize}
+%\begin{itemize}
+%    \item L' utilisation de TIKZ
+%\end{itemize}
