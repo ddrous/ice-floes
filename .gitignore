@@ -55,60 +55,60 @@ reports/matthias/*
 !reports/weeks/bib
 
 # Rapport semaine 1
-reports/weeks/1/*
+reports/weeks/01/*
 
-!reports/weeks/1/main.tex
-!reports/weeks/1/main.pdf
-!reports/weeks/1/fphw.cls
+!reports/weeks/01/main.tex
+!reports/weeks/01/main.pdf
+!reports/weeks/01/fphw.cls
 
 # Rapport semaine 2
-reports/weeks/2/*
+reports/weeks/02/*
 
-!reports/weeks/2/main.tex
-!reports/weeks/2/main.pdf
-!reports/weeks/2/fphw.cls
+!reports/weeks/02/main.tex
+!reports/weeks/02/main.pdf
+!reports/weeks/02/fphw.cls
 
 # Rapport semaine 3
-reports/weeks/3/*
+reports/weeks/03/*
 
-!reports/weeks/3/main.tex
-!reports/weeks/3/main.pdf
-!reports/weeks/3/fphw.cls
+!reports/weeks/03/main.tex
+!reports/weeks/03/main.pdf
+!reports/weeks/03/fphw.cls
 
 # Rapport semaine 4
-reports/weeks/4/*
+reports/weeks/04/*
 
-!reports/weeks/4/main.tex
-!reports/weeks/4/main.pdf
-!reports/weeks/4/fphw.cls
+!reports/weeks/04/main.tex
+!reports/weeks/04/main.pdf
+!reports/weeks/04/fphw.cls
 
 # Rapport semaine 5
-reports/weeks/5/*
+reports/weeks/05/*
 
-!reports/weeks/5/main.tex
-!reports/weeks/5/main.pdf
-!reports/weeks/5/fphw.cls
+!reports/weeks/05/main.tex
+!reports/weeks/05/main.pdf
+!reports/weeks/05/fphw.cls
 
 # Rapport semaine 6
-reports/weeks/6/*
+reports/weeks/06/*
 
-!reports/weeks/6/main.tex
-!reports/weeks/6/main.pdf
-!reports/weeks/6/fphw.cls
+!reports/weeks/06/main.tex
+!reports/weeks/06/main.pdf
+!reports/weeks/06/fphw.cls
 
 # Rapport semaine 7
-reports/weeks/7/*
+reports/weeks/07/*
 
-!reports/weeks/7/main.tex
-!reports/weeks/7/main.pdf
-!reports/weeks/7/fphw.cls
+!reports/weeks/07/main.tex
+!reports/weeks/07/main.pdf
+!reports/weeks/07/fphw.cls
 
 # Rapport semaine 8
-reports/weeks/8/*
+reports/weeks/08/*
 
-!reports/weeks/8/main.tex
-!reports/weeks/8/main.pdf
-!reports/weeks/8/fphw.cls
+!reports/weeks/08/main.tex
+!reports/weeks/08/main.pdf
+!reports/weeks/08/fphw.cls
 
 # Rapport semaine 9
 reports/weeks/09/*
