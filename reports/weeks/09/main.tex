@@ -150,12 +150,12 @@
 %	ASSIGNMENT INFORMATION
 %----------------------------------------------------------------------------------------
 
-\title{Compte rendu semaine \#8} % Assignment title
+\title{Compte rendu semaine \#9} % Assignment title
 % \title{Difficultés rencontrées} % Assignment title
 
 \author{Roussel Desmond Nzoyem} % Student name
 
-\date{\DTMdisplaydate{2021}{3}{24}{-1} - \DTMdisplaydate{2021}{3}{30}{-1}} % Due date
+\date{\DTMdisplaydate{2021}{3}{31}{-1} - \DTMdisplaydate{2021}{4}{06}{-1}} % Due date
 
 \institute{Sorbonne Université \\ Laboratoire Jacques-Louis Lions} % Institute or school name
 
@@ -174,7 +174,7 @@
 %----------------------------------------------------------------------------------------
 
 
-Cette semaine, j'ai continué à developper le modèle de percussion entre deux floes de glaces. J'ai une fois de plus itéré sur plusieurs modèles, et en ce moment, je n'en retiens que deux: le premiers, très similiare à celui que j'ai présenté la semaine dernière nécessite la clarification de quelques notions sur les travaux de Matthias (questions 1 et 2 ci-bas). Le deuxième est plus régulier, mais vraissemblablement plus compliqué. Dans tous les deux cas, je n'ai pas réussi à résoudre analytiquement le système (même avec seulement 3 noeuds par floes). Une résolution serait peut-etre possible en une dimension (2 noeuds par floes). 
+Cette semaine a été consacrée à l'étude du modèle de percussion 1D. J'ai developé un modèle de collision complètement inélastique (les deux floes deviennemt un seul objet à la fin du choc). Ce modèle permettra à terme (après résolution graduelle des nombreuses simplifications qui ont été faites) d'introduire la percussion 1D.
 
 
 
@@ -186,9 +186,9 @@ Cette semaine, j'ai continué à developper le modèle de percussion entre deux 
 \section*{Tâches effectuées}
 
 \begin{enumerate}
-  \item Relecture des thèses de Matthias et Dimitri \parencite{balasoiu2020halthesis,rabatel2015thesis} (juste les parties importantes pour la modélisation);
-  \item Lecture des articles indiqués, et d'autres travaux ayant trait au contact ponctuel entre deux solides (par exemple \parencite{lotstedt1981coulomb}, etc.);
-  \item Développemnt du modèle de percussion (voir \verb|rapport_de_stage.pdf|), essaies de résolution analytique, redéveloppement, etc. 
+  \item Lecture de plusieurs modèles de systèmes masses-ressorts avec dispositifs visqueux. Le document qui s'est montré le plus utile est \parencite{homodeling} grace à ses nombreux exemples illustrés.
+  \item Ensuite il a fallu poser le porblème de percission 1D, et d'écrire les équations régissant le système (voir \textit{rapport de stage}).
+  \item La troisième tâche à été de simuler le modèle à l'aide des librairies \verb|scipy| et \verb|bokeh|. Cette simulation interactive a permis de constater des erreurs dans le modèle qui ont aussitot corrigées (voir \textit{notebook} rataché). 
 \end{enumerate}
 
 
@@ -198,17 +198,33 @@ Cette semaine, j'ai continué à developper le modèle de percussion entre deux 
 
 \section*{Difficultés rencontrées}
 
+\textit{Le rapport de stage et un notebook Python sont rataché à ce rapport.}
+
 \begin{enumerate}
-  \item J'ai du mal à définir une condition de non-interpénétration pour mon modèle. En fait je pensais m'inspirer de celle de Matthias \parencite[p.32]{rabatel2015thesis}, mais jusqu'aujoudh'ui je ne maitrise toujours pas complètement ce que la vitesse relative $V^{lk}_j$ représente. Pour des noeuds du ressorts (assimilables à leurs centres de masse respectifs), $V^{lk}_j$ revient simplement à la différence (pondéré par les coeficients $c_{jk}$) entre les vitesses absolues des noeuds, est-ce correct ? 
-  \item Toujours par rapport au modèle macroscopique de Matthias, j'ai remarqué que dans l'équation 1.1.22 \parencite[p.35]{rabatel2015thesis}, le terme $\mathfrak{N}$ dépend de $W(t)$ durant la colision. Ce terme est la somme de forces de Coriolis, de trainé de l'air et de la mer, qui dépend de l'état du floe durant la colision \parencite[p.49]{rabatel2015thesis}. Comment Matthias contourne-t-il ce problème ?
-  \item La plus grosse difficulté a été dans la résolution analytique du (des) système(s) obtenu. Meme en ne considérant que 3 noeuds par floes et en gardant l'un des floes imobile (voir \verb|rapport_de_stage.pdf|), les équations restent trop couplées pour moi. Le plus gros problème étant les dérivée de normes qui apparaissent. En 1D avec 2 noeuds par floes, ca serait probablement plus facile \footnote{En utilisant la conservation de la quantité de mouvement et de l'énergie totale du système.}, mais je ne sais pas si ca vaut la peine. Je pourrais aussi me lancer dans une résolution numérique, mais je pense que celà prendra un peu de temps. Du coup je voulais me rensigner sur ce sur quoi l'ingénieur que vous aller recruter prochainnement, et moi travaillerons (pour savoir s'il y aura le temps pour la résolution numérique). 
+  \item La permière question concerne la condition initiale sur le modèle 1D qui a été crée: \textit{la vitesse initiale de la masse $m+m'$ (dont le déplacement est noté $x_1$) est-elle vraiment nulle ?} \textbf{En fait non, cette vitesse ne peut être nulle !} je compte isoler le système (en supprimant le mur à gauche) afin d'utiliser la \textbf{conservation de la quantité de mouvements} ; ceci pour déduire la vitesse "initiale" de l'ensemble $m+m'$ après collision et fixation de $m'$ (de vitesse $-v_0$) sur $m$ (de vitesse nulle).
+  \begin{figure}[H]
+    \centering
+    \includegraphics[width=0.8\textwidth]{Percussion1D-Systeme.png}
+    \caption{Modèle de collision 1D entre deux floes modélisés par des réseaux de ressorts à deux noeuds chacuns; à l'instant initial, le premier est imobile, et le deuxième se déplace à la vitesse $-v_0$.}
+  \end{figure}
+  \item La deuxième question est la même que celle de la semaine dernière (question 2): \textit{dans la résolution du problème lineaire de complementarité régissant la collision, les forces de contact dépendent des position des noeuds durant la très brève percussion}. Pour résoudre ce problème en 1D (et calculler les vitesses après contact inélastique\footnote{Le conctat cette fois sera tout juste inélastique, il ne sera plus parfaitement inélastique; i.e. les deux floes se séparent après contact.}), je compte utiliser le modèle décrit ci-haut (à la question 1) durant le phase de \textbf{dynamique non-régulière} pour déterminer les positions et les vitesses des différents noeuds. Celà permettra de calculer les forces exercées sur les noeuds \textbf{en tout temps}.
 \end{enumerate}
 
 %----------------------------------------------------------------------------------------
 %	ASSIGNMENT CONTENT - SECTION 3
 % ----------------------------------------------------------------------------------------
 
-% \section*{Sujets explorables}
+\section*{Travail à venir}
+
+\textit{En supposant que je suis sur la bonne voie, je me consacrerais aux tâches suivantes durant les semaines à venir (par ordre de priorité).}
+\begin{enumerate}
+  \item Isolation du système 1D et calcul de la vitesses "initiale" de la masse $m+m'$.
+  \item Toujours en 1D, calcul analytique et numérique des état d'équilibres du système d'EDO (collision parfaitement inélastique); distinguer les états stables des autres.
+  \item Calculer analytiquement la solution du système d'EDO; déduire la condition sur les paramètres pour que le système converge vers l'état d'équilibre voulu.
+  \item Intégration du modèle dans un problème linéaire de complémentarité en 1D. On obtiendra ainsi les vitesses de chacun des blocs détachés après contact.
+  \item Passage au modèle 2D.
+  \item Passage à l'étude de la fracture après percussion.
+\end{enumerate}
 
 
 
