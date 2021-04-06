@@ -110,7 +110,12 @@ reports/weeks/8/*
 !reports/weeks/8/main.pdf
 !reports/weeks/8/fphw.cls
 
+# Rapport semaine 9
+reports/weeks/09/*
 
+!reports/weeks/09/main.tex
+!reports/weeks/09/main.pdf
+!reports/weeks/09/fphw.cls
 
 
 
