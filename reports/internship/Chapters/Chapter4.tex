@@ -31,7 +31,7 @@ Nous souhaitons étudier le comportement mécanique d'un floe après collision a
 
 
 
-\subsection{Modélisation du contact entre deux floes de glace}
+\subsection{Modélisation générale du contact entre deux floes de glace}
 
 Les floes de glace $\Omega_k$ et $\Omega_l$ sont modélisés par des systèmes masse-ressort (à grande raideur). Pour l'instant, nous considérons une moélisation simplifiée qui assimile un floe à un système de (trois) masses reliés par des ressorts (de constante de raideur $k$), et par des dispositifs visqueux de constante $\mu$.
 Nous désignerons par $n+1$ le nombre total de noeuds du floe $\Omega_k$, chaque noeud ayant pour masse $m$. De facon similaire, on définit les constantes $k'$, $\mu'$, $n'+1$, $m'+1$ pour le floe $\Omega_l$. Les positions des noeds de $\Omega_k$ seront noté $(q_i)_{0\leq i\leq n}$, tandis que ceux de $\Omega_l$ seront notés $(p_i)_{0 \leq i\leq n'}$ (voir \cref{fig:contactmanuel}). 
@@ -77,13 +77,17 @@ Ensuite, il nous faut introduire des conditions portant sur la conservation de l
 
 
 
-\subsubsection*{Modélisation et simulation 1D (collision parfaitement inélastique)}
+\subsection{Modélisation et simulation 1D}
+
+
+
+\subsubsection{Collision parfaitement inélastique avec un floe immobile à l'instant initial}
 
 Nous effectuons ici une modélisation 1D de notre problème. Un floe est modélisé par un système masse-ressort de deux nœuds. Le floe 1 est immobilisé face au mur, et le floe 2 approche à la vitesse $\bvec{v}_0$. On identifie les nœuds $q_0$ et $p_0$ de la section précédente à leur masses respectives $m$ et $m'$ (voir \cref{fig:contact1d}).
 \begin{figure}[!h]
     \centering
     \frame{\includegraphics[width=0.8\textwidth]{Percussion1D-Systeme}}
-    \caption{Contact 1D entre deux floes.}
+    \caption{Contact 1D parfaitement inélastique entre deux floes. Le floe percuté étant immobile et coincé au mur avant le choc.}
     \label{fig:contact1d}
 \end{figure}
 
@@ -172,7 +176,7 @@ La résolution numérique du système passe par le calcul de l'exponentielle de 
     \centering
     \includegraphics[width=0.4\textwidth]{SimuPercussion1D.png}
     \caption{Simulation de la percussion 1D entre deux floes avec $m=1$, $m'=1$, $k=16$, $k'=5$, $\mu=6$,
-        $\mu'=2$, $v_0=-1.0$, $t_{max}=32$. On observe effectivement le ralentissment du systène et une convergence
+        $\mu'=2$, $v_0=-1.0$, $t_{max}=32$. On observe effectivement le ralentissement du système et une convergence
         vers l'état d'équilibre $Y_{eq}= (0,0,0,0)$.}
     \label{fig:simucontact1d}
 \end{figure}
@@ -182,6 +186,75 @@ La résolution numérique du système passe par le calcul de l'exponentielle de 
     \item Calculer analytiquement et numériquement tous les état d'équilibres $Y_{eq} \in \ker(E)$; distinguer les états stables des autres.
     \item Calculer analytiquement l'exponentielle de la matrice $E$, et donner l'expression de la solution; déduire la condition sur les parametres pour que le système converge vers l'état d'équilibre voulu.
 \end{enumerate} 
+
+
+
+
+\subsubsection{Collision parfaitement inélastique sans présence du mur}
+
+Contrairement au cas étudié dans la section précédente, le mur est supprimé dans cette section. On obtient donc une troisième varaible $x_3$ décrivant le comportement du noed qui était rattaché au mur. La schéma régissant ce système est donnée à la \cref{fig:contact1d2}. Le bilan des forces appliquées aux noeuds est présenté à la \cref{fig:bilan2}.
+
+\begin{figure}[!h]
+    \centering
+    \frame{\includegraphics[width=0.8\textwidth]{Percussion1D-Systeme-2}}
+    \caption{Contact 1D parfaitement inélastique entre deux floes. Le floe percuté étant immobile mais non coincé au mur avant le choc. On représnte également les variables $x_1$, $x_2$, et $x_3$ décrivant les movements de chaque noeud.}
+    \label{fig:contact1d2}
+\end{figure}
+
+\begin{figure}[!h]
+    \begin{subfigure}[b]{0.25\textwidth}
+        \centering
+        \frame{\includegraphics[width=\textwidth]{Percussion1D2-Masse1.png}}
+        \caption{Sur $m$.}
+        \label{fig:bilan12}
+    \end{subfigure}
+%     \hfill
+    \begin{subfigure}[b]{0.31\textwidth}
+        \centering
+        \frame{\includegraphics[width=\textwidth]{Percussion1D2-Masse2}}
+        \caption{Sur $m+m'$.}
+        \label{fig:bilan22}
+    \end{subfigure}
+%     \hfill
+    \begin{subfigure}[b]{0.23\textwidth}
+        \centering
+        \frame{\includegraphics[width=\textwidth]{Percussion1D2-Masse3}}
+        \caption{Sur $m'$.}
+        \label{fig:bilan32}
+    \end{subfigure}
+       \caption{Bilan des forces appliquée sur les noeuds du système. On procède de facon similaire à \cref{fig:bilan} pour obtenir les sens et les intensités de ces forces.}
+       \label{fig:bilan2}
+\end{figure}
+
+\noindent Comme précédement, nous appliqons les lois de Newton pour obtenir:
+\begin{align}
+    \begin{dcases}
+    m\ddot x_1 = -k(x_1 - x_2) - \mu (\dot x_1 - \dot x_2) \,, \\
+    (m+m')\ddot x_2 = k(x_1 - x_2) + \mu (\dot x_1 - \dot x_2) - k'(x_2 - x_3) - \mu'(\dot x_2 - \dot x_3) \,, \\
+        m' \ddot x_3 =  k'(x_2 - x_3) + \mu'(\dot x_2 - \dot x_3) \,. \\
+    \end{dcases}
+\end{align}
+Sous forme matricielle, on a
+\begin{align}
+    \underbrace{\mybigmat{m}{0}{0}{0}{m+m'}{0}{0}{0}{m'}}_{A} \mybigvec{\ddot{x}_1}{\ddot{x}_2}{\ddot{x}_3} =  
+    \underbrace{\mybigmat{-k}{k}{0}{k}{-k-k'}{k}{0}{k'}{-k'}}_{B} \mybigvec{x_1}{x_2}{x_3} + 
+    \underbrace{\mybigmat{-\mu}{\mu}{0}{\mu}{-\mu-\mu'}{\mu'}{0}{\mu'}{-\mu'}}_{C} \mybigvec{\dot{x}_1}{\dot{x}_2}{\dot{x}_3} \,.
+\end{align}
+Puisque $m, m'\neq 0$, la matrice $A$ est inversible. En posant $X = (x_1, x_2, x_3)^T \in \mathbb{R}^3$, le système d'EDO revient à l' \cref{eq:percussion1d22} suivante:
+\begin{align} \label{eq:percussion1d22}
+        \ddot{X}(t) = B' X(t) + C'\dot{X}(t) \,, 
+\end{align}
+où $B' = A^{-1}B$ et $C' = A^{-1}C$. On pose ensuite $Y= (X, \dot X)^T \in \mathbb{R}^6$ et le
+système \ref{eq:percussion1d22} devient
+\begin{align} \label{eq:systeme1d2}
+        \dot{Y}(t)= E Y(t)
+\end{align}
+
+Remarquons qu'en enlevant le mur à gauche du domaine (voir \cref{fig:contact1d}), le système est devenu isolé. Nous pouvons donc appliquer la conservation de la quantité de mouvement pour identifier la vitesse de l'ensemble $m+m'$ après collision et fixation de la masse $m'$ (à vitesse $-v_0$) sur la masse $m$ (de vitesse nulle).
+
+
+
+
 
 
 
