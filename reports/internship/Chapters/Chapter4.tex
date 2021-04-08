@@ -102,14 +102,14 @@ deux masses.
          \centering
          \frame{\includegraphics[width=\textwidth]{Percussion1D-Masse1}}
          \caption{Sur $m+m'$.}
-         \label{fig:bilan1}
+         \label{fig:bilan11}
      \end{subfigure}
 %     \hfill
      \begin{subfigure}[b]{0.3\textwidth}
          \centering
          \frame{\includegraphics[width=\textwidth]{Percussion1D-Masse2}}
          \caption{Sur $m'$.}
-         \label{fig:bilan2}
+         \label{fig:bilan12}
      \end{subfigure}
         \caption{Bilan des forces appliquée sur les noeuds du système. Les valeurs indiquées sont les intensitées
             (positives) des forces durant une phase imaginée de compression des ressorts ($\bvec{v}_0 <0$ et donc
@@ -258,7 +258,7 @@ Remarquons qu'en enlevant le mur à gauche du domaine (voir \cref{fig:contact1d}
     \Rightarrow & \quad \bvec{v}_f = \frac{m'}{m+m'}\bvec{v}_0
 \end{align*} 
 
-\noindent On introduit ces conditions initiales dans l'\cref{eq:systeme1d2} pour obtenir le système de Cauchy suivant: 
+\noindent On introduit ces conditions initiales dans l'\cref{eq:systeme1d2} pour obtenir le système de Cauchy ci-bas. Le résulat de la simulation est présenté à la figure \cref{fig:simucontact1d2}. 
 \begin{align} \label{eq:systeme1d3}
     \begin{dcases}
         \dot{Y}(t)= E Y(t) \,, \\
@@ -266,7 +266,12 @@ Remarquons qu'en enlevant le mur à gauche du domaine (voir \cref{fig:contact1d}
     \end{dcases}
 \end{align}
 
-
+\begin{figure}[!h]
+    \centering
+    \includegraphics[width=0.6\textwidth]{SimuPercussion1D2.png}
+    \caption{Simulation de la percussion 1D entre deux floes (sans présence du mur) avec $m=1$, $m'=1$, $k=3$, $k'=22$, $\mu=6$,$\mu'=2$, $v_0=-1.8$, $t_{max}=5$. On observe effectivement le ralentissement du système et une convergence vers l'état d'équilibre $Y_{eq}= (0,0,0,0,0,0)$.} 
+    \label{fig:simucontact1d2}
+\end{figure}
 
 
 
