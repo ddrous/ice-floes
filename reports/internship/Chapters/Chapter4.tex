@@ -81,7 +81,7 @@ Ensuite, il nous faut introduire des conditions portant sur la conservation de l
 
 
 
-\subsubsection{Collision parfaitement inélastique avec un floe immobile à l'instant initial}
+\subsubsection{Collision parfaitement inélastique avec un floe encastré à l'instant initial}
 
 Nous effectuons ici une modélisation 1D de notre problème. Un floe est modélisé par un système masse-ressort de deux nœuds. Le floe 1 est immobilisé face au mur, et le floe 2 approche à la vitesse $\bvec{v}_0$. On identifie les nœuds $q_0$ et $p_0$ de la section précédente à leur masses respectives $m$ et $m'$ (voir \cref{fig:contact1d}).
 \begin{figure}[!h]
@@ -91,7 +91,7 @@ Nous effectuons ici une modélisation 1D de notre problème. Un floe est modéli
     \label{fig:contact1d}
 \end{figure}
 
-\noindent On suppose que durant la dynamique non régulière, les masses $m$ et $m'$ en contact forment une seule masse
+\noindent On suppose que durant la dynamique non régulière, les masses $m$ et $m'$ en contact forment une seule masse\footnote{Cette simplification a pour principal avantage de supprimer le traitement de la force de contact entre les deux masses.}
 $m+m'$ dont
 le déplacement est donné par la variable $x_1(t)$. Le déplacement de la masse $m'$ à l'autre bout du floe percuteur est nommé
 $x_2(t)$. La masse $m$ qui est fixée au mur ne sera pas étudiée ici. Nous faisons à présent le bilan des forces qui
@@ -272,6 +272,17 @@ Remarquons qu'en enlevant le mur à gauche du domaine (voir \cref{fig:contact1d}
     \caption{Simulation de la percussion 1D entre deux floes (sans présence du mur) avec $m=1$, $m'=1$, $k=3$, $k'=22$, $\mu=6$,$\mu'=2$, $v_0=-1.8$, $t_{max}=5$. On observe effectivement le ralentissement du système et une convergence vers l'état d'équilibre $Y_{eq}= (0,0,0,0,0,0)$.} 
     \label{fig:simucontact1d2}
 \end{figure}
+
+
+
+
+
+
+\subsubsection{Collision inélastique avec séparation des masses}
+
+
+
+
 
 
 
