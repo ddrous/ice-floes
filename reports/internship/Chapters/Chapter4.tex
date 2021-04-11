@@ -349,17 +349,25 @@ est aussi calculé suivant le modèle \cref{eq:systeme1d2} (voir l'article \pare
 \begin{align}    \label{eq:debuteq1}
     \int_{\tmoins}^{\tplus} m\ddot x_2 + m'\ddot x_3 \diff t = \underbrace{\int_{\tmoins}^{\tplus} k(x_1 - x_2) + \mu (\dot x_1 - \dot x_2) - k'(x_3 - x_4) - \mu'(\dot x_3 - \dot x_4) \diff t}_{I} \,.
 \end{align}
-Afin d'éviter toute confusion, nous notons $v_2 = \dot{x}_2(\tmoins)$ et $v_3 = \dot{x}_3(\tmoins)$ les vitesses des noeuds en contact avant collision, et $V_2 = \dot{x}_2(\tplus)$ et $V_3 = \dot{x}_3(\tplus)$ les vitesses après contact. L'équation \cref{eq:debuteq1} devient donc:
+Afin d'éviter toute confusion, nous notons $v_0 = \dot{x}_2(\tmoins)$ et $v'_0 = \dot{x}_3(\tmoins)$ les vitesses des noeuds en contact avant collision, et $V_0 = \dot{x}_2(\tplus)$ et $V'_0 = \dot{x}_3(\tplus)$ les vitesses après contact. L'équation \cref{eq:debuteq1} devient donc:
 \begin{align} \label{eq:crammer1}
-    mV_2 + m'V_3 = I + mv_2 + m'v_3
+    mV_0 + m'V'_0 = I + mv_0 + m'v'_0 \,.
 \end{align}
-À présent, nous pouvons étudier l'énergie cinétique du système à travers le coefficient de restitution $\varepsilon$ \footnote{Le coefficient de restitution est le même que celui utilisé dans la thèse \parencite{rabatel2015thesis}.}. On l'équation
+À présent, nous pouvons étudier l'énergie cinétique du système à travers le coefficient de restitution $\varepsilon$ \footnote{Le coefficient de restitution est le même que celui utilisé dans la thèse \parencite{rabatel2015thesis}.}. On suppose (algébriquement) que les noeuds prennent des directions indiquées à la \cref{fig:contact1dapres}. 
+\begin{figure}[!h]
+    \centering
+    \frame{\includegraphics[width=0.8\textwidth]{Percussion1D3-Apres.png}}
+    \caption{Situation après contact.}
+    \label{fig:contact1dapres}
+\end{figure}
+
+\noindent On obtient l'\cref{eq:crammer2}
 \begin{align} \label{eq:crammer2}
-    V_2 - V_3 = \varepsilon (v_2 - v_3)
+    - V_0 + V'_0 = \varepsilon (v_0 - v'_0) \,.
 \end{align}
 Le système de Cramer qui découle des \cref{eq:crammer1,eq:crammer2} permet d'obtenir les expressions:
 \begin{align}
-    V_2 = \frac{I + (m+\varepsilon m')v_2 + (1-\varepsilon)m'v_3}{m+m'} \,, \quad V_3 = \frac{I + (1-\varepsilon)mv_2 + (m'+\varepsilon m)v_3}{m+m'} \,.
+    V_0 = \frac{I + (m+\varepsilon m')v_0 + (1-\varepsilon)m'v'_0}{m+m'} \,, \quad V'_0 = \frac{I + (1-\varepsilon)mv_0 + (m'+\varepsilon m)v'_0}{m+m'} \,.
 \end{align}
 
 
