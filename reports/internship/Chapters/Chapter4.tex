@@ -114,7 +114,7 @@ deux masses.
         \caption{Bilan des forces appliquée sur les noeuds du système. Les valeurs indiquées sont les intensitées
             (positives) des forces durant une phase imaginée de compression des ressorts ($\bvec{v}_0 <0$ et donc
             $x_1 <0$). Pour obtenir l'intesité de la force de rappel du ressort $k'$, on peut imaginer $x_1$ imobile
-            (on aura $x_2 < 0$, d'où $x_1 - x_2 > 0$).}
+            (on aura $x_2 < 0$, d'où $x_1 - x_2 > 0$) (voir \parencite{homodeling}).}
         \label{fig:bilan}
 \end{figure}
 
@@ -124,7 +124,7 @@ initiale. La vitesse initiale de $x_1$ est-elle vraiment nulle?}:
 \begin{align}
     \begin{dcases}
     (m+m')\ddot x_1 = -kx_1 - \mu \dot x_1 + k'(x_2 - x_1) + \mu'(\dot x_2 - \dot x_1) \\
-        m' \ddot x_2 =  -k'(x_2 - x_1) - \mu'(\dot x_2 - \dot x_1) \\
+        m' \ddot x_2 =  -k'(x_2 - x_1) - \mu'(\dot x_2 - \dot x_1) 
     \end{dcases}
 \end{align}
 À l'instant initial $t_0$, on a le système suivant
@@ -176,7 +176,7 @@ La résolution numérique du système passe par le calcul de l'exponentielle de 
     \centering
     \includegraphics[width=0.4\textwidth]{SimuPercussion1D.png}
     \caption{Simulation de la percussion 1D entre deux floes avec $m=1$, $m'=1$, $k=16$, $k'=5$, $\mu=6$,
-        $\mu'=2$, $v_0=-1.0$, $t_{max}=32$. On observe effectivement le ralentissement du système et une convergence
+        $\mu'=2$, $v_0=-1.0$, $t_{f}=32$. On observe effectivement le ralentissement du système et une convergence
         vers l'état d'équilibre $Y_{eq}= (0,0,0,0)$.}
     \label{fig:simucontact1d}
 \end{figure}
@@ -192,12 +192,12 @@ La résolution numérique du système passe par le calcul de l'exponentielle de 
 
 \subsubsection{Collision parfaitement inélastique sans présence du mur}
 
-Contrairement au cas étudié dans la section précédente, le mur est supprimé dans cette section. On obtient donc une troisième varaible $x_3$ décrivant le comportement du noed qui était rattaché au mur. La schéma régissant ce système est donnée à la \cref{fig:contact1d2}. Le bilan des forces appliquées aux noeuds est présenté à la \cref{fig:bilan2}.
+Contrairement au cas étudié dans la section précédente, le mur est supprimé dans cette section. On obtient donc une troisième variable $x_3$ décrivant le comportement du noeud qui était rattaché au mur. La schéma régissant ce système est donnée à la \cref{fig:contact1d2}. Le bilan des forces appliquées aux noeuds est présenté à la \cref{fig:bilan2}.
 
 \begin{figure}[!h]
     \centering
     \frame{\includegraphics[width=0.8\textwidth]{Percussion1D-Systeme-2}}
-    \caption{Contact 1D parfaitement inélastique entre deux floes. Le floe percuté étant immobile mais non coincé au mur avant le choc. On représnte également les variables $x_1$, $x_2$, et $x_3$ décrivant les movements de chaque noeud.}
+    \caption{Contact 1D parfaitement inélastique entre deux floes. Le floe percuté étant non immobile (et non coincé au mur) avant le choc. On représnte également les variables $x_1$, $x_2$, et $x_3$ décrivant les movements de chaque noeud.}
     \label{fig:contact1d2}
 \end{figure}
 
@@ -231,7 +231,7 @@ Contrairement au cas étudié dans la section précédente, le mur est supprimé
     \begin{dcases}
     m\ddot x_1 = -k(x_1 - x_2) - \mu (\dot x_1 - \dot x_2) \,, \\
     (m+m')\ddot x_2 = k(x_1 - x_2) + \mu (\dot x_1 - \dot x_2) - k'(x_2 - x_3) - \mu'(\dot x_2 - \dot x_3) \,, \\
-        m' \ddot x_3 =  k'(x_2 - x_3) + \mu'(\dot x_2 - \dot x_3) \,. \\
+        m' \ddot x_3 =  k'(x_2 - x_3) + \mu'(\dot x_2 - \dot x_3) \,. 
     \end{dcases}
 \end{align}
 Sous forme matricielle, on a
@@ -251,11 +251,11 @@ où $B' = A^{-1}B$ et $C' = A^{-1}C$. On pose ensuite $Y= (X, \dot X)^T \in \mat
 avec $$ E = \mymat{0}{I_3}{B'}{C'} \,.$$.
 
 
-Remarquons qu'en enlevant le mur à gauche du domaine (voir \cref{fig:contact1d}), le système est devenu isolé. Nous pouvons donc appliquer la conservation de la quantité de mouvement pour identifier la vitesse de l'ensemble $m+m'$ après collision et fixation de la masse $m'$ (à vitesse $\bvec{v}_0$) sur la masse $m$ (de vitesse nulle). Pour simplifier les calculs, nous considérons les floes comme des solides rigides. La vitesse de l'ensemble juste après collision est notée $v_f$, et la quantité de mouvement avant et après choc sont notées $P_{\text{avant}}$ et $P_{\text{après}}$. On a:
+Remarquons qu'en enlevant le mur à gauche du domaine (voir \cref{fig:contact1d}), le système est devenu isolé. Nous pouvons donc appliquer la conservation de la quantité de mouvement pour identifier la vitesse de l'ensemble $m+m'$ après collision et fixation de la masse $m'$ (à vitesse $\bvec{v}_0$) sur la masse $m$ (de vitesse nulle). Pour simplifier les calculs, nous considérons les floes comme des solides rigides. La vitesse de l'ensemble juste après collision est notée $v_f$, et les quantités de mouvement avant et après choc sont notées $P_{\text{avant}}$ et $P_{\text{après}}$. On a:
 \begin{align*}
     & \quad P_{\text{avant}} = P_{\text{après}} \\
-    \Rightarrow & \quad 2m'\bvec{v}_0 = (2m + 2m') \bvec{v}_f \\
-    \Rightarrow & \quad \bvec{v}_f = \frac{m'}{m+m'}\bvec{v}_0
+    \Rightarrow & \quad 2m \bvec{v}_0 + 2m'\bvec{v'}_0 = (2m + 2m') \bvec{v}_f \\
+    \Rightarrow & \quad \bvec{v}_f = \frac{m \bvec{v}_0 + m'\bvec{v'}_0}{m+m'}
 \end{align*} 
 
 \noindent On introduit ces conditions initiales dans l'\cref{eq:systeme1d2} pour obtenir le système de Cauchy ci-bas. Le résulat de la simulation est présenté à la figure \cref{fig:simucontact1d2}. 
@@ -269,7 +269,7 @@ Remarquons qu'en enlevant le mur à gauche du domaine (voir \cref{fig:contact1d}
 \begin{figure}[!h]
     \centering
     \includegraphics[width=0.6\textwidth]{SimuPercussion1D2.png}
-    \caption{Simulation de la percussion 1D entre deux floes (sans présence du mur) avec $m=1$, $m'=1$, $k=3$, $k'=22$, $\mu=6$,$\mu'=2$, $v_0=-1.8$, $t_{max}=5$. On observe effectivement le ralentissement du système et une convergence vers l'état d'équilibre $Y_{eq}= (0,0,0,0,0,0)$.} 
+    \caption{Simulation de la percussion 1D entre deux floes (sans présence du mur) avec $m=1$, $m'=1$, $k=3$, $k'=22$, $\mu=6$, $\mu'=2$, $v_0=-1.8$, $t_{f}=5$. On observe effectivement le ralentissement du système et une convergence vers l'état d'équilibre $Y_{eq}= (0,0,0,0,0,0)$.} 
     \label{fig:simucontact1d2}
 \end{figure}
 
@@ -280,6 +280,87 @@ Remarquons qu'en enlevant le mur à gauche du domaine (voir \cref{fig:contact1d}
 
 \subsubsection{Collision inélastique avec séparation des masses}
 
+Reprennons le cas du contact 1D et étudions ce qui se passe durant l'intervale de temps $\tdelta = [tmoins, tplus]$ de la collision. Cette fois, pour étudier la dynamique non régulière, nous décidons de séparer les masses $m$ et $m'$ en contact (et ce même durant le contact). Le système résultant est très similaire aux deux cas traités précédemment (\cref{fig:contact1d,fig:contact1d2}), et nous le présentons à la \cref{fig:contact1d3} ci-bas, et son bilan de forces à la \cref{fig:bilan3}.
+
+\begin{figure}[!h]
+    \centering
+    \frame{\includegraphics[width=0.8\textwidth]{Percussion1D-Systeme-3}}
+    \caption{Contact 1D inélastique entre deux floes. Durant le choc, les noeuds $m$ et $m'$ en contact sont étudiés séparement. On représnte les variables $x_1$, $x_2$, $x_3$, et $x_4$ décrivant les movements de chaque noeud.}
+    \label{fig:contact1d3}
+\end{figure}
+
+
+\begin{figure}[!h]
+    \begin{subfigure}[b]{0.30\textwidth}
+        \centering
+        \frame{\includegraphics[width=\textwidth]{Percussion1D3-Masse1.png}}
+        \caption{Sur $m$ de gauche.}
+        \label{fig:bilan13}
+    \end{subfigure}
+%     \hfill
+    \begin{subfigure}[b]{0.35\textwidth}
+        \centering
+        \frame{\includegraphics[width=\textwidth]{Percussion1D3-Masse2}}
+        \caption{Sur $m$ de droite.}
+        \label{fig:bilan23}
+    \end{subfigure}
+%     \hfill
+    \begin{subfigure}[b]{0.35\textwidth}
+        \centering
+        \frame{\includegraphics[width=\textwidth]{Percussion1D3-Masse3}}
+        \caption{Sur $m'$ de gauche.}
+        \label{fig:bilan33}
+    \end{subfigure}
+%     \hfill
+    \begin{subfigure}[b]{0.30\textwidth}
+        \centering
+        \frame{\includegraphics[width=\textwidth]{Percussion1D3-Masse4}}
+        \caption{Sur $m'$ de droite.}
+        \label{fig:bilan43}
+    \end{subfigure}
+       \caption{Bilan des forces appliquée sur les $4$ noeuds du système. On procède de facon similaire aux \cref{fig:bilan,fig:bilan2} pour obtenir les sens et les intensités de ces forces. $F_c$ représente la force de contact dont l'intensité est inconnue.}
+       \label{fig:bilan3}
+\end{figure}
+
+\noindent Comme précédement, nous appliqons les lois de Newton pour obtenir:
+\begin{align}
+    \begin{dcases}
+    m\ddot x_1 = -k(x_1 - x_2) - \mu (\dot x_1 - \dot x_2) \,, \\
+    m\ddot x_2 = k(x_1 - x_2) + \mu (\dot x_1 - \dot x_2) - F_c \,, \\
+    m'\ddot x_3 = - k'(x_3 - x_4) - \mu'(\dot x_3 - \dot x_4) + F_c \,, \\
+        m' \ddot x_4 =  k'(x_3 - x_4) + \mu'(\dot x_3 - \dot x_4) \,. 
+    \end{dcases}
+\end{align}
+On additionne membre à membre les équations régissant les mouvements de $x_2$ et $x_3$ pour éliminer la force de contact $F_c$ et obtenir le système:
+\begin{align}\label{eq:systeme3test}
+    \begin{dcases}
+    m\ddot x_1 = -k(x_1 - x_2) - \mu (\dot x_1 - \dot x_2) \,, \\
+    m\ddot x_2 + m'\ddot x_3 = k(x_1 - x_2) + \mu (\dot x_1 - \dot x_2) - k'(x_3 - x_4) - \mu'(\dot x_3 - \dot x_4) \,, \\
+        m' \ddot x_4 =  k'(x_3 - x_4) + \mu'(\dot x_3 - \dot x_4) \,. 
+    \end{dcases}
+\end{align}
+Remarquons que ce système reviens au même systeme étudié dans la partie précédente en posant $x_2(t) = x_3(t) $ p.p. En effet, durant la phase de contact, les massess $m$ et $m'$ peuvent etrs étudiées comme une unique masse $m+m'$. La grosse diffculté qui ressort de cette modélisation est la définitions de la vitesse initiale de l'ensemble $m+m'$. Celà dit, nous cherchons à trouver les vitessses $\dot x_1(\tplus)$, $\dot x_2(\tplus)$, $\dot x_3(\tplus)$ et $\dot x_4(\tplus)$ immédiatemetn après la collision. De par la ressemblance de ce modèle avec celui de la section précédente (voir \cref{eq:systeme1d2}), nous réutilisons les quantités $\dot x_1$ et $\dot x_4$ données par ce système (l'\cref{eq:systeme1d2} dans lequel $x_2$ et $x_3$ sont confondus). On peut se permertre une telle approximation car $x_1$ et $x_4$ n'interviennent pas directemetn dans la collision. De plus, la quantité $k(x_1 - x_2) + \mu (\dot x_1 - \dot x_2) - k'(x_3 - x_4) - \mu'(\dot x_3 - \dot x_4)$
+% \begin{align}
+%     I = k(x_1 - x_2) + \mu (\dot x_1 - \dot x_2) - k'(x_3 - x_4) - \mu'(\dot x_3 - \dot x_4)    
+% \end{align}
+est aussi calculé suivant le modèle \cref{eq:systeme1d2} (voir l'article \parencite{tommasino2020effect} pour une modélisation similaire). Il ne nous reste véritablement que $2$ inconnue dans notre dynamique irrégulière.
+
+\noindent Intégrons la deuxième équation de \ref{eq:systeme3test} entre les instants $\tmoins$ et $\tplus$. On obtient:
+\begin{align}    \label{eq:debuteq1}
+    \int_{\tmoins}^{\tplus} m\ddot x_2 + m'\ddot x_3 \diff t = \underbrace{\int_{\tmoins}^{\tplus} k(x_1 - x_2) + \mu (\dot x_1 - \dot x_2) - k'(x_3 - x_4) - \mu'(\dot x_3 - \dot x_4) \diff t}_{I} \,.
+\end{align}
+Afin d'éviter toute confusion, nous notons $v_2 = \dot{x}_2(\tmoins)$ et $v_3 = \dot{x}_3(\tmoins)$ les vitesses des noeuds en contact avant collision, et $V_2 = \dot{x}_2(\tplus)$ et $V_3 = \dot{x}_3(\tplus)$ les vitesses après contact. L'équation \cref{eq:debuteq1} devient donc:
+\begin{align} \label{eq:crammer1}
+    mV_2 + m'V_3 = I + mv_2 + m'v_3
+\end{align}
+À présent, nous pouvons étudier l'énergie cinétique du système à travers le coefficient de restitution $\varepsilon$ \footnote{Le coefficient de restitution est le même que celui utilisé dans la thèse \parencite{rabatel2015thesis}.}. On l'équation
+\begin{align} \label{eq:crammer2}
+    V_2 - V_3 = \varepsilon (v_2 - v_3)
+\end{align}
+Le système de Cramer qui découle des \cref{eq:crammer1,eq:crammer2} permet d'obtenir les expressions:
+\begin{align}
+    V_2 = \frac{I + (m+\varepsilon m')v_2 + (1-\varepsilon)m'v_3}{m+m'} \,, \quad V_3 = \frac{I + (1-\varepsilon)mv_2 + (m'+\varepsilon m)v_3}{m+m'} \,.
+\end{align}
 
 
 
@@ -292,7 +373,23 @@ Remarquons qu'en enlevant le mur à gauche du domaine (voir \cref{fig:contact1d}
 
 
 
-\section{Les apports du stage}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+% \section{Les apports du stage}
 
 %\begin{itemize}
 %    \item L' utilisation de TIKZ
