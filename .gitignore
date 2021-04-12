@@ -1,6 +1,7 @@
 # Code de stage
 # code/*
 .vscode/*
+code/simu1D/frames/*
 
 # Rapport de stage
 reports/internship/*
