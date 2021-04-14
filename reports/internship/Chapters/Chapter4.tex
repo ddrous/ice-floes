@@ -27,7 +27,12 @@ Nous souhaitons étudier le comportement mécanique d'un floe après collision a
 
 
 
+
+
+
 \section{Présentation des résultats obtenus}
+
+
 
 
 
@@ -77,7 +82,89 @@ Ensuite, il nous faut introduire des conditions portant sur la conservation de l
 
 
 
+
+
+
+
+
 \subsection{Modélisation et simulation 1D}
+
+
+
+
+
+
+
+
+
+\subsubsection{Modélisation du déplacement d'un floe isolé}
+
+Avant d'entamer la question de la percussion, étudions le comportement d'un floe de glace 1D modélisé par un réseau de ressorts (1 ressort, 1 dispositif viseux, et 2 noeuds) (voir \cref{fig:deplacement1d}).
+\begin{figure}[!h]
+    \centering
+    \frame{\includegraphics[width=0.6\textwidth]{Deplacement1D-Systeme.png}}
+    \caption{Floe de glace 1D modélisé par un réseau de ressorts. Le floe est isolé de toutes forces extérieurs. Les varaibles $x_1$ et $x_2$ traduisent les déplacemnts des noeuds de gauche et de droite respectifs. À l'instant initial, les masses sont soumises aux vitesses $v_0$ et $v'_0$ indiquées.}
+    \label{fig:deplacement1d}
+\end{figure}
+
+
+\begin{figure}[!h]
+    \begin{subfigure}[b]{0.33\textwidth}
+        \centering
+        \frame{\includegraphics[width=\textwidth]{Deplacement1D-Masse1.png}}
+        \caption{Sur la masse $m$ de gauche.}
+    \end{subfigure}
+%     \hfill
+    \begin{subfigure}[b]{0.3\textwidth}
+        \centering
+        \frame{\includegraphics[width=\textwidth]{Deplacement1D-Masse2.png}}
+        \caption{Sur la masse $m'$ de droite.}
+    \end{subfigure}
+       \caption{Bilan des forces appliquée sur les noeuds du système. Les valeurs indiquées sont les intensitées (positives) des forces (par exemple juste après l'instant initial, on a $x_1 > 0$, et $x_2 < 0$ d'où $k(x_1-x_2) > 0$).}
+       \label{fig:bilan0}
+\end{figure}
+
+
+\noindent Un bilan des forces effectué sur les deux noeuds du floe (voir \cref{fig:bilan0}) permet d'obtenir les équations suivantes:
+\begin{align}
+    \begin{dcases}
+    m\ddot x_1 = - k(x_1 - x_2) - \mu(\dot x_1 - \dot x_2) \,,\\
+        m \ddot x_2 =  k(x_1 - x_2) + \mu(\dot x_1 - \dot x_2) \,. 
+    \end{dcases}
+\end{align}
+En remarquant que $m\neq 0$, on passe à la forme matricielle qui s'écrit:
+\begin{align}
+    \myvec{\ddot{x}_1}{\ddot{x}_2} = 
+      \underbrace{ \frac{k}{m} \mymat{-1}{1}{1}{-1}}_{B} \myvec{x_1}{x_2}
+    + \underbrace{\frac{\mu}{m} \mymat{-1}{1}{1}{-1}}_{C} \myvec{\dot{x}_1}{\dot{x}_2} \,.
+\end{align}
+On pose ensuite la matrice par blocs:
+\[ E = \mymat{0}{I_2}{B}{C} \in \mathbb{R}^{4\times 4} \,, \quad \text{où} \quad I_2 = \mymat{1}{0}{0}{1} \in \mathbb{R}^{2\times 2} \,. \]
+On pose maintenant $Y = (x_1, x_2, \dot{x}_1, \dot{x}_2) \in \mathbb{R}^4$, et on reprend la condition initiale pour obtenir le système de Cauchy:
+\begin{align} \label{eq:dep1d}
+    \begin{dcases}
+        \dot{Y}(t)= E Y(t) \\
+        Y_0 = Y(t_0) = (0,0,v_0,-v'_0)^T \,.
+    \end{dcases}
+\end{align}
+
+\noindent Avec $t_0= 0$, la solution de ce système d'EDO du premier ordre à coefficients constants est unique et est donnée par (A CALCULER EXPLICITEMENT PLUS TARD).
+\begin{align}
+    Y(t) = \exp(tE)Y_0 \,.
+\end{align}
+La solution numérique est présentée dans à la \cref{fig:simudept1d} (voir fichier \verb|Deplacement1D.ipynb| pour plus de détails). La plus grosse remarque à faire du point de vue numérique est que lorsque $v_0 \neq v'_0$, les vitesses convergent vers $0$, mais les déplacements diverge.
+\begin{figure}[!h]
+    \centering
+    \includegraphics[width=0.6\textwidth]{SimuDeplacement1D.png}
+    \caption{Simulation du déplacement 1D d'un floe avec $m=1$, $k=18$, $\mu=1.3$, $v_0=v'_0 = 0.8$, $t_{f}=5$. On observe le ralentissement du système et une convergence vers l'état d'équilibre $Y_{eq}= (0,0,0,0)$. Ce résultats est illutré et interprété dans le notebook .}
+    \label{fig:simudept1d}
+\end{figure}
+
+
+
+
+
+
 
 
 
@@ -141,7 +228,6 @@ En posant $X = (x_1, x_2)^T \in \mathbb{R}^2$, l' \cref{eq:percussion1d} devient
     \myvec{\dot{x}_1}{\dot{x}_2} + \underbrace{\mymat{-k-k'}{k'}{k'}{-k'}}_{C} \myvec{x_1}{x_2} \,.
 \end{align}
 Puisque $m, m'\neq 0$, la matrice $A$ est inversible et on obtient au final le problème de Cauchy suivant:
-
 \begin{align} \label{eq:percussion1d2}
     \begin{dcases}
         \ddot{X}(t) = B' \dot{X}(t) + C'X(t) \,, \\
@@ -150,10 +236,8 @@ Puisque $m, m'\neq 0$, la matrice $A$ est inversible et on obtient au final le p
 \end{align}
 avec $B' = A^{-1}B$ et $C' = A^{-1}C$.
 
-\noindent Il s'agit la d'un système d'EDO du deuxième ordre à coefficients constants. Transformons le en un système du
-premier ordre pour
-une
-résolution plus aisée. On pose donc $Y= (X, \dot X)^T = (x_1, x_2, \dot{x}_1, \dot{x}_2)^T \in \mathbb{R}^4$ et le
+\noindent Il s'agit la d'un système d'EDO du deuxième ordre à coefficients constants. Transformons le en un système du premier ordre pour
+une résolution plus aisée. On pose donc $Y= (X, \dot X)^T = (x_1, x_2, \dot{x}_1, \dot{x}_2)^T \in \mathbb{R}^4$ et le
 système
 \ref{eq:percussion1d2}
 devient
@@ -186,6 +270,9 @@ La résolution numérique du système passe par le calcul de l'exponentielle de 
     \item Calculer analytiquement et numériquement tous les état d'équilibres $Y_{eq} \in \ker(E)$; distinguer les états stables des autres.
     \item Calculer analytiquement l'exponentielle de la matrice $E$, et donner l'expression de la solution; déduire la condition sur les parametres pour que le système converge vers l'état d'équilibre voulu.
 \end{enumerate} 
+
+
+
 
 
 
@@ -332,20 +419,20 @@ Reprennons le cas du contact 1D et étudions ce qui se passe durant l'intervale 
     \end{dcases}
 \end{align}
 On additionne membre à membre les équations régissant les mouvements de $x_2$ et $x_3$ pour éliminer la force de contact $F_c$ et obtenir le système:
-\begin{align}\label{eq:systeme3test}
-    \begin{dcases}
-    m\ddot x_1 = -k(x_1 - x_2) - \mu (\dot x_1 - \dot x_2) \,, \\
-    m\ddot x_2 + m'\ddot x_3 = k(x_1 - x_2) + \mu (\dot x_1 - \dot x_2) - k'(x_3 - x_4) - \mu'(\dot x_3 - \dot x_4) \,, \\
-        m' \ddot x_4 =  k'(x_3 - x_4) + \mu'(\dot x_3 - \dot x_4) \,. 
-    \end{dcases}
-\end{align}
+% \begin{align}\label{eq:systeme3test}
+    \begin{subnumcases}{}
+    m\ddot x_1 = -k(x_1 - x_2) - \mu (\dot x_1 - \dot x_2) \,, \label{eq:sys1D1}\\
+    m\ddot x_2 + m'\ddot x_3 = k(x_1 - x_2) + \mu (\dot x_1 - \dot x_2) - k'(x_3 - x_4) - \mu'(\dot x_3 - \dot x_4) \,, \label{eq:sys1D2} \\
+        m' \ddot x_4 =  k'(x_3 - x_4) + \mu'(\dot x_3 - \dot x_4) \,. \label{eq:sys1D3}
+    \end{subnumcases}
+% \end{align}
 Remarquons que ce système reviens au même systeme étudié dans la partie précédente en posant $x_2(t) = x_3(t) $ p.p. En effet, durant la phase de contact, les massess $m$ et $m'$ peuvent etrs étudiées comme une unique masse $m+m'$. La grosse diffculté qui ressort de cette modélisation est la définitions de la vitesse initiale de l'ensemble $m+m'$. Celà dit, nous cherchons à trouver les vitessses $\dot x_1(\tplus)$, $\dot x_2(\tplus)$, $\dot x_3(\tplus)$ et $\dot x_4(\tplus)$ immédiatemetn après la collision. De par la ressemblance de ce modèle avec celui de la section précédente (voir \cref{eq:systeme1d2}), nous réutilisons les quantités $\dot x_1$ et $\dot x_4$ données par ce système (l'\cref{eq:systeme1d2} dans lequel $x_2$ et $x_3$ sont confondus). On peut se permertre une telle approximation car $x_1$ et $x_4$ n'interviennent pas directemetn dans la collision. De plus, la quantité $k(x_1 - x_2) + \mu (\dot x_1 - \dot x_2) - k'(x_3 - x_4) - \mu'(\dot x_3 - \dot x_4)$
 % \begin{align}
 %     I = k(x_1 - x_2) + \mu (\dot x_1 - \dot x_2) - k'(x_3 - x_4) - \mu'(\dot x_3 - \dot x_4)    
 % \end{align}
 est aussi calculé suivant le modèle \cref{eq:systeme1d2} (voir l'article \parencite{tommasino2020effect} pour une modélisation similaire). Il ne nous reste véritablement que $2$ inconnue dans notre dynamique irrégulière.
 
-\noindent Intégrons la deuxième équation de \ref{eq:systeme3test} entre les instants $\tmoins$ et $\tplus$. On obtient:
+\noindent Intégrons l'équation (\ref{eq:sys1D2}) entre les instants $\tmoins$ et $\tplus$. On obtient:
 \begin{align}    \label{eq:debuteq1}
     \int_{\tmoins}^{\tplus} m\ddot x_2 + m'\ddot x_3 \diff t = \underbrace{\int_{\tmoins}^{\tplus} k(x_1 - x_2) + \mu (\dot x_1 - \dot x_2) - k'(x_3 - x_4) - \mu'(\dot x_3 - \dot x_4) \diff t}_{I} \,.
 \end{align}
@@ -370,7 +457,7 @@ Le système de Cramer qui découle des \cref{eq:crammer1,eq:crammer2} permet d'o
     V_0 = \frac{I + (m+\varepsilon m')v_0 + (1-\varepsilon)m'v'_0}{m+m'} \,, \quad V'_0 = \frac{I + (1-\varepsilon)mv_0 + (m'+\varepsilon m)v'_0}{m+m'} \,.
 \end{align}
 
-
+Nous faisons donc ici la grosse hypothèse que \underline{le mouvement de $x_2$ et $x_3$ devient uniforme après la collision}. Une fois leur vitesses initiales obtenues, on calcule donc les dépla
 
 
 
