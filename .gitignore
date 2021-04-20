@@ -4,10 +4,14 @@
 code/simu1D/frames/*
 
 # Rapport de stage
-reports/internship/*
 
+
+reports/internship/*
+reports/internship/out/*
+!reports/internship/out/
+
+!reports/internship/out/main.pdf
 !reports/internship/main.tex
-!reports/internship/main.pdf
 !reports/internship/MastersDoctoralThesis.cls
 !reports/internship/bibliography.bib
 !reports/internship/bibliography_matthias.bib
@@ -118,5 +122,20 @@ reports/weeks/09/*
 !reports/weeks/09/main.pdf
 !reports/weeks/09/fphw.cls
 
+# Rapport semaine 10
+reports/weeks/10/*
 
+!reports/weeks/10/main.tex
+!reports/weeks/10/main.pdf
+!reports/weeks/10/fphw.cls
+
+# Rapport semaine 10
+reports/weeks/11/*
+
+reports/weeks/11/out/*
+!reports/weeks/11/out/
+
+!reports/weeks/11/main.tex
+!reports/weeks/11/out/main.pdf
+!reports/weeks/11/fphw.cls
 
