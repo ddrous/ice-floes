@@ -1,0 +1,235 @@
+﻿%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% fphw Assignment
+% LaTeX Template
+% Version 1.0 (27/04/2019)
+%
+% This template originates from:
+% https://www.LaTeXTemplates.com
+%
+% Authors:
+% Class by Felipe Portales-Oliva (f.portales.oliva@gmail.com) with template 
+% content and modifications by Vel (vel@LaTeXTemplates.com)
+%
+% Template (this file) License:
+% CC BY-NC-SA 3.0 (http://creativecommons.org/licenses/by-nc-sa/3.0/)
+%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%----------------------------------------------------------------------------------------
+%	PACKAGES AND OTHER DOCUMENT CONFIGURATIONS
+%----------------------------------------------------------------------------------------
+
+\documentclass[
+  french,
+  % twocolumn,
+	11pt, % Default font size, values between 10pt-12pt are allowed
+	%letterpaper, % Uncomment for US letter paper size
+	%spanish, % Uncomment for Spanish
+]{fphw}
+
+% \usepackage[fontsize=10.0]{scrextend} % Use this to force the fontsize
+
+%% Commands for numbering paragraphs
+\renewcommand\thesection{\Roman{section}}
+\renewcommand\thesubsection{\thesection.\arabic{subsection}}
+\renewcommand*\thesubsubsection{%
+  \Roman{section}.\arabic{subsection}.\alph{subsubsection}%
+}
+
+\usepackage{sectsty}
+\sectionfont{\bfseries\Large\raggedright}
+
+% Template-specific packages
+\usepackage{babel}
+\usepackage[utf8]{inputenc} % Required for inputting international characters
+% \usepackage{DejaVuSerifCondensed} 
+\usepackage[T1]{fontenc} % Output font encoding for international characters
+
+\usepackage{kpfonts}        %% For math only
+\usepackage{fontspec}       %% Because we are using XeTEX
+\setromanfont{Minion Pro}   %% For text (Minion Math is commercial)
+
+%-----------------------------------------------------------------------
+% \setromanfont{Meta Serif Pro}
+% \setsansfont{Fira Sans}
+% \setmonofont[Color={0019D4}]{Fira Code} 
+%-----------------------------------------------------------------------
+
+\usepackage{fancyvrb}
+\usepackage{fvextra}
+\newcommand\userinput[1]{\textbf{#1}}
+\newcommand\arguments[1]{\textit{#1}}
+
+\usepackage{amsmath}
+\usepackage{mathtools}
+\usepackage{xfrac} 
+
+\usepackage{graphicx} % Required for including images
+\usepackage[textfont=it,font=small]{caption}  %% To manage long captions in images
+\usepackage{subcaption}
+\captionsetup{justification=centering}
+
+\usepackage{float}
+\graphicspath{ {../img/} }
+
+\usepackage{booktabs} % Required for better horizontal rules in tables
+
+\usepackage{listings} % Required for insertion of code
+
+\usepackage{array} % Required for spacing in tabular environment
+
+\usepackage{enumerate} % To modify the enumerate environment
+
+\usepackage{amssymb}
+\usepackage{enumitem}	%% % To modify the itemize bullet character
+
+\newcommand{\tabhead}[1]{{\bfseries#1}}
+
+\usepackage{xcolor}
+\usepackage{listings}
+\colorlet{mygray}{black!30}
+\colorlet{mygreen}{green!60!blue}
+\colorlet{mymauve}{red!60!blue}
+\lstset{
+  backgroundcolor=\color{gray!10},  
+  basicstyle=\ttfamily,
+  columns=fullflexible,
+  breakatwhitespace=false,      
+  breaklines=true,                
+  captionpos=b,                    
+  commentstyle=\color{mygreen}, 
+  extendedchars=true,              
+  frame=single,                   
+  keepspaces=true,             
+  keywordstyle=\color{blue},      
+  language=c++,                 
+  numbers=none,                
+  numbersep=5pt,                   
+  numberstyle=\tiny\color{blue}, 
+  rulecolor=\color{mygray},        
+  showspaces=false,               
+  showtabs=false,                 
+  stepnumber=5,                  
+  stringstyle=\color{mymauve},    
+  tabsize=3,                      
+  title=\lstname                
+}
+
+\usepackage[linkcolor=blue,colorlinks=true]{hyperref}
+% \usepackage[colorlinks=true,urlcolor=blue]{hyperref}
+\hypersetup{citecolor=blue}
+
+\usepackage{cleveref}
+\usepackage{siunitx}
+\usepackage{bm}
+
+\usepackage[backend=bibtex,style=alphabetic,maxnames=2,natbib=true]{biblatex} % Use the bibtex backend with the alphabetic citation style (compact APA-like)
+% \usepackage[backend=bibtex,style=authoryear,maxnames=2,natbib=true]{biblatex} % Use the bibtex backend with the authoryear citation style (which resembles APA)
+\addbibresource{../bib/bibliography.bib} % The filename of the bibliography
+\usepackage[autostyle=true]{csquotes} % Required to generate language-dependent quotes in the bibliography 
+% \renewcommand*{\bibfont}{\tiny} % Pour reduire la taille des references
+
+\usepackage[useregional=numeric]{datetime2}
+\usepackage[normalem]{ulem}
+
+% %-------------------------------------------------------------------------------
+
+\newcommand{\myvec}[3]{\begin{pmatrix} #1  \\ #2 \\ #3 \end{pmatrix}}   %% vecteur 3d
+\newcommand{\mymat}[9]{\begin{pmatrix} #1 & #2 & #3 \\ #4 & #5 & #6 \\ #7 & #8 &#9 \end{pmatrix}}  %% Matrice 3*3
+
+\renewcommand{\vector}[4]{\begin{pmatrix} #1  \\ #2 \\ #3 \\ #4 \end{pmatrix}}   %% vecteur 4d
+% \newcommand{\mymatrix}[16]{\begin{pmatrix} #1 & #2 & #3 & #4 \\ #4 & #6 & #7 & #8 \\ #9 & #10 & #11 & #12 \\ #13 & #14 & #15 & #16 \end{pmatrix}}  %% Matrice 3*3
+
+\newcommand{\hquad}{\hspace{0.5em}} %% Bew command for half quad
+\newcommand*\diff{\mathop{}\!\mathrm{d}}
+% \setlength\parindent{0pt}	%% To remove all indentations
+\newcommand{\bvec}[1]{\bm{\mathrm{#1}}}  %% Use this to make vectors
+\newcommand{\bmat}[1]{\bm{\mathsf{#1}}}   %% Use this to make tensors
+
+%----------------------------------------------------------------------------------------
+%	ASSIGNMENT INFORMATION
+%----------------------------------------------------------------------------------------
+
+\title{Compte rendu semaine \#12} % Assignment title
+% \title{Difficultés rencontrées} % Assignment title
+
+\author{Roussel Desmond Nzoyem} % Student name
+
+\date{\DTMdisplaydate{2021}{4}{21}{-1} - \DTMdisplaydate{2021}{4}{27}{-1}} % Due date
+
+\institute{Sorbonne Université \\ Laboratoire Jacques-Louis Lions} % Institute or school name
+
+\class{Stage M2} % Course or class name
+
+\professor{Pr. Stéphane Labbé} % Professor or teacher in charge of the assignment
+
+%----------------------------------------------------------------------------------------
+
+\begin{document}
+
+\maketitle % Output the assignment title, created automatically using the information in the custom commands above
+
+%----------------------------------------------------------------------------------------
+%	ASSIGNMENT CONTENT - INTRO
+%----------------------------------------------------------------------------------------
+
+Cette semaine, j'ai voulu comprendre pourquoi le modèle ne marchait pas; et comment je pouvais remédier au problème.
+
+
+
+
+%----------------------------------------------------------------------------------------
+%	ASSIGNMENT CONTENT - SECTION 1
+%----------------------------------------------------------------------------------------
+
+\section*{Tâches effectuées}
+
+\begin{enumerate}
+  \item Démonstration de la non-convergence du modèle 1D; L'EDP satisfaite par les déplacements en 1D $\dot{Y}(t) = EY(t)$ est donnée dans le rapport de stage (équation 1.6, page 8). 
+  \begin{figure}[H]
+    \centering
+    \includegraphics[width=.6\textwidth]{Deplacement1D-Systeme.png}
+    \caption{Modèle 1D.}
+    \label{fig:dep1d}
+  \end{figure}
+  Une trigonalisation de la matrice $E$ a permis d'exhiber l'expression explicite des déplacements $x_1$ et $x_2$, et de conclure sur la non-convergence du modèle.
+
+
+  \item Initialisation de la modélisation et de la simulation du modèle 2D. La figure ci-bas montre le système envisagé. 
+  \begin{figure}[H]
+    \centering
+    \includegraphics[width=.3\textwidth]{Deplacement2D-1.png}
+    \caption{Modèle 2D.}
+    \label{fig:dep1d}
+  \end{figure}
+  Avant de développer le modèle jusqu'à complétion avant de se rendre compte qu'il ne converge pas, j'ai pensé qu'il serait nécessaire de faire une simulation 2D. Je pense utiliser un schéma d'Euler explicite pour la simulation, conformément aux équations (E') et (1.28) dans le rapport de stage (page 12).
+\end{enumerate}
+
+
+%----------------------------------------------------------------------------------------
+%	ASSIGNMENT CONTENT - SECTION 2
+%----------------------------------------------------------------------------------------
+
+\section*{Difficultés rencontrées}
+
+
+\begin{enumerate}
+  \item La première difficultés était de trouver pourquoi les simulations 1D n'aboutissaient pas. J'étais convaincu au début qu'il s'agissait d'un bug dans le code. Ca a pris beaucoup de temps et plusieurs outils de calculs symboliques pour calculer numériquement la solution et ainsi observer la divergence d'un point de vu analytique;
+  \item La deuxième difficulté fut de trouver dans quelle direction évoluer; Je n'ai pas encore trouvé une qui soit pertinente. Pour l'instant j'essai de voir si le problème observé en 1D se généralise en 2D.
+\end{enumerate}
+
+
+%----------------------------------------------------------------------------------------
+%	ASSIGNMENT CONTENT - SECTION 3
+% ----------------------------------------------------------------------------------------
+
+
+
+% %-------------------------------------------------------------------------------
+% %							THE BIBLIOGRAPHY
+% %-------------------------------------------------------------------------------
+\clearpage   % Pour retirer les references de la bare de navigation
+\printbibliography
+
+
+\end{document}

@@ -129,7 +129,7 @@ reports/weeks/10/*
 !reports/weeks/10/main.pdf
 !reports/weeks/10/fphw.cls
 
-# Rapport semaine 10
+# Rapport semaine 11
 reports/weeks/11/*
 
 reports/weeks/11/out/*
@@ -138,4 +138,14 @@ reports/weeks/11/out/*
 !reports/weeks/11/main.tex
 !reports/weeks/11/out/main.pdf
 !reports/weeks/11/fphw.cls
+
+# Rapport semaine 12
+reports/weeks/12/*
+
+reports/weeks/12/out/*
+!reports/weeks/12/out/
+
+!reports/weeks/12/main.tex
+!reports/weeks/12/out/main.pdf
+!reports/weeks/12/fphw.cls
 
