@@ -564,7 +564,7 @@ Afin d'éviter toute confusion, nous notons $v_0 = \dot{x}_2(\tmoins)$ et $v'_0 
 \end{align}
 Le système de Cramer qui découle des \cref{eq:crammer1,eq:crammer2} permet d'obtenir les expressions:
 \begin{align}
-    V_0 = \frac{I + (m+\varepsilon m')v_0 + (1-\varepsilon)m'v'_0}{m+m'} \,, \quad V'_0 = \frac{I + (1-\varepsilon)mv_0 + (m'+\varepsilon m)v'_0}{m+m'} \,.
+    V_0 = \frac{I + (m+\varepsilon m')v_0 + (1-\varepsilon)m'v'_0}{m+m'} \,, \quad V'_0 = \frac{I + (1-\varepsilon)mv_0 + (m'+\varepsilon m)v'_0}{m+m'}.
 \end{align}
 
 Nous faisons donc ici la grosse hypothèse que \underline{le mouvement de $x_2$ et $x_3$ devient uniforme après la collision}. Une fois leur vitesses initiales obtenues, on calcule donc les dépla
@@ -573,6 +573,7 @@ Nous faisons donc ici la grosse hypothèse que \underline{le mouvement de $x_2$ 
 
 
 
+\subsection{Modélisation et simulation 2D}
 
 
 
@@ -580,6 +581,27 @@ Nous faisons donc ici la grosse hypothèse que \underline{le mouvement de $x_2$ 
 
 
 
+
+
+\subsubsection{Modélisation du déplacement d'un floe isolé}
+
+Étudions le comportement d'un floe de glace 2D modélisé par un réseau de ressorts (3 ressort, 3 dispositif viseux, et 3 noeuds) (voir \cref{fig:deplacement2d}).
+\begin{figure}[!h]
+    \centering
+    \includegraphics[width=0.3\textwidth]{Deplacement2D-1.png}
+    \caption{Floe de glace 2D modélisé par un réseau de ressorts. Le floe est isolé de toutes forces extérieurs. Tous les neouds du réseau ont la même masse $m$, tous les ressorts on la même raideur $k$, et tous les dispositifs visquens ont le même coefficient $\mu$.}
+    \label{fig:deplacement2d}
+\end{figure}
+
+
+Comme nous l'avons présenté aux \cref{eq:F0,eq:e}, le système de la \cref{fig:deplacement2d} est régit par les équations:
+\begin{align} \tag{$E'$} \label{eq:eprime}
+        m \ddot{\bvec{q}}_i = \bvec{F}_i   \,, \quad \quad \quad \forall i \in \mathbb{Z}/3\mathbb{Z},
+\end{align}
+avec
+\begin{align}  \label{eq:F0}
+    \bvec{F}_0 = \sum_{j=0}^{n}C_{0j} \left[  k \left( \Vert \bvec{q}_j - \bvec{q}_0 \Vert - L_{0j} \right) \bvec{u}_{0j} - \mu \left\langle \bvec{\dot{q}}_j - \bvec{\dot{q}}_0\,, \bvec{u}_{0j}  \right\rangle  \bvec{u}_{0j}  \right].
+\end{align}
 
 
 
