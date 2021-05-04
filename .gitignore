@@ -149,3 +149,12 @@ reports/weeks/12/out/*
 !reports/weeks/12/out/main.pdf
 !reports/weeks/12/fphw.cls
 
+# Rapport semaine 13
+reports/weeks/13/*
+
+reports/weeks/13/out/*
+!reports/weeks/13/out/
+
+!reports/weeks/13/main.tex
+!reports/weeks/13/out/main.pdf
+!reports/weeks/13/fphw.cls

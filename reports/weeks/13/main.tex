@@ -1,0 +1,246 @@
+﻿%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% fphw Assignment
+% LaTeX Template
+% Version 1.0 (27/04/2019)
+%
+% This template originates from:
+% https://www.LaTeXTemplates.com
+%
+% Authors:
+% Class by Felipe Portales-Oliva (f.portales.oliva@gmail.com) with template 
+% content and modifications by Vel (vel@LaTeXTemplates.com)
+%
+% Template (this file) License:
+% CC BY-NC-SA 3.0 (http://creativecommons.org/licenses/by-nc-sa/3.0/)
+%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%----------------------------------------------------------------------------------------
+%	PACKAGES AND OTHER DOCUMENT CONFIGURATIONS
+%----------------------------------------------------------------------------------------
+
+\documentclass[
+  french,
+  % twocolumn,
+	11pt, % Default font size, values between 10pt-12pt are allowed
+	%letterpaper, % Uncomment for US letter paper size
+	%spanish, % Uncomment for Spanish
+]{fphw}
+
+% \usepackage[fontsize=10.0]{scrextend} % Use this to force the fontsize
+
+%% Commands for numbering paragraphs
+\renewcommand\thesection{\Roman{section}}
+\renewcommand\thesubsection{\thesection.\arabic{subsection}}
+\renewcommand*\thesubsubsection{%
+  \Roman{section}.\arabic{subsection}.\alph{subsubsection}%
+}
+
+\usepackage{sectsty}
+\sectionfont{\sf\bfseries\LARGE\raggedright}
+
+% Template-specific packages
+% \usepackage{babel}
+
+
+% \renewcommand*\familydefault{\sfdefault}
+\usepackage[utf8]{inputenc} % Required for inputting international characters
+% \usepackage{DejaVuSerifCondensed} 
+\usepackage[T1]{fontenc} % Output font encoding for international characters
+\usepackage{textcomp}
+
+\usepackage[lf]{venturis}
+% \usepackage[libertine]{newtxmath}
+\usepackage{libertinust1math}
+\usepackage{bm} 
+
+% \usepackage{kpfonts}        %% For math only
+% \usepackage{fontspec}       %% Because we are using XeTEX
+% \setromanfont{Minion Pro}   %% For text (Minion Math is commercial)
+
+% \usepackage{newtxtext}
+% \usepackage[cochineal,bigdelims,cmintegrals,vvarbb]{newtxmath}
+% \usepackage{newtxmath}
+% \usepackage[zerostyle=c,scaled=.94]{newtxtt}
+% \usepackage{venturis}
+
+
+
+%-----------------------------------------------------------------------
+% \setromanfont{Meta Serif Pro}
+% \setsansfont{Fira Sans}
+% \setmonofont[Color={0019D4}]{Fira Code} 
+%-----------------------------------------------------------------------
+
+\usepackage{fancyvrb}
+\usepackage{fvextra}
+\newcommand\userinput[1]{\textbf{#1}}
+\newcommand\arguments[1]{\textit{#1}}
+
+\usepackage{amsmath}
+\usepackage{mathtools}
+\usepackage{xfrac} 
+% \usepackage{amssymb}
+% \usepackage{enumitem}	%% % To modify the itemize bullet character 
+
+
+\usepackage{graphicx} % Required for including images
+\usepackage[textfont=it,font=small]{caption}  %% To manage long captions in images
+\usepackage{subcaption}
+\captionsetup{justification=centering}
+
+\usepackage{float}
+\graphicspath{ {../img/} }
+
+\usepackage{booktabs} % Required for better horizontal rules in tables
+
+\usepackage{listings} % Required for insertion of code
+
+\usepackage{array} % Required for spacing in tabular environment
+
+\usepackage{enumerate} % To modify the enumerate environment
+
+\newcommand{\tabhead}[1]{{\bfseries#1}}
+
+\usepackage{xcolor}
+\usepackage{listings}
+\colorlet{mygray}{black!30}
+\colorlet{mygreen}{green!60!blue}
+\colorlet{mymauve}{red!60!blue}
+\lstset{
+  backgroundcolor=\color{gray!10},  
+  basicstyle=\ttfamily,
+  columns=fullflexible,
+  breakatwhitespace=false,      
+  breaklines=true,                
+  captionpos=b,                    
+  commentstyle=\color{mygreen}, 
+  extendedchars=true,              
+  frame=single,                   
+  keepspaces=true,             
+  keywordstyle=\color{blue},      
+  language=c++,                 
+  numbers=none,                
+  numbersep=5pt,                   
+  numberstyle=\tiny\color{blue}, 
+  rulecolor=\color{mygray},        
+  showspaces=false,               
+  showtabs=false,                 
+  stepnumber=5,                  
+  stringstyle=\color{mymauve},    
+  tabsize=3,                      
+  title=\lstname                
+}
+
+\usepackage[linkcolor=blue,colorlinks=true]{hyperref}
+% \usepackage[colorlinks=true,urlcolor=blue]{hyperref}
+\hypersetup{citecolor=blue}
+
+\usepackage{cleveref}
+\usepackage{siunitx}
+
+\usepackage[backend=bibtex,style=alphabetic,maxnames=2,natbib=true]{biblatex} % Use the bibtex backend with the alphabetic citation style (compact APA-like)
+% \usepackage[backend=bibtex,style=authoryear,maxnames=2,natbib=true]{biblatex} % Use the bibtex backend with the authoryear citation style (which resembles APA)
+\addbibresource{../bib/bibliography.bib} % The filename of the bibliography
+\usepackage[autostyle=true]{csquotes} % Required to generate language-dependent quotes in the bibliography 
+% \renewcommand*{\bibfont}{\tiny} % Pour reduire la taille des references
+
+\usepackage[useregional=numeric]{datetime2}
+\usepackage[normalem]{ulem}
+
+% %-------------------------------------------------------------------------------
+
+\newcommand{\myvec}[3]{\begin{pmatrix} #1  \\ #2 \\ #3 \end{pmatrix}}   %% vecteur 3d
+\newcommand{\mymat}[9]{\begin{pmatrix} #1 & #2 & #3 \\ #4 & #5 & #6 \\ #7 & #8 &#9 \end{pmatrix}}  %% Matrice 3*3
+
+\renewcommand{\vector}[4]{\begin{pmatrix} #1  \\ #2 \\ #3 \\ #4 \end{pmatrix}}   %% vecteur 4d
+% \newcommand{\mymatrix}[16]{\begin{pmatrix} #1 & #2 & #3 & #4 \\ #4 & #6 & #7 & #8 \\ #9 & #10 & #11 & #12 \\ #13 & #14 & #15 & #16 \end{pmatrix}}  %% Matrice 3*3
+
+\newcommand{\hquad}{\hspace{0.5em}} %% Bew command for half quad
+\newcommand*\diff{\mathop{}\!\mathrm{d}}
+% \setlength\parindent{0pt}	%% To remove all indentations
+\newcommand{\bvec}[1]{\bm{\mathrm{#1}}}  %% Use this to make vectors
+\newcommand{\bmat}[1]{\bm{\mathsf{#1}}}   %% Use this to make tensors
+
+
+%----------------------------------------------------------------------------------------
+%	ASSIGNMENT INFORMATION
+%----------------------------------------------------------------------------------------
+
+\title{\sf\bfseries Compte rendu semaine \#13} % Assignment title
+% \title{Difficultés rencontrées} % Assignment title
+
+\author{Roussel Desmond Nzoyem} % Student name
+
+\date{\DTMdisplaydate{2021}{4}{28}{-1} - \DTMdisplaydate{2021}{5}{3}{-1}} % Due date
+
+\institute{Sorbonne Université \\ Laboratoire Jacques-Louis Lions} % Institute or school name
+
+\class{Stage M2} % Course or class name
+
+\professor{Pr. Stéphane Labbé} % Professor or teacher in charge of the assignment
+
+%----------------------------------------------------------------------------------------
+
+\begin{document}
+
+\maketitle % Output the assignment title, created automatically using the information in the custom commands above
+
+%----------------------------------------------------------------------------------------
+%	ASSIGNMENT CONTENT - INTRO
+%----------------------------------------------------------------------------------------
+
+Cette semaine, j'ai cherché les raisons de la non-convergence du modèle en simulant le modèle de Dimitri en 2D. Avec l'aide de Dimitri, j'ai maintenant une idée de la source du problème, et de comment je pourrais le résoudre. J'ai aussi de nouvelles idée sur comment avancer par la suite.
+
+
+
+
+%----------------------------------------------------------------------------------------
+%	ASSIGNMENT CONTENT - SECTION 1
+%----------------------------------------------------------------------------------------
+
+\section*{Tâches effectuées}
+
+\begin{enumerate}
+  \item Vérification du modèle et du code de calcul 2D (en pièce jointe). J'ai joué avec les signes dans la simulation afin de touver une configuration qui marchait; je me suis appercu que le signe du vecteur normal changeait beacoup de choses, mais que ma configuration intiale (celle de la semaine passée était la bone); Pour deboger, j'ai non seulement simuler les positions des noeuds, mais j'ai aussi dessiner le système masse ressort en Python.
+  \item La deuxième tache était de relire le code et la thèse de Dimitri afin de trouver des nouvelles idées.
+\end{enumerate}
+
+
+%----------------------------------------------------------------------------------------
+%	ASSIGNMENT CONTENT - SECTION 2
+%----------------------------------------------------------------------------------------
+
+\section*{Difficultés rencontrées}
+
+
+\begin{enumerate}
+  \item La première difficultés était de trouver pourquoi les simulations 1D n'aboutissaient pas; Mon schéma d'Euler explicite\footnote{La non-convergence est probablement due à une accumulation des erreurs à chaque pas de temps.} à pas constant (bien que très faible) n'aboutit pas probablement parcequ'il n'est pas adapté à la situation. On devrait utiliser un schéma d'Euler semi-simplectique (semi-implicite) pour avoir une chance d'observer un comportement qui conserve le Hamiltonien du système. On peut aussi utiliser les fonctions de $\verb|scipy|$, en locurence $\verb|odeint|$ et $\verb|solve_ivp|$ comme l'a fait Dimitri.
+  \item La deuxième grosse difficulté rencontrée est de faire fonctionnner le code $\verb|simu-ressort|$ de Dimitri.
+\end{enumerate}
+
+
+%----------------------------------------------------------------------------------------
+%	ASSIGNMENT CONTENT - SECTION 3
+% ----------------------------------------------------------------------------------------
+
+\section*{Travail à venir}
+
+Après avoir discuter avec Dimitri, :
+\begin{enumerate}
+  \item j'ai une meilleure compréhension de code, et du système linéarisé autour de la position d'équilibre dont il s'est servi pour ses simulations.
+  \item Une meilleur compréhension de sa thèse \parencite{balasoiu2020halthesis}, en particulièr l'introduction du $\varepsilon$ au Chapitre 6 qui permet non seulement d'augmenter la raideur et la dissipation du système, mais aussi d'augmenter la force appliquée sur la particule la plus à gauche dans la système masse-ressort à l'instant intial.
+  \item j'ai une idée de comment transformer le probleme de percussion en un probleme de Dirichlet sans passer par les vitesses apres contact. En effet, il me suffit de calculer la force de contact, afin d' utiliser directemetn le code de Dimitri (qui fonctionne à présent). En se servant des $8$ ou $9$ valeurs propres non evanecentes (qui restent proches de $0$ peu importe la raideur et dissipation du système), on peut calculer le déplacement $\bm{\mathrm{i}}$ maximal $\max_{t\in\mathbb{R}^{+}}{\Vert \bvec{q}(t) - \bvec{q}(0)\Vert}$ de la particule percutée. Et c'est ce déplacement maximal\footnote{On se contente du déplacment maximal parce que d'après les calculs de Dimitri, le système vibre indéfiniment malgrès le dispositif visqueux.} qui nous sert dans le calcul de l'initiation et de la propagation de la fracture.
+  \item j'ai apris que dans l'interface web du code de Dimitri, le système (dans l'ensemble) ne se déplacement pas. C'est parcequ'une particule (celle en bas à droite) à été fixée. Il faudrait penser à résoudre ce problème plus tard en intégrant ce mouvement solide dans le calcul du déplacement maximal de la particule percutée. 
+  \item j'ai apris qu'il faut faire des recherches sur les différents régimes qu'on observe lorsqu'on modifie la raideur et la dissipation du système masse-ressort (en percutant le particule la plus à gauche); en particuler le régime \emph{visco-élastique}, et l'\emph{evanescence}. 
+\end{enumerate}
+
+ 
+% %-------------------------------------------------------------------------------
+% %							THE BIBLIOGRAPHY
+% %-------------------------------------------------------------------------------
+\clearpage   % Pour retirer les references de la bare de navigation
+\printbibliography
+
+
+\end{document}
