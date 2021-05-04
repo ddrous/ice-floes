@@ -190,7 +190,7 @@
 %	ASSIGNMENT CONTENT - INTRO
 %----------------------------------------------------------------------------------------
 
-Cette semaine, j'ai cherché les raisons de la non-convergence du modèle en simulant le modèle de Dimitri en 2D. Avec l'aide de Dimitri, j'ai maintenant une idée de la source du problème, et de comment je pourrais le résoudre. J'ai aussi de nouvelles idée sur comment avancer par la suite.
+Cette semaine, j'ai cherché les raisons de la non-convergence en simulant un système masse-ressort isolé en 2D. Avec l'aide de Dimitri, j'ai maintenant une idée de la source du problème, et de comment je pourrais le résoudre. J'ai aussi de nouvelles idées sur comment avancer par la suite.
 
 
 
@@ -202,7 +202,7 @@ Cette semaine, j'ai cherché les raisons de la non-convergence du modèle en sim
 \section*{Tâches effectuées}
 
 \begin{enumerate}
-  \item Vérification du modèle et du code de calcul 2D (en pièce jointe). J'ai joué avec les signes dans la simulation afin de touver une configuration qui marchait; je me suis appercu que le signe du vecteur normal changeait beacoup de choses, mais que ma configuration intiale (celle de la semaine passée était la bone); Pour deboger, j'ai non seulement simuler les positions des noeuds, mais j'ai aussi dessiner le système masse ressort en Python.
+  \item Vérification du modèle et du code de calcul 2D. J'ai joué avec les signes dans la simulation afin de trouver une configuration qui marchait; je me suis aperçu que le signe du vecteur normal changeait beaucoup de choses, mais que ma configuration initiale (celle de la semaine passée) était la bonne; Pour déboguer, j'ai non seulement simuler les positions des noeuds, mais j'ai aussi dessiner le système masse ressort en Python.
   \item La deuxième tache était de relire le code et la thèse de Dimitri afin de trouver des nouvelles idées.
 \end{enumerate}
 
@@ -215,8 +215,8 @@ Cette semaine, j'ai cherché les raisons de la non-convergence du modèle en sim
 
 
 \begin{enumerate}
-  \item La première difficultés était de trouver pourquoi les simulations 1D n'aboutissaient pas; Mon schéma d'Euler explicite\footnote{La non-convergence est probablement due à une accumulation des erreurs à chaque pas de temps.} à pas constant (bien que très faible) n'aboutit pas probablement parcequ'il n'est pas adapté à la situation. On devrait utiliser un schéma d'Euler semi-simplectique (semi-implicite) pour avoir une chance d'observer un comportement qui conserve le Hamiltonien du système. On peut aussi utiliser les fonctions de $\verb|scipy|$, en locurence $\verb|odeint|$ et $\verb|solve_ivp|$ comme l'a fait Dimitri.
-  \item La deuxième grosse difficulté rencontrée est de faire fonctionnner le code $\verb|simu-ressort|$ de Dimitri.
+  \item La première difficultés était de trouver pourquoi les simulations 2D n'aboutissaient pas; Mon schéma d'Euler explicite\footnote{La non-convergence est probablement due à une accumulation des erreurs à chaque pas de temps.} à pas constant (bien que très faible) n'aboutit pas probablement parce qu'il n'est pas adapté à la situation. On devrait utiliser un schéma d'Euler semi-symplectique (semi-implicite) pour avoir une chance d'observer un comportement qui conserve le Hamiltonien du système. On peut aussi utiliser les fonctions de $\verb|scipy|$, en l'occurrence $\verb|odeint|$ et $\verb|solve_ivp|$ comme l'a fait Dimitri, et comme je l'ai fait en 1D.
+  \item La deuxième grosse difficulté rencontrée est de faire fonctionner le code $\verb|simu-ressort|$ de Dimitri.
 \end{enumerate}
 
 
@@ -228,11 +228,11 @@ Cette semaine, j'ai cherché les raisons de la non-convergence du modèle en sim
 
 Après avoir discuter avec Dimitri, :
 \begin{enumerate}
-  \item j'ai une meilleure compréhension de code, et du système linéarisé autour de la position d'équilibre dont il s'est servi pour ses simulations.
-  \item Une meilleur compréhension de sa thèse \parencite{balasoiu2020halthesis}, en particulièr l'introduction du $\varepsilon$ au Chapitre 6 qui permet non seulement d'augmenter la raideur et la dissipation du système, mais aussi d'augmenter la force appliquée sur la particule la plus à gauche dans la système masse-ressort à l'instant intial.
-  \item j'ai une idée de comment transformer le probleme de percussion en un probleme de Dirichlet sans passer par les vitesses apres contact. En effet, il me suffit de calculer la force de contact, afin d' utiliser directemetn le code de Dimitri (qui fonctionne à présent). En se servant des $8$ ou $9$ valeurs propres non evanecentes (qui restent proches de $0$ peu importe la raideur et dissipation du système), on peut calculer le déplacement $\bm{\mathrm{i}}$ maximal $\max_{t\in\mathbb{R}^{+}}{\Vert \bvec{q}(t) - \bvec{q}(0)\Vert}$ de la particule percutée. Et c'est ce déplacement maximal\footnote{On se contente du déplacment maximal parce que d'après les calculs de Dimitri, le système vibre indéfiniment malgrès le dispositif visqueux.} qui nous sert dans le calcul de l'initiation et de la propagation de la fracture.
-  \item j'ai apris que dans l'interface web du code de Dimitri, le système (dans l'ensemble) ne se déplacement pas. C'est parcequ'une particule (celle en bas à droite) à été fixée. Il faudrait penser à résoudre ce problème plus tard en intégrant ce mouvement solide dans le calcul du déplacement maximal de la particule percutée. 
-  \item j'ai apris qu'il faut faire des recherches sur les différents régimes qu'on observe lorsqu'on modifie la raideur et la dissipation du système masse-ressort (en percutant le particule la plus à gauche); en particuler le régime \emph{visco-élastique}, et l'\emph{evanescence}. 
+  \item j'ai une meilleure compréhension de son code, et du système linéarisé autour de la position d'équilibre dont il s'est servi pour ses simulations.
+  \item Une meilleur compréhension de sa thèse \parencite{balasoiu2020halthesis}, en particulier l'introduction du $\varepsilon$ au Chapitre $6$ qui permet non seulement d'augmenter la raideur et la dissipation du système, mais aussi d'augmenter la force appliquée sur la particule la plus à gauche dans la système masse-ressort à l'instant initial.
+  \item j'ai une idée de comment transformer le problème de percussion en un problème de Dirichlet sans passer par les vitesses après contact. En effet, il me suffit de calculer la force de contact, afin d' utiliser directement le code de Dimitri (qui fonctionne à présent). En se servant des $8$ où $9$ valeurs propres non évanescentes (qui restent proches de $0$ peu importe la raideur et dissipation du système), on peut calculer le déplacement maximal $\max_{t\in\mathbb{R}^{+}}{\Vert \bvec{q}(t) - \bvec{q}(0)\Vert}$ de la particule percutée. Et c'est ce déplacement maximal\footnote{On se contente du déplacement maximal parce que d'après les calculs de Dimitri, le système vibre indéfiniment malgré le dispositif visqueux.} qui nous servira dans le calcul de l'initiation et de la propagation de la fracture.
+  \item j'ai appris que dans l'interface web du code de Dimitri, le système (dans l'ensemble) ne se déplace pas. C'est parce qu'une particule (celle en bas à droite) à été fixée. Il faudrait penser à résoudre ce problème plus tard en intégrant ce mouvement solide dans le calcul du déplacement maximal de la particule percutée. 
+  \item j'ai appris qu'il faut faire des recherches sur les différents régimes qu'on observe lorsqu'on modifie la raideur et la dissipation du système masse-ressort (en percutant le particule la plus à gauche); en particulier le régime \emph{visco-élastique}, et l'\emph{évanescence}. 
 \end{enumerate}
 
  
