@@ -567,7 +567,7 @@ Le système de Cramer qui découle des \cref{eq:crammer1,eq:crammer2} permet d'o
     V_0 = \frac{I + (m+\varepsilon m')v_0 + (1-\varepsilon)m'v'_0}{m+m'} \,, \quad V'_0 = \frac{I + (1-\varepsilon)mv_0 + (m'+\varepsilon m)v'_0}{m+m'}.
 \end{align}
 
-Nous faisons donc ici la grosse hypothèse que \underline{le mouvement de $x_2$ et $x_3$ devient uniforme après la collision}. Une fois leur vitesses initiales obtenues, on calcule donc les dépla
+Nous faisons donc ici la grosse hypothèse que \underline{le mouvement de $x_2$ et $x_3$ devient uniforme après la collision}. Une fois leur vitesses initiales obtenues, on calcule donc les déplacements des différents noeuds des réseaux, et les fractures éventuelles qui s'en suivent.
 
 
 
@@ -583,7 +583,7 @@ Nous faisons donc ici la grosse hypothèse que \underline{le mouvement de $x_2$ 
 
 
 
-\subsubsection{Modélisation du déplacement d'un floe isolé}
+\subsubsection{Déplacement d'un floe isolé}
 
 Étudions le comportement d'un floe de glace 2D modélisé par un réseau de ressorts (3 ressort, 3 dispositif viseux, et 3 noeuds) (voir \cref{fig:deplacement2d}).
 \begin{figure}[!h]
@@ -594,11 +594,16 @@ Nous faisons donc ici la grosse hypothèse que \underline{le mouvement de $x_2$ 
 \end{figure}
 
 
-Comme nous l'avons présenté aux \cref{eq:F0,eq:e}, le système de la \cref{fig:deplacement2d} est régit par l' équation:
+\noindent Comme nous l'avons présenté aux \cref{eq:F0,eq:e}, le système de la \cref{fig:deplacement2d} est régit par l' équation:
 \begin{align} \label{eq:eprime2}
     \forall i \in \mathbb{Z}/3\mathbb{Z}, \quad m \ddot{\bvec{q}}_i = \sum_{j=i+1}^{i+2}C_{ij} \left[  k \left( \Vert \bvec{q}_j - \bvec{q}_i \Vert - L_{ij} \right) \bvec{u}_{ij} - \mu \left\langle \bvec{\dot{q}}_j - \bvec{\dot{q}}_i, \, \bvec{u}_{ij}  \right\rangle  \bvec{u}_{ij}  \right]  , 
 \end{align}
-où $L_{ij}$ représente la longeur au repos du ressort entre les noeuds $i$ et $j$, et $C_{ij}$ indique si les noeuds $i$ et $j$ sont connectés ou non (pour ce modèle 2D simple, $C_{ij} = 1 \, \forall 0 \leq i,j \leq 2$). On discrétise par un schéma de différence finies avec $N+1$ pas de temps, et pour une temps de simulations $T$:
+où $L_{ij}$ représente la longeur au repos du ressort entre les noeuds $i$ et $j$, et $C_{ij}$ indique si les noeuds $i$ et $j$ sont connectés ou non (pour ce modèle 2D simple, $C_{ij} = 1 \, \forall 0 \leq i,j \leq 2$). 
+
+
+\paragraph{Simulation par un schéma d'Euler explicite.}
+
+On discrétise par un schéma de différence finies avec $N+1$ pas de temps, et pour une temps de simulations $T$:
 $$
 \forall i \in \mathbb{Z}/3\mathbb{Z}, \, \forall n \in [\![ 0,N ]\!], \quad  t^n = n\Delta t = n\frac{T}{N}, \quad \bvec{q}_i(t^n) \approx \bvec{q}_i^n.
 $$
@@ -607,14 +612,45 @@ $$
 m\frac{\bvec{q}_{i}^{n+1}-2\bvec{q}_{i}^{n}+\bvec{q}_{i}^{n-1}}{\Delta t^2} = \sum_{j=i+1}^{i+2}C_{ij}\left[ k \left( \Vert \bvec{q}_j^n - \bvec{q}_i^n \Vert - L_{ij} \right) \bvec{u}_{ij} - \mu \left\langle \frac{\bvec{q}_{j}^{n}-\bvec{q}_{j}^{n-1}}{\Delta t} - \frac{\bvec{q}_{i}^{n}-\bvec{q}_{i}^{n-1}}{\Delta t}, \, \bvec{u}_{ij} \right\rangle  \bvec{u}_{ij}  \right],
 $$
 soit encore:
-\begin{align}
+\begin{align} \label{eq:systeme2D}
     \bvec{q}_{i}^{n+1} = 2\bvec{q}_{i}^{n}-\bvec{q}_{i}^{n-1} + \frac{\Delta t^2}{m} \sum_{j=i+1}^{i+2}C_{ij}\left[ k \left( \Vert \bvec{q}_j^n - \bvec{q}_i^n \Vert - L_{ij} \right) \bvec{u}_{ij} - \frac{\mu}{\Delta t} \left\langle \bvec{q}_{j}^{n}-\bvec{q}_{j}^{n-1} - \bvec{q}_{i}^{n}+\bvec{q}_{i}^{n-1}, \, \bvec{u}_{ij} \right\rangle  \bvec{u}_{ij}  \right].
 \end{align}
+La simulation de ce modèle par un schéma d'Euler explicite à pas constant sur un intervalle de temps faible ($T = 4$) est présentée à la \cref{fig:PlotDeplacement2D1Conv}, ainsi que les positions des 2 noeuds au début et à la fin de la simulation. La simulation à la \cref{fig:PlotDeplacement2D1NonConv} permet d'observer le problème avec ce schéma ($T = 10$).
 
 
+\begin{figure}[!h]
+    \begin{subfigure}[b]{0.7\textwidth}
+        \centering
+        \includegraphics[width=\textwidth]{PlotDeplacement2D-1-Conv.png}
+        \caption{Simulation des positions des noeuds.}
+        \label{fig:dep}
+    \end{subfigure}
+%     \hfill
+    \begin{subfigure}[b]{0.7\textwidth}
+        \centering
+        \includegraphics[width=\textwidth]{PositionInitFinales.png}
+        \caption{Illustration des positions des neouds.}
+        \label{fig:pos}
+    \end{subfigure}
+    \caption{Simulation du système \ref{eq:systeme2D} par un schéma d'Euler explicite avec $T = 4$. La couleurs rouge repésente le noeud $\bvec{q}_1$, le vert le noeud $\bvec{q}_2$, le blue le $\bvec{q}_3$. Les paramètres utilisés ici sont les suivants: $m=6.2$, $k=23.3$, $\mu=3$; à l'instant initiale, les trois noeuds perturbés avec des vitesses d'intensité respectives $v_1=0.3$, $v_2=0.1$, et $v_3=0.1$. Par rapport à l'axe des abcisses, ces vitesses ont sont orintées respectivement de $\theta_1=180^\circ$, $\theta_2=270^\circ$, et $\theta_3=240^\circ$ (voir Notebook "simu2D/Deplacement2D-1.ipynb").}
+    \label{fig:PlotDeplacement2D1Conv}
+\end{figure}
 
 
+\begin{figure}[!h]
+    \centering
+    \includegraphics[width=0.7\textwidth]{PlotDeplacement2D-1-NonConv.png}
+    \caption{Simulation du système \ref{eq:systeme2D} par un schéma d'Euler explicite avec $T = 10$. Cette figure utilise les même paramtètres que la \cref{fig:PlotDeplacement2D1Conv}. On observe ici une divergence totale du système.}
+    \label{fig:PlotDeplacement2D1NonConv}
+\end{figure}
 
+Les \cref{fig:PlotDeplacement2D1Conv,fig:PlotDeplacement2D1NonConv} permettent de constater que le schéma d'Euler explicite (peu importe son pas de temps), n'est pas adapté à ce problème. Nous étudierons donc d'autres alternatives. 
+
+ 
+\paragraph{Simulation à l'aide des fonction de la librarie Scipy.} À travers ses fonction telle que \texttt{odeint} et \texttt{solve}, \texttt{Scipy} offre une solution robuste et élégante pour simuler les systèmes d'ODE de la forme $Y' = AY$.
+
+
+ 
 
 
 
