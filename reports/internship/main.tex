@@ -23,14 +23,22 @@ headsepline, % Uncomment to get a line under the header
 openany, %% Use this option to make chapters start on the next page, irrespective of whether it's an odd or even numbered page
 ]{MastersDoctoralThesis} % The class file specifying the document structure
 
+
+%%-----------------------
 % \usepackage{mathpazo} % Use the Palatino font by default
 % \usepackage[charter]{mathdesign}
-
-\usepackage[partialup
-,lighttext]{kpfonts}        %% For math only
-\usepackage{fontspec}       %% Because we are using XeTEX
-\setromanfont{Minion Pro}   %% For text (Minion Math is commercial)
-\setsansfont{Fira Sans Light}
+%%-----------------------
+% \usepackage[partialup,lighttext]{kpfonts}        %% For math only
+% \usepackage{fontspec}       %% Because we are using XeTEX
+% \setromanfont{Minion Pro}   %% For text (Minion Math is commercial)
+% \setsansfont{Fira Sans Light}
+%%-----------------------
+\usepackage[utf8]{inputenc} % Required for inputting international characters
+\usepackage[T1]{fontenc} % Output font encoding for international characters
+\usepackage{textcomp}
+\usepackage[lf]{venturis}
+\usepackage{libertinust1math}
+%%-----------------------
 
 \usepackage{sectsty}        %% Pour mettre les titres en Sans Serif
 \allsectionsfont{\sffamily}
@@ -53,7 +61,7 @@ openany, %% Use this option to make chapters start on the next page, irrespectiv
 \usetikzlibrary{patterns}
 \usepackage{tikzscale}
 
-%\usepackage{amssymb}
+% \usepackage{amssymb}
 %\usepackage{amsthm}
 \usepackage{amsthm}
 \usepackage{amsmath,bm,mathtools} %% Use this to include the "align" environment in witch equations can be made easier
@@ -157,7 +165,7 @@ openany, %% Use this option to make chapters start on the next page, irrespectiv
 \thesistitle{\sffamily Fracturation de floes de glace par percussion \\dans un modèle granulaire} % Your thesis title, ths is used in the title and abstract, print it elsewhere with \ttitle
 \supervisor{\href{https://www-ljk.imag.fr/membres/Stephane.Labbe/}{Stéphane \textsc{Labbé}}} % Your supervisor's name, this is used in the title page, print it elsewhere with \supname
 \examiner{Christophe \textsc{Prud'homme}} % Your examiner's name, this is not currently used anywhere in the template, print it elsewhere with \examname
-\degree{master 2 CSMI} % Your degree name, this is used in the title page and abstract, print it elsewhere with \degreename
+% \degree{master 2 CSMI} % Your degree name, this is used in the title page and abstract, print it elsewhere with \degreename
 \author{Roussel Desmond \textsc{Nzoyem}} % Your name, this is used in the title page and abstract, print it elsewhere with \authorname
 \addresses{} % Your address, this is not currently used anywhere in the template, print it elsewhere with \addressname
 
