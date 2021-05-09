@@ -1,0 +1,187 @@
+
+%-------------------------------------------------------------------------------
+%							THIRD SECTION
+%-------------------------------------------------------------------------------
+
+
+
+\section{\textsc{Results in 1D}}
+
+
+\subsection{Simulation}
+
+
+\begin{frame}[fragile]
+  \frametitle{Example of a 1D simulation}
+
+  \begin{center}
+    \textcolor{violet}{\href{run:../img/Video1D.mp4}{Click here for the RTE simulation in 1D.}}
+    % \href{run:./img/Video1D.mp4}{Click here for the RTE simulation in 1D.}
+  \end{center}
+
+% \begin{center}
+%   \includemedia[
+%     width=0.95\linewidth,
+%     activate=pageopen,
+%     addresource=Video1D.mp4,
+%     flashvars={
+%        source=Video1D.mp4
+%       &autoPlay=true
+%     },
+%     passcontext, % enable VPlayer's right-click menue
+%   ]{\includegraphics{Thumbnail1D.png}}{VPlayer.swf}%
+% \end{center}
+
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitle{Inputs/outputs in 1D}
+
+  \begin{block}{\vspace*{-3cm}}
+    \centering The data gathered from the simulations is post-processed (resampled, normalized, etc.). 
+  \end{block}
+
+  \begin{columns}
+  \begin{column}{0.7\textwidth}
+      \begin{figure}
+      \includegraphics[width=8cm]{EntreeSortie1D}       
+      \mycap{An input for the Neural Network (above) and the awaited output (below)}
+      \end{figure}
+   \end{column}
+   \begin{column}{0.3\textwidth}
+      \begin{figure}
+      \includegraphics[width=3cm]{Entrees1D}       
+      \mycap{Size of an input (from the right boundary)}
+      \end{figure}
+      \begin{figure}
+        \includegraphics[width=2cm]{Sortie1D.png}       
+        \mycap{Size of an output}
+      \end{figure}
+   \end{column}
+  \end{columns}
+
+\end{frame}
+
+
+
+
+\subsection{Model, training, and predictions}
+
+
+
+\begin{frame}
+  \frametitle{The architecture in Keras}
+  \begin{center}
+      %%% Ajouter l'image des hierarchie de machine learning
+      \begin{figure}
+      \includegraphics[width=.95\textwidth]{DRNNNew.png}    % Modifier la sortie pour avoir 1D/Class2D/Reg 2D
+      \mycap{CNN used for the 1D inverse problem}
+      \end{figure}
+  \end{center}
+\end{frame}
+
+
+
+\begin{frame}
+  \frametitle{Hyper-parameters and training}
+
+  \begin{table}[h!]
+      \scriptsize
+      \label{tab:Parametres}
+      \centering
+      \begin{tabular}{l l}
+      \toprule
+      \textbf{Hyper-parameter} & \hspace*{2mm}\textbf{Value} \\
+      \midrule
+      % \onslide<+>
+      optimizer  & Adam \\
+      learning rate  & 1e-4, 1e-5, etc. \\
+      batch size  & 32 \\
+      epochs  & 100 \\
+      patience  & 10 \\
+      kernel size  & 3 \\
+      activation  & relu, linear, sigmoid \\
+      \bottomrule
+      \end{tabular}
+      \mycaptab{List of the most important hyper-parameters for the training}
+  \end{table}
+
+  \myfig[7][train1D]{CourbeTraining1D.png}{$MSE$ loss and $R^2$ accuracy during training and validation}
+
+\end{frame}
+
+
+\begin{frame}[fragile]
+  \frametitle{Best/worst predictions}
+
+  \begin{columns}
+  \begin{column}{0.5\textwidth}
+      \begin{figure}
+      \includegraphics<1->[width=4cm]{Meilleur1D2}       
+      \includegraphics<1->[width=4cm]{Meilleur1D1}       
+      \only<1->{\mycap{The 2 best predictions}}
+      \end{figure}
+   \end{column}
+   \begin{column}{0.5\textwidth}
+      \begin{figure}
+      \includegraphics[width=4cm]{Pire1D1}       
+      \includegraphics[width=4cm]{Pire1D2}       
+      \only{\mycap{The 2 worst predictions}}
+      \end{figure}
+   \end{column}
+  \end{columns}
+
+\end{frame}
+
+
+\begin{frame}
+  \frametitle{The obtained scores}
+
+  \begin{table}[h!] 
+      \centering
+      \begin{tabular}{l l}
+      \toprule
+      \textbf{Score name} & \textbf{Value} \\
+      \midrule
+      $R^2$ & 45.50 \%\\
+      \textbf{Personalized} & 28.21 \%\\
+      \bottomrule
+      \end{tabular}
+      \mycaptab{Prediction results on the Test dataset in 1D}
+  \end{table}
+
+  \begin{columns}
+       \begin{column}{0.5\textwidth}
+          \begin{figure}
+          \includegraphics<1>[width=3cm]{Hauteur1D}       
+          \only<1>{\mycap{Correlation between observed and predicted \alert{heights} of the obstacles}}
+          \end{figure}
+       \end{column}
+       \begin{column}{0.5\textwidth}
+        \begin{figure}
+        \includegraphics<1->[width=3cm]{Position1D}       
+        \only<1->{\mycap{Correlation between observed and predicted \alert{positions} of the obstacles}}
+        \end{figure}
+     \end{column}
+  \end{columns}
+
+\end{frame}
+
+
+\metroset{background=dark}
+
+\begin{frame}
+  \frametitle{Conclusion on the 1D inverse problem}
+  
+  \begin{alertblock}{\textbf{What we found out in 1D is:}}
+    \begin{enumerate}
+      \item We are able to determine the size of the tumours (obstacles);
+      \item However, we cannot locate them.
+    \end{enumerate}
+    The 1D inverse problem appears to be ill-posed. We could try solving the issue by increasing the dimensionality.
+  \end{alertblock}
+\end{frame}
+
+\metroset{background=light}
+
+

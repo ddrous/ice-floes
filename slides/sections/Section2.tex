@@ -1,0 +1,399 @@
+
+%-------------------------------------------------------------------------------
+%							SECOND SECTION
+%-------------------------------------------------------------------------------
+
+\section{\textsc{Approach}}
+
+
+
+
+\subsection{The forward problem}
+
+
+\begin{frame}
+  \frametitle{The radiative transfer phenomenon}
+
+  % \footnotesize
+  \begin{alertblock}{Radiative transfer}
+    When light interacts with matter, we notice three main phenomena characterized their opacities ($\sigma_e$, $\sigma_a$, and $\sigma_c$).    
+  \end{alertblock}
+  % $2 = \newplus{1}$
+  \cols{
+
+    \col{60}{    
+      \begin{itemize}
+        \justifying
+        \item \textbf{Emission} ($\sigma_e$) : Photons are emitted in response to excited electrons dropping to lower energy-levels. The hotter the medium, the more important the emission. % Typiquement on ne vas pas retrouver sigma_e dans nos equations car on va se placer dans l'ETL, et on Planck.
+        \item \textbf{Absorption} ($\sigma_a$) : Inversely, some photons are absorbed. Electrons become more excited (or free themselves completely from their atoms), and matter heats up. %When there is radiative equilibrium, $\sigma_a = \sigma_e$. % On va considerer en plus l'equilibre chimique ce qui donne l'ETL
+        \item \textbf{Scattering} ($\sigma_c$) : Some photons are deviated from thier original trajectory by colisions with atoms, molecules, etc. %In this case, one should consider the angular distribution of scatering $p(\bvec{\Omega^\prime \rightarrow \bvec{\Omega}})$ \parencite{Reference3}.
+      \end{itemize}
+    }
+
+    \col{40}{
+      \myfig{TransferRadiatif}{Interactions between matter and radiation}
+    }
+
+  } 
+\end{frame}
+  
+
+\begin{frame}
+    \frametitle{The radiative transfer equation (RTE)}
+
+    \begin{alertblock}{RTE}
+      The radiative transfer equation (RTE) is an energy balance linked to the radiation at mesoscopic scale (in the direction $\bvec{\Omega}$). 
+    \end{alertblock}
+  
+    At Local Thermodynamic Equilibrium (LTE), $\sigma_e = \sigma_a$ and we have:
+    \begin{align*}
+    % \begingroup
+    % \small
+    % \begin{gather*}
+    %     \begin{aligned}
+          \alert<1>{\frac{1}{c} \frac{\partial}{\partial t}I(t,\bvec{x},\bvec{\Omega},\nu)} \alert<1>{+\bvec{\Omega}\cdot\nabla_{\bvec{x}} I(t,\bvec{x},\bvec{\Omega},\nu)} \,
+        = \, & \overbrace{\textcolor{blue}{ \sigma_a(\rho,\bvec{\Omega},\nu)\left(B(\nu,T)-I(t,\bvec{x},\bvec{\Omega},\nu)\right)}}^{\text{Emission/absorption of photons}} \\
+        + \, & \underbrace{ \textcolor{red}{ \frac{1}{4\pi} \int_{0}^{\infty} \int_{S^2}\sigma_c(\rho,\bvec{\Omega},\nu)p(\bvec{\Omega}^\prime\rightarrow\bvec{\Omega})\left(I(t,\bvec{x},\bvec{\Omega}^\prime,\nu)-I(t,\bvec{x},\bvec{\Omega},\nu)\right) \, d\bvec{\Omega}^\prime \, d\nu}}_{\text{Increase/decrease in photons due to scatering}} ,
+        % \end{aligned}
+    % \label{eqn:ETR}
+    % \end{gather*}
+    % \endgroup
+  \end{align*}
+
+  where:
+  \small
+  \begin{itemize}
+    \item $c$ is the speed of light;
+    \item $t,\bvec{x}$, and $\nu$ represent time, position, and frequency respectively;
+    \item $I(t,\bvec{x},\bvec{\Omega},\nu)$ is the \alert{specific radiative intensity} (or spectral radiance);
+    \item $B(\nu,T)$ is Planck's function, describing photon emission at LTE;
+    \item $p(\bvec{\Omega}^\prime\rightarrow\bvec{\Omega})$ is the angular distribution of scattering (from direction $\bvec{\Omega}^\prime$ to $\bvec{\Omega}$), such that $ \bigointsss p(\bvec{\Omega}^\prime\rightarrow\bvec{\Omega})\, d\bvec{\Omega}^\prime=1.$
+  \end{itemize}
+  
+\end{frame}
+  
+\begin{frame}
+    \frametitle{P1 thermal radiation model}
+  %   \footnotesize
+  \small
+  \begin{alertblock}{Our P1 model}
+    We coupled the RTE with an equation describing heat transfer in the medium to obtain the P1 thermal radiation model below.
+  \end{alertblock}
+
+  % \begingroup
+    % \footnotesize
+    \vspace*{-0.25cm}
+    \large
+    \begin{equation*}
+        \begin{dcases}
+          \alert<1->{\partial_tE + c \nabla \cdot \bvec F = c\sigma_a\left(aT^4-E\right)} ,\\
+          \alert<1->{\partial_t\bvec{F} + c \nabla E = -c\sigma_c \bvec{F}} , \\
+          \alert<1->{\rho C_v \partial_t T = c \sigma_a \left(E-aT^4\right)} ,
+        \end{dcases}
+    % \label{eqn:P1}
+    \end{equation*}
+    % \endgroup
+    
+    \small
+    \cols{
+
+    \col{65}{Where:}{
+      \begin{itemize}
+        \item $E$ is the energy of the photons : $E(t,\bvec{x}) = \frac{4\pi}{c} \bigintsss_{\,0}^{\infty} \bigintsss_{S^2} I(t,\bvec{x},\bvec{\Omega},\nu) \, d\bvec{\Omega} \, d\nu $;
+        \item $\bvec{F}$ is the flux of the photons : $\bvec{F}(t,\bvec{x}) = \frac{4\pi}{c} \bigintsss_{\,0}^{\infty} \bigintsss_{S^2} \bvec{\Omega}\, I(t,\bvec{x},\bvec{\Omega},\nu) \, d\bvec{\Omega} \, d\nu $;  
+        \item $T$ is the temperature of the medium (function of $t$ and $\bvec{x}$);
+        \item $\rho$ is the density of the medium (function of $\bvec{x}$);
+        \item $C_v$ is the heat capacity at constant volume of the medium;
+        \item $a$ is the Stefan–Boltzmann constant.
+      \end{itemize}
+    }
+
+    \pause
+
+    \normalsize
+    \col{35}{}{
+      \begin{alertblock}{This model is:}
+        \begin{enumerate}
+          \item Mesoscopic with second order moments ("grey" model);
+          % \item Moins précis qu'un modèle résolut par la méthode de Monte-Carlo 
+          \item Asymptotic preserving i.e. holds for the "diffusion limit" \parencite{Reference2};
+          \item Not costly and relatively easy to implement. %Compared to other approximations (Monte Carlo, etc.), t
+        \end{enumerate}
+      \end{alertblock}
+    }
+
+    }
+
+  
+\end{frame}
+  
+  \setbeamercovered{invisible}
+  
+\begin{frame}
+    \frametitle{The "splitting" scheme}
+    \begin{alertblock}{The "splitting" scheme for the P1 model}
+      The idea is detailed in \parencite{Reference2,rapportstage}. During each time step:
+      \footnotesize
+      \begin{enumerate}
+        \item<1-> We solve the first step (relaxation of the temperature) on a single cell, using backward Euler, and fixed-point methods:
+        $$     \begin{dcases}
+          \partial_tE + \alert{\underbrace{c \nabla \cdot \bvec F}_{=\,0}} = c\sigma_a\left(aT^4-E\right) ,\\
+          \rho C_v \partial_t T = c \sigma_a \left(E-aT^4\right)  .
+         \end{dcases} $$
+        \item<2-> We then solve the second step (the hyperbolic part) using a Finite Volumes scheme:
+        $$     \begin{dcases}
+          \only<2->{\partial_tE + c \nabla \cdot \bvec F = \alert{\underbrace{c\sigma_a\left(aT^4-E\right)}_{=\,0}}} ,\\
+          \only<2->{\partial_t\bvec{F} + c  \nabla E = -c\sigma_c \bvec{F}} .\\
+         \end{dcases} $$
+      \end{enumerate}
+    \end{alertblock}
+
+\end{frame}
+  \setbeamercovered{transparent}
+
+
+
+  \begin{frame}
+    \frametitle{The "splitting" scheme : Step 1}
+    % Reglage de la temperature 
+    \begin{columns}
+      \begin{column}{0.5\textwidth}
+       At iteration step $n$, we write $\Theta = aT^4$, and we solve:
+  
+        \begingroup
+        \normalsize
+        \begin{equation*} 
+          \begin{dcases}
+           \alert<1->{E_j^{q+1} = \dfrac{\alpha E_j^n + \beta \gamma \Theta_j^n}{1 - \beta \delta}} , \\
+           \alert<1->{\Theta_j^{q+1} = \dfrac{\gamma \Theta_j^n + \alpha \delta E_j^n}{1 - \beta \delta}} ,
+          \end{dcases}
+      \label{eqn:Step1}
+      \end{equation*}
+        \endgroup
+        where with:
+        % \tiny
+        $$\mu_q = \dfrac{1}{T^{3,n} + T^{n}T^{2,q} + T^{q}T^{2,n} + T^{3,q}} ,$$
+        we have:
+        \normalsize
+      \end{column}
+      % \pause
+      \begin{column}{0.5\textwidth}
+        \begin{figure}          
+          \includegraphics[width=5cm]{Dicretisation2D}       
+          \mycap{Domain discretization (2D) with "ghost" cells (hatched in red)}
+        \end{figure} 
+      \end{column}
+     \end{columns}
+    %  \tiny
+    $\alpha = \dfrac{1}{\Delta t \left( \frac{1}{\Delta t} + c \sigma_a \right)} ,\quad 
+     \beta = \dfrac{c \sigma_a}{\frac{1}{\Delta t} + c \sigma_a} ,\quad 
+     \gamma = \dfrac{\rho_j C_v \mu_q}{\Delta t \left( \frac{\rho_j C_v \mu_q}{\Delta t} + c \sigma_a \right)}, \quad \text{and} \quad  
+     \delta = \dfrac{c \sigma_a}{\frac{\rho_j C_v \mu_q}{\Delta t} + c \sigma_a}.$
+  
+     \normalsize
+     \begin{columns}
+      \begin{column}{1.0\textwidth} 
+        \\
+        We iterate on $q$ until $E_j$ and $\Theta_j$ converge respectively to $E_j^*$ and $\Theta_j^*$. The photon flux $\bvec F_j = \bvec F_j^*$ is constant during step 1.
+      \end{column}
+      \begin{column}{0.0\textwidth} 
+      \end{column}
+    \end{columns}
+     
+  \end{frame}
+  
+  
+  \begin{frame}
+    \frametitle{The "splitting" scheme : Step 2}   % Adaptable aussi en 2D
+    After defining numerical fluxes, we can solve step 2 by iterating on $n$ on the discretized system:
+    \begin{columns}[t]
+      \begin{column}{0.6\textwidth}
+        % \begingroup
+        \begin{equation*} 
+            \begin{dcases}
+            \alert<1->{E_j^{n+1} = E_j^* + \alpha \sum_k \left( \bvec F_{jk}, \bvec n_{jk} \right)} ,\\
+            \alert<1->{\bvec{F}_j^{n+1} = \beta \bvec F_j^* + \bvec{\gamma} E_j^n + \delta \sum_k E_{jk} \bvec n_{jk}} ,
+            \end{dcases}   
+        % \label{eqn:Step2}
+        \end{equation*}
+        with :
+        % \newline
+        % \begingroup
+        % \scriptsize
+      
+        % \begin{gather*}    
+        \small
+        % \begin{aligned} 
+          \begin{align*}
+            &\alpha = -\frac{c \Delta t}{\left| \Omega_j \right|}, \\
+            &\beta = \frac{1}{\Delta t} \left( \frac{1}{\Delta t} + c \sum_k M_{jk} \sigma_{jk} \right)^{-1}, \\
+            &\bvec{\gamma} = \frac{c}{\left| \Omega_j \right|} \left( \frac{1}{\Delta t} + c \sum_k M_{jk} \sigma_{jk} \right)^{-1} \left( \sum_k l_{jk} M_{jk} \bvec n_{jk} \right), \\
+            &\delta = -\frac{c}{\left| \Omega_j \right|} \left( \frac{1}{\Delta t} + c \sum_k M_{jk} \sigma_{jk} \right)^{-1} ,
+          \end{align*}
+          % $$
+      %   \end{aligned}
+      % \end{gather*}
+  
+      % \endgroup
+        
+      \end{column}
+      % \pause
+      \begin{column}{0.4\textwidth}
+        \begin{figure}[T]
+        \includegraphics[width=5cm]{Interaction2D}       
+          \mycap{Interaction between a cell (Finite Volume $j$) and a neighbor $k$}
+        \end{figure}
+        \vspace*{-0.7cm}
+         \begin{center}
+          % \begingroup
+          \small
+          \begin{align*}
+            \left(\bvec F_{jk}, \bvec n_{jk} \right) &= l_{jk} M_{jk} \left( \frac{\bvec F_j^n \cdot \bvec n_{jk} + \bvec F_k^n \cdot \bvec n_{jk}}{2} - \frac{E_k^n - E_j^n}{2} \right) ,\\
+            E_{jk} \bvec n_{jk} &= l_{jk} M_{jk} \left( \frac{E_j^n + E_k^n}{2} - \frac{\bvec F_k^n \cdot \bvec n_{jk} - \bvec F_j^n \cdot \bvec n_{jk}}{2} \right) \bvec n_{jk} ,\\
+          %  \end{align*}
+          %  \begin{align*}
+            M_{jk} &= \frac{2}{2 + \Delta x \sigma_{jk}} , \\
+            \sigma_{jk} &= \frac{1}{2} \left( \sigma_c(\rho_j,T_j^n) + \sigma_c(\rho_k,T_k^n) \right) .
+           \end{align*}
+          % \endgroup
+         \end{center}
+      \end{column}
+     \end{columns}
+  \end{frame}
+  
+  \begin{frame}
+    \frametitle{Implementation in C++}
+    \begin{columns}
+      \begin{column}{0.5\textwidth}
+        \textbf{Some of the most important variables (in 1D)}:
+        \scriptsize
+        \begin{itemize}
+          \item Final time $=0.01$ \si{sh} %\textit{(1 shake (\si{sh}) = $10^{-8}$ secondes)}
+          \item $c = 299$ [\si{\cm \per sh}]
+          \item $a = 0.01372$ [\si{g \per cm \per sh^2  \per keV }]
+          \item $C_v = 0.14361$ [\si{Jerk \per\g \per keV}] % \textit{(1 \si{Jerk} = 1\si{m \per \s\cubed})}
+          \item Density $\rho$ is a smoothed square signal [\si{\g\per\cm\cubed}]
+          \item \colorbox{yellow}{$\sigma_a = \rho T$} [\si{\per\cm}]
+          \item \colorbox{yellow}{$\sigma_c = \rho T$} [\si{\per\cm}]
+          \item $T_0, T_{left} = 5$ [\si{keV}] % \textit{(en termes de température, 1 \si{keV} = 11605 \si{K})}
+          \item $E_0 = aT_0^4$ [\si{g \per \cm \per sh^2}]
+          \item $E_{left^*} = aT_{0}^4 + 5 \sin (2 k \pi t)$ [\si{g \per \cm \per sh^2}]
+          \item $\bvec{F}_0, \bvec{F}_{left} = \bvec{0}$ [\si{g \per sh^2}]
+          \item Neumann conditions on other boundaries
+        \end{itemize}
+      \end{column}
+  
+  
+      \begin{column}{0.5\textwidth}
+         \begin{figure}
+          \frame{\includegraphics[width=5cm]{SimuCFG}}   % EN 2D    
+          \only{\mycap{Example of a configuration file (in 2D)}}
+        \end{figure}
+      \end{column}
+     \end{columns}
+  
+  \end{frame}
+  
+
+  
+
+\subsection{The inverse problem}
+
+
+
+\begin{frame}
+    \frametitle{The inverse problem's goal}
+    % \scriptsize
+    \begin{block}{\vspace*{-4ex}}
+      Given the \textcolor{blue}{signal on the boundaries} of a domain, we want to reconstruct the medium's \textcolor{red}{density}, which we analyze to detect tumours.
+    \end{block}
+    $\bvec{X}$: signal measured on the boundaries; $\bvec{y}$: density of the medium; $f$ describes the forward problem: \Large
+    $$ \bvec{X} = f(\bvec{y}) + \underbrace{\cancel{\delta \bvec{X}.}}_{\textcolor{mygreen}{Noise}} $$
+
+    \normalsize
+    % Our goal is to find $y$.
+
+    % \begin{itemize}
+    %   \item $f$ describes the forward problem : $\bvec{X} = f(\bvec{y})$;
+    %   \item $f^{-1}$ should describe the inverse problem : $\bvec{y} = f^{-1}(\bvec{X})$ (assuming well-posedness);
+    %   \item We will settle on $\hat{f}^{-1}$ such that $\hat{\bvec{y}} = \hat{f}^{-1}(\bvec{X}, \bvec{\theta})$, where $\bvec{\theta}$ are the neural networks' parameters.
+    % \end{itemize}
+  
+    \pause
+    % \vspace*{2mm}
+
+    % \tiny
+    \begin{columns}[t]
+    \begin{column}{0.5\textwidth}
+      \begin{block}{Our AI approach to solving the inverse problem}
+        \centering \alert{$AI \rightarrow ML \rightarrow ANN \rightarrow MLP \rightarrow CNN \text{ or } V-Net $}      
+      \end{block}
+      
+      \small
+      \begin{description}
+        \item<2-> [AI]: Artificial Intelligence
+        \item<2-> [ML]: Machine Learning
+        \item<2-> [ANN]: Artificial Neural Network
+        \item<2-> [MLP]: Multi-Layer Perceptron
+        \item<2-> [CNN]: Convolutional Neural Network
+      \end{description}
+  
+   \end{column}
+   \begin{column}{0.5\textwidth}
+    \begin{figure}
+      \includegraphics<2>[width=4cm]{MLP}   % EN 2D    
+      \only<2>{\mycap{Example of MLP (Géron, 2017)}}
+    \end{figure}
+   \end{column}
+  \end{columns}
+  
+  \end{frame}
+
+\setbeamercovered{invisible}
+\begin{frame}
+    \frametitle{Metrics used when training the neural networks}
+
+    \cols{
+
+    \col{50}{}{
+      \begin{alertblock}{$R^2$ coefficient of determination}
+        This is given by:
+        $$
+          \only<1->{R^2 = 1 - \frac{SS_{res}}{SS_{tot}}} ,
+            \label{eqn:R2}
+        $$
+        \only<1->{with}
+        % \scriptsize
+        \begin{align*}
+          \only<1->{SS_{res} &=  \sum_{i=1}^{n} \left( y_i - \hat{y}_i \right)^2} ,\\
+          \only<1->{SS_{tot} &=  \sum_{i=1}^{n} \left( y_i - \bar{y} \right)^2} ,
+        \end{align*}
+        \only<1->{where $ \bar{y} = \sum_{i=1}^{n} y_i $ is the observed baseline value.}
+      \end{alertblock}
+    }
+
+    \pause
+
+    \col{50}{}{
+      \begin{alertblock}{Personalised score (only in 1D)}
+        Percentage of "accurate" predictions:
+        \begin{itemize}
+          \item \textbf{to the tenths} for the location of the tumour (since the domain is $[0,1]$); 
+          \item \textbf{to the units} for the height (since they range from $1$ to $10$).
+         \end{itemize}
+      \end{alertblock}
+    }
+
+
+    }
+
+    % \pause
+
+    \begin{exampleblock}{Important note!}
+      Other details on the neural network are specific to the case (1D or 2D). They will be explored further ahead.
+    \end{exampleblock}
+
+\end{frame}
+
+% \setbeamercovered{transparent}
+

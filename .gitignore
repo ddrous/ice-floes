@@ -3,6 +3,13 @@
 .vscode/*
 code/simu1D/frames/*
 
+## slides
+slides/out/*
+slides/out/*
+!slides/out/main.pdf
+
+
+
 # Rapport de stage
 
 

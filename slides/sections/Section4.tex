@@ -1,0 +1,226 @@
+
+%-------------------------------------------------------------------------------
+%							FOURTH SECTION
+%-------------------------------------------------------------------------------
+
+
+\section{\textsc{Results in 2D}}
+
+
+\subsection{Simulation}
+
+\setbeamercovered{invisible}
+
+\begin{frame}
+  \frametitle{The enriched problem in 2D}
+  \begin{alertblock}{\vspace*{-3cm}}
+    In 2D, we are not only studying the location and the height of an obstacle, we are trying to rebuild the complete density of the medium.     
+  \end{alertblock}
+
+  \begin{columns}
+    \begin{column}{0.45\textwidth}
+      \begin{center}
+        %%% Ajouter l'image des hierarchie de machine learning
+        \begin{figure}
+        \includegraphics[width=.7\textwidth]{DensiteTest.png}    % Modifier la sortie pour avoir 1D/Class2D/Reg 2D
+        \mycap{An example of a medium's density where we can see two distinct "tumours"}
+        \end{figure}
+    \end{center}
+    \end{column}
+
+    \pause
+
+    \begin{column}{0.55\textwidth}
+      \begin{center}
+        %%% Ajouter l'image des hierarchie de machine learning
+        \begin{figure}
+        \includegraphics[width=.6\textwidth]{CTScan.jpg}    % Modifier la sortie pour avoir 1D/Class2D/Reg 2D
+        \includegraphics[width=.5\textwidth]{Sinogram.png} 
+        \mycap{CT scan overview (up), Shepp Logan Phantom (lower left), and corresponding sinogram (lower right) (Beatty, 2012)}
+        \end{figure}
+    \end{center}
+    \end{column}
+
+  \end{columns}
+\end{frame}
+
+
+\begin{frame}[fragile]
+  \frametitle{Example of a 2D simulation}
+  
+  \begin{center}
+    \textcolor{violet}{\href{run:../img/Video2D.mp4}{Click here for the RTE simulation in 2D.}}
+    % \href{run:./img/Video2D.mp4}{Click here for the RTE simulation in 2D.}
+  \end{center}
+
+% \begin{center}
+%   \includemedia[
+%     width=0.95\linewidth,
+%     activate=pageopen,
+%     addresource=Video2D.mp4,
+%     flashvars={
+%        source=Video2D.mp4
+%       &autoPlay=true
+%     },
+%     passcontext, % enable VPlayer's right-click menue
+%   ]{\includegraphics{Thumbnail2D.png}}{VPlayer.swf}%
+% \end{center}
+
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitle{Inputs/outputs in 2D}
+
+      \begin{figure}
+      \includegraphics[width=11cm]{SimuCirculaires.png}       
+      \mycap{An input for the Neural Network (around the pictures) and the awaited output (in the middles)}
+      \end{figure}
+
+      \begin{columns}
+        \begin{column}{0.5\textwidth}
+          \begin{figure}
+            \includegraphics[width=3cm]{Entrees2D}       
+            \mycap{Size of an input}
+            \end{figure}
+        \end{column}
+        \begin{column}{0.5\textwidth}
+          \begin{figure}
+            \includegraphics[width=3cm]{Sortie2D.png}       
+            \mycap{Size of an output}
+            \end{figure}
+        \end{column}
+      \end{columns}
+
+
+\end{frame}
+
+
+
+\subsection{Model, training, and predictions}
+
+
+\begin{frame}
+  \frametitle{Model architecture in Keras and Tensorflow}
+  \begin{center}
+      %%% Ajouter l'image des hierarchie de machine learning
+      \begin{figure}
+      \includegraphics[width=.95\textwidth]{Vnet.png}    % Modifier la sortie pour avoir 1D/Class2D/Reg 2D
+      \mycap{V-Net architecture \parencite{rapportstagevnet} based on U-Net \parencite{DBLP:journals/corr/RonnebergerFB15}}
+      \end{figure}
+  \end{center}
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitle{Python code for the V-Net}
+	\begin{lstlisting}[language=Python,caption={Definition of the constructor for the VNet class \parencite{rapportstagevnet}.},breaklines]
+  class VNet:
+    def __init__(self,
+                  input_shape,
+                  output_shape,                  
+                  levels=5,
+                  depth=32,
+                  kernel_size=5, 
+                  activation="relu",
+                  batch_norm=True,
+                  dropout_rate=0, 
+                  ):
+    ..."more code"
+  \end{lstlisting}
+\end{frame}
+
+\begin{frame}
+  \frametitle{Training phase}
+  \begin{table}[h!]
+      \scriptsize
+      \centering
+      \begin{tabular}{l l}
+      \toprule
+      \textbf{Hyper-parameter} & \hspace*{2mm}\textbf{Value} \\
+      \midrule
+      optimizer  & Adam\\
+      learning rate  & 1e-5, 1e-6, \colorbox{yellow}{1e-7}\\
+      batch size  & 100 \\
+      epochs  & 1500 \\
+      patience & 50 \\
+      kernel size  & (5,5) \\
+      activation & relu, linear, sigmoid \\
+      \bottomrule
+      \end{tabular}
+      \mycaptab{List of the most important hyper-parameters for the training}
+      \label{tab:Parametres}
+  \end{table}
+
+  \vspace*{-0.4cm}
+  % \begin{center}
+    %%% Ajouter l'image des hierarchie de machine learning
+    \begin{figure}
+    \includegraphics[width=.75\textwidth]{training1.png}    % Modifier la sortie pour avoir 1D/Class2D/Reg 2D
+    \mycap{MSE drop (left) and accuracy increase (right) during training}
+    \end{figure}
+% \end{center}
+
+\end{frame}
+
+
+
+\begin{frame}[fragile]
+  \frametitle{Best/worst predictions}
+
+  \begin{block}{\vspace*{-3cm}}
+      $R^2$ score of $87$ \%.
+  \end{block}
+
+
+  \begin{columns}
+  \begin{column}{0.5\textwidth}
+    \begin{figure}
+      \includegraphics<1->[width=5cm]{Meilleur2D1}
+    \end{figure}
+    \begin{figure}
+      \vspace*{-0.25cm}       
+      \includegraphics<1->[width=5cm]{Meilleur2D2}       
+      \only<1-> {\mycap{Some of the best predictions}}
+    \end{figure}
+   \end{column}
+   \begin{column}{0.5\textwidth}
+      \begin{figure}
+        \includegraphics[width=5cm]{Pire2D1}     
+      \end{figure}
+      \begin{figure}
+        \vspace*{-0.25cm}       
+        \includegraphics[width=5cm]{Pire2D3}       
+        \mycap{Some of the worst predictions}
+      \end{figure}
+   \end{column}
+  \end{columns}
+
+\end{frame}
+
+
+\metroset{background=dark}
+
+\begin{frame}
+  \frametitle{Conclusion on the 2D inverse problem}
+  \begin{alertblock}{\textbf{What we found out in 2D is:}}
+    \begin{enumerate}
+      \item The AI is able to determine the full density of the medium;
+      \item The AI is more precise when the obstacles are continuous (gaussian, sine, etc.) as opposed to circles and rectangles.
+    \end{enumerate}
+    We can easily post-process the predicted density to find the tumours.
+  \end{alertblock}
+
+  \pause
+
+  \begin{alertblock}{\textbf{Future work:}}
+    While writing and publishing the present work, I plan on:
+    \begin{enumerate}
+      \item Reconstructing other optical properties ($\sigma_e$, $\sigma_a$, and $\sigma_c$);
+      \item Finding out why \textbf{increasing} the dimensionality solves the problem (linked to the Radon Tansform);
+      \item Exploring how a tomograph can be implemented and used in medical conditions.
+    \end{enumerate}
+  \end{alertblock}
+
+\end{frame}
+
+\metroset{background=light}
+
