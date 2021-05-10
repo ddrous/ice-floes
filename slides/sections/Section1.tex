@@ -6,29 +6,75 @@
 \section{\textsc{Introduction}}
 
 
-% \subsection{Goals and incentives}
+\subsection{Test subsection title}
 
 
 \begin{frame}
   \frametitle{Motivation}
   
-  \mycols{
+  \note{Floe: Un floe est un morceau de glace.}
 
-    \mycol{50}{
-      \begin{alertblock}{Exploitation industrielles}
-        \begin{itemize}
-          \item Routes maritimes suite à la fonte des glaces
-          \item Comportement mécanique des stations offshores 
-        \end{itemize}
-      \end{alertblock}
-    }
+  \mycols{
 
     \mycol{50}{
       \begin{exampleblock}{Enjeux écologiques}
         \begin{itemize}
+          \item Etude climatique à échelle nature (SASIP)
           \item Prévisions climatiques avec précision
         \end{itemize}
       \end{exampleblock}
-    }
+
+      \myfig{Ecological.jpg}{Prévision dans l'artique}
+      }
+
+    \pause
+
+    \mycol{50}{
+      \begin{alertblock}{Enjeux industrielles}
+        \begin{itemize}
+          \item Routes maritimes exploitables
+          \item Comportemetn des stations offshores 
+        \end{itemize}
+      \end{alertblock}
+      \myfig{IceRoutes.png}{Un navire dans la MIZ}
+
+      }
   }
+\end{frame}
+
+
+% \section{\textsc{Introduction2}}
+
+\begin{frame}{Objectifs}
+
+  \begin{block}{Objectifs généraux}
+
+    \begin{itemize}
+      \item Modélisation et analyse mathématique de la notion de percussion
+      \item Poursuite du développement d’un modèle de fracturation des floes
+    \end{itemize}
+  \end{block}
+
+
+  \begin{block}{Objectifs intermédiaires}
+
+    \begin{enumerate}
+      \item Lecture des travaux précédents:
+      \begin{itemize}
+        \item M. Rabatel, S. Labbé, et J. Weiss: Dynamics of an assembly of rigid ice floes (\citeyear{rabatel2015dynamics}); 
+        \item Matthias Rabatel: Modélisation dynamique d’un assemblage de floes rigides (\citeyear{rabatel2015modelisation});
+        \item Dimitri Balasoiu: Modélisation et simulation du comportement mécanique de floes de glace (\citeyear{balasoiu2020modelisation}).
+      \end{itemize}
+      
+      \item Modélisation et simulation du deplacmeent des noeuds d'un floe isolé:
+      \begin{itemize}
+        \item en 1D;
+        \item en 2D.
+      \end{itemize}
+
+      \item Introduction de la percussion dans le code préexistant.
+
+    \end{enumerate}
+  \end{block}
+
 \end{frame}
