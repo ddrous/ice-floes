@@ -5,21 +5,25 @@
 
 %%---------- Theme colors and design section ---------------------------
 
-\documentclass[notes,handout]{beamer}
+\documentclass[notes,handout,compress]{beamer}
 
 \useoutertheme{infolines}
 \usetheme{Antibes}
-\useoutertheme{smoothbars}
+% \useoutertheme{smoothbars}
+\useoutertheme{miniframes}
+
+% \setbeamertemplate{mini frame}[box] %% or tick
+% \setbeamertemplate{mini frame in current subsection}[box]
 
 \colorlet{mygreen}{green!50!blue} 
-\colorlet{myblue}{blue!70!black} 
+\colorlet{myblue}{blue!60!green} 
 \colorlet{mywhite}{white!98!black} 
 \colorlet{myred}{red!90!black} 
-% \definecolor{myblue}{rgb}{0.04706, 0.13725, 0.26667}
+\definecolor{navy}{rgb}{0.04706, 0.13725, 0.26667}
 
 % \usefonttheme{structuresmallcapsserif}
 
-\usecolortheme[named=mygreen]{structure}
+\usecolortheme[named=myblue]{structure}
 \setbeamercolor{background canvas}{bg=mywhite}
 \setbeamertemplate{navigation symbols}{}
 
@@ -27,10 +31,10 @@
 \setbeamercolor{alerted text}{fg=myred}
 \setbeamertemplate{itemize items}{$\blacktriangleright$}  %% Triangles in itemize
 
-\setbeamercolor{block title example}{bg=myblue}
-\setbeamercolor{block body example}{bg=myblue!10!white}
-\AtBeginEnvironment{exampleblock}{\setbeamercolor{itemize item}{fg=block title example.bg}}
-\AtBeginEnvironment{exampleblock}{\setbeamercolor{item projected}{bg=myblue}}
+% \setbeamercolor{block title example}{bg=myblue}
+% \setbeamercolor{block body example}{bg=myblue!10!white}
+% \AtBeginEnvironment{exampleblock}{\setbeamercolor{itemize item}{fg=block title example.bg}}
+% \AtBeginEnvironment{exampleblock}{\setbeamercolor{item projected}{bg=myblue}}
 
 \AtBeginSection[]
 {
@@ -43,8 +47,8 @@
 
 %%------------- Packages imports and configuration --------------------
 
-\usepackage[sfmath,frenchstyle]{kpfonts}
-\usepackage[nointlimits]{esint}
+% \usepackage[sfmath,frenchstyle]{kpfonts}
+% \usepackage[nointlimits]{esint}
 
 \usepackage[fontsize=7]{scrextend} % Use this to force the fontsize
 
@@ -62,12 +66,13 @@
 \usepackage{cases} 
 \usepackage{mathdots}
 
-\usepackage[utf8]{inputenc}
-\usepackage[T1]{fontenc}
-\usepackage{textcomp}
+% \usepackage[utf8]{inputenc}
+% \usepackage[T1]{fontenc}
+% \usepackage{textcomp}
 % \usepackage[sansmath]{libertinust1math}
+\usepackage[sfdefault]{FiraSans}
 
-\usepackage[font={bf},justification=centering]{caption}
+\usepackage[justification=centering]{caption}
 \usepackage{subcaption}
 \usepackage{booktabs}
 
