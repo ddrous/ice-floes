@@ -3,7 +3,7 @@
 %-------------------------------------------------------------------------------
 
 
-%%---------- Theme color and design section ---------------------------
+%%---------- Theme colors and design section ---------------------------
 
 \documentclass[notes,handout]{beamer}
 
@@ -15,6 +15,8 @@
 \colorlet{mywhite}{white!98!black} 
 \colorlet{myred}{red!90!black} 
 \definecolor{myblue}{rgb}{0.04706, 0.13725, 0.26667}
+
+% \usefonttheme{structuresmallcapsserif}
 
 \usecolortheme[named=mygreen]{structure}
 \setbeamercolor{background canvas}{bg=mywhite}
@@ -33,6 +35,9 @@
 
 %%------------- Packages imports and configuration --------------------
 
+\usepackage[sfmath,frenchstyle]{kpfonts}
+\usepackage[nointlimits]{esint}
+
 \usepackage[fontsize=8]{scrextend} % Use this to force the fontsize
 
 \usepackage{docmute} % To include multiple files
@@ -43,7 +48,7 @@
 
 \usepackage{xcolor}
 \usepackage{graphicx}
-\graphicspath{ {../reports/internship/Figures} }
+\graphicspath{ {../reports/internship/Figures/} }
 
 \usepackage{amsmath,bm,mathtools}
 \usepackage{cases} 
@@ -66,7 +71,6 @@
 \usepackage{hyperref}     %% No coloring for hyperlinks, since links are everywhere
 \usepackage{cancel}   %% TO strikeout text
 \usepackage{marvosym} %% For smileys
-
 
 \usepackage[french]{babel}
 \usepackage[useregional]{datetime2}
@@ -117,19 +121,38 @@
 
 % \setbeamercolor{postit}{fg=white,bg=mDarkTeal}
 
-\title[Deep learning for inverse problems in radiative transfer]{Simulation of light propagation and reconstruction of a medium's density using deep neural networks}
-
-\institute[]{\small Sorbonne Université}
+\title[\textsc{Fracturation de floes de glace}]{\LARGE Fracturation de floes de glace par percussion dans un modèle granulaire}
 
 \author[Roussel Desmond Nzoyem]{\large \bfseries Roussel Desmond Nzoyem}
 
+\institute[]{\small Sorbonne Université}
+
 % \logo{\includegraphics[width=0.6cm,height=1cm,keepaspectratio]{LogoBristol.png}}
 
-\date[Soutenance mi-stage 2021]{\today}
+\date[Soutenance mi-stage 2021]{Soutenance de mi-stage 2021\\\today}
 
-\begin{frame}[plain]
-  \maketitle  
-\end{frame}
+
+\begingroup
+  \setbeamertemplate{footline}{}
+
+  \setbeamertemplate{headline}{\vspace{0.5cm}%
+    \hspace*{0.8cm}%
+    \includegraphics[width=2.8cm]{LogoUnistra2.png}
+    \hfill\raisebox{.2cm}{\normalsize  }\hfill%
+    \includegraphics[width=2.5cm]{LogoCSMI.png}
+    \hfill\raisebox{.2cm}{\normalsize  }\hfill%
+    \includegraphics[width=1.5cm]{LogoLJLL.jpg}
+    \hfill\raisebox{.2cm}{\normalsize  }\hfill%
+    \includegraphics[width=2.5cm]{LogoSorbonne.png}
+    \hspace*{0.8cm}%
+    }
+
+
+  \begin{frame}[fragile]
+    \vspace*{0.5cm}
+    \maketitle
+  \end{frame}
+\endgroup
 
 
 %-------------------------------------------------------------------------------
@@ -138,8 +161,8 @@
 
 
 \begin{frame}
-  \small
-  \frametitle{Contents}
+  % \small
+  \frametitle{Sommaire}
   \tableofcontents
 \end{frame}
 
