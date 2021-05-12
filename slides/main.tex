@@ -17,13 +17,14 @@
 
 \colorlet{mygreen}{green!50!blue} 
 \colorlet{myblue}{blue!60!green} 
+\colorlet{mygray}{gray!88!blue} 
 \colorlet{mywhite}{white!98!black} 
 \colorlet{myred}{red!90!black} 
 \definecolor{navy}{rgb}{0.04706, 0.13725, 0.26667}
 
 % \usefonttheme{structuresmallcapsserif}
 
-\usecolortheme[named=myblue]{structure}
+\usecolortheme[named=mygray]{structure}
 \setbeamercolor{background canvas}{bg=mywhite}
 \setbeamertemplate{navigation symbols}{}
 
@@ -115,13 +116,28 @@
     }%
 }
 
-% \myfig{filename}{caption}                                       %% Easy way to make figures with frames around
+% \myfig{filename}{caption}                                       %% Easy way to make figures with\without frames around
 \newcommand{\myfig}[2]{
   \begin{figure}       
-    \frame{\includegraphics[width=\textwidth]{#1}}       
-    \caption{#2.}
+    \includegraphics[width=\textwidth]{#1}       
+    \caption{#2}
   \end{figure}
 }
+
+\newcommand{\myfigframe}[2]{
+  \begin{figure}       
+    \frame{\includegraphics[width=\textwidth]{#1}}       
+    \caption{#2}
+  \end{figure}
+}
+
+\newcommand{\myfigsize}[3]{
+  \begin{figure}       
+    \includegraphics[width=.#3\textwidth]{#1}       
+    \caption{#2}
+  \end{figure}
+}
+
 
 \newcommand{\mycapfig}[1]{\caption{#1}}
 \newcommand{\mycaptab}[1]{\caption{#1}}
@@ -213,7 +229,7 @@
 
 \input{sections/Section2}
 
-% \input{sections/Section3}
+\input{sections/Section3}
 
 % \input{sections/Section4}
 
