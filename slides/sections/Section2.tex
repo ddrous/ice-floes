@@ -9,7 +9,51 @@
 \subsection{Thèse de M. Rabatel}
 
 
+\begin{frame}{Cinétique du floe}
+  \mycols{
+    \mycol{50}{
+      Les équations de Newton-Euler:
+      \begin{align} \label{eq:neweu}
+      \begin{dcases} 
+        M_i \frac{\diff \dot{\bvec{G}}_i(t)}{\diff t} &= \bvec{F}_i, \\
+        \mathcal{I}_i \frac{\diff \dot{\theta}_i(t)}{\diff t} &= \mathfrak{M}_i,
+      \end{dcases}        
+      \end{align}
+      où pour le floe $i$ : 
+      \begin{itemize}
+        \item $M_i$ : masse du floe;
+        \item $\bvec{F}_i$ : somme des forces par unité de volume;
+        \item $\mathcal{I}_i$ : le moment d'inertie du floe $i$;
+        \item $\mathfrak{M}_i$ : le moment dynamique en $G$.
+      \end{itemize}
+      Le système (\ref{eq:neweu}) se réécrit sous la forme :
+      \begin{align*}    
+          \mathcal{M}_i \frac{\diff W_i(t)}{\diff t} = \mathcal{H}_i(t) ,
+      \end{align*}
+      avec 
+      \begin{align*}
+      \mathcal{M}_i = 
+      \begin{pmatrix}
+          M_i & 0 & 0 \\ 0 & M_i & 0 \\ 0 & 0 & \mathcal{I}_i
+      \end{pmatrix} , \quad
+      W_i(t) = 
+      \begin{pmatrix}
+          \dot{\bvec{G}}(t) \\ \dot{\theta}_i(t)
+      \end{pmatrix} , 
+      \text{ et } \quad \mathcal{H}_i(t) = 
+      \begin{pmatrix}
+          \bvec{F}_i(t) \\ \mathfrak{M}_i(t)
+      \end{pmatrix}.
+      \end{align*}
+    }
 
+
+    \mycol{50}{
+      \myfig{FloeRabatel}{Repères abosolu et repère local pour une particule floe}
+    }
+  }
+  
+\end{frame}
 
 
 
