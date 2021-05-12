@@ -118,7 +118,7 @@ Avant d'entamer la question de la percussion, étudions le comportement d'un flo
     \begin{subfigure}[b]{0.3\textwidth}
         \centering
         \frame{\includegraphics[width=\textwidth]{Deplacement1D-Masse2.png}}
-        \caption{Sur la masse $m'$ de droite.}
+        \caption{Sur la masse $m$ de droite.}
     \end{subfigure}
        \caption{Bilan des forces appliquée sur les noeuds du système. Les valeurs indiquées sont les intensitées (positives) des forces (par exemple juste après l'instant initial, on a $x_1 > 0$, et $x_2 < 0$ d'où $k(x_1-x_2) > 0$).}
        \label{fig:bilan0}
@@ -145,26 +145,37 @@ On pose ensuite la matrice par blocs:
 On pose maintenant $Y = (x_1, x_2, \dot{x}_1, \dot{x}_2) \in \mathbb{R}^4$, et on reprend la condition initiale pour obtenir le système de Cauchy:
 \begin{align} \label{eq:dep1d}
     \begin{dcases}
-        \dot{Y}(t)= E Y(t) \\
+        \dot{Y}(t)= E Y(t) \,, \\
         Y_0 = Y(t_0) = (0,0,v_0,-v'_0)^T \,.
     \end{dcases}
 \end{align}
 
-La solution numérique est présentée dans à la \cref{fig:simudept1d} (voir fichier \verb|Deplacement1D.ipynb| pour plus de détails). La plus grosse remarque à faire du point de vue numérique est que lorsque $v_0 \neq v'_0$, les vitesses convergent vers $0$, mais les déplacements diverge.
-\begin{figure}[!h]
+La solution numérique est présentée dans à la \cref{fig:simudept1d} (voir fichier \verb|code/simu1D/Deplacement1D-1.ipynb| pour plus de détails). La plus grosse remarque à faire du point de vue numérique est que lorsque $v_0 \neq v'_0$, les vitesses convergent vers $0$, mais les déplacements diverge.
+\begin{figure*}[!h]
     \centering
-    \includegraphics[width=0.6\textwidth]{SimuDeplacement1D.png}
-    \caption{Simulation du déplacement 1D d'un floe avec $m=1$, $k=18$, $\mu=1.3$, $v_0=v'_0 = 0.8$, $t_{f}=5$. On observe le ralentissement du système et une convergence vers l'état d'équilibre $Y_{eq}= (0,0,0,0)$. Ce résultats est illutré et interprété dans le notebook .}
+
+    \begin{subfigure}[t]{0.45\textwidth}
+        \centering
+        \includegraphics[width=\textwidth]{SimuDeplacement1D1.png}
+        \caption{$v_0=v'_0 = 0.8$}
+    \end{subfigure}
+    \begin{subfigure}[t]{0.45\textwidth}
+        \centering
+        \includegraphics[width=\textwidth]{SimuDeplacement1D2.png}
+        \caption{$v_0= 0.6$ et $v'_0 = 0.8$}
+    \end{subfigure}
+
+    \caption{Simulation du déplacement 1D d'un floe avec $m=1$, $k=18$, $\mu=1.3$, $t_{f}=5$. En règle générale, on observe le ralentissement du système et une convergence des déplacements vers l'état d'équilibre $Y_{eq}= (0,0,0,0)$ lorsque $v_0 = v'_0$.}
     \label{fig:simudept1d}
-\end{figure}
+\end{figure*}
 
 Avec $t_0= 0$, la solution analytique de ce système d'EDO du premier ordre à coefficients constants est unique et est donnée par.
 \begin{align}
     Y(t) = \exp(tE)Y_0 \,.
 \end{align}
 Nous obtenons le théorème suivant:
-\begin{theorem}[Divergence du modèle 1D isolé]
-    Si les vitesses des deux noeuds du floe 1D ne sont pas des vecteurs opposés, alors les déplacements $x_1$ et $x_2$ de ces noeuds divergent.
+\begin{theorem}[Convergence du modèle 1D isolé] \label{th:div1D}
+    Les déplacements $x_1$ et $x_2$ des noeuds du floe 1D convergent si et seulement si leurs vitesses initiales sont des vecteurs opposés.
 \end{theorem}
 
 \begin{proof}
@@ -558,17 +569,37 @@ Afin d'éviter toute confusion, nous notons $v_0 = \dot{x}_2(\tmoins)$ et $v'_0 
     \label{fig:contact1dapres}
 \end{figure}
 
-\noindent On obtient l'\cref{eq:crammer2}
+\noindent On obtient l'\cref{eq:crammer2}:
 \begin{align} \label{eq:crammer2}
     - V_0 + V'_0 = \varepsilon (v_0 - v'_0) \,.
 \end{align}
 Le système de Cramer qui découle des \cref{eq:crammer1,eq:crammer2} permet d'obtenir les expressions:
 \begin{align}
-    V_0 = \frac{I + (m+\varepsilon m')v_0 + (1-\varepsilon)m'v'_0}{m+m'} \,, \quad V'_0 = \frac{I + (1-\varepsilon)mv_0 + (m'+\varepsilon m)v'_0}{m+m'}.
+    V_0 = \frac{I + (m+\varepsilon m')v_0 + (1-\varepsilon)m'v'_0}{m+m'} \,, \quad V'_0 = \frac{I + (1-\varepsilon)mv_0 + (m'+\varepsilon m)v'_0}{m+m'}\,.
 \end{align}
 
-Nous faisons donc ici la grosse hypothèse que \underline{le mouvement de $x_2$ et $x_3$ devient uniforme après la collision}. Une fois leur vitesses initiales obtenues, on calcule donc les déplacements des différents noeuds des réseaux, et les fractures éventuelles qui s'en suivent.
+Nous faisons donc ici la grosse hypothèse que \underline{le mouvement de $x_2$ et $x_3$ devient uniforme après la collision}. Une fois leur vitesses "initiales"\footnote{Ces vitesses sont les vitesses de départ pour le deuxième phase de la percussion.} obtenues, on calcule donc les déplacements des différents noeuds des réseaux, et les fractures éventuelles qui s'en suivent. 
 
+\paragraph{Analyse du modèle.} Observons le premier floe de plus près:
+\begin{itemize}
+    \item Son noeud de gauche $x_1$ a pour vitesse $v_0$ avant et le choc et conserve cette vitesse après le choc;
+    \item Son noeud de droite $x_2$ a pour vitesse $v_0$ avant le choc, mais passe de facon discontinue à $V_0$ apres le choc.
+\end{itemize}
+N'ayant aucune garantie que les vecteurs vitesses $v_0$ et $V_0$ seront opposés immédiatemetn après le choc, nous ne pouvons garantir la convergence de ce modèle (voir \cref{th:div1D}). Ce modèle dégénère (probablement) après la première collision. Effectuons à présent une modélisation 2D et observons si le même problème se repète.
+
+%%-------Pas vrai
+% Pour $\varepsilon \neq 0$, l'\cref{eq:crammer2} permet de constater que $V_0 = V'_0$ si et seulement si $v_0 = v'_0$. En se basant sur le \cref{th:div1D}, nous pouvons donc énoncer le corrolaire suivant:
+
+% \begin{corollary} \label{cr:div1D}
+%     Le modèle de collision inélastique 1D avec séparation des masses converge si les vitesses des noeuds avant le choc sont des vecteurs opposés.
+
+%     Le modèle de collision inélastique 1D avec séparation des masses converge si et seulement si leurs vitesses initiales sont des vecteurs opposés.
+% \end{corollary}
+% \begin{proof}
+%     La preuve découle immédiatement du \cref{th:div1D}.
+% \end{proof}
+
+% \noindent Le \cref{cr:div1D} permet de constater les limites de notre modélisation 1D. En effet, les moceaux de glace dans la MIZ ne dérivent pas tous à la meme vitesse. Effectuons à présent une modélisation 2D et observons si le même problème se repète.
 
 
 
