@@ -67,7 +67,7 @@
     \begin{columns}[onlytextwidth]
 
         \begin{column}{0.5\textwidth}
-            \begin{lstlisting}[language=Python,caption=Code de simulation 1D]
+            \begin{lstlisting}[language=Python,caption=Code de simulation]
     Y0 = np.array([0,0, v0, -v_0])
     t = np.linspace(0, tmax, N+1)
     
@@ -106,3 +106,200 @@
 
 
 
+
+\begin{frame}{Collision parfaitement inélastique avec un floe encastré à l’instant initial}
+
+    \mycols{
+
+        \mycol{55}{
+            \myfigframe{Percussion1D-Systeme}{Collision 1D avec fixation d'un floe}
+
+            \begin{figure}[!h]
+                \begin{subfigure}[b]{0.45\textwidth}
+                    \centering
+                    \frame{\includegraphics[width=\textwidth]{Percussion1D-Masse1}}
+                \end{subfigure}
+                \begin{subfigure}[b]{0.45\textwidth}
+                    \centering
+                    \frame{\includegraphics[width=\textwidth]{Percussion1D-Masse2}}
+                \end{subfigure}
+                   \caption{Bilan des forces}
+            \end{figure}
+
+            Le système est régi par les équations :
+            \begin{align*}
+                \begin{dcases}
+                (m+m')\ddot x_1 = -kx_1 - \mu \dot x_1 + k'(x_2 - x_1) + \mu'(\dot x_2 - \dot x_1) \\
+                    m' \ddot x_2 =  -k'(x_2 - x_1) - \mu'(\dot x_2 - \dot x_1) 
+                \end{dcases}
+            \end{align*}
+
+        }
+
+        \mycol{45}{
+
+            \myfig{SimuPercussion1D.png}{Résultats de simulation}
+        }
+
+    }
+    
+\end{frame}
+
+
+\begin{frame}{Collision parfaitement inélastique sans présence du mur}
+
+    \mycols{
+
+        \mycol{55}{
+            \myfigframe{Percussion1D-Systeme-2}{Collision 1D sans mur}
+
+            \begin{figure}[!h]
+                \begin{subfigure}[b]{0.45\textwidth}
+                    \centering
+                    \frame{\includegraphics[width=\textwidth]{Percussion1D2-Masse1.png}}
+                \end{subfigure}
+                \begin{subfigure}[b]{0.45\textwidth}
+                    \centering
+                    \frame{\includegraphics[width=\textwidth]{Percussion1D2-Masse2}}
+                \end{subfigure}
+                   \caption{Bilan des forces}
+            \end{figure}
+
+            Le système est régi par les équations :
+            \begin{align}
+                \begin{dcases}
+                m\ddot x_1 = -k(x_1 - x_2) - \mu (\dot x_1 - \dot x_2) \,, \\
+                (m+m')\ddot x_2 = k(x_1 - x_2) + \mu (\dot x_1 - \dot x_2) - k'(x_2 - x_3) - \mu'(\dot x_2 - \dot x_3) \,, \\
+                    m' \ddot x_3 =  k'(x_2 - x_3) + \mu'(\dot x_2 - \dot x_3) \,. 
+                \end{dcases}
+            \end{align}
+
+        }
+
+        \mycol{45}{
+            \myfig{SimuPercussion1D2.png}{Résultats de simulation}
+        }
+
+    }
+    
+\end{frame}
+
+
+\begin{frame}{Collision inélastique avec séparation des masses}
+
+    \mycols{
+
+        \mycol{50}{
+            \myfigframe{Percussion1D-Systeme-3}{Collision 1D inélastique}
+
+            \vspace*{-0.5cm}
+            \begin{figure}[!h]
+                \begin{subfigure}[b]{0.40\textwidth}
+                    \centering
+                    \frame{\includegraphics[width=\textwidth]{Percussion1D3-Masse1.png}}
+                \end{subfigure}
+            %     \hfill
+                \begin{subfigure}[b]{0.40\textwidth}
+                    \centering
+                    \frame{\includegraphics[width=\textwidth]{Percussion1D3-Masse2}}
+                \end{subfigure}
+            %     \hfill
+                \begin{subfigure}[b]{0.40\textwidth}
+                    \centering
+                    \frame{\includegraphics[width=\textwidth]{Percussion1D3-Masse3}}
+                \end{subfigure}
+            %     \hfill
+                \begin{subfigure}[b]{0.40\textwidth}
+                    \centering
+                    \frame{\includegraphics[width=\textwidth]{Percussion1D3-Masse4}}
+                \end{subfigure}
+                   \caption{Bilan des forces}
+            \end{figure}
+
+            \vspace*{-0.5cm}
+            \myfigframe{Percussion1D3-Apres.png}{Situation après contact}
+
+        }
+
+        \mycol{50}{
+            Le système est régi par les équations :
+            \begin{align*}
+                \begin{dcases}
+                m\ddot x_1 = -k(x_1 - x_2) - \mu (\dot x_1 - \dot x_2) \,, \\
+                m\ddot x_2 = k(x_1 - x_2) + \mu (\dot x_1 - \dot x_2) - F_c \,, \\
+                m'\ddot x_3 = - k'(x_3 - x_4) - \mu'(\dot x_3 - \dot x_4) + F_c \,, \\
+                    m' \ddot x_4 =  k'(x_3 - x_4) + \mu'(\dot x_3 - \dot x_4) \,. 
+                \end{dcases}
+            \end{align*}
+
+            Avec $\varepsilon$ est le coefficient de restitution et :
+            \scriptsize
+            $$
+            I = \int_{\tmoins}^{\tplus} k(x_1 - x_2) + \mu (\dot x_1 - \dot x_2) - k'(x_3 - x_4) - \mu'(\dot x_3 - \dot x_4) \diff t \,,
+            $$
+            \normalsize
+            les vitesses après contact sont :
+            \begin{align*}
+                V_0 = \frac{I + (m+\varepsilon m')v_0 + (1-\varepsilon)m'v'_0}{m+m'}\,, \\
+                V'_0 = \frac{I + (1-\varepsilon)mv_0 + (m'+\varepsilon m)v'_0}{m+m'}\,.
+            \end{align*}
+
+        }
+
+    }
+    
+\end{frame}
+
+
+
+
+
+
+\subsection{Résultats en 2D}
+
+
+\begin{frame}{Déplacement d'un floe isolé (1)}
+
+    \mycols{
+
+        \mycol{40}{
+
+            \begin{figure}
+                \centering
+                \includegraphics[width=0.6\textwidth]{Deplacement2D-1.png}
+                \caption{Floe de glace 2D}
+            \end{figure}
+
+        }
+
+        \mycol{60}{
+            \myfig{PlotDeplacement2D-1-NonConv.png}{Simulation avec $T=10$}
+
+            % \myfig{PositionInitFinales.png}{Illustration à $T=4$}
+        }
+
+    }
+
+    Les équations de Newton-Euler :
+    \begin{align*}
+        \forall i \in \mathbb{Z}/3\mathbb{Z}, \quad m \ddot{\bvec{q}}_i = \sum_{j=i+1}^{i+2}C_{ij} \left[  k \left( \Vert \bvec{q}_j - \bvec{q}_i \Vert - L_{ij} \right) \bvec{u}_{ij} - \mu \left\langle \bvec{\dot{q}}_j - \bvec{\dot{q}}_i, \, \bvec{u}_{ij}  \right\rangle  \bvec{u}_{ij}  \right] \,. 
+    \end{align*}
+
+    Schéma d’Euler explicite :
+    \begin{align*} \label{eq:systeme2D}
+        \bvec{q}_{i}^{n+1} = 2\bvec{q}_{i}^{n}-\bvec{q}_{i}^{n-1} + \frac{\Delta t^2}{m} \sum_{j=i+1}^{i+2}C_{ij}\left[ k \left( \Vert \bvec{q}_j^n - \bvec{q}_i^n \Vert - L_{ij} \right) \bvec{u}_{ij} - \frac{\mu}{\Delta t} \left\langle \bvec{q}_{j}^{n}-\bvec{q}_{j}^{n-1} - \bvec{q}_{i}^{n}+\bvec{q}_{i}^{n-1}, \, \bvec{u}_{ij} \right\rangle  \bvec{u}_{ij}  \right].
+    \end{align*}
+    
+\end{frame}
+
+
+\begin{frame}{Déplacement d'un floe isolé (2)}
+
+    \begin{figure}
+        \centering
+        \includegraphics[width=0.6\textwidth]{PositionInitFinales.png}
+        \caption{Illustration à $T=4$}
+    \end{figure}
+
+
+\end{frame}
