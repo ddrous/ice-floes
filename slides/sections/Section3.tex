@@ -138,7 +138,7 @@
 
         \mycol{45}{
 
-            \myfig{SimuPercussion1D.png}{Résultats de simulation}
+            \myfig{SimuPercussion1D.png}{Résultat de simulation}
         }
 
     }
@@ -177,7 +177,7 @@
         }
 
         \mycol{45}{
-            \myfig{SimuPercussion1D2.png}{Résultats de simulation}
+            \myfig{SimuPercussion1D2.png}{Résultat de simulation}
         }
 
     }
@@ -185,7 +185,7 @@
 \end{frame}
 
 
-\begin{frame}{Collision inélastique avec séparation des masses}
+\begin{frame}{Collision inélastique avec séparation des masses (1)}
 
     \mycols{
 
@@ -217,7 +217,7 @@
             \end{figure}
 
             \vspace*{-0.5cm}
-            \myfigframe{Percussion1D3-Apres.png}{Situation après contact}
+            \myfigframe{Percussion1D3-Apres.png}{Situation \alert{après} contact}
 
         }
 
@@ -226,8 +226,8 @@
             \begin{align*}
                 \begin{dcases}
                 m\ddot x_1 = -k(x_1 - x_2) - \mu (\dot x_1 - \dot x_2) \,, \\
-                m\ddot x_2 = k(x_1 - x_2) + \mu (\dot x_1 - \dot x_2) - F_c \,, \\
-                m'\ddot x_3 = - k'(x_3 - x_4) - \mu'(\dot x_3 - \dot x_4) + F_c \,, \\
+                m\ddot x_2 = k(x_1 - x_2) + \mu (\dot x_1 - \dot x_2) - \alert{F_c} \,, \\
+                m'\ddot x_3 = - k'(x_3 - x_4) - \mu'(\dot x_3 - \dot x_4) + \alert{F_c} \,, \\
                     m' \ddot x_4 =  k'(x_3 - x_4) + \mu'(\dot x_3 - \dot x_4) \,. 
                 \end{dcases}
             \end{align*}
@@ -251,7 +251,16 @@
 \end{frame}
 
 
+\begin{frame}{Collision inélastique avec séparation des masses (2)}
 
+    \centering
+    Animation de la première phase de la percussion (\alert{avant} contact)
+
+    \begin{adjustwidth}{-6em}{-6em}
+        \animategraphics[loop,controls,autoplay,width=\linewidth]{10}{_img00}{00}{52}
+    \end{adjustwidth}
+
+\end{frame}
 
 
 
