@@ -7,7 +7,7 @@ code/simu1D/frames/*
 slides/out/*
 slides/out/*
 !slides/out/main.pdf
-
+slides/main.synctex(busy)
 
 
 # Rapport de stage
@@ -165,4 +165,15 @@ reports/weeks/13/out/*
 !reports/weeks/13/main.tex
 !reports/weeks/13/out/main.pdf
 !reports/weeks/13/fphw.cls
-slides/main.synctex(busy)
+
+# Rapport semaine 15
+reports/weeks/15/*
+
+reports/weeks/15/out/*
+!reports/weeks/15/out/
+
+!reports/weeks/15/main.tex
+!reports/weeks/15/out/main.pdf
+!reports/weeks/15/fphw.cls
+
+
