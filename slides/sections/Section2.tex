@@ -49,7 +49,7 @@
 
 
     \mycol{50}{
-      \myfig{FloeRabatel}{Repères abosolu et local pour un floe}
+      \myfig{FloeRabatel}{Repères abosolu et local pour un floe \parencite{rabatel2015modelisation}}
     }
   }
   
@@ -60,14 +60,20 @@
 \begin{frame}{Interaction entre les floes}
   \mycols{
 
-    \mycol{50}{
-      \myfig{Collision1.png}{Interaction entre deux floes $\Omega_k$ et $\Omega_l$ au point $P_j$}
+    \mycol{45}{
+      \myfig{Collision1.png}{Interaction entre deux floes $\Omega_k$ et $\Omega_l$ au point $P_j$ \parencite{rabatel2015modelisation}}
     }
 
-    \mycol{50}{Deux conditions à respecter:
+    \mycol{55}{Deux conditions à respecter:
     \begin{itemize}
-      \item condition unilatérale de Signorini;
-      \item loi de friction de Coulomb.
+      \item \alert{Condition unilatérale de Signorini} : afin de décrire la condition de non-interpénétration.
+      \item \alert{Loi de friction de Coulomb} : afin de modéliser le comportement de friction pendant une collision.
+    \end{itemize}}
+
+    \note{Historiquement, on distingue ici deux approches:
+    \begin{itemize}
+      \item l'approche par régularisation: Hertz (force de contact proportionnelle à la distance d'inter-penetration); largement répandues en robotique, en VR, habits, etc...MAIS ON NE VEUT PAS D'INTERPÉNÉTRATION !
+      \item l'approche non-régulière: développée par inclusion différentielle: efficace, mais difficile à manipuler. D'ou l'essort des méthodes LCP. 
     \end{itemize}}
 
   }
@@ -80,7 +86,7 @@
 
   \mycols{
 
-    \mycol{55}{
+    \mycol{37}{
       \begin{itemize}
         \item Les floes sont rigides;
         \item Le modèle ne gère pas la rhéologie de la glace;
@@ -88,8 +94,25 @@
       \end{itemize}
     }
 
-    \mycol{45}{
-      \myfig{Derive.png}{Dérive dans un canal étroit}
+    \mycol{27}{
+      \myfig{Derive.png}{Configuration initiale \parencite{rabatel2015modelisation}}
+    }
+
+    \mycol{32}{
+      \begin{figure}[!h]
+        \begin{subfigure}[b]{0.60\textwidth}
+            \centering
+            \includegraphics[width=\textwidth]{DeriveBlock2.png}
+            \caption{à 2h04}
+        \end{subfigure}
+        \begin{subfigure}[b]{0.60\textwidth}
+            \centering
+            \includegraphics[width=\textwidth]{DeriveBlock3.png}
+            \caption{à 3h40}
+          \end{subfigure}
+           \caption{Dérive sous l'effet de la force de Coriolis \parencite{rabatel2015modelisation}}
+    \end{figure}
+
     }
 
   }
@@ -109,22 +132,24 @@
   u &\mapsto \int_{\Omega \backslash \sigma} Ae(u) : e(u) \diff x + k\mathcal{H}^1(\sigma)\,,
   \end{align*}
   
-  Une solution du problème de fracture fragile est un couple $(u, \sigma)$ qui vérifie:
+  Une solution du problème de fracture fragile est un couple $(u^*, \sigma^*)$ qui vérifie:
   \vspace*{0.25cm}
   $$
-  \etot(u,\sigma) = \min_{\sigma \in \Sigma}{\min_{u\in A_{\sigma}}{\etot(u,\sigma)}} \,.
+  \etot(u^*,\sigma^*) = \min_{\sigma \in \Sigma}{\min_{u\in A_{\sigma}}{\etot(u,\sigma)}} \,.
   $$
 
-  \myfig{PhaseField2.png}{Bifurcation d’une fracture}
+  \myfig{PhaseField2.png}{Bifurcation d’une fracture \parencite{nagaraja2019phase}}
 
 \end{frame}
 
 
 \begin{frame}{Réseaux de ressorts régulier}
 
-  \myfigsize{Ressort1.png}{Réseau de ressorts régulier}{20}
+  \myfigsize{Ressort1.png}{Réseau de ressorts régulier \parencite{balasoiu2020modelisation}}{20}
 
   \vspace*{-0.25cm}
-  \myfigsize{VoronoiDelaunay.png}{Tirage de points et diagrammes de Voronoi (à gauche) et Delaunay (à droite)}{60}
+  \myfigsize{VoronoiDelaunay.png}{Tirage de points et diagrammes de Voronoi (à gauche) et Delaunay (à droite) \parencite{balasoiu2020modelisation}}{60}
+
+  \note{Afin d'établir la condition de Dirichlet nécéssaire pour engendrer la fracture, on passe du modèle macroscopique à un modèle microscopique.}
 
 \end{frame}

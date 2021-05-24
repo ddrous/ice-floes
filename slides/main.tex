@@ -6,6 +6,7 @@
 %%---------- Theme colors and design section ---------------------------
 
 \documentclass[notes,handout,compress]{beamer}
+% \documentclass[compress]{beamer}
 
 \useoutertheme{infolines}
 \usetheme{Antibes}
@@ -62,7 +63,9 @@
 
 \usepackage{xcolor}
 \usepackage{graphicx}
-\graphicspath{ {../reports/internship/Figures/} }
+\graphicspath{ {../reports/internship/Figures/} {../code/simu1D/frames/}}
+\usepackage[xetex]{animate}
+\usepackage{changepage}  %% To increase the size of the margin
 
 \usepackage{amsmath,bm,mathtools}
 \usepackage{cases} 
@@ -184,7 +187,7 @@
 
 \title[\textsc{Fracturation de floes de glace}]{\LARGE Fracturation de floes de glace par percussion dans un modèle granulaire}
 
-\author[Roussel Desmond Nzoyem]{\large \bfseries Roussel Desmond Nzoyem}
+\author[Roussel Desmond Nzoyem]{\large \textbf{Roussel Desmond Nzoyem} \\ \vspace*{0.15cm} \small Stéphane Labbé, Christophe Prud'homme}
 
 \institute[]{\small Sorbonne Université \\ Laboratoire Jacques-Louis Lions}
 

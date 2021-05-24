@@ -11,9 +11,15 @@
 \begin{frame}[fragile,t]
   \frametitle{Motivation}
   
-  \note{Floe: Un floe est un morceau de glace.}
+  \note{
+    \begin{description}
+      \item Floe: Un floe est un morceau de glace;
+      \item Albédo: la cryosphère reflette entre 90 et 95 \% des rayonnement recus par la planète.
+    \end{description} 
+  }
 
-  \mycols{
+  \vspace*{-0.3cm}
+  \begin{columns}[onlytextwidth,t]
 
     \mycol{50}{
       \begin{exampleblock}{Enjeux écologiques}
@@ -23,22 +29,25 @@
         \end{itemize}
       \end{exampleblock}
 
-      \myfig{Ecological.jpg}{Prévision dans l'artique}
+      \myfig{Ecological.jpg}{Image satellite de l'artique (MIZ Program, 2013)}
       }
 
     \pause
 
     \mycol{50}{
-      \begin{alertblock}{Enjeux industrielles}
+      \begin{alertblock}{Enjeux industriels}
         \begin{itemize}
           \item Routes maritimes exploitables
-          \item Comportemetn des stations offshores 
+          \item Étude des stations offshores 
         \end{itemize}
       \end{alertblock}
-      \myfig{IceRoutes.png}{Un navire dans la MIZ}
+
+      \myfig{IceRoutes.png}{Un navire dans la MIZ (O Globo, 2012)}
 
       }
-  }
+
+    \end{columns}
+
 \end{frame}
 
 
@@ -60,9 +69,9 @@
     \begin{enumerate}
       \item Lecture des travaux précédents:
       \begin{itemize}
-        \item M. Rabatel, S. Labbé, et J. Weiss: Dynamics of an assembly of rigid ice floes (\citeyear{rabatel2015dynamics}); 
-        \item Matthias Rabatel: Modélisation dynamique d’un assemblage de floes rigides (\citeyear{rabatel2015modelisation});
-        \item Dimitri Balasoiu: Modélisation et simulation du comportement mécanique de floes de glace (\citeyear{balasoiu2020modelisation}).
+        \item \alert{M. Rabatel, S. Labbé, et J. Weiss}: Dynamics of an assembly of rigid ice floes (\citeyear{rabatel2015dynamics}); 
+        \item \alert{Matthias Rabatel}: Modélisation dynamique d’un assemblage de floes rigides (\citeyear{rabatel2015modelisation});
+        \item \alert{Dimitri Balasoiu}: Modélisation et simulation du comportement mécanique de floes de glace (\citeyear{balasoiu2020modelisation}).
       \end{itemize}
       
       \item Modélisation et simulation du déplacement des noeuds d'un floe isolé:

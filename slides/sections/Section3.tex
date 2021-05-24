@@ -18,12 +18,12 @@
             \myfigframe{Deplacement1D-Systeme.png}{Floe de glace 1D}
 
             \begin{figure}[!h]
-                \begin{subfigure}[b]{0.45\textwidth}
+                \begin{subfigure}[b]{0.47\textwidth}
                     \centering
                     \frame{\includegraphics[width=\textwidth]{Deplacement1D-Masse1.png}}
                     % \caption{Sur la masse $m$ de gauche.}
                 \end{subfigure}
-                \begin{subfigure}[b]{0.45\textwidth}
+                \begin{subfigure}[b]{0.43\textwidth}
                     \centering
                     \frame{\includegraphics[width=\textwidth]{Deplacement1D-Masse2.png}}
                     % \caption{Sur la masse $m$ de droite.}
@@ -45,7 +45,7 @@
             \begin{align*}
                 \begin{dcases}
                     \dot{Y}(t)= E Y(t) \,,\\
-                    Y_0 = Y(t_0) = (0,0,v_0,-v'_0)^T \,,
+                    Y_0 = Y(0) = (0,0,v_0,-v'_0)^T \,,
                 \end{dcases}
             \end{align*}
 
@@ -58,6 +58,8 @@
             \end{align*}
         }
     }
+
+    \note{Ici, ne pas utiliser un repère absolu, on peut utiliser un qui soit relatif au floe. Dans ce cas, on a convergence.}
     
 \end{frame}
 
@@ -67,13 +69,11 @@
     \begin{columns}[onlytextwidth]
 
         \begin{column}{0.5\textwidth}
-            \begin{lstlisting}[language=Python,caption=Code de simulation]
+            \begin{lstlisting}[language=Python,caption=Code de simulation avec Scipy]
     Y0 = np.array([0,0, v0, -v_0])
     t = np.linspace(0, tmax, N+1)
-    
     def model(Y, t):
         return E @ Y
-
     Y = odeint(model, Y0, t)
             \end{lstlisting}
         \end{column}
@@ -115,11 +115,11 @@
             \myfigframe{Percussion1D-Systeme}{Collision 1D avec fixation d'un floe}
 
             \begin{figure}[!h]
-                \begin{subfigure}[b]{0.45\textwidth}
+                \begin{subfigure}[b]{0.54\textwidth}
                     \centering
                     \frame{\includegraphics[width=\textwidth]{Percussion1D-Masse1}}
                 \end{subfigure}
-                \begin{subfigure}[b]{0.45\textwidth}
+                \begin{subfigure}[b]{0.435\textwidth}
                     \centering
                     \frame{\includegraphics[width=\textwidth]{Percussion1D-Masse2}}
                 \end{subfigure}
@@ -138,7 +138,7 @@
 
         \mycol{45}{
 
-            \myfig{SimuPercussion1D.png}{Résultats de simulation}
+            \myfig{SimuPercussion1D.png}{Résultat de simulation}
         }
 
     }
@@ -154,30 +154,55 @@
             \myfigframe{Percussion1D-Systeme-2}{Collision 1D sans mur}
 
             \begin{figure}[!h]
-                \begin{subfigure}[b]{0.45\textwidth}
+                \begin{subfigure}[b]{0.30\textwidth}
                     \centering
                     \frame{\includegraphics[width=\textwidth]{Percussion1D2-Masse1.png}}
                 \end{subfigure}
-                \begin{subfigure}[b]{0.45\textwidth}
+                \begin{subfigure}[b]{0.38\textwidth}
                     \centering
                     \frame{\includegraphics[width=\textwidth]{Percussion1D2-Masse2}}
+                \end{subfigure}
+                \begin{subfigure}[b]{0.26\textwidth}
+                    \centering
+                    \frame{\includegraphics[width=\textwidth]{Percussion1D2-Masse3}}
                 \end{subfigure}
                    \caption{Bilan des forces}
             \end{figure}
 
             Le système est régi par les équations :
-            \begin{align}
+            \begin{align*}
                 \begin{dcases}
                 m\ddot x_1 = -k(x_1 - x_2) - \mu (\dot x_1 - \dot x_2) \,, \\
                 (m+m')\ddot x_2 = k(x_1 - x_2) + \mu (\dot x_1 - \dot x_2) - k'(x_2 - x_3) - \mu'(\dot x_2 - \dot x_3) \,, \\
                     m' \ddot x_3 =  k'(x_2 - x_3) + \mu'(\dot x_2 - \dot x_3) \,. 
                 \end{dcases}
-            \end{align}
+            \end{align*}
 
         }
 
         \mycol{45}{
-            \myfig{SimuPercussion1D2.png}{Résultats de simulation}
+            % \myfig{SimuPercussion1D2.png}{Résultat de simulation}
+
+            \vspace*{-0.25cm}
+
+            \begin{figure}[!h]
+                \begin{subfigure}[t]{\textwidth}
+                    \centering
+                    \includegraphics[width=0.9\textwidth]{SimuPercussion1D2.png}
+                    \caption{Cas convergent}
+                \end{subfigure}
+                \begin{subfigure}[t]{\textwidth}
+                    \centering
+                    \includegraphics[width=0.9\textwidth]{SimuPercussion1D2NonConv.png}
+                    \caption{Cas non convergent}
+                \end{subfigure}
+                   \caption{Résultat de simulation}
+            \end{figure}
+
+            \begin{alertblock}{Note}
+                Critère de convergence pas clair!
+            \end{alertblock}
+
         }
 
     }
@@ -185,7 +210,7 @@
 \end{frame}
 
 
-\begin{frame}{Collision inélastique avec séparation des masses}
+\begin{frame}{Collision inélastique avec séparation des masses (1)}
 
     \mycols{
 
@@ -194,22 +219,22 @@
 
             \vspace*{-0.5cm}
             \begin{figure}[!h]
-                \begin{subfigure}[b]{0.40\textwidth}
+                \begin{subfigure}[b]{0.35\textwidth}
                     \centering
                     \frame{\includegraphics[width=\textwidth]{Percussion1D3-Masse1.png}}
                 \end{subfigure}
             %     \hfill
-                \begin{subfigure}[b]{0.40\textwidth}
+                \begin{subfigure}[b]{0.48\textwidth}
                     \centering
                     \frame{\includegraphics[width=\textwidth]{Percussion1D3-Masse2}}
                 \end{subfigure}
             %     \hfill
-                \begin{subfigure}[b]{0.40\textwidth}
+                \begin{subfigure}[b]{0.44\textwidth}
                     \centering
                     \frame{\includegraphics[width=\textwidth]{Percussion1D3-Masse3}}
                 \end{subfigure}
             %     \hfill
-                \begin{subfigure}[b]{0.40\textwidth}
+                \begin{subfigure}[b]{0.35\textwidth}
                     \centering
                     \frame{\includegraphics[width=\textwidth]{Percussion1D3-Masse4}}
                 \end{subfigure}
@@ -217,7 +242,7 @@
             \end{figure}
 
             \vspace*{-0.5cm}
-            \myfigframe{Percussion1D3-Apres.png}{Situation après contact}
+            \myfigframe{Percussion1D3-Apres.png}{Situation \alert{après} contact}
 
         }
 
@@ -226,8 +251,8 @@
             \begin{align*}
                 \begin{dcases}
                 m\ddot x_1 = -k(x_1 - x_2) - \mu (\dot x_1 - \dot x_2) \,, \\
-                m\ddot x_2 = k(x_1 - x_2) + \mu (\dot x_1 - \dot x_2) - F_c \,, \\
-                m'\ddot x_3 = - k'(x_3 - x_4) - \mu'(\dot x_3 - \dot x_4) + F_c \,, \\
+                m\ddot x_2 = k(x_1 - x_2) + \mu (\dot x_1 - \dot x_2) - \alert{F_c} \,, \\
+                m'\ddot x_3 = - k'(x_3 - x_4) - \mu'(\dot x_3 - \dot x_4) + \alert{F_c} \,, \\
                     m' \ddot x_4 =  k'(x_3 - x_4) + \mu'(\dot x_3 - \dot x_4) \,. 
                 \end{dcases}
             \end{align*}
@@ -251,7 +276,16 @@
 \end{frame}
 
 
+\begin{frame}{Collision inélastique avec séparation des masses (2)}
 
+    \centering
+    Animation de la première phase de la percussion (\alert{avant} contact)
+
+    \begin{adjustwidth}{-6em}{-6em}
+        \animategraphics[loop,controls,autoplay,width=\linewidth]{10}{_img00}{00}{52}
+    \end{adjustwidth}
+
+\end{frame}
 
 
 
@@ -282,7 +316,7 @@
 
     Les équations de Newton-Euler :
     \begin{align*}
-        \forall i \in \mathbb{Z}/3\mathbb{Z}, \quad m \ddot{\bvec{q}}_i = \sum_{j=i+1}^{i+2}C_{ij} \left[  k \left( \Vert \bvec{q}_j - \bvec{q}_i \Vert - L_{ij} \right) \bvec{u}_{ij} - \mu \left\langle \bvec{\dot{q}}_j - \bvec{\dot{q}}_i, \, \bvec{u}_{ij}  \right\rangle  \bvec{u}_{ij}  \right] \,. 
+        \forall i \in \mathbb{Z}/3\mathbb{Z}+\{1\}, \quad m \ddot{\bvec{q}}_i = \sum_{j=i+1}^{i+2}C_{ij} \left[  k \left( \Vert \bvec{q}_j - \bvec{q}_i \Vert - L_{ij} \right) \bvec{u}_{ij} - \mu \left\langle \dot{\bvec{q}}_j - \dot{\bvec{q}}_i, \, \bvec{u}_{ij}  \right\rangle  \bvec{u}_{ij}  \right] . 
     \end{align*}
 
     Schéma d’Euler explicite :
@@ -293,7 +327,30 @@
 \end{frame}
 
 
-\begin{frame}{Déplacement d'un floe isolé (2)}
+\begin{frame}[fragile]{Déplacement d'un floe isolé (2)}
+
+    \tiny
+    \begin{lstlisting}[language=Python,caption=Code de simulation et schéma avec Scipy]
+                                    q0 = np.stack([q1_0, dotq1_0, q2_0, dotq2_0, q3_0, dotq3_0])
+                                    q0_ = np.reshape(q0, (nb_nodes*4))
+
+                                    def model(t, Q_):
+                                        Q = np.reshape(Q_, (nb_nodes*2, 2))
+                                        Q_ret = np.zeros_like(Q)
+                                        Q_ret[2*0] = 0; Q_ret[2*1] = 0
+                                        
+                                        for i in range(1, nb_nodes):
+                                            Q_ret[2*i] = Q[2*i+1] 
+                                            
+                                            for neighbor in range(i+1, i+3):
+                                                j = neighbor % nb_nodes
+                                                u[i,j] = (Q[2*j] - Q[2*i]) / nplin.norm(Q[2*j] - Q[2*i])
+                                                Q_ret[2*i+1] += (1 / m)*C[i,j]*( k*(nplin.norm(Q[2*j]-Q[2*i]) - L[i,j])*u[i,j]
+                                                                -  mu*(np.dot(Q[2*j+1] - Q[2*i+1], u[i,j]))*u[i,j] )
+                                        return np.reshape(Q_ret, (nb_nodes*4))
+
+                                    sol = solve_ivp(model, [0,T], q0_, t_eval=t)
+    \end{lstlisting}
 
     \begin{figure}
         \centering
