@@ -176,4 +176,14 @@ reports/weeks/15/out/*
 !reports/weeks/15/out/main.pdf
 !reports/weeks/15/fphw.cls
 
+# Rapport semaine 17
+reports/weeks/17/*
+
+reports/weeks/17/out/*
+!reports/weeks/17/out/
+
+!reports/weeks/17/main.tex
+!reports/weeks/17/out/main.pdf
+!reports/weeks/17/fphw.cls
+
 
