@@ -147,7 +147,7 @@
 %	ASSIGNMENT CONTENT - INTRO
 %----------------------------------------------------------------------------------------
 
-
+Le travail de cette semaine était plutôt diversifié. J'ai considérablement avancé sur les plans de la modélisation/simulation 1D et 2D.
 
 
 %----------------------------------------------------------------------------------------
@@ -157,8 +157,14 @@
 \section*{Tâches effectuées}
 
 \begin{enumerate}
-  \item Finition de l'animation 1D (plusieurs noeuds isolés)
-  \item Rédaction du problème de percussion 2D dans le rapport
+  \item Finition de l'animation 1D en corrigeant les bugs (l'animation finale est en pièce jointe);
+  \item Rédaction du problème de percussion 2D dans le rapport (en pièce jointe);
+  \item Définition et test du maillage \href{https://framagit.org/RaK/SimuRessorts/-/blob/master/springslattice/multimesh.py}{MultiMesh} en vue de la percussion ; et intégration au code de Dimitri. Un exemple est donné ci-bas :
+  \begin{figure}[H]
+    \centering
+    \includegraphics[width=0.48\textwidth]{Percussion2D.png}
+    \caption{Plot d'une instance de la classe MultiMesh}
+  \end{figure}
 \end{enumerate}
 
 
@@ -168,8 +174,11 @@
 
 \section*{Difficultés rencontrées}
 
+\begin{enumerate}
+  \item La première difficulté fut l'implémentation très subtile de la 2ème phase de la percussion 1D; il a fallu corriger plusieurs bugs;
+  \item La deuxième persiste dans la compréhension du code de Dimitri. J'essaie de rajouter des commentaires autant que possible. La classe 'Mesh' fut relativement aisée mais, la difficulté risque de se renforcer pour la classe 'Solver'.
+\end{enumerate}
 
-\emph{Aucune difficulté majeure à repporter.}
 
 
 
@@ -180,6 +189,11 @@
 
 \emph{Par ordre de priorité :}
 
+\begin{enumerate}
+  \item Implémentation de la classe 'MultiSolver' pour gérer la percussion 2D dans le code de Dimitri;
+  \item Implémentation d'un schéma symplectique pour vérifier les calculs faits par $\verb|scipy.integrate.solve_ivp|$;
+  \item Est-il possible de faire une expérience en laboratoire de Physique pour valider (ou invalider) le modèle 1D?
+\end{enumerate}
 
 
 
