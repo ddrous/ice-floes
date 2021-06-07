@@ -2,7 +2,7 @@
 This script runs and animates the of two ice floes.
 """
 
-import Modules.Solveur1D
+from Modules.Solveur1D import *
 
 if __name__=="__main__":
     ## Problem constants
@@ -53,6 +53,18 @@ if __name__=="__main__":
 
     ## Création des classes
 
+    node1 = Node([0,0], [0,0], R, 0)
+    node2 = Node([4, 0], [0,0], R, 1)
+    floe1 = IceFloe([node1, node2], id_number=0)
+    figax = floe1.plot()
+
+    node3 = Node([10, 0], [0,0], R, 2)
+    node4 = Node([14, 0], [0,0], R, 3)
+    floe2 = IceFloe([node3, node4], id_number=1)
+    floe2.plot(figax)
+    figax[1].set_aspect('equal', adjustable='box')
+
+    plt.show()
 
     ## Start Flask web-interface
 
