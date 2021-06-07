@@ -228,13 +228,13 @@ Rappelons nous que la solution du problème de Cauchy \cref{eq:dep1d} est donné
 \begin{align} \label{eq:solreel}
     x_1(t) = \frac{t}{2}\left( v_0 - v'_0 \right) - \frac{e^{t\lambda_1} - e^{t\lambda_2}}{2(\lambda_2 - \lambda_1)}\left( v_0 + v'_0 \right).
 \end{align}
-Le cas où $\Delta < 0$ (à étudier dans $\mathbb{C}$) peut se ramener au cas réel (dans $\mathbb{R}$) en posant $\lambda_1 = \alpha + i \beta$ et $\lambda_2 = \alpha - i \beta = \bar{\lambda}_1$ (avec $\alpha = -\frac{\mu}{m}$ et $\beta = -\frac{\sqrt{2km - \mu^2}}{m}$). En remarquant que $\sin(\beta t) = \frac{e^{i\beta t} - e^{-i\beta t}}{2i}$, on obtient\footnote{Notons que le choix de $\lambda_1$ ainsi que celui de $a$ (dans $A$) peut conduire à une permutation des expressions de $x_1$ et $x_2$.}:
+Le cas où $\Delta < 0$ (à étudier dans $\mathbb{C}$) peut se ramener au cas réel (dans $\mathbb{R}$) en posant $\lambda_1 = \alpha + i \beta$ et $\lambda_2 = \alpha - i \beta = \bar{\lambda}_1$ (avec $\alpha = -\frac{\mu}{m}$ et $\beta = -\frac{\sqrt{2km - \mu^2}}{m}$). En remarquant que $\sin(\beta t) = \frac{e^{i\beta t} - e^{-i\beta t}}{2i}$, on obtient :
 \begin{align} \label{eq:solcomplexe}
-    x_1(t) = \frac{t}{2}\left( v_0 - v'_0 \right) - \frac{e^{\alpha t} \sin(\beta t)}{2\beta} \left( v_0 + v'_0 \right).
+    x_1(t) = \frac{t}{2}\left( v_0 - v'_0 \right) + \frac{e^{\alpha t} \sin(\beta t)}{2\beta} \left( v_0 + v'_0 \right).
 \end{align}
 Les \cref{eq:solreel,eq:solcomplexe} permettent d'observer que le déplacement $x_1$ ne converge pas lorsque $t \rightarrow +\infty$, à moins que $v_0 = v'_0$, ce qui est observé à la \cref{fig:simudept1d}. Pour le déplacement du deuxième noeud, on a:
 \begin{align} \label{eq:solcomplexe}
-    x_2(t) = \frac{t}{2}\left( v_0 - v'_0 \right) + \frac{e^{\alpha t} \sin(\beta t)}{2\beta} \left( v_0 + v'_0 \right);
+    x_2(t) = \frac{t}{2}\left( v_0 - v'_0 \right) - \frac{e^{\alpha t} \sin(\beta t)}{2\beta} \left( v_0 + v'_0 \right);
 \end{align}
 On tire les mêmes conclusions en effectuant un raisonnement similaire.
 
