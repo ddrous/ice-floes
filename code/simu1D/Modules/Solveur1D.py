@@ -97,7 +97,7 @@ class IceFloe:
     """
     A class representing an ice floe
     """
-    def __init__(self, nodes=None, springs=None, id_number=None):
+    def __init__(self, nodes=None, springs=None, mass=1.0, stiffness=15, viscosity=2.0, uniform_vel=None, id_number=None):
         if nodes:
             self.nodes = nodes
         else:
@@ -119,6 +119,10 @@ class IceFloe:
                                i)
                 self.springs.append(spring)
 
+        self.m = mass
+        self.k = stiffness
+        self.mu = viscosity
+        self.v0 = uniform_vel       ## One velocity for all nodes
         self.id = id_number
 
     def update(self, x_array, y_array, vx_array, vy_array):
@@ -141,11 +145,6 @@ class IceFloe:
             figax = plt.subplots()
             fig, ax = figax
 
-        #### Put this is percussion problem
-        # ax.set_xlim(0, 20)           ## Find min max of all x positions
-        # ax.set_ylim(-2 * self.nodes[0].R, 2 * self.nodes[0].R)  ## Find min max of all y
-        # ax.set_aspect('equal', adjustable='box')
-
         for node in self.nodes:
             node.plot(figax)
 
@@ -156,11 +155,36 @@ class IceFloe:
 
 
 class Percussion:
-    def __init__(self, floe1, floe2):
-        pass
+    def __init__(self, floe1, floe2, time_before_contact=4.0, time_at_contact=1.0, time_after_contact=16.0, n_steps_before_contact=2000, restitution_coef=0.4):
+        self.floe1, self.floe2 = floe1, floe2
+        self.eps = restitution_coef
 
-    def simulate_displacement(self):
-        pass
+        self.t_bef, self.t_at, self.t_aft = time_before_contact, time_at_contact, time_after_contact
+        self.N_bef = n_steps_before_contact
+        self.N_at = n_steps_before_contact//10
+        self.N_aft = n_steps_before_contact*(time_after_contact//time_before_contact)
+
+    def simulate_displacement(self, n=2, m=1.0, k=18.0, mu=1.3, v0=None, t_simu=1.0, N=1000):
+        """
+        Calculates the positions and velocities of an ice floe as a dynamical system
+        """
+        diagB = -2.0*k*np.ones((n)); diagB[0] = -k; diagB[-1] = -k
+        B = np.diag(diagB/m) + np.diag(k*np.ones((n-1))/m, 1) + np.diag(k*np.ones((n-1))/m, -1)
+        diagC = -2.0*mu*np.ones((n)); diagC[0] = -mu; diagC[-1] = -mu
+        C = np.diag(diagC/m) + np.diag(mu*np.ones((n-1))/m, 1) + np.diag(mu*np.ones((n-1))/m, -1)
+
+        E = np.zeros((2*n,2*n))
+        E[:n, n:] = np.identity(n)
+        E[n:, :n] = B
+        E[n:, n:] = C
+
+        Y0 = np.concatenate([np.zeros((n)), v0])
+        t = np.linspace(0, t_simu, N+1)
+
+        def model(Y, t):
+            return E @ Y
+
+        return t, odeint(model, Y0, t)
 
     def compute_before_contact(self):
         pass
