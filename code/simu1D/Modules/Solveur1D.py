@@ -20,12 +20,15 @@ two ice floes. Each ice floe is composed of several
 nodes and springs. Each spring is built from two nodes. 
 """
 
+
+
 class Node:
     """
     A class representing one node of an ice floe
     """
     def __init__(self, position, velocity, radius, id_number):
         self.x, self.y = position
+        self.x0, self.y0 = position     ## Initial position needed for plots
         self.vx, self.vy = velocity
         self.R = radius
         self.id = id_number
@@ -36,6 +39,9 @@ class Node:
         c = Circle((self.x, self.y), self.R, fc='white', ec='k', lw=2, zorder=10)
         ax.add_patch(c)
         return figax
+
+
+
 
 class Spring:
     """
@@ -59,10 +65,10 @@ class Spring:
         rs, ns = 0.05, int(5 * self.L0)
 
         # Number of data points for the helix
-        Ns = 1000
+        Ns = 500
 
         # Length of the spring
-        startx = self.node1.x
+        startx = self.node1.x + self.node1.R
         starty = self.node1.y
         R = self.node2.R
         if self.node1.x > self.node2.x:
@@ -71,25 +77,27 @@ class Spring:
             R = self.node1.R
         elif self.node1.x == self.node2.x:
             print("Carefull: zero sized spring!")
-        L = d_nodes(self.node2, self.node1) - R
+        L = d_nodes(self.node2, self.node1) - self.node1.R - self.node2.R
         assert L > 0, "Impossible: Negative length spring"
 
         # We don't draw coils all the way to the end of the spring: we pad a bit
-        ipad1, ipad2 = 150, 150
+        ipad1, ipad2 = 50, 50
         w = np.linspace(0, L, Ns)
 
-        # Set up the helix along the x-axis ...
+        # Set up the helix along the x-axis
         xp = np.zeros(Ns)
         xp[ipad1:-ipad2] = rs * np.sin(2 * np.pi * ns * w[ipad1:-ipad2] / L)
 
-        # ... then rotate it to align with any desired axis (x-axis).
+        # Then rotate it to align with any desired axis (x-axis)
         R = np.array([[np.cos(self.theta), -np.sin(self.theta)],
                       [np.sin(self.theta), np.cos(self.theta)]])
         xs, ys = - R @ np.vstack((xp, w))
 
-        ax.plot(startx + xs, starty + (self.D * ys) / np.max(ys), c='k', lw=2)
+        ax.plot(startx + xs, starty + (0.9*self.D * ys) / np.max(ys), c='k', lw=2)
 
         return figax
+
+
 
 
 class IceFloe:
@@ -101,12 +109,12 @@ class IceFloe:
             self.nodes = nodes
             self.n = len(nodes)
         else:
-            print("Ice floe created but contains no nodes")
+            print("Ice floe "+str(id_number)+" created but contains no nodes")
 
         if springs:
             self.springs = springs
         else:
-            print("Ice floe created but contains no springs")
+            print("Ice floe "+str(id_number)+" created but contains no springs")
 
         self.m = mass
         self.k = stiffness
@@ -121,11 +129,17 @@ class IceFloe:
         assert self.v0 is not None, "Cannot determine velocity for new nodes"
 
         self.nodes = []
-        for i, x in enumerate(np.arange(start, end, count)):
-            self.nodes.append(Node([x,0], [self.v0, 0], radius, i))
+        # for i, x in enumerate(np.arange(start, end, (start-end)/count)):
+        #     self.nodes.append(Node([x,0], [self.v0, 0], radius, i))
+
+        x = np.linspace(start, end, count)
+        for i in range(count):
+            self.nodes.append(Node([x[i],0], [self.v0, 0], radius, i))
 
         self.n = len(self.nodes)
         self.generate_springs()
+
+        print("Generated nodes for ice floe "+str(self.id))
 
     def generate_springs(self):
         """
@@ -141,6 +155,8 @@ class IceFloe:
                             (self.nodes[i].R + self.nodes[i + 1].R) / 2.0,
                             i)
             self.springs.append(spring)
+
+        print("Generated springs for ice floe "+str(self.id))
 
     def velocities_array(self):
         """
@@ -187,6 +203,8 @@ class IceFloe:
         return figax
 
 
+
+
 class Percussion:
     def __init__(self, floe1:IceFloe, floe2:IceFloe, time_before_contact=4.0, time_at_contact=1.0, time_after_contact=16.0, n_steps_before_contact=2000, restitution_coef=0.4):
         self.floe1, self.floe2 = floe1, floe2
@@ -197,6 +215,8 @@ class Percussion:
         self.N_at = n_steps_before_contact//10
         self.N_aft = int(n_steps_before_contact*(time_after_contact/time_before_contact))
 
+        self.rec_count = 0      ## Recursion depth counter
+
     def compute_before_contact(self):
         self.t = np.linspace(0, self.t_bef, self.N_bef+1)
         self.x1 = np.zeros((self.t.size, self.floe1.n))      ## Positions for floe1
@@ -205,16 +225,16 @@ class Percussion:
         self.v1 = self.floe1.v0 * np.ones((self.t.size, self.floe1.n))      ## Velocities along x for floe1
         self.v2 = self.floe2.v0 * np.ones((self.t.size, self.floe2.n))      ## Velocities along x for floe2
 
-        self.x1[:,0] = simulate_uniform_mov(self.floe1.nodes[0].x, self.floe1.v0, self.t)
-        self.x2[:,0] = simulate_uniform_mov(self.floe2.nodes[0].x, self.floe2.v0, self.t)
+        self.x1[:, 0] = simulate_uniform_mov(self.floe1.nodes[0].x, self.floe1.v0, self.t)
+        self.x2[:, 0] = simulate_uniform_mov(self.floe2.nodes[0].x, self.floe2.v0, self.t)
 
         for i in range(1, self.floe1.n):
-            self.x1[:,i] = self.x1[:,0] + self.floe1.nodes[i].x
+            self.x1[:,i] = self.x1[:,0] + (self.floe1.nodes[i].x - self.floe1.nodes[0].x)
 
         for i in range(1, self.floe2.n):
-            self.x2[:,i] = self.x2[:,0] + self.floe2.nodes[i].x
+            self.x2[:,i] = self.x2[:,0] + (self.floe2.nodes[i].x - self.floe2.nodes[0].x)
 
-        ## Check whether IceFloe1 and IceFloe2 have collided
+        ## Check whether IceFloe1 and IceFloe2 will collide
         collided = self.check_colission()
         if not collided:
             ## Double simulation time and run phase 1 again
@@ -231,6 +251,7 @@ class Percussion:
         t_con, xvx1 = simulate_displacement_wrapper(self.floe1, self.t_at, self.N_at)
         t_con, xvx2 = simulate_displacement_wrapper(self.floe2, self.t_at, self.N_at)
 
+        print("n compare", self.floe2.n, len(xvx2[0,:]))
         ## Compute the integrand for speed calculation
         intgr = self.floe1.k*(xvx1[:,self.floe1.n-2] - xvx1[:,self.floe1.n-1]) + self.floe1.mu*(xvx1[:,-2] - xvx1[:,-1]) \
                 - self.floe2.k*(xvx2[:,0] - xvx2[:,1]) - self.floe2.mu*(xvx2[:,self.floe2.n] - xvx2[:,self.floe2.n+1])
@@ -238,20 +259,21 @@ class Percussion:
         print("Value of I for computation:", I)
 
         ## Compute the velocities after contact
-        v0 = self.floe1.nodes[-1].vx
-        v0_ = self.floe2.nodes[0].vx
+        v0 = np.abs(self.floe1.nodes[-1].vx)
+        v0_ = np.abs(self.floe2.nodes[0].vx)
         m = self.floe1.m
         m_ = self.floe2.m
+        eps = self.eps
 
-        V0 = (I + (m - self.eps * m) * v0 + (1 + self.eps) * m * v0_) / (m + m_)
-        V0_ = (I + (1 + self.eps) * m * v0 + (m_ - self.eps * m) * v0_) / (m + m_)
-        print("BEFORE/AFTER CONTACT")
-        print("First floe:", [v0, V0])
-        print("Second floe:", [v0_, V0_])
+        V0 = (I + (m - eps * m) * v0 + (1 + eps) * m * v0_) / (m + m_)
+        V0_ = (I + (1 + eps) * m * v0 + (m_ - eps * m) * v0_) / (m + m_)
+        print("VELOCITIES BEFORE/AFTER CONTACT:")
+        print(" First floe:", [v0, -np.abs(V0)])
+        print(" Second floe:", [-np.abs(V0_), v0_])
 
         ## Update velocities at extreme nodes
-        self.floe1.nodes[-1].vx = V0
-        self.floe2.nodes[0].vx = V0_
+        self.floe1.nodes[-1].vx = -np.abs(V0)
+        self.floe2.nodes[0].vx = np.abs(V0_)
 
     def compute_after_contact(self):
         t_sim, xvx1 = simulate_displacement_wrapper(self.floe1, self.t_aft, self.N_aft)
@@ -259,17 +281,22 @@ class Percussion:
 
         self.t = np.concatenate([self.t, self.t[-1] + t_sim])
 
-        self.x1 = np.concatenate([self.x1, xvx1[:, :self.floe1.n]])
-        self.x1 = np.concatenate([self.x1, xvx1[:, self.floe1.n:]])
+        self.x1 = np.concatenate([self.x1, self.x1[-1,:] + xvx1[:, :self.floe1.n]])
+        self.v1 = np.concatenate([self.v1, xvx1[:, self.floe1.n:]])
 
-        self.x2 = np.concatenate([self.x2, xvx2[:, :self.floe2.n]])
-        self.x2 = np.concatenate([self.x2, xvx2[:, self.floe2.n:]])
+        self.x2 = np.concatenate([self.x2, self.x2[-1,:] + xvx2[:, :self.floe2.n]])
+        self.v2 = np.concatenate([self.v2, xvx2[:, self.floe2.n:]])
+
+        print("Recursion depth:", self.rec_count)
 
         ## Check collision then recalculate if applicable
-        collided = self.check_colission(self.contact_index)
-        if (not collided) or (self.t.size > self.N_bef+self.N_aft):
-            return
+        collided = self.check_colission(self.contact_index+2)
+        if (not collided) or (self.t.size > self.N_bef+self.N_aft) or (self.rec_count > 980):
+        # if (not collided) or (self.t.size > 2009):
+                return
         else:
+            self.rec_count += 1
+            self.compute_at_contact()
             self.compute_after_contact()
 
 
@@ -278,11 +305,11 @@ class Percussion:
         Checks is the two floes will collide. If that is the case, save each nodes'
         position and velocity, then discard the remainder of the tensors.
         """
-        assert start_index < self.x1.size, "Starting index to check collision to big"
+        assert start_index < self.t.size, "Starting index to check collision too big"
 
         self.contact_index = -1
-        for i in range(start_index, self.x1.size):
-            if self.x1[i,-1]+self.floe1.nodes[-1].R > self.x2[i,0]-self.floe2.nodes[-1].R:
+        for i in range(start_index, self.t.size):
+            if self.x1[i,-1]+self.floe1.nodes[-1].R > self.x2[i,0]-self.floe2.nodes[0].R:
 
                 ## If collision, save each nodes positions and speed
                 for j, node in enumerate(self.floe1.nodes):
@@ -312,29 +339,30 @@ class Percussion:
     def plot_energy(self):
         pass
 
-    def save_fig(self, fps=10, filename="frames/Animation1D.gif", open_file=True):
+    def save_fig(self, fps=24, filename="Animation1D.gif", open_file=True):
         """
         Plot both ice floes whose nodes are at (x1,y1) and (x2,y2) with same radius R
         """
-        min_X = self.floe1.nodes[0].x - self.floe1.nodes[0].R
-        max_X = self.floe2.nodes[-1].x + self.floe2.nodes[-1].R
+        min_X = self.floe1.nodes[0].x0 - self.floe1.nodes[0].R
+        max_X = self.floe2.nodes[-1].x0 + self.floe2.nodes[-1].R
         max_R = np.max([self.floe1.max_radius(), self.floe2.max_radius()])
 
         fig = plt.figure(figsize=(max_X-min_X, 5*max_R), dpi=72)
         ax = fig.add_subplot(111)
 
-        ax.set_xlim(min_X, max_X)
-        ax.set_ylim(-2 * max_R, 2 * max_R)
-        ax.set_aspect('equal', adjustable='box')
+        # ax.set_xlim(min_X, max_X)
+        # ax.set_ylim(-4 * max_R, 4 * max_R)
+        # ax.set_aspect('equal', adjustable='box')
 
         dt = self.t_bef/self.N_bef
         di = int(1 / fps / dt)
 
         img_list = []
 
+        print("Generating "+str(di)+" frames ...")
         ## For loop to update the floes nodes, then plot
         for i in range(0, self.t.size, di):
-            print(i // di, '/', self.t.size // di)
+            print("  ", i // di, '/', self.t.size // di)
 
             self.floe1.update_along_x(self.x1[i,:], self.v1[i,:])
             self.floe2.update_along_x(self.x2[i,:], self.v2[i,:])
@@ -342,15 +370,23 @@ class Percussion:
             self.floe1.plot(figax=(fig,ax))
             self.floe2.plot(figax=(fig,ax))
 
+            ax.set_xlim(min_X, max_X)
+            ax.set_ylim(-2 * max_R, 2 * max_R)
+            ax.set_aspect('equal', adjustable='box')
+
             img_list.append(fig2img(fig))
 
             plt.cla()      # Clear the Axes ready for the next image.
 
         imageio.mimwrite(filename, img_list)
+        print("OK! saved file at "+filename)
 
         if open_file:
             ## Open animation
-            os.system('eog '+filename)     ## Only on Linux GNOME
+            os.system('gthumb '+filename)     ## Only on Linux
+
+
+
 
 
 
@@ -392,6 +428,8 @@ def simulate_displacement(n=2, m=1.0, k=18.0, mu=1.3, v0=None, t_simu=1.0, N=100
     E[:n, n:] = np.identity(n)
     E[n:, :n] = B
     E[n:, n:] = C
+
+    # print("E matrix:\n", E)
 
     Y0 = np.concatenate([np.zeros((n)), v0])
     t = np.linspace(0, t_simu, N + 1)

@@ -9,7 +9,7 @@ if __name__=="__main__":
     m = 1.0     ## masse du premier floe
 
     m_ = 1.0    ## masse du deuxième floe
-    k = 15     ## raideurs
+    k = 15      ## raideurs
     k_ = 30
 
     mu = 1.9    ## viscosités
@@ -47,10 +47,13 @@ if __name__=="__main__":
     ## Run a simple percussion task
 
     floe1 = IceFloe(nodes=None, springs=None, mass=m, stiffness=k, viscosity=mu, rigid_velocity=v0, id_number=0)
-    floe1.generate_nodes(0, 4.0, 3, R)
+    floe1.generate_nodes(0.0, 3.0, 3, R)
 
-    floe2 = IceFloe(nodes=None, springs=None, mass=m_, stiffness=k_, viscosity=mu_, rigid_velocity=v0_, id_number=1)
+    floe2 = IceFloe(nodes=None, springs=None, mass=m_, stiffness=k_, viscosity=mu_, rigid_velocity=-v0_, id_number=1)
     floe2.generate_nodes(L-6.0, L, 4, R)
+
+    # floe2.plot()
+    # plt.show()
 
     p = Percussion(floe1, floe2, time_before_contact=4.0,
                                     time_at_contact=1.0,
@@ -61,7 +64,7 @@ if __name__=="__main__":
     p.compute_before_contact()
     p.compute_at_contact()
     p.compute_after_contact()
-    p.save_fig(open_file=True, filename="Animation1D.gif")
+    p.save_fig(open_file=True, fps=5, filename="Animation1D.gif")
 
 
     ## Start Flask web-interface
