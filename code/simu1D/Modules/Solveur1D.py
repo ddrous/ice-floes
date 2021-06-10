@@ -78,7 +78,8 @@ class Spring:
         elif self.node1.x == self.node2.x:
             print("Carefull: zero sized spring!")
         L = d_nodes(self.node2, self.node1) - self.node1.R - self.node2.R
-        assert L > 0, "Impossible: Negative length spring"
+        # assert L > 0, "Impossible: Negative length spring"
+        # if L < 0: print("Carefull: A spring has a negative length")
 
         # We don't draw coils all the way to the end of the spring: we pad a bit
         ipad1, ipad2 = 50, 50
@@ -251,7 +252,6 @@ class Percussion:
         t_con, xvx1 = simulate_displacement_wrapper(self.floe1, self.t_at, self.N_at)
         t_con, xvx2 = simulate_displacement_wrapper(self.floe2, self.t_at, self.N_at)
 
-        print("n compare", self.floe2.n, len(xvx2[0,:]))
         ## Compute the integrand for speed calculation
         intgr = self.floe1.k*(xvx1[:,self.floe1.n-2] - xvx1[:,self.floe1.n-1]) + self.floe1.mu*(xvx1[:,-2] - xvx1[:,-1]) \
                 - self.floe2.k*(xvx2[:,0] - xvx2[:,1]) - self.floe2.mu*(xvx2[:,self.floe2.n] - xvx2[:,self.floe2.n+1])
@@ -269,7 +269,7 @@ class Percussion:
         V0_ = (I + (1 + eps) * m * v0 + (m_ - eps * m) * v0_) / (m + m_)
         print("VELOCITIES BEFORE/AFTER CONTACT:")
         print(" First floe:", [v0, -np.abs(V0)])
-        print(" Second floe:", [-np.abs(V0_), v0_])
+        print(" Second floe:", [-v0_, np.abs(V0_)])
 
         ## Update velocities at extreme nodes
         self.floe1.nodes[-1].vx = -np.abs(V0)
@@ -333,10 +333,70 @@ class Percussion:
 
         return self.contact_index != -1
 
-    def plot_momentum(self):
-        pass
+    def plot_displacement(self, floe_id:int, node_ids=None, figax=None):
+        """
+        Plot the displacements of (some) nodes of an ice floe part of this percussion problem.
+        """
+        if floe_id == self.floe1.id:
+            floe = self.floe1
+            x = self.x1
+        elif floe_id == self.floe2.id:
+            floe = self.floe2
+            x = self.x2
+        else:
+            print("Ice floe of id "+str(floe_id)+" is not part of this problem.")
+            return figax
 
-    def plot_energy(self):
+        if figax:
+            fig, ax = figax
+        else:
+            figax = plt.subplots()
+            fig, ax = figax
+
+        if node_ids==None:
+            node_ids = np.arange(floe.n)
+        try:
+            for i in node_ids:
+                ax.plot(self.t, x[:, i], label=r"$x_"+str(i)+"$")
+        except IndexError:
+            print("Error plotting: A given node id not valid!")
+
+        ax.set_title("Déplacements des noeuds du floe "+str(floe_id))
+        ax.set_xlabel("temps")
+        ax.legend()
+        fig.tight_layout()
+
+        return (fig, ax)
+
+    def plot_momentum(self, figax):
+        if figax:
+            fig, ax = figax
+        else:
+            figax = plt.subplots()
+            fig, ax = figax
+        #
+        # P_av = (2 * m * v0 + 2 * m_ * v_0) * np.ones_like(t)
+        # P_av[N + 1:] = np.nan
+        # # P_ap = 2*m*V0+2*m_*V_0
+        #
+        # tmp = m * (np.abs(X12[:, 2]) + np.abs(X12[:, 3])) + m_ * (np.abs(X34[:, 2]) + np.abs(X34[:, 3]))
+        # P_ap = np.concatenate([np.zeros_like(t_old), tmp])
+        # P_ap[:N + 1] = np.nan
+        #
+        # print("Quantité de mouvement immediatement avant choc:", 2 * m * v0 + 2 * m_ * v_0)
+        # print("Quantité de mouvement immediatement après choc:", 2 * m * V0 + 2 * m_ * V_0)
+        # print("Rapport APRÈS/AVANT:", (2 * m * V0 + 2 * m_ * V_0) / (2 * m * v0 + 2 * m_ * v_0))
+        # print("Epsilon:", eps)
+        #
+        # plt.plot(t, P_av, label="avant choc")
+        # plt.plot(t, P_ap, label="après choc")
+        # plt.title("Quantités de mouvement")
+        # plt.xlabel("temps")
+        # plt.annotate('rapport fin/début: ' + str(np.round(P_ap[-1] / P_av[0], 2)), xy=(11.35, 6.6))
+        # plt.annotate('epsilon: ' + str(eps), xy=(12.9, 5.1))
+        # plt.legend();
+
+    def plot_energy(self, figax):
         pass
 
     def save_fig(self, fps=24, filename="Animation1D.gif", open_file=True):
@@ -347,6 +407,7 @@ class Percussion:
         max_X = self.floe2.nodes[-1].x0 + self.floe2.nodes[-1].R
         max_R = np.max([self.floe1.max_radius(), self.floe2.max_radius()])
 
+        plt.style.use("default")
         fig = plt.figure(figsize=(max_X-min_X, 5*max_R), dpi=72)
         ax = fig.add_subplot(111)
 
@@ -359,7 +420,7 @@ class Percussion:
 
         img_list = []
 
-        print("Generating "+str(di)+" frames ...")
+        print("Generating frames ...")
         ## For loop to update the floes nodes, then plot
         for i in range(0, self.t.size, di):
             print("  ", i // di, '/', self.t.size // di)
@@ -379,7 +440,7 @@ class Percussion:
             plt.cla()      # Clear the Axes ready for the next image.
 
         imageio.mimwrite(filename, img_list)
-        print("OK! saved file at "+filename)
+        print("OK! saved file '"+filename+"'")
 
         if open_file:
             ## Open animation
@@ -433,6 +494,8 @@ def simulate_displacement(n=2, m=1.0, k=18.0, mu=1.3, v0=None, t_simu=1.0, N=100
 
     Y0 = np.concatenate([np.zeros((n)), v0])
     t = np.linspace(0, t_simu, N + 1)
+
+    # print("Y0 vector:\n", Y0)
 
     def model(Y, t):
         return E @ Y
