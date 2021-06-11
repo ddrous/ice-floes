@@ -9,8 +9,8 @@ if __name__=="__main__":
     m = 1.0     ## masse du premier floe
 
     m_ = 1.5    ## masse du deuxième floe
-    k = 15      ## raideurs
-    k_ = 40
+    k = 40      ## raideurs
+    k_ = 50
 
     mu = 1.9    ## viscosités
     mu_ = 1.1
@@ -24,10 +24,10 @@ if __name__=="__main__":
     X_min, X_max = 0, 25.0        # Position of the farthest node in the grid
     R = 1.5 /6.0    # Radius for the balls at the end of the springs
 
-    total_length1 = 3.0
+    total_length1 = 8.0
     total_length2 = 12.0
 
-    n_nodes1 = 3
+    n_nodes1 = 7
     n_nodes2 = 5
 
     ## Run a simple percussion task
@@ -45,9 +45,9 @@ if __name__=="__main__":
                                     restitution_coef=eps)
 
     p.compute_before_contact()
-    p.compute_at_contact()
+    # p.compute_at_contact()
     p.compute_after_contact()
-    p.save_fig(open_file=True, fps=1, filename="Animation1D.gif")
+    p.save_fig(open_file=True, fps=10, filename="Animation1D.gif")
 
 
     ## Start Flask web-interface

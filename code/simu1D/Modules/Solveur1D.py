@@ -166,7 +166,31 @@ class IceFloe:
         v = np.zeros((self.n))
         for i, node in enumerate(self.nodes):
             v[i] = node.vx
+
         return v
+
+    def displacements_array(self, fix_node):
+        """
+        Returns displacement of all nodes from their equilibrium (nodes along x axis)
+        """
+        x = np.zeros((self.n))
+
+        if fix_node == 0:
+            x[0] = 0
+            for i in range(0, self.n-1):
+                x[i+1] = self.nodes[i+1].x - self.nodes[i].x - self.springs[i].L0
+        elif fix_node == -1:
+            x[-1] = 0
+            for i in range(self.n-1, 0, -1):
+                x[i-1] = self.nodes[i].x - self.nodes[i-1].x - self.springs[i-1].L0
+        elif fix_node == "all":
+            x = np.zeros((self.n))
+        else:
+            print("The fixed node can only be 0 (leftmost) or -1 (rightmost)")
+
+        return x
+
+
 
     def max_radius(self):
         """
@@ -249,41 +273,71 @@ class Percussion:
         """
         Computes the resulting velocities of the two colliding nodes
         """
-        t_con, xvx1 = simulate_displacement_wrapper(self.floe1, self.t_at, self.N_at)
-        t_con, xvx2 = simulate_displacement_wrapper(self.floe2, self.t_at, self.N_at)
+        t_con, xvx1 = simulate_displacement_wrapper(self.floe1, "all", self.t_at, self.N_at)
+        t_con, xvx2 = simulate_displacement_wrapper(self.floe2, "all", self.t_at, self.N_at)
+
+        # t_con, xvx1 = simulate_displacement_wrapper(self.floe1, -1, self.t_at, self.N_at)
+        # t_con, xvx2 = simulate_displacement_wrapper(self.floe2, 0, self.t_at, self.N_at)
 
         ## Compute the integrand for speed calculation
         intgr = self.floe1.k*(xvx1[:,self.floe1.n-2] - xvx1[:,self.floe1.n-1]) + self.floe1.mu*(xvx1[:,-2] - xvx1[:,-1]) \
                 - self.floe2.k*(xvx2[:,0] - xvx2[:,1]) - self.floe2.mu*(xvx2[:,self.floe2.n] - xvx2[:,self.floe2.n+1])
         I = np.trapz(y=intgr, x=t_con)
+        # I = 0
         print("Value of I for computation:", I)
 
         ## Compute the velocities after contact
         v0 = np.abs(self.floe1.nodes[-1].vx)
         v0_ = np.abs(self.floe2.nodes[0].vx)
+        # v0 = self.floe1.nodes[-1].vx
+        # v0_ = self.floe2.nodes[0].vx
         m = self.floe1.m
         m_ = self.floe2.m
         eps = self.eps
 
-        V0 = (I + (m - eps * m) * v0 + (1 + eps) * m * v0_) / (m + m_)
-        V0_ = (I + (1 + eps) * m * v0 + (m_ - eps * m) * v0_) / (m + m_)
+        # V0 = (I + (m - eps * m_) * v0 + (1 + eps) * m * v0_) / (m + m_)
+        # V0_ = (I + (1 + eps) * m * v0 + (m_ - eps * m) * v0_) / (m + m_)
+
+        V0 = (I + (m + eps * m_) * v0 + (1.0 - eps) * m * v0_) / (m + m_)
+        V0_ = (I + (1.0 - eps) * m * v0 + (m_ + eps * m) * v0_) / (m + m_)
+
+        # if v0 > 0 and v0_ < 0:
+        #     V0 = (I + (m - eps * m_) * v0 + (1 + eps) * m * v0_) / (m + m_)
+        #     V0_ = (I + (1 + eps) * m * v0 + (m_ - eps * m) * v0_) / (m + m_)
+        # elif v0 > 0 and v0_ > 0:
+
+
+
         print("VELOCITIES BEFORE/AFTER CONTACT:")
         print(" First floe:", [v0, -np.abs(V0)])
         print(" Second floe:", [-v0_, np.abs(V0_)])
+        # print(" First floe:", [v0, V0])
+        # print(" Second floe:", [v0_, V0_])
 
         ## Update velocities at extreme nodes
         self.floe1.nodes[-1].vx = -np.abs(V0)
         self.floe2.nodes[0].vx = np.abs(V0_)
+        # self.floe1.nodes[-1].vx = V0
+        # self.floe2.nodes[0].vx = V0_
+
+
 
     def compute_after_contact(self):
-        t_sim, xvx1 = simulate_displacement_wrapper(self.floe1, self.t_aft, self.N_aft)
-        t_sim, xvx2 = simulate_displacement_wrapper(self.floe2, self.t_aft, self.N_aft)
+        self.compute_at_contact()       ## Calculate new speeds ...
+
+        t_sim, xvx1 = simulate_displacement_wrapper(self.floe1, "all", self.t_aft, self.N_aft)
+        t_sim, xvx2 = simulate_displacement_wrapper(self.floe2, "all", self.t_aft, self.N_aft)
+
+        # t_sim, xvx1 = simulate_displacement_wrapper(self.floe1, 0, self.t_aft, self.N_aft)
+        # t_sim, xvx2 = simulate_displacement_wrapper(self.floe2, -1, self.t_aft, self.N_aft)
 
         self.t = np.concatenate([self.t, self.t[-1] + t_sim])
 
+        # dx1 = self.floe1.displacements_array(-1)
         self.x1 = np.concatenate([self.x1, self.x1[-1,:] + xvx1[:, :self.floe1.n]])
         self.v1 = np.concatenate([self.v1, xvx1[:, self.floe1.n:]])
 
+        # dx2 = self.floe2.displacements_array(0)
         self.x2 = np.concatenate([self.x2, self.x2[-1,:] + xvx2[:, :self.floe2.n]])
         self.v2 = np.concatenate([self.v2, xvx2[:, self.floe2.n:]])
 
@@ -291,12 +345,10 @@ class Percussion:
 
         ## Check collision then recalculate if applicable
         collided = self.check_colission(self.contact_index+2)
-        if (not collided) or (self.t.size > self.N_bef+self.N_aft) or (self.rec_count > 980):
-        # if (not collided) or (self.t.size > 2009):
+        if (not collided) or (self.t.size > self.N_bef+self.N_aft) or (self.rec_count > 200):
                 return
         else:
             self.rec_count += 1
-            self.compute_at_contact()
             self.compute_after_contact()
 
 
@@ -471,7 +523,7 @@ def fig2img(fig):
     img = PILImage.open(buf)
     return img
 
-def simulate_displacement(n=2, m=1.0, k=18.0, mu=1.3, v0=None, t_simu=1.0, N=1000):
+def simulate_displacement(n=2, m=1.0, k=18.0, mu=1.3, x0=None, v0=None, t_simu=1.0, N=1000):
     """
     Calculates the positions and velocities of an ice floe as a dynamical system
     """
@@ -491,8 +543,10 @@ def simulate_displacement(n=2, m=1.0, k=18.0, mu=1.3, v0=None, t_simu=1.0, N=100
     E[n:, n:] = C
 
     # print("E matrix:\n", E)
-
-    Y0 = np.concatenate([np.zeros((n)), v0])
+    # x0 = np.zeros((n))
+    print("\nx0 vector:", x0)
+    print()
+    Y0 = np.concatenate([x0, v0])
     t = np.linspace(0, t_simu, N + 1)
 
     # print("Y0 vector:\n", Y0)
@@ -502,7 +556,7 @@ def simulate_displacement(n=2, m=1.0, k=18.0, mu=1.3, v0=None, t_simu=1.0, N=100
 
     return t, odeint(model, Y0, t)
 
-def simulate_displacement_wrapper(floe: IceFloe, t_simu=1.0, N=1000):
+def simulate_displacement_wrapper(floe: IceFloe, fix_node, t_simu=1.0, N=1000):
     """
     Wrapper function for simulate_displacement()
     """
@@ -511,7 +565,9 @@ def simulate_displacement_wrapper(floe: IceFloe, t_simu=1.0, N=1000):
     k = floe.k
     mu = floe.mu
     v0 = floe.velocities_array()
-    return simulate_displacement(n, m, k, mu, v0, t_simu, N)
+    x0 = floe.displacements_array(fix_node)
+
+    return simulate_displacement(n, m, k, mu, x0, v0, t_simu, N)
 
 def simulate_uniform_mov(x0, v, t):
     """
