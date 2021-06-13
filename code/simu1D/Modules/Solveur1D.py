@@ -12,6 +12,9 @@ import imageio, io
 import os
 import PIL.Image as PILImage
 
+import sys
+sys.setrecursionlimit(10**4)      # Recursion is important for this problem
+
 
 """ 
 Four classes: "Node -> Springs -> IceFloe -> Percussion". 
@@ -70,11 +73,9 @@ class Spring:
         # Length of the spring
         startx = self.node1.x + self.node1.R
         starty = self.node1.y
-        R = self.node2.R
         if self.node1.x > self.node2.x:
             startx = self.node2.x
             starty = self.node2.y
-            R = self.node1.R
         elif self.node1.x == self.node2.x:
             print("Carefull: zero sized spring!")
         L = d_nodes(self.node2, self.node1) - self.node1.R - self.node2.R
@@ -169,27 +170,25 @@ class IceFloe:
 
         return v
 
-    def displacements_array(self, fix_node):
+    def displacements_array(self):
         """
         Returns displacement of all nodes from their equilibrium (nodes along x axis)
         """
         x = np.zeros((self.n))
-
-        if fix_node == 0:
-            x[0] = 0
-            for i in range(0, self.n-1):
-                x[i+1] = self.nodes[i+1].x - self.nodes[i].x - self.springs[i].L0
-        elif fix_node == -1:
-            x[-1] = 0
-            for i in range(self.n-1, 0, -1):
-                x[i-1] = self.nodes[i].x - self.nodes[i-1].x - self.springs[i-1].L0
-        elif fix_node == "all":
-            x = np.zeros((self.n))
-        else:
-            print("The fixed node can only be 0 (leftmost) or -1 (rightmost)")
+        for i, node in enumerate(self.nodes):
+            x[i] = node.x
 
         return x
 
+    def initial_lengths(self):
+        """
+        Initial lengths of springs
+        """
+        L0 = np.zeros((self.n-1))
+        for i, spring in enumerate(self.springs):
+            L0[i] = spring.L0
+
+        return L0
 
 
     def max_radius(self):
@@ -231,6 +230,9 @@ class IceFloe:
 
 
 class Percussion:
+    """
+    A class representing a percussion problem between two floes
+    """
     def __init__(self, floe1:IceFloe, floe2:IceFloe, time_before_contact=4.0, time_at_contact=1.0, time_after_contact=16.0, n_steps_before_contact=2000, restitution_coef=0.4):
         self.floe1, self.floe2 = floe1, floe2
         self.eps = restitution_coef
@@ -273,24 +275,26 @@ class Percussion:
         """
         Computes the resulting velocities of the two colliding nodes
         """
-        t_con, xvx1 = simulate_displacement_wrapper(self.floe1, "all", self.t_at, self.N_at)
-        t_con, xvx2 = simulate_displacement_wrapper(self.floe2, "all", self.t_at, self.N_at)
+        t_con, xvx1 = simulate_displacement_wrapper(self.floe1, self.t_at, self.N_at)
+        t_con, xvx2 = simulate_displacement_wrapper(self.floe2, self.t_at, self.N_at)
 
-        # t_con, xvx1 = simulate_displacement_wrapper(self.floe1, -1, self.t_at, self.N_at)
-        # t_con, xvx2 = simulate_displacement_wrapper(self.floe2, 0, self.t_at, self.N_at)
+        # t_con, xvx1 = simulate_displacement_wrapper(self.floe1, "left", self.t_at, self.N_at)
+        # t_con, xvx2 = simulate_displacement_wrapper(self.floe2, "right", self.t_at, self.N_at)
 
         ## Compute the integrand for speed calculation
-        intgr = self.floe1.k*(xvx1[:,self.floe1.n-2] - xvx1[:,self.floe1.n-1]) + self.floe1.mu*(xvx1[:,-2] - xvx1[:,-1]) \
-                - self.floe2.k*(xvx2[:,0] - xvx2[:,1]) - self.floe2.mu*(xvx2[:,self.floe2.n] - xvx2[:,self.floe2.n+1])
+        intgr = self.floe1.k*(xvx1[:,self.floe1.n-2] - xvx1[:,self.floe1.n-1] + self.floe1.springs[-1].L0) \
+                + self.floe1.mu*(xvx1[:,-2] - xvx1[:,-1]) \
+                - self.floe2.k*(xvx2[:,0] - xvx2[:,1] + self.floe2.springs[0].L0) \
+                - self.floe2.mu*(xvx2[:,self.floe2.n] - xvx2[:, self.floe2.n+1])
         I = np.trapz(y=intgr, x=t_con)
         # I = 0
         print("Value of I for computation:", I)
 
         ## Compute the velocities after contact
-        v0 = np.abs(self.floe1.nodes[-1].vx)
-        v0_ = np.abs(self.floe2.nodes[0].vx)
-        # v0 = self.floe1.nodes[-1].vx
-        # v0_ = self.floe2.nodes[0].vx
+        # v0 = np.abs(self.floe1.nodes[-1].vx)
+        # v0_ = np.abs(self.floe2.nodes[0].vx)
+        v0 = self.floe1.nodes[-1].vx
+        v0_ = self.floe2.nodes[0].vx
         m = self.floe1.m
         m_ = self.floe2.m
         eps = self.eps
@@ -300,13 +304,6 @@ class Percussion:
 
         V0 = (I + (m + eps * m_) * v0 + (1.0 - eps) * m * v0_) / (m + m_)
         V0_ = (I + (1.0 - eps) * m * v0 + (m_ + eps * m) * v0_) / (m + m_)
-
-        # if v0 > 0 and v0_ < 0:
-        #     V0 = (I + (m - eps * m_) * v0 + (1 + eps) * m * v0_) / (m + m_)
-        #     V0_ = (I + (1 + eps) * m * v0 + (m_ - eps * m) * v0_) / (m + m_)
-        # elif v0 > 0 and v0_ > 0:
-
-
 
         print("VELOCITIES BEFORE/AFTER CONTACT:")
         print(" First floe:", [v0, -np.abs(V0)])
@@ -325,27 +322,29 @@ class Percussion:
     def compute_after_contact(self):
         self.compute_at_contact()       ## Calculate new speeds ...
 
-        t_sim, xvx1 = simulate_displacement_wrapper(self.floe1, "all", self.t_aft, self.N_aft)
-        t_sim, xvx2 = simulate_displacement_wrapper(self.floe2, "all", self.t_aft, self.N_aft)
+        t_sim, xvx1 = simulate_displacement_wrapper(self.floe1, self.t_aft, self.N_aft)
+        t_sim, xvx2 = simulate_displacement_wrapper(self.floe2, self.t_aft, self.N_aft)
 
-        # t_sim, xvx1 = simulate_displacement_wrapper(self.floe1, 0, self.t_aft, self.N_aft)
-        # t_sim, xvx2 = simulate_displacement_wrapper(self.floe2, -1, self.t_aft, self.N_aft)
+        # print(xvx1[:, -1])
+
+        # t_sim, xvx1 = simulate_displacement_wrapper(self.floe1, "left", self.t_aft, self.N_aft)
+        # t_sim, xvx2 = simulate_displacement_wrapper(self.floe2, "right", self.t_aft, self.N_aft)
 
         self.t = np.concatenate([self.t, self.t[-1] + t_sim])
 
         # dx1 = self.floe1.displacements_array(-1)
-        self.x1 = np.concatenate([self.x1, self.x1[-1,:] + xvx1[:, :self.floe1.n]])
+        self.x1 = np.concatenate([self.x1, xvx1[:, :self.floe1.n]])
         self.v1 = np.concatenate([self.v1, xvx1[:, self.floe1.n:]])
 
         # dx2 = self.floe2.displacements_array(0)
-        self.x2 = np.concatenate([self.x2, self.x2[-1,:] + xvx2[:, :self.floe2.n]])
+        self.x2 = np.concatenate([self.x2, xvx2[:, :self.floe2.n]])
         self.v2 = np.concatenate([self.v2, xvx2[:, self.floe2.n:]])
 
         print("Recursion depth:", self.rec_count)
 
         ## Check collision then recalculate if applicable
         collided = self.check_colission(self.contact_index+2)
-        if (not collided) or (self.t.size > self.N_bef+self.N_aft) or (self.rec_count > 200):
+        if (not collided) or (self.t.size > self.N_bef+self.N_aft) or (self.rec_count > 9800):
                 return
         else:
             self.rec_count += 1
@@ -413,7 +412,7 @@ class Percussion:
         except IndexError:
             print("Error plotting: A given node id not valid!")
 
-        ax.set_title("Déplacements des noeuds du floe "+str(floe_id))
+        ax.set_title("Positions des noeuds du floe "+str(floe_id))
         ax.set_xlabel("temps")
         ax.legend()
         fig.tight_layout()
@@ -523,7 +522,7 @@ def fig2img(fig):
     img = PILImage.open(buf)
     return img
 
-def simulate_displacement(n=2, m=1.0, k=18.0, mu=1.3, x0=None, v0=None, t_simu=1.0, N=1000):
+def simulate_displacement(n=2, m=1.0, k=18.0, mu=1.3, x0=None, v0=None, L0=None, t_simu=1.0, N=1000):
     """
     Calculates the positions and velocities of an ice floe as a dynamical system
     """
@@ -542,21 +541,26 @@ def simulate_displacement(n=2, m=1.0, k=18.0, mu=1.3, x0=None, v0=None, t_simu=1
     E[n:, :n] = B
     E[n:, n:] = C
 
+    F = np.zeros((2*n, 2*n-2))
+    F[n:, :n-1] = (np.diag(-k * np.ones((n)) / m) + np.diag(k * np.ones((n-1)) / m, -1))[:, :n-1]
+    # print("F matrix:\n", F)
+
     # print("E matrix:\n", E)
     # x0 = np.zeros((n))
-    print("\nx0 vector:", x0)
-    print()
+    # print("\nx0 vector:", x0)
+    # print()
     Y0 = np.concatenate([x0, v0])
     t = np.linspace(0, t_simu, N + 1)
+    full_L0 = np.concatenate([L0, np.zeros((n-1))])
 
-    # print("Y0 vector:\n", Y0)
+    # print("L0 vector:\n", L0)
 
     def model(Y, t):
-        return E @ Y
+        return E @ Y + F @ full_L0
 
     return t, odeint(model, Y0, t)
 
-def simulate_displacement_wrapper(floe: IceFloe, fix_node, t_simu=1.0, N=1000):
+def simulate_displacement_wrapper(floe: IceFloe, t_simu=1.0, N=1000):
     """
     Wrapper function for simulate_displacement()
     """
@@ -565,9 +569,10 @@ def simulate_displacement_wrapper(floe: IceFloe, fix_node, t_simu=1.0, N=1000):
     k = floe.k
     mu = floe.mu
     v0 = floe.velocities_array()
-    x0 = floe.displacements_array(fix_node)
+    x0 = floe.displacements_array()
+    L0 = floe.initial_lengths()
 
-    return simulate_displacement(n, m, k, mu, x0, v0, t_simu, N)
+    return simulate_displacement(n, m, k, mu, x0, v0, L0, t_simu, N)
 
 def simulate_uniform_mov(x0, v, t):
     """
