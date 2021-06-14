@@ -420,35 +420,87 @@ class Percussion:
         return (fig, ax)
 
     def plot_momentum(self, figax):
+        """
+        Plots the momentum of the system before and after choc
+        """
         if figax:
             fig, ax = figax
         else:
             figax = plt.subplots()
             fig, ax = figax
-        #
-        # P_av = (2 * m * v0 + 2 * m_ * v_0) * np.ones_like(t)
-        # P_av[N + 1:] = np.nan
-        # # P_ap = 2*m*V0+2*m_*V_0
-        #
-        # tmp = m * (np.abs(X12[:, 2]) + np.abs(X12[:, 3])) + m_ * (np.abs(X34[:, 2]) + np.abs(X34[:, 3]))
-        # P_ap = np.concatenate([np.zeros_like(t_old), tmp])
-        # P_ap[:N + 1] = np.nan
-        #
-        # print("Quantité de mouvement immediatement avant choc:", 2 * m * v0 + 2 * m_ * v_0)
-        # print("Quantité de mouvement immediatement après choc:", 2 * m * V0 + 2 * m_ * V_0)
-        # print("Rapport APRÈS/AVANT:", (2 * m * V0 + 2 * m_ * V_0) / (2 * m * v0 + 2 * m_ * v_0))
-        # print("Epsilon:", eps)
-        #
-        # plt.plot(t, P_av, label="avant choc")
-        # plt.plot(t, P_ap, label="après choc")
-        # plt.title("Quantités de mouvement")
-        # plt.xlabel("temps")
-        # plt.annotate('rapport fin/début: ' + str(np.round(P_ap[-1] / P_av[0], 2)), xy=(11.35, 6.6))
-        # plt.annotate('epsilon: ' + str(eps), xy=(12.9, 5.1))
-        # plt.legend();
+
+        P_av = (self.floe1.n * self.floe1.m * np.abs(self.floe1.v0)
+                + self.floe2.n * self.floe2.m * np.abs(self.floe2.v0)) * np.ones_like(self.t)
+        # P_av = self.floe1.m * np.sum(np.abs(self.v1), axis=-1) + self.floe2.m * np.sum(np.abs(self.v2), axis=-1)
+        P_av[self.N_bef + 1:] = np.nan
+
+        P_ap = self.floe1.m * np.sum(np.abs(self.v1), axis=-1) + self.floe2.m * np.sum(np.abs(self.v2), axis=-1)
+        P_ap[:self.N_bef + 1] = np.nan
+
+        print("Quantité de mouvement immediatement avant choc:", P_av[self.N_bef])
+        print("Quantité de mouvement immediatement après choc:", P_ap[self.N_bef+1])
+        print("Rapport APRÈS/AVANT:", P_ap[self.N_bef+1] / P_av[self.N_bef])
+        print("Epsilon:", self.eps)
+
+        ax.plot(self.t, P_av, label="avant choc")
+        ax.plot(self.t, P_ap, label="après choc")
+        ax.set_title("Quantité de mouvement")
+        ax.set_xlabel("temps")
+        ax.annotate('rapport fin/début: ' + str(np.round(P_ap[-1] / P_av[0], 2)), xy=(11.35, 6.6))
+        ax.annotate('epsilon: ' + str(self.eps), xy=(12.9, 5.1))
+        ax.legend()
+        fig.tight_layout()
+
+        return (fig, ax)
 
     def plot_energy(self, figax):
-        pass
+        """
+        Plots the total energy of the system before and after choc
+        """
+        if figax:
+            fig, ax = figax
+        else:
+            figax = plt.subplots()
+            fig, ax = figax
+
+        ## Energie avant choc
+        E_av = (self.floe1.n * 0.5 * self.floe1.m * self.floe1.v0**2
+                + self.floe2.n * 0.5 * self.floe2.m * self.floe2.v0**2) * np.ones_like(self.t)
+        E_av[self.N_bef + 1:] = np.nan
+
+        ## Energie cinetique apres choc
+        E_ap_c = (0.5 * self.floe1.m * np.sum(self.v1**2, axis=-1) \
+                 + 0.5 * self.floe2.m * np.sum(self.v2**2, axis=-1)) * np.ones_like(self.t)
+
+        ## Energie elastique apres choc
+        E_ap_el = 0.5 * self.floe1.k * np.sum((self.x1[:, 1:] - self.x1[:, :-1] - self.floe1.initial_lengths())**2, axis=-1) \
+                    + 0.5 * self.floe2.k * np.sum((self.x2[:, 1:] - self.x2[:, :-1] - self.floe2.initial_lengths())**2, axis=-1)
+
+        ## Energie dissipative apres choc
+        unit1 = (self.x1[:, 1:] - self.x1[:, :-1]) / np.linalg.norm((self.x1[:, 1:] - self.x1[:, :-1]))
+        unit2 = (self.x2[:, 1:] - self.x2[:, :-1]) / np.linalg.norm((self.x2[:, 1:] - self.x2[:, :-1]))
+        E_ap_r = 0.5 * self.floe1.mu * np.sum(((self.v1[:, 1:] - self.v1[:, :-1]) * unit1)**2, axis=-1) \
+                + 0.5 * self.floe2.mu * np.sum(((self.v2[:, 1:] - self.v2[:, :-1]) * unit2)**2, axis=-1)
+        # E_ap_r = 0*E_ap_r
+
+        E_ap = E_ap_c + E_ap_r + E_ap_el
+        E_ap[:self.N_bef + 1] = np.nan
+
+        print("Énergie totale immediatement avant choc:", E_av[self.N_bef])
+        print("Énergie totale immediatement après choc:", E_ap[self.N_bef + 1])
+        print("Rapport APRÈS/AVANT:", E_ap[self.N_bef + 1] / E_av[self.N_bef])
+        print("Epsilon:", self.eps)
+
+        ax.plot(self.t, E_av, label="avant choc")
+        ax.plot(self.t, E_ap, label="après choc")
+        ax.set_title("Énergie totale")
+        ax.set_xlabel("temps")
+        ax.annotate('rapport fin/début: ' + str(np.round(E_ap[-1] / E_av[0], 2)), xy=(11.35, 6.6))
+        ax.annotate('epsilon: ' + str(self.eps), xy=(11.5, 5.2))
+        ax.legend()
+        fig.tight_layout()
+
+        return figax
 
     def save_fig(self, fps=24, filename="Animation1D.gif", open_file=True):
         """

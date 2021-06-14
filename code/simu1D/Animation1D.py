@@ -46,20 +46,24 @@ if __name__=="__main__":
                                     restitution_coef=eps)
 
     p.compute_before_contact()
-    # p.compute_at_contact()
     p.compute_after_contact()
-    p.save_fig(open_file=True, fps=10, filename="Animation1D.gif")
+    # p.save_fig(open_file=True, fps=10, filename="Animation1D.gif")
 
-
-    ## Start Flask web-interface
-
-
-    ## Plot the energy
+    ## Plot the positions
     plt.style.use("seaborn")
     fig, ax = plt.subplots(1, 2, figsize=(3.4*3,3.4))
     # p.plot_displacement(1, figax=(fig,ax[0]))
     p.plot_displacement(1, figax=(fig,ax[0]))
     p.plot_displacement(2, figax=(fig,ax[1]))
+
+
+    ## Plot the momentum
+    fig, ax = plt.subplots(1, 2, figsize=(3.4*3,3.4))
+    p.plot_momentum(figax=(fig,ax[0]))
+    p.plot_energy(figax=(fig,ax[1]))
+
+
     plt.show()
 
-    # print("\nDifference:", p.x2[0, 2]-p.x2[0, 1], p.x2[-1, 2]-p.x2[-1, 1])
+
+    ## Start Flask web-interface
