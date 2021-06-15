@@ -242,7 +242,8 @@ class Percussion:
         self.N_at = n_steps_before_contact//10
         self.N_aft = int(n_steps_before_contact*(time_after_contact/time_before_contact))
 
-        self.rec_count = 0      ## Recursion depth counter
+        self.rec_count = 0      ## Recursion depth counter (1 recurson for 1 collision)
+        self.contact_indices = []
 
     def compute_before_contact(self):
         self.t = np.linspace(0, self.t_bef, self.N_bef+1)
@@ -291,19 +292,19 @@ class Percussion:
         print("Value of I for computation:", I)
 
         ## Compute the velocities after contact
-        # v0 = np.abs(self.floe1.nodes[-1].vx)
-        # v0_ = np.abs(self.floe2.nodes[0].vx)
-        v0 = self.floe1.nodes[-1].vx
-        v0_ = self.floe2.nodes[0].vx
+        v0 = np.abs(self.floe1.nodes[-1].vx)
+        v0_ = np.abs(self.floe2.nodes[0].vx)
+        # v0 = self.floe1.nodes[-1].vx
+        # v0_ = self.floe2.nodes[0].vx
         m = self.floe1.m
         m_ = self.floe2.m
         eps = self.eps
 
-        # V0 = (I + (m - eps * m_) * v0 + (1 + eps) * m * v0_) / (m + m_)
-        # V0_ = (I + (1 + eps) * m * v0 + (m_ - eps * m) * v0_) / (m + m_)
+        V0 = (I + (m - eps * m_) * v0 + (1 + eps) * m * v0_) / (m + m_)
+        V0_ = (I + (1 + eps) * m * v0 + (m_ - eps * m) * v0_) / (m + m_)
 
-        V0 = (I + (m + eps * m_) * v0 + (1.0 - eps) * m * v0_) / (m + m_)
-        V0_ = (I + (1.0 - eps) * m * v0 + (m_ + eps * m) * v0_) / (m + m_)
+        # V0 = (I + (m + eps * m_) * v0 + (1.0 - eps) * m * v0_) / (m + m_)
+        # V0_ = (I + (1.0 - eps) * m * v0 + (m_ + eps * m) * v0_) / (m + m_)
 
         print("VELOCITIES BEFORE/AFTER CONTACT:")
         print(" First floe:", [v0, -np.abs(V0)])
@@ -317,6 +318,9 @@ class Percussion:
         # self.floe1.nodes[-1].vx = V0
         # self.floe2.nodes[0].vx = V0_
 
+        # P_ap = ((self.floe1.n-1) * self.floe1.m * np.abs(v0) + self.floe1.m * np.abs(V0)
+        #         + (self.floe2.n-1) * self.floe2.m * np.abs(v0_) + self.floe2.m * np.abs(V0_) )
+        # print("TEST P_ap:", P_ap)
 
 
     def compute_after_contact(self):
@@ -343,7 +347,7 @@ class Percussion:
         print("Recursion depth:", self.rec_count)
 
         ## Check collision then recalculate if applicable
-        collided = self.check_colission(self.contact_index+2)
+        collided = self.check_colission(self.contact_indices[-1] + 2)
         if (not collided) or (self.t.size > self.N_bef+self.N_aft) or (self.rec_count > 9800):
                 return
         else:
@@ -358,7 +362,7 @@ class Percussion:
         """
         assert start_index < self.t.size, "Starting index to check collision too big"
 
-        self.contact_index = -1
+        collided = False
         for i in range(start_index, self.t.size):
             if self.x1[i,-1]+self.floe1.nodes[-1].R > self.x2[i,0]-self.floe2.nodes[0].R:
 
@@ -371,18 +375,19 @@ class Percussion:
                     node.x = self.x2[i,j]
                     node.vx = self.v2[i,j]
 
-                self.contact_index = i
+                collided = True
+                self.contact_indices.append(i)
                 break
 
-        if self.contact_index != -1:
+        if collided:
             ## Discard the positions and velocities after collision
-            self.x1 = self.x1[:self.contact_index+1]
-            self.v1 = self.v1[:self.contact_index+1]
-            self.x2 = self.x2[:self.contact_index+1]
-            self.v2 = self.v2[:self.contact_index+1]
-            self.t = self.t[:self.contact_index+1]
+            self.x1 = self.x1[:self.contact_indices[-1] + 1]
+            self.v1 = self.v1[:self.contact_indices[-1] + 1]
+            self.x2 = self.x2[:self.contact_indices[-1] + 1]
+            self.v2 = self.v2[:self.contact_indices[-1] + 1]
+            self.t = self.t[:self.contact_indices[-1] + 1]
 
-        return self.contact_index != -1
+        return collided
 
     def plot_displacement(self, floe_id:int, node_ids=None, figax=None):
         """
@@ -432,22 +437,31 @@ class Percussion:
         P_av = (self.floe1.n * self.floe1.m * np.abs(self.floe1.v0)
                 + self.floe2.n * self.floe2.m * np.abs(self.floe2.v0)) * np.ones_like(self.t)
         # P_av = self.floe1.m * np.sum(np.abs(self.v1), axis=-1) + self.floe2.m * np.sum(np.abs(self.v2), axis=-1)
-        P_av[self.N_bef + 1:] = np.nan
+        N_first = self.contact_indices[0]
+        P_av[N_first + 1:] = np.nan
 
         P_ap = self.floe1.m * np.sum(np.abs(self.v1), axis=-1) + self.floe2.m * np.sum(np.abs(self.v2), axis=-1)
-        P_ap[:self.N_bef + 1] = np.nan
+        P_ap[:N_first + 1] = np.nan
 
-        print("Quantité de mouvement immediatement avant choc:", P_av[self.N_bef])
-        print("Quantité de mouvement immediatement après choc:", P_ap[self.N_bef+1])
-        print("Rapport APRÈS/AVANT:", P_ap[self.N_bef+1] / P_av[self.N_bef])
+        print("Quantité de mouvement immediatement avant 1er choc:", P_av[N_first])
+        print("Quantité de mouvement immediatement après 1er choc:", P_ap[N_first+1])
+        print("Rapport APRÈS/AVANT:", P_ap[N_first+1] / P_av[N_first])
         print("Epsilon:", self.eps)
 
-        ax.plot(self.t, P_av, label="avant choc")
-        ax.plot(self.t, P_ap, label="après choc")
+        ax.plot(self.t, P_av, label="avant 1er choc")
+        ax.plot(self.t, P_ap, label="après 1er choc")
+        for i, N_choc in enumerate(self.contact_indices[:6]):
+            label = "1er" if i==0 else str(i+1)+"eme"
+            ax.plot([self.t[N_choc+1]], [P_ap[N_choc+1]], marker='X', label=label+" choc")
+
         ax.set_title("Quantité de mouvement")
         ax.set_xlabel("temps")
-        ax.annotate('rapport fin/début: ' + str(np.round(P_ap[-1] / P_av[0], 2)), xy=(11.35, 6.6))
-        ax.annotate('epsilon: ' + str(self.eps), xy=(12.9, 5.1))
+        text = 'rapport fin/début: ' + str(np.round(P_ap[-1] / P_av[0], 2)) \
+               + '\nepsilon: ' + str(self.eps)
+        ax.text(0.9, 0.1, text,
+             horizontalalignment='right',
+             verticalalignment='baseline',
+             transform=ax.transAxes)
         ax.legend()
         fig.tight_layout()
 
@@ -463,10 +477,12 @@ class Percussion:
             figax = plt.subplots()
             fig, ax = figax
 
+        N_first = self.contact_indices[0]
+
         ## Energie avant choc
         E_av = (self.floe1.n * 0.5 * self.floe1.m * self.floe1.v0**2
                 + self.floe2.n * 0.5 * self.floe2.m * self.floe2.v0**2) * np.ones_like(self.t)
-        E_av[self.N_bef + 1:] = np.nan
+        E_av[N_first + 1:] = np.nan
 
         ## Energie cinetique apres choc
         E_ap_c = (0.5 * self.floe1.m * np.sum(self.v1**2, axis=-1) \
@@ -479,24 +495,36 @@ class Percussion:
         ## Energie dissipative apres choc
         unit1 = (self.x1[:, 1:] - self.x1[:, :-1]) / np.linalg.norm((self.x1[:, 1:] - self.x1[:, :-1]))
         unit2 = (self.x2[:, 1:] - self.x2[:, :-1]) / np.linalg.norm((self.x2[:, 1:] - self.x2[:, :-1]))
-        E_ap_r = 0.5 * self.floe1.mu * np.sum(((self.v1[:, 1:] - self.v1[:, :-1]) * unit1)**2, axis=-1) \
-                + 0.5 * self.floe2.mu * np.sum(((self.v2[:, 1:] - self.v2[:, :-1]) * unit2)**2, axis=-1)
-        # E_ap_r = 0*E_ap_r
+        # E_ap_r = 0.5 * self.floe1.mu * np.sum(((self.v1[:, 1:] - self.v1[:, :-1]) * unit1)**2, axis=-1) \
+        #         + 0.5 * self.floe2.mu * np.sum(((self.v2[:, 1:] - self.v2[:, :-1]) * unit2)**2, axis=-1)
+        # E_ap_r = 0.5 * self.floe1.mu * np.sum(((self.v1[:, 1:] - self.v1[:, :-1]))**2, axis=-1) \
+        #         + 0.5 * self.floe2.mu * np.sum(((self.v2[:, 1:] - self.v2[:, :-1]))**2, axis=-1)
+        E_ap_r = 0.5 * self.floe1.mu * np.sum((np.abs(self.v1[:, 1:]) - np.abs(self.v1[:, :-1])) ** 2, axis=-1) \
+                 + 0.5 * self.floe2.mu * np.sum((np.abs(self.v2[:, 1:]) - np.abs(self.v2[:, :-1])) ** 2, axis=-1)
 
         E_ap = E_ap_c + E_ap_r + E_ap_el
-        E_ap[:self.N_bef + 1] = np.nan
+        # E_ap = E_ap_el + E_ap_c
+        E_ap[:N_first + 1] = np.nan
 
-        print("Énergie totale immediatement avant choc:", E_av[self.N_bef])
-        print("Énergie totale immediatement après choc:", E_ap[self.N_bef + 1])
-        print("Rapport APRÈS/AVANT:", E_ap[self.N_bef + 1] / E_av[self.N_bef])
+        print("Énergie totale immediatement avant 1er choc:", E_av[N_first])
+        print("Énergie totale immediatement après 1er choc:", E_ap[N_first + 1])
+        print("Rapport APRÈS/AVANT:", E_ap[N_first + 1] / E_av[N_first])
         print("Epsilon:", self.eps)
 
-        ax.plot(self.t, E_av, label="avant choc")
-        ax.plot(self.t, E_ap, label="après choc")
+        ax.plot(self.t, E_av, label="avant 1er choc")
+        ax.plot(self.t, E_ap, label="après 1er choc")
+        for i, N_choc in enumerate(self.contact_indices):
+            label = "1er" if i==0 else str(i+1)+"eme"
+            ax.plot([self.t[N_choc+1]], [E_ap[N_choc+1]], marker='X', label=label+" choc")
+
         ax.set_title("Énergie totale")
         ax.set_xlabel("temps")
-        ax.annotate('rapport fin/début: ' + str(np.round(E_ap[-1] / E_av[0], 2)), xy=(11.35, 6.6))
-        ax.annotate('epsilon: ' + str(self.eps), xy=(11.5, 5.2))
+        text = 'rapport fin/début: ' + str(np.round(E_ap[-1] / E_av[0], 2)) \
+               + '\nepsilon: ' + str(self.eps)
+        ax.text(0.9, 0.1, text,
+             horizontalalignment='right',
+             verticalalignment='baseline',
+             transform=ax.transAxes)
         ax.legend()
         fig.tight_layout()
 

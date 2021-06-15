@@ -10,26 +10,26 @@ if __name__=="__main__":
     m = 1.5     ## masse du premier floe
 
     m_ = 1.5    ## masse du deuxième floe
-    k = 700      ## raideurs
-    k_ = 800
+    k = 80      ## raideurs
+    k_ = 70
 
-    mu = 2.1    ## viscosités
-    mu_ = 2.1
+    mu = 0.0    ## viscosités
+    mu_ = 2.0
 
-    v0 = 1.8    ## vitesses avant le choc
+    v0 = 2.2    ## vitesses avant le choc
     v0_ = -1.8
 
     eps = 0.4   ## coefficient de restitution
 
     ## Geometric constants
-    X_min, X_max = 0, 25.0        # Position of the farthest node in the grid
+    X_min, X_max = 0, 40.0        # Position of the farthest node in the grid
     R = 1.5 /6.0    # Radius for the balls at the end of the springs
 
-    total_length1 = 5.0
-    total_length2 = 8.0
+    total_length1 = 8.0
+    total_length2 = 15.0
 
-    n_nodes1 = 4
-    n_nodes2 = 6
+    n_nodes1 = 6
+    n_nodes2 = 8
 
     ## Run a simple percussion task
 
@@ -41,26 +41,27 @@ if __name__=="__main__":
 
     p = Percussion(floe1, floe2, time_before_contact=4.0,
                                     time_at_contact=0.05,
-                                    time_after_contact=16.0,
+                                    time_after_contact=12.0,
                                     n_steps_before_contact=2000,
                                     restitution_coef=eps)
 
     p.compute_before_contact()
     p.compute_after_contact()
-    # p.save_fig(open_file=True, fps=10, filename="Animation1D.gif")
+    p.save_fig(open_file=True, fps=10, filename="Animation1D.gif")
 
     ## Plot the positions
     plt.style.use("seaborn")
-    fig, ax = plt.subplots(1, 2, figsize=(3.4*3,3.4))
+    fig, ax = plt.subplots(2, 2, figsize=(3.4*3,3.4*2))
+    ax = ax.flatten()
     # p.plot_displacement(1, figax=(fig,ax[0]))
-    p.plot_displacement(1, figax=(fig,ax[0]))
-    p.plot_displacement(2, figax=(fig,ax[1]))
+    p.plot_displacement(1, node_ids=list(np.arange(0,8)), figax=(fig,ax[0]))
+    p.plot_displacement(2, node_ids=list(np.arange(0,8)), figax=(fig,ax[1]))
 
 
     ## Plot the momentum
-    fig, ax = plt.subplots(1, 2, figsize=(3.4*3,3.4))
-    p.plot_momentum(figax=(fig,ax[0]))
-    p.plot_energy(figax=(fig,ax[1]))
+    # fig, ax = plt.subplots(1, 2, figsize=(3.4*3,3.4))
+    p.plot_momentum(figax=(fig,ax[2]))
+    p.plot_energy(figax=(fig,ax[3]))
 
 
     plt.show()
