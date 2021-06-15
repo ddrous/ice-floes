@@ -196,4 +196,13 @@ reports/weeks/18/out/*
 !reports/weeks/18/out/main.pdf
 !reports/weeks/18/fphw.cls
 
+# Rapport semaine 19
+reports/weeks/19/*
+
+reports/weeks/19/out/*
+!reports/weeks/19/out/
+
+!reports/weeks/19/main.tex
+!reports/weeks/19/out/main.pdf
+!reports/weeks/19/fphw.cls
 
