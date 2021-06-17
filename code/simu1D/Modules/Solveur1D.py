@@ -288,7 +288,7 @@ class Percussion:
                 - self.floe2.k*(xvx2[:,0] - xvx2[:,1] + self.floe2.springs[0].L0) \
                 - self.floe2.mu*(xvx2[:,self.floe2.n] - xvx2[:, self.floe2.n+1])
         I = np.trapz(y=intgr, x=t_con)
-        # I = 0
+        # I = 0       ## Conservation de la quantité de mouvement
         print("Value of I for computation:", I)
 
         ## Compute the velocities after contact
@@ -306,21 +306,38 @@ class Percussion:
         # V0 = (I + (m + eps * m_) * v0 + (1.0 - eps) * m * v0_) / (m + m_)
         # V0_ = (I + (1.0 - eps) * m * v0 + (m_ + eps * m) * v0_) / (m + m_)
 
+        ##-------------------------------------------------------------
+        # v0 = self.floe1.nodes[-1].vx
+        # v0_ = self.floe2.nodes[0].vx
+        #
+        # ## Case 1
+        # A1 = np.array([[m, m_], [1.0, -1.0]])
+        # # b1 = np.array([m*np.abs(v0) + m_*np.abs(v0_), eps*np.abs(v0 - v0_)])
+        # b1 = np.array([m*np.abs(v0) + m_*np.abs(v0_), eps*(v0 - v0_)])
+        # V0, V0_ = list(np.linalg.inv(A1) @ b1)
+        # # print("MATRIX", A1)
+        # # print("INVERSE", np.linalg.inv(A1))
+        #
+        # ## Case 2
+        # A2 = np.array([[m, m_], [-1.0, 1.0]])
+        # V0, V0_ = list(np.linalg.inv(A2) @ b1)
+        #
+        # test1 =  (A1 @ np.array([V0, V0_]))[-1] > 0.0
+        # test2 =  (A2 @ np.array([V0, V0_]))[-1] > 0.0
+        # print("Testing positions", test1, test2)
+        ##-------------------------------------------------------------
+
         print("VELOCITIES BEFORE/AFTER CONTACT:")
         print(" First floe:", [v0, -np.abs(V0)])
         print(" Second floe:", [-v0_, np.abs(V0_)])
-        # print(" First floe:", [v0, V0])
+        # print(" First floe:", [v0, -V0])
         # print(" Second floe:", [v0_, V0_])
 
         ## Update velocities at extreme nodes
         self.floe1.nodes[-1].vx = -np.abs(V0)
         self.floe2.nodes[0].vx = np.abs(V0_)
-        # self.floe1.nodes[-1].vx = V0
+        # self.floe1.nodes[-1].vx = -V0
         # self.floe2.nodes[0].vx = V0_
-
-        # P_ap = ((self.floe1.n-1) * self.floe1.m * np.abs(v0) + self.floe1.m * np.abs(V0)
-        #         + (self.floe2.n-1) * self.floe2.m * np.abs(v0_) + self.floe2.m * np.abs(V0_) )
-        # print("TEST P_ap:", P_ap)
 
 
     def compute_after_contact(self):
@@ -503,7 +520,7 @@ class Percussion:
                  + 0.5 * self.floe2.mu * np.sum((np.abs(self.v2[:, 1:]) - np.abs(self.v2[:, :-1])) ** 2, axis=-1)
 
         E_ap = E_ap_c + E_ap_r + E_ap_el
-        # E_ap = E_ap_el + E_ap_c
+        # E_ap = E_ap_r + E_ap_el
         E_ap[:N_first + 1] = np.nan
 
         print("Énergie totale immediatement avant 1er choc:", E_av[N_first])

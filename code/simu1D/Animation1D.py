@@ -7,7 +7,7 @@ from Modules.Solveur1D import *
 
 if __name__=="__main__":
     ## Problem constants
-    m = 1.5     ## masse du premier floe
+    m = 1.2     ## masse du premier floe
 
     m_ = 1.5    ## masse du deuxième floe
     k = 80      ## raideurs
@@ -47,7 +47,7 @@ if __name__=="__main__":
 
     p.compute_before_contact()
     p.compute_after_contact()
-    p.save_fig(open_file=True, fps=10, filename="Animation1D.gif")
+    p.save_fig(open_file=True, fps=5, filename="Animation1D.gif")
 
     ## Plot the positions
     plt.style.use("seaborn")
