@@ -770,15 +770,15 @@ où $(\bvec{F}^{'}_i)_{0 \leq i \leq n'}$ sont définis de facon similaire à $\
 \begin{align}
 m \ddot{\bvec{q}}_0 + m' \ddot{\bvec{p}}_0 = \bvec{F}_0 + \bvec{F}^{'}_0 \,.
 \end{align}
-Remarquons que les positions relatives des noeuds $\bvec{q}_0$ et $\bvec{p}_0$ restent inchangées durant la collision. A l'instant initial, on note donc $\Delta_0 = \bvec{q}_0(0) - \bvec{p}_0(0)$; ainsi : 
+Remarquons que les positions relatives des noeuds $\bvec{q}_0$ et $\bvec{p}_0$ restent inchangées durant la collision. A l'instant initial, on note donc $\Delta_0 = \bvec{q}_0(0) - \bvec{p}_0(0)$, et $\bvec{\dot q}_0(0) = \bvec{\dot p}_0(0)$ ; idéalement, nous voudrions que:
 \begin{align}
 \forall t \in \mathbb{R}^+ \,, \quad \bvec{q}_0(t) - \bvec{p}_0(t) = \Delta_0\,.
 \end{align}
-Nous avons aisni obtenu les $n+n'+2$ équations nécessaire pour que notre problème de percussion soit bien posé. Elles sont :
+Pour satifaire cette condition, nous exhibons $n+n'+2$ équations nécessaire pour que notre problème de percussion soit bien posé. Elles sont :
 \begin{align} \tag{$\mathcal{P}$} \label{eq:problemeP}
 \begin{dcases}
-    m \ddot{\bvec{q}}_0 + m' \ddot{\bvec{p}}_0 = \bvec{F}_0 + \bvec{F}^{'}_0  \,, &\qquad \text{(SE)} \\
-    \bvec{q}_0 - \bvec{p}_0 = \Delta_0 \,, &\qquad \text{(SE)} \\
+    (m+m') \ddot{\bvec{q}}_0  = \bvec{F}_0 + \bvec{F}^{'}_0  \,, &\qquad \text{(SE)} \\
+    \ddot{\bvec{p}}_0 = \ddot{\bvec{q}}_0 \,, &\qquad \text{(SE)} \\
     m \ddot{\bvec{q}}_i = \bvec{F}_i   \,, \quad \quad \quad \forall 1 \leq i \leq n \,. &\qquad \text{(SI)} \\
     m' \ddot{\bvec{p}}_i = \bvec{F}^{'}_i   \,, \quad \quad \quad \forall 1 \leq i \leq n' \,, &\qquad \text{(SI)}
 \end{dcases}
