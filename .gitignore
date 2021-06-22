@@ -207,3 +207,14 @@ reports/weeks/19/out/*
 !reports/weeks/19/fphw.cls
 
 code/simu1D/Modules/__pycache__/Solveur1D.cpython-38.pyc
+
+# Rapport semaine 20
+reports/weeks/20/*
+
+reports/weeks/20/out/*
+!reports/weeks/20/out/
+
+!reports/weeks/20/main.tex
+!reports/weeks/20/out/main.pdf
+!reports/weeks/20/fphw.cls
+
