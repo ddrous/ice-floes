@@ -25,8 +25,8 @@ if __name__=="__main__":
     X_min, X_max = 0, 40.0        # Position of the farthest node in the grid
     R = 1.5 /6.0    # Radius for the balls at the end of the springs
 
-    total_length1 = 8.0
-    total_length2 = 15.0
+    total_length1 = 6.0
+    total_length2 = 12.0
 
     n_nodes1 = 6
     n_nodes2 = 8
@@ -47,7 +47,7 @@ if __name__=="__main__":
 
     p.compute_before_contact()
     p.compute_after_contact()
-    p.save_fig(open_file=True, fps=5, filename="Animation1D.gif")
+    # p.save_fig(open_file=True, fps=5, filename="Animation1D.gif")
 
     ## Plot the positions
     plt.style.use("seaborn")

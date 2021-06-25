@@ -510,17 +510,20 @@ class Percussion:
                     + 0.5 * self.floe2.k * np.sum((self.x2[:, 1:] - self.x2[:, :-1] - self.floe2.initial_lengths())**2, axis=-1)
 
         ## Energie dissipative apres choc
-        unit1 = (self.x1[:, 1:] - self.x1[:, :-1]) / np.linalg.norm((self.x1[:, 1:] - self.x1[:, :-1]))
-        unit2 = (self.x2[:, 1:] - self.x2[:, :-1]) / np.linalg.norm((self.x2[:, 1:] - self.x2[:, :-1]))
+        # unit1 = (self.x1[:, 1:] - self.x1[:, :-1]) / np.linalg.norm((self.x1[:, 1:] - self.x1[:, :-1]))
+        # unit2 = (self.x2[:, 1:] - self.x2[:, :-1]) / np.linalg.norm((self.x2[:, 1:] - self.x2[:, :-1]))
         # E_ap_r = 0.5 * self.floe1.mu * np.sum(((self.v1[:, 1:] - self.v1[:, :-1]) * unit1)**2, axis=-1) \
         #         + 0.5 * self.floe2.mu * np.sum(((self.v2[:, 1:] - self.v2[:, :-1]) * unit2)**2, axis=-1)
         # E_ap_r = 0.5 * self.floe1.mu * np.sum(((self.v1[:, 1:] - self.v1[:, :-1]))**2, axis=-1) \
         #         + 0.5 * self.floe2.mu * np.sum(((self.v2[:, 1:] - self.v2[:, :-1]))**2, axis=-1)
-        E_ap_r = 0.5 * self.floe1.mu * np.sum((np.abs(self.v1[:, 1:]) - np.abs(self.v1[:, :-1])) ** 2, axis=-1) \
-                 + 0.5 * self.floe2.mu * np.sum((np.abs(self.v2[:, 1:]) - np.abs(self.v2[:, :-1])) ** 2, axis=-1)
+        # E_ap_r = 0.5 * self.floe1.mu * np.sum((np.abs(self.v1[:, 1:]) - np.abs(self.v1[:, :-1])) ** 2, axis=-1) \
+        #          + 0.5 * self.floe2.mu * np.sum((np.abs(self.v2[:, 1:]) - np.abs(self.v2[:, :-1])) ** 2, axis=-1)
+        E_ap_r_OLD = 0.5 * self.floe1.mu * np.sum((self.v1[:, 1:] - self.v1[:, :-1]) ** 2, axis=-1) \
+                 + 0.5 * self.floe2.mu * np.sum((self.v2[:, 1:] - self.v2[:, :-1]) ** 2, axis=-1)
+        E_ap_r = E_av[0] - E_ap_c - E_ap_el
 
         E_ap = E_ap_c + E_ap_r + E_ap_el
-        # E_ap = E_ap_r + E_ap_el
+        # E_ap = E_ap_r
         E_ap[:N_first + 1] = np.nan
 
         print("Énergie totale immediatement avant 1er choc:", E_av[N_first])
@@ -529,10 +532,12 @@ class Percussion:
         print("Epsilon:", self.eps)
 
         ax.plot(self.t, E_av, label="avant 1er choc")
-        ax.plot(self.t, E_ap, label="après 1er choc")
-        for i, N_choc in enumerate(self.contact_indices):
-            label = "1er" if i==0 else str(i+1)+"eme"
-            ax.plot([self.t[N_choc+1]], [E_ap[N_choc+1]], marker='X', label=label+" choc")
+        # ax.plot(self.t, E_ap, label="après 1er choc")
+        ax.plot(self.t, E_ap_r, label="après NEW")
+        ax.plot(self.t, E_ap_r_OLD, label="après OLD")
+        # for i, N_choc in enumerate(self.contact_indices):
+        #     label = "1er" if i==0 else str(i+1)+"eme"
+        #     ax.plot([self.t[N_choc+1]], [E_ap[N_choc+1]], marker='X', label=label+" choc")
 
         ax.set_title("Énergie totale")
         ax.set_xlabel("temps")
