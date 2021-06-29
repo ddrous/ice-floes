@@ -218,3 +218,15 @@ reports/weeks/20/out/*
 !reports/weeks/20/out/main.pdf
 !reports/weeks/20/fphw.cls
 
+# Rapport semaine 21
+reports/weeks/21/*
+
+reports/weeks/21/out/*
+!reports/weeks/21/out/
+
+!reports/weeks/21/main.tex
+!reports/weeks/21/out/main.pdf
+!reports/weeks/21/fphw.cls
+
+
+
