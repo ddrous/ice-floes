@@ -170,9 +170,9 @@ class IceFloe:
 
         return v
 
-    def displacements_array(self):
+    def positions_array(self):
         """
-        Returns displacement of all nodes from their equilibrium (nodes along x axis)
+        Returns positions of all nodes from their equilibrium (nodes along x axis)
         """
         x = np.zeros((self.n))
         for i, node in enumerate(self.nodes):
@@ -232,6 +232,10 @@ class IceFloe:
 class Percussion:
     """
     A class representing a percussion problem between two floes
+    __Note__: Normally, z denotes the position and x the displacement.
+    However, in the code below, `x1` and `x2` represent the positions
+    of ice floes 1 and 2 respectively. The displacements are later
+    references are `dep1` and `dep2` respectively.
     """
     def __init__(self, floe1:IceFloe, floe2:IceFloe, time_before_contact=4.0, time_at_contact=1.0, time_after_contact=16.0, n_steps_before_contact=2000, restitution_coef=0.4):
         self.floe1, self.floe2 = floe1, floe2
@@ -244,6 +248,10 @@ class Percussion:
 
         self.rec_count = 0      ## Recursion depth counter (1 recurson for 1 collision)
         self.contact_indices = []
+
+        ## Initial positions for the arrays
+        self.init_pos1 = floe1.positions_array()
+        self.init_pos2 = floe2.positions_array()
 
     def compute_before_contact(self):
         self.t = np.linspace(0, self.t_bef, self.N_bef+1)
@@ -435,9 +443,9 @@ class Percussion:
 
         return collided
 
-    def plot_displacement(self, floe_id:int, node_ids=None, figax=None):
+    def plot_positions(self, floe_id:int, node_ids=None, figax=None):
         """
-        Plot the displacements of (some) nodes of an ice floe part of this percussion problem.
+        Plot the positions of (some) nodes of an ice floe part of this percussion problem.
         """
         if floe_id == self.floe1.id:
             floe = self.floe1
@@ -459,7 +467,7 @@ class Percussion:
             node_ids = np.arange(floe.n)
         try:
             for i in node_ids:
-                ax.plot(self.t, x[:, i], label=r"$x_"+str(i)+"$")
+                ax.plot(self.t, x[:, i], label=r"$z_"+str(i)+"$")
         except IndexError:
             print("Error plotting: A given node id not valid!")
 
@@ -470,9 +478,59 @@ class Percussion:
 
         return (fig, ax)
 
+    def compute_displacements(self):
+        """
+        This function computes the displacement of each node in the percussion
+        by eliminating the movement of the ice floes as a whole.
+        """
+
+        self.gravity_pos1 = np.mean(self.x1, axis=1)
+        self.gravity_pos2 = np.mean(self.x2, axis=1)
+
+        gravity_init_pos1 = np.mean(self.init_pos1)
+        gravity_init_pos2 = np.mean(self.init_pos2)
+
+        self.dep1 = (self.x1 - self.gravity_pos1[:, np.newaxis]) - (self.init_pos1 - gravity_init_pos1)
+        self.dep2 = (self.x2 - self.gravity_pos2[:, np.newaxis]) - (self.init_pos2 - gravity_init_pos2)
+
+    def plot_displacements(self, floe_id:int, node_ids=None, figax=None):
+        """
+        Plots the displacement of each node following their computation in compute_displacements().
+        """
+        if floe_id == self.floe1.id:
+            floe = self.floe1
+            dep = self.dep1
+        elif floe_id == self.floe2.id:
+            floe = self.floe2
+            dep = self.dep2
+        else:
+            print("Ice floe of id " + str(floe_id) + " is not part of this problem.")
+            return figax
+
+        if figax:
+            fig, ax = figax
+        else:
+            figax = plt.subplots()
+            fig, ax = figax
+
+        if node_ids==None:
+            node_ids = np.arange(floe.n)
+        try:
+            for i in node_ids:
+                ax.plot(self.t, dep[:, i], label=r"$x_"+str(i)+"$")
+        except IndexError:
+            print("Error plotting: A given node id not valid!")
+
+        ax.set_title("Déplacements des noeuds du floe "+str(floe_id))
+        ax.set_xlabel("temps")
+        ax.legend()
+        fig.tight_layout()
+
+        return (fig, ax)
+
     def plot_momentum(self, figax):
         """
-        Plots the momentum of the system before and after choc
+        Plots the momentum of the system before and after first choc
         """
         if figax:
             fig, ax = figax
@@ -515,7 +573,7 @@ class Percussion:
 
     def plot_energy(self, figax):
         """
-        Plots the total energy of the system before and after choc
+        Plots the total energy of the system before and after first choc
         """
         if figax:
             fig, ax = figax
@@ -643,11 +701,6 @@ class Percussion:
 
 
 
-
-
-
-
-
 """ General purpose functions. The function simulate_displacement is the most heart of the problem """
 
 def d_nodes(node_1, node_2):
@@ -711,7 +764,7 @@ def simulate_displacement_wrapper(floe: IceFloe, t_simu=1.0, N=1000):
     k = floe.k
     mu = floe.mu
     v0 = floe.velocities_array()
-    x0 = floe.displacements_array()
+    x0 = floe.positions_array()
     L0 = floe.initial_lengths()
 
     return simulate_displacement(n, m, k, mu, x0, v0, L0, t_simu, N)

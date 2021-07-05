@@ -47,21 +47,25 @@ if __name__=="__main__":
 
     p.compute_before_contact()
     p.compute_after_contact()
-    p.save_fig(open_file=True, fps=10, filename="Animation1D.gif")
+    # p.save_fig(open_file=True, fps=10, filename="Animation1D.gif")
 
     ## Plot the positions
     plt.style.use("seaborn")
     fig, ax = plt.subplots(2, 2, figsize=(3.4*3,3.4*2))
     ax = ax.flatten()
     # p.plot_displacement(1, figax=(fig,ax[0]))
-    p.plot_displacement(1, node_ids=list(np.arange(0,8)), figax=(fig,ax[0]))
-    p.plot_displacement(2, node_ids=list(np.arange(0,8)), figax=(fig,ax[1]))
+    p.plot_positions(1, node_ids=list(np.arange(0,6)), figax=(fig,ax[0]))
+    p.plot_positions(2, node_ids=list(np.arange(0,8)), figax=(fig,ax[1]))
 
+    ## Plot the displacements of the nodes
+    p.compute_displacements()
+    p.plot_displacements(1, node_ids=None, figax=(fig,ax[2]))
+    p.plot_displacements(2, node_ids=None, figax=(fig,ax[3]))
 
-    ## Plot the momentum
-    # fig, ax = plt.subplots(1, 2, figsize=(3.4*3,3.4))
-    p.plot_momentum(figax=(fig,ax[2]))
-    p.plot_energy(figax=(fig,ax[3]))
+    ## Plot the momentum and the energy of the system
+    ### fig, ax = plt.subplots(1, 2, figsize=(3.4*3,3.4))
+    # p.plot_momentum(figax=(fig,ax[2]))
+    # p.plot_energy(figax=(fig,ax[3]))
 
 
     plt.show()
