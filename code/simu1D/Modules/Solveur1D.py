@@ -284,20 +284,19 @@ class Percussion:
         """
         Computes the resulting velocities of the two colliding nodes
         """
-        t_con, xvx1 = simulate_displacement_wrapper(self.floe1, self.t_at, self.N_at)
-        t_con, xvx2 = simulate_displacement_wrapper(self.floe2, self.t_at, self.N_at)
-
-        # t_con, xvx1 = simulate_displacement_wrapper(self.floe1, "left", self.t_at, self.N_at)
-        # t_con, xvx2 = simulate_displacement_wrapper(self.floe2, "right", self.t_at, self.N_at)
 
         ## Compute the integrand for speed calculation
-        intgr = self.floe1.k*(xvx1[:,self.floe1.n-2] - xvx1[:,self.floe1.n-1] + self.floe1.springs[-1].L0) \
-                + self.floe1.mu*(xvx1[:,-2] - xvx1[:,-1]) \
-                - self.floe2.k*(xvx2[:,0] - xvx2[:,1] + self.floe2.springs[0].L0) \
-                - self.floe2.mu*(xvx2[:,self.floe2.n] - xvx2[:, self.floe2.n+1])
-        I = np.trapz(y=intgr, x=t_con)
-        # I = 0       ## Conservation de la quantité de mouvement
-        print("Value of I for computation:", I)
+        # t_con, xvx1 = simulate_displacement_wrapper(self.floe1, self.t_at, self.N_at)
+        # t_con, xvx2 = simulate_displacement_wrapper(self.floe2, self.t_at, self.N_at)
+
+        # intgr = self.floe1.k*(xvx1[:,self.floe1.n-2] - xvx1[:,self.floe1.n-1] + self.floe1.springs[-1].L0) \
+        #         + self.floe1.mu*(xvx1[:,-2] - xvx1[:,-1]) \
+        #         - self.floe2.k*(xvx2[:,0] - xvx2[:,1] + self.floe2.springs[0].L0) \
+        #         - self.floe2.mu*(xvx2[:,self.floe2.n] - xvx2[:, self.floe2.n+1])
+
+        # I = np.trapz(y=intgr, x=t_con)
+        # ## I = 0       ## Conservation de la quantité de mouvement
+        # print("Value of I for computation:", I)
 
         ## Compute the velocities after contact
         v0 = np.abs(self.floe1.nodes[-1].vx)
