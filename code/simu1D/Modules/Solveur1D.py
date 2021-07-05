@@ -527,6 +527,53 @@ class Percussion:
 
         return (fig, ax)
 
+    def save_fig(self, fps=24, filename="Animation1D.gif", open_file=True):
+        """
+        Plot both ice floes whose nodes are at (x1,y1) and (x2,y2) with same radius R
+        """
+        min_X = self.floe1.nodes[0].x0 - self.floe1.nodes[0].R
+        max_X = self.floe2.nodes[-1].x0 + self.floe2.nodes[-1].R
+        max_R = np.max([self.floe1.max_radius(), self.floe2.max_radius()])
+
+        plt.style.use("default")
+        fig = plt.figure(figsize=(max_X-min_X, 5*max_R), dpi=72)
+        ax = fig.add_subplot(111)
+
+        # ax.set_xlim(min_X, max_X)
+        # ax.set_ylim(-4 * max_R, 4 * max_R)
+        # ax.set_aspect('equal', adjustable='box')
+
+        dt = self.t_bef/self.N_bef
+        di = int(1 / fps / dt)
+
+        img_list = []
+
+        print("Generating frames ...")
+        ## For loop to update the floes nodes, then plot
+        for i in range(0, self.t.size, di):
+            print("  ", i // di, '/', self.t.size // di)
+
+            self.floe1.update_along_x(self.x1[i,:], self.v1[i,:])
+            self.floe2.update_along_x(self.x2[i,:], self.v2[i,:])
+
+            self.floe1.plot(figax=(fig,ax))
+            self.floe2.plot(figax=(fig,ax))
+
+            ax.set_xlim(min_X, max_X)
+            ax.set_ylim(-2 * max_R, 2 * max_R)
+            ax.set_aspect('equal', adjustable='box')
+
+            img_list.append(fig2img(fig))
+
+            plt.cla()      # Clear the Axes ready for the next image.
+
+        imageio.mimwrite(filename, img_list)
+        print("OK! saved file '"+filename+"'")
+
+        if open_file:
+            ## Open animation
+            os.system('gthumb '+filename)     ## Only on Linux
+
     def plot_momentum(self, figax):
         """
         Plots the momentum of the system before and after first choc
@@ -649,52 +696,54 @@ class Percussion:
 
         return figax
 
-    def save_fig(self, fps=24, filename="Animation1D.gif", open_file=True):
+    def compute_potential_energy(self, floe_id=None, broken_springs=None):
         """
-        Plot both ice floes whose nodes are at (x1,y1) and (x2,y2) with same radius R
+        Computes the sum of the elastic energy and the dissipated energy
+        when the ice floe is fractured, i.e. some springs and broken.
         """
-        min_X = self.floe1.nodes[0].x0 - self.floe1.nodes[0].R
-        max_X = self.floe2.nodes[-1].x0 + self.floe2.nodes[-1].R
-        max_R = np.max([self.floe1.max_radius(), self.floe2.max_radius()])
+        if floe_id == self.floe1.id:
+            floe = self.floe1
+            z, v = self.x1, self.v1
+        elif floe_id == self.floe2.id:
+            floe = self.floe2
+            z, v = self.x2, self.v2
+        else:
+            print("Ice floe of id " + str(floe_id) + " is not part of this problem.")
 
-        plt.style.use("default")
-        fig = plt.figure(figsize=(max_X-min_X, 5*max_R), dpi=72)
-        ax = fig.add_subplot(111)
+        ## Eliminate the broken springs from the computation
 
-        # ax.set_xlim(min_X, max_X)
-        # ax.set_ylim(-4 * max_R, 4 * max_R)
-        # ax.set_aspect('equal', adjustable='box')
 
-        dt = self.t_bef/self.N_bef
-        di = int(1 / fps / dt)
+        ## Compute the energy
 
-        img_list = []
 
-        print("Generating frames ...")
-        ## For loop to update the floes nodes, then plot
-        for i in range(0, self.t.size, di):
-            print("  ", i // di, '/', self.t.size // di)
+        return
 
-            self.floe1.update_along_x(self.x1[i,:], self.v1[i,:])
-            self.floe2.update_along_x(self.x2[i,:], self.v2[i,:])
 
-            self.floe1.plot(figax=(fig,ax))
-            self.floe2.plot(figax=(fig,ax))
+    def griffith_minimization(self, floe_id=None):
+        """
+        Studies the fracture problem to see if it is worth addind a path tot the crack.
+        """
+        if floe_id == self.floe1.id:
+            floe = self.floe1
+        elif floe_id == self.floe2.id:
+            floe = self.floe2
+        else:
+            print("Ice floe of id " + str(floe_id) + " is not part of this problem.")
 
-            ax.set_xlim(min_X, max_X)
-            ax.set_ylim(-2 * max_R, 2 * max_R)
-            ax.set_aspect('equal', adjustable='box')
+        ## Computes the potential energy
 
-            img_list.append(fig2img(fig))
 
-            plt.cla()      # Clear the Axes ready for the next image.
+        ## Identifies all possible path cracks (easy in 1D)
 
-        imageio.mimwrite(filename, img_list)
-        print("OK! saved file '"+filename+"'")
 
-        if open_file:
-            ## Open animation
-            os.system('gthumb '+filename)     ## Only on Linux
+        ## Identifies all possible displacements (do we restart the simulation?)
+
+
+        ## Computes all possible potnetial energies for new paths and new displacements
+
+
+        ## Compare to the old energy and conclude
+
 
 
 
