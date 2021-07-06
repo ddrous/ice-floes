@@ -228,5 +228,14 @@ reports/weeks/21/out/*
 !reports/weeks/21/out/main.pdf
 !reports/weeks/21/fphw.cls
 
+# Rapport semaine 22
+reports/weeks/22/*
+
+reports/weeks/22/out/*
+!reports/weeks/22/out/
+
+!reports/weeks/22/main.tex
+!reports/weeks/22/out/main.pdf
+!reports/weeks/22/fphw.cls
 
 
