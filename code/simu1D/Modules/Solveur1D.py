@@ -12,6 +12,8 @@ import imageio, io
 import os
 import PIL.Image as PILImage
 
+from itertools import *
+
 import sys
 sys.setrecursionlimit(10**4)      # Recursion is important for this problem
 
@@ -256,6 +258,10 @@ class Percussion:
         ## Initial positions for the arrays
         self.init_pos1 = floe1.positions_array()
         self.init_pos2 = floe2.positions_array()
+
+        ## Index at which fracture occcurs in each ice floes
+        self.fracture_indices1 = []
+        self.fracture_indices2 = []
 
     def compute_before_contact(self):
         self.t = np.linspace(0, self.t_bef, self.N_bef+1)
@@ -597,10 +603,10 @@ class Percussion:
         P_ap = self.floe1.m * np.sum(np.abs(self.v1), axis=-1) + self.floe2.m * np.sum(np.abs(self.v2), axis=-1)
         P_ap[:N_first + 1] = np.nan
 
-        print("Quantité de mouvement immediatement avant 1er choc:", P_av[N_first])
+        print("\nQuantité de mouvement immediatement avant 1er choc:", P_av[N_first])
         print("Quantité de mouvement immediatement après 1er choc:", P_ap[N_first+1])
-        print("Rapport APRÈS/AVANT:", P_ap[N_first+1] / P_av[N_first])
-        print("Epsilon:", self.eps)
+        # print("Rapport APRÈS/AVANT:", P_ap[N_first+1] / P_av[N_first])
+        # print("Epsilon:", self.eps)
 
         ax.plot(self.t, P_av, label="avant 1er choc")
         ax.plot(self.t, P_ap, label="après 1er choc")
@@ -671,8 +677,8 @@ class Percussion:
 
         print("Énergie totale immediatement avant 1er choc:", E_av[N_first])
         print("Énergie totale immediatement après 1er choc:", E_ap[N_first + 1])
-        print("Rapport APRÈS/AVANT:", E_ap[N_first + 1] / E_av[N_first])
-        print("Epsilon:", self.eps)
+        # print("Rapport APRÈS/AVANT:", E_ap[N_first + 1] / E_av[N_first])
+        # print("Epsilon:", self.eps)
 
         ax.plot(self.t, E_av, label="énergie totale avant 1er choc")
         ax.plot(self.t, E_ap, label="énergie totale après 1er choc")
@@ -685,6 +691,12 @@ class Percussion:
             # ax.plot([self.t[N_choc+1]], [E_ap[N_choc+1]], marker='X', label=label+" choc")
             label = "chocs" if i==0 else None
             ax.plot([self.t[N_choc+1]], [E_ap[N_choc+1]], 'kX', alpha=0.5, label=label)
+
+        ##----------- Bonus:Plot Fracture Point ------------##
+        if self.fracture_indices1:
+            frac = self.fracture_indices1[-1]
+            ax.plot([self.t[frac+1]], [E_ap_el[frac+1]], 'rX', label="fracture")
+        ##--------------------------------------------------##
 
         ax.set_title("Énergie totale")
         ax.set_xlabel("temps")
@@ -736,23 +748,23 @@ class Percussion:
         else:
             print("Ice floe of id " + str(floe_id) + " is not part of this problem.")
 
-        ## Eliminate the broken springs and dampers from the computation
-        k = np.full((floe.n), floe.k)
-        k[broken_springs] = 0.0
-
-        mu = np.full((floe.n), floe.mu)
-        mu[broken_springs] = 0.0
-
         ## Energie potentielle elastique (au pas de temps `end`)
-        E_el = 0.5 * k * np.sum((x[end, 1:] - x[end, :-1] - floe.init_lengths)**2, axis=-1)
+        k = np.full((floe.n - 1), floe.k)
+        k[broken_springs] = 0.0         ## Eliminate the broken springs
 
-        ## Energie dissipée entre les temps `start` et `end`)
-        E_ap_r_OLD = mu * np.sum((v[:end+1, 1:] - v[:end+1, :-1]) ** 2, axis=-1)
+        E_el = 0.5 * np.sum(k * (x[end, 1:] - x[end, :-1] - floe.init_lengths)**2, axis=-1)
+
+        ## Energie dissipée entre les temps `start` et `end`
+        mu = np.full((floe.n - 1), floe.mu)
+        mu[broken_springs] = 0.0        ## Eliminate the broken dampers
+
+        E_ap_r_OLD = np.sum(mu * (v[:end+1, 1:] - v[:end+1, :-1])**2, axis=-1)
         integrand = E_ap_r_OLD[start:]
         t = self.t[start:end+1] - self.t[start-1:end]
         E_r = np.sum(integrand*t)
 
-        return E_el + E_r
+        # return E_el + E_r     #### ---- STUDY THIS PART AGAIN ---- ####
+        return E_el
 
 
     def griffith_minimization(self, floe_id=None):
@@ -763,33 +775,57 @@ class Percussion:
         """
         if floe_id == self.floe1.id:
             floe = self.floe1
+            fracture_indices = self.fracture_indices1
         elif floe_id == self.floe2.id:
             floe = self.floe2
+            fracture_indices = self.fracture_indices2
         else:
             print("Ice floe of id " + str(floe_id) + " is not part of this problem.")
 
+        print("\nGRIFFITH FRACTURE STUDY FOR ICE FLOE " + str(floe_id) + ':')
+
         ## Specify the time steps for the computations
         start = self.contact_indices[-1]
-        old_end = self.contact_indices[-1] + 1          ## Time step for current energy
-        new_end = old_end + 1                           ## Time step for new energy and crack path
+        old_end = start                  ## Time step for current energy
 
-        ## Compute the current energy of the system
+        ## Compute the current energy of the system (no broken spring)
         old_broken_springs = []
         def_en = self.deformation_energy(floe_id, old_broken_springs, start, old_end)
         frac_en = self.fracture_energy(floe_id, old_broken_springs)
-        print("Current Griffith competing energies are:", def_en, frac_en)
+        old_energy = def_en + frac_en
+        print("OLD ENERGY IS:", old_energy)
 
-        ## Identifies all possible path cracks (easy in 1D)
-        new_broken_springs = [1, 2]
+        ## Compute new energies, only stop is fracture of end of simulation
+        steps_counter = 0
+        while (True):
+            steps_counter += 10
+            new_end = old_end + steps_counter  ## Time step for new energy and crack path
+            energies = {}
+            ## Identifies all possible path cracks (easy in 1D)
+            ## Identifies all possible displacements (do we restart the simulation?)
+            #### (For now, we use the one issued form the percussion)
+            ## Computes all possible total energies for new paths and new displacements
+            for i in range(1, floe.n):
+                for new_tuple in combinations(range(floe.n-1), i):
+                    new_broken_springs = list(new_tuple)
+                    def_en = self.deformation_energy(floe_id, new_broken_springs, start, new_end)
+                    frac_en = self.fracture_energy(floe_id, new_broken_springs)
+                    energies[new_tuple] = def_en+frac_en
 
-        ## Identifies all possible displacements (do we restart the simulation?)
-        #### For now, we use the one issued form the percussion
+            min_config = sorted(energies.items(), key=lambda item: item[1])[0]
 
-
-        ## Computes all possible total energies for new paths and new displacements
-
-
-        ## Compare to the old energy and conclude
+            ## Compare to the old energy and conclude
+            if min_config[1] < old_energy:
+                print("     Starting configuration was:", (tuple(old_broken_springs), old_energy))
+                # print("     New Griffith competing energies is:", energies)
+                print("     Minimum energy reached for:", min_config)
+                # print("     Is there a Fracture?:", min_config[1] < old_energy)
+                print("     Fracture happens", steps_counter, "time step(s) after last collision, at time:", self.t[new_end])
+                fracture_indices.append(new_end)
+                break
+            if new_end >= self.N_bef+self.N_aft:
+                print("     During the whole simulation, there was no fracture !")
+                break
 
 
 
