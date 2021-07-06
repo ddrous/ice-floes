@@ -51,7 +51,7 @@ if __name__=="__main__":
 
     ## Plot the positions
     plt.style.use("seaborn")
-    fig, ax = plt.subplots(2, 2, figsize=(3.4*3,3.4*2))
+    fig, ax = plt.subplots(3, 2, figsize=(3.4*3,3.4*3))
     ax = ax.flatten()
     # p.plot_displacement(1, figax=(fig,ax[0]))
     p.plot_positions(1, node_ids=list(np.arange(0,6)), figax=(fig,ax[0]))
@@ -64,8 +64,11 @@ if __name__=="__main__":
 
     ## Plot the momentum and the energy of the system
     ### fig, ax = plt.subplots(1, 2, figsize=(3.4*3,3.4))
-    # p.plot_momentum(figax=(fig,ax[2]))
-    # p.plot_energy(figax=(fig,ax[3]))
+    p.plot_momentum(figax=(fig,ax[4]))
+    p.plot_energy(figax=(fig,ax[5]))
+
+    ## Study the Griffith minimization problem (for a specific ice floe)
+    p.griffith_minimization(floe_id=1)
 
 
     plt.show()

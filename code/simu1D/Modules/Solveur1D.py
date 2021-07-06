@@ -106,7 +106,7 @@ class IceFloe:
     """
     A class representing an ice floe
     """
-    def __init__(self, nodes=None, springs=None, mass=1.0, stiffness=15, viscosity=2.0, rigid_velocity=None, id_number=None):
+    def __init__(self, nodes=None, springs=None, mass=1.0, stiffness=15, viscosity=2.0, tenacity=1.0, rigid_velocity=None, id_number=None):
         if nodes:
             self.nodes = nodes
             self.n = len(nodes)
@@ -121,6 +121,7 @@ class IceFloe:
         self.m = mass
         self.k = stiffness
         self.mu = viscosity
+        self.L = tenacity
         self.v0 = rigid_velocity       ## One velocity for all nodes
         self.id = id_number
 
@@ -139,9 +140,12 @@ class IceFloe:
             self.nodes.append(Node([x[i],0], [self.v0, 0], radius, i))
 
         self.n = len(self.nodes)
-        self.generate_springs()
-
         print("Generated nodes for ice floe "+str(self.id))
+
+        ## Also generate the springs in here if you like
+        self.generate_springs()
+        self.init_lengths = self.initial_lengths()      ## Array of all spring lengths
+
 
     def generate_springs(self):
         """
@@ -358,7 +362,7 @@ class Percussion:
         V01 = (-b - np.sqrt(Delta)) / (2*a)
         V02 = (-b + np.sqrt(Delta)) / (2*a)
         # print("V0 values:", Delta, V01, V02)
-        V0 = V01 if V01 > 0 else V02
+        V0 = V01 if V01 >= 0 else V02
         V0_ = V0 + X
         # print("TEST:", m*(V0**2) + m_*(V0_**2) == Y)
         ##-------------------------------------------------------------
@@ -470,7 +474,7 @@ class Percussion:
         except IndexError:
             print("Error plotting: A given node id not valid!")
 
-        ax.set_title("Positions des noeuds du floe "+str(floe_id))
+        ax.set_title("Trajectoires des noeuds du floe "+str(floe_id))
         ax.set_xlabel("temps")
         ax.legend()
         fig.tight_layout()
@@ -655,9 +659,8 @@ class Percussion:
                     + self.floe2.mu * np.sum((self.v2[:, 1:] - self.v2[:, :-1]) ** 2, axis=-1)
         integrand = E_ap_r_OLD[N_first:]
         t = self.t[N_first:] - self.t[N_first-1:-1]
-        E_ap_r_OLD = np.cumsum(integrand*t)
         E_ap_r = np.zeros_like(E_ap_el)
-        E_ap_r[N_first:] = E_ap_r_OLD
+        E_ap_r[N_first:] = np.cumsum(integrand*t)
 
         E_ap = E_ap_c + E_ap_el + E_ap_r
         # E_ap = E_ap_r
@@ -696,32 +699,67 @@ class Percussion:
 
         return figax
 
-    def compute_potential_energy(self, floe_id=None, broken_springs=None):
+    def fracture_energy(self, floe_id=None, broken_springs=None):
         """
-        Computes the sum of the elastic energy and the dissipated energy
-        when the ice floe is fractured, i.e. some springs and broken.
+        Computes the fracture energy of a fractured ice floe, i.e. some springs and broken.
         """
         if floe_id == self.floe1.id:
             floe = self.floe1
-            z, v = self.x1, self.v1
         elif floe_id == self.floe2.id:
             floe = self.floe2
-            z, v = self.x2, self.v2
         else:
             print("Ice floe of id " + str(floe_id) + " is not part of this problem.")
 
-        ## Eliminate the broken springs from the computation
+        ### Bien préciser qu'on est en déformation élastqiue: et donc la longueur de la fracture est la longeur initiale des ressorts
+        broken_length = 0
+        for i in broken_springs:
+            try:
+                broken_length += floe.springs[i].L0
+            except IndexError:
+                print("Error: Spring id "+str(i)+" is not a valid id for ice floe "+str(floe_id))
 
+        return floe.L * broken_length
 
-        ## Compute the energy
+    def deformation_energy(self, floe_id=None, broken_springs=None, start=0, end=0):
+        """
+        Computes the deformation energy (sum of the elastic energy and the dissipated
+        energy) when the ice floe is fractured, i.e. some springs and broken.
+        """
+        assert start <= end, "Error: Starting time step is bigger than ending time step!"
 
+        if floe_id == self.floe1.id:
+            floe = self.floe1
+            x, v = self.x1, self.v1
+        elif floe_id == self.floe2.id:
+            floe = self.floe2
+            x, v = self.x2, self.v2
+        else:
+            print("Ice floe of id " + str(floe_id) + " is not part of this problem.")
 
-        return
+        ## Eliminate the broken springs and dampers from the computation
+        k = np.full((floe.n), floe.k)
+        k[broken_springs] = 0.0
+
+        mu = np.full((floe.n), floe.mu)
+        mu[broken_springs] = 0.0
+
+        ## Energie potentielle elastique (au pas de temps `end`)
+        E_el = 0.5 * k * np.sum((x[end, 1:] - x[end, :-1] - floe.init_lengths)**2, axis=-1)
+
+        ## Energie dissipée entre les temps `start` et `end`)
+        E_ap_r_OLD = mu * np.sum((v[:end+1, 1:] - v[:end+1, :-1]) ** 2, axis=-1)
+        integrand = E_ap_r_OLD[start:]
+        t = self.t[start:end+1] - self.t[start-1:end]
+        E_r = np.sum(integrand*t)
+
+        return E_el + E_r
 
 
     def griffith_minimization(self, floe_id=None):
         """
         Studies the fracture problem to see if it is worth addind a path tot the crack.
+        __Note__: Here, the total energy is not the same as in `self.plot_energy()`. Here,
+        it is the sum of the deformation energy and the fracture energy.
         """
         if floe_id == self.floe1.id:
             floe = self.floe1
@@ -730,19 +768,29 @@ class Percussion:
         else:
             print("Ice floe of id " + str(floe_id) + " is not part of this problem.")
 
-        ## Computes the potential energy
+        ## Specify the time steps for the computations
+        start = self.contact_indices[-1]
+        old_end = self.contact_indices[-1] + 1          ## Time step for current energy
+        new_end = old_end + 1                           ## Time step for new energy and crack path
 
+        ## Compute the current energy of the system
+        old_broken_springs = []
+        def_en = self.deformation_energy(floe_id, old_broken_springs, start, old_end)
+        frac_en = self.fracture_energy(floe_id, old_broken_springs)
+        print("Current Griffith competing energies are:", def_en, frac_en)
 
         ## Identifies all possible path cracks (easy in 1D)
-
+        new_broken_springs = [1, 2]
 
         ## Identifies all possible displacements (do we restart the simulation?)
+        #### For now, we use the one issued form the percussion
 
 
-        ## Computes all possible potnetial energies for new paths and new displacements
+        ## Computes all possible total energies for new paths and new displacements
 
 
         ## Compare to the old energy and conclude
+
 
 
 
