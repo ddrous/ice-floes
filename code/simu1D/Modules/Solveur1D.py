@@ -793,7 +793,7 @@ class Percussion:
         def_en = self.deformation_energy(floe_id, old_broken_springs, start, old_end)
         frac_en = self.fracture_energy(floe_id, old_broken_springs)
         old_energy = def_en + frac_en
-        print("OLD ENERGY IS:", old_energy)
+        # print("OLD ENERGY IS:", old_energy)
 
         ## Compute new energies, only stop is fracture of end of simulation
         steps_counter = 0
