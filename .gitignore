@@ -1,241 +1,39 @@
-# Code de stage
-# code/*
+# Code
 .vscode/*
-code/simu1D/frames/*
-
-## slides
-slides/out/*
-slides/out/*
-!slides/out/main.pdf
-slides/main.synctex(busy)
-
-
-# Rapport de stage
-
-
-reports/internship/*
-reports/internship/out/*
-!reports/internship/out/
-
-!reports/internship/out/main.pdf
-!reports/internship/main.tex
-!reports/internship/MastersDoctoralThesis.cls
-!reports/internship/bibliography.bib
-!reports/internship/bibliography_matthias.bib
-!reports/internship/bibliography_dimitri.bib
-
-!reports/internship/Figures/
-
-reports/internship/Chapters/*
-reports/internship/Appendices/*
-
-!reports/internship/Chapters/
-!reports/internship/Appendices/
-
-!reports/internship/Chapters/Chapter1.tex
-!reports/internship/Chapters/Chapter2.tex
-!reports/internship/Chapters/Chapter3.tex
-!reports/internship/Chapters/Chapter4.tex
-!reports/internship/Chapters/Chapter5.tex
-!reports/internship/Chapters/Chapter6.tex
-
-!reports/internship/Appendices/AppendixA.tex
-!reports/internship/Appendices/AppendixB.tex
-
-# Resume de these Dimitri
-reports/dimitri/*
-
-!reports/dimitri/main.tex
-!reports/dimitri/main.pdf
-!reports/dimitri/fphw.cls
-!reports/dimitri/bibliography.bib
-
-!reports/dimitri/img/
-
-# Resume de these Matthias
-reports/matthias/*
-
-!reports/matthias/main.tex
-!reports/matthias/main.pdf
-!reports/matthias/fphw.cls
-!reports/matthias/bibliography.bib
-
-!reports/matthias/img/
-
-# Rapport toute semaine confondu
-!reports/weeks/img
-!reports/weeks/bib
-
-# Rapport semaine 1
-reports/weeks/01/*
-
-!reports/weeks/01/main.tex
-!reports/weeks/01/main.pdf
-!reports/weeks/01/fphw.cls
-
-# Rapport semaine 2
-reports/weeks/02/*
-
-!reports/weeks/02/main.tex
-!reports/weeks/02/main.pdf
-!reports/weeks/02/fphw.cls
-
-# Rapport semaine 3
-reports/weeks/03/*
-
-!reports/weeks/03/main.tex
-!reports/weeks/03/main.pdf
-!reports/weeks/03/fphw.cls
-
-# Rapport semaine 4
-reports/weeks/04/*
-
-!reports/weeks/04/main.tex
-!reports/weeks/04/main.pdf
-!reports/weeks/04/fphw.cls
-
-# Rapport semaine 5
-reports/weeks/05/*
-
-!reports/weeks/05/main.tex
-!reports/weeks/05/main.pdf
-!reports/weeks/05/fphw.cls
-
-# Rapport semaine 6
-reports/weeks/06/*
-
-!reports/weeks/06/main.tex
-!reports/weeks/06/main.pdf
-!reports/weeks/06/fphw.cls
-
-# Rapport semaine 7
-reports/weeks/07/*
-
-!reports/weeks/07/main.tex
-!reports/weeks/07/main.pdf
-!reports/weeks/07/fphw.cls
-
-# Rapport semaine 8
-reports/weeks/08/*
-
-!reports/weeks/08/main.tex
-!reports/weeks/08/main.pdf
-!reports/weeks/08/fphw.cls
-
-# Rapport semaine 9
-reports/weeks/09/*
-
-!reports/weeks/09/main.tex
-!reports/weeks/09/main.pdf
-!reports/weeks/09/fphw.cls
-
-# Rapport semaine 10
-reports/weeks/10/*
-
-!reports/weeks/10/main.tex
-!reports/weeks/10/main.pdf
-!reports/weeks/10/fphw.cls
-
-# Rapport semaine 11
-reports/weeks/11/*
-
-reports/weeks/11/out/*
-!reports/weeks/11/out/
-
-!reports/weeks/11/main.tex
-!reports/weeks/11/out/main.pdf
-!reports/weeks/11/fphw.cls
-
-# Rapport semaine 12
-reports/weeks/12/*
-
-reports/weeks/12/out/*
-!reports/weeks/12/out/
-
-!reports/weeks/12/main.tex
-!reports/weeks/12/out/main.pdf
-!reports/weeks/12/fphw.cls
-
-# Rapport semaine 13
-reports/weeks/13/*
-
-reports/weeks/13/out/*
-!reports/weeks/13/out/
-
-!reports/weeks/13/main.tex
-!reports/weeks/13/out/main.pdf
-!reports/weeks/13/fphw.cls
-
-# Rapport semaine 15
-reports/weeks/15/*
-
-reports/weeks/15/out/*
-!reports/weeks/15/out/
-
-!reports/weeks/15/main.tex
-!reports/weeks/15/out/main.pdf
-!reports/weeks/15/fphw.cls
-
-# Rapport semaine 17
-reports/weeks/17/*
-
-reports/weeks/17/out/*
-!reports/weeks/17/out/
-
-!reports/weeks/17/main.tex
-!reports/weeks/17/out/main.pdf
-!reports/weeks/17/fphw.cls
-
-# Rapport semaine 18
-reports/weeks/18/*
-
-reports/weeks/18/out/*
-!reports/weeks/18/out/
-
-!reports/weeks/18/main.tex
-!reports/weeks/18/out/main.pdf
-!reports/weeks/18/fphw.cls
-
-# Rapport semaine 19
-reports/weeks/19/*
-
-reports/weeks/19/out/*
-!reports/weeks/19/out/
-
-!reports/weeks/19/main.tex
-!reports/weeks/19/out/main.pdf
-!reports/weeks/19/fphw.cls
-
+code/simu1D/Exports/Frames/*
 code/simu1D/Modules/__pycache__/Solveur1D.cpython-38.pyc
 
-# Rapport semaine 20
-reports/weeks/20/*
 
-reports/weeks/20/out/*
-!reports/weeks/20/out/
+# LateX
+*.aux
+*.glo
+*.idx
+*.log
+*.toc
+*.ist
+*.acn
+*.acr
+*.alg
+*.bbl
+*.blg
+*.dvi
+*.glg
+*.gls
+*.ilg
+*.ind
+*.lof
+*.lot
+*.maf
+*.mtc
+*.mtc1
+*.out
+*.synctex.gz
+*.xml
+main-blx.bib*
+*.xdv
+*.fdb_latexmk
+*.fls
+*.snm
 
-!reports/weeks/20/main.tex
-!reports/weeks/20/out/main.pdf
-!reports/weeks/20/fphw.cls
-
-# Rapport semaine 21
-reports/weeks/21/*
-
-reports/weeks/21/out/*
-!reports/weeks/21/out/
-
-!reports/weeks/21/main.tex
-!reports/weeks/21/out/main.pdf
-!reports/weeks/21/fphw.cls
-
-# Rapport semaine 22
-reports/weeks/22/*
-
-reports/weeks/22/out/*
-!reports/weeks/22/out/
-
-!reports/weeks/22/main.tex
-!reports/weeks/22/out/main.pdf
-!reports/weeks/22/fphw.cls
-
-
+## Jetbrains
+*iml
