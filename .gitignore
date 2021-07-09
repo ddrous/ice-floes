@@ -34,6 +34,8 @@ main-blx.bib*
 *.fdb_latexmk
 *.fls
 *.snm
+*.nav
+*.vrb
 
 ## Jetbrains
 *iml
