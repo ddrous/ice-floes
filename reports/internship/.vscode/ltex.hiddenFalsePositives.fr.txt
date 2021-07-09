@@ -1,0 +1,1 @@
+{"rule":"ACCORD_GENRE","sentence":"^\\QUne fois ce \\E(?:Dummy|Ina|Jimmy-)[0-9]+\\Q assurant la non-interpénétration trouvé, on peut donc de choisir \\E(?:Dummy|Ina|Jimmy-)[0-9]+\\Q.\\E$"}
