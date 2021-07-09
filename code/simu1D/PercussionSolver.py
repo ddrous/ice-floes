@@ -37,6 +37,7 @@ class Node:
         self.vx, self.vy = velocity
         self.R = radius
         self.id = id_number
+        self.parent_ice_floe = None     ## Ice floe to which this node belongs
 
     def plot(self, figax=None):
         fig, ax = figax
@@ -59,6 +60,7 @@ class Spring:
         self.D = diameter
         self.theta = np.arctan2(node2.y-node1.y, node2.x-node1.x) + np.pi/2.0
         self.id = id_number
+        self.parent_ice_floe = None  ## Ice floe to which this spring belongs
 
     def plot(self, figax=None):
         """
