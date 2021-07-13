@@ -286,7 +286,8 @@ class Percussion:
         collided = self.check_colission()
         if not collided:
             ## Double simulation time and run phase 1 again
-            self.t_bef = self.t_bef*2
+            self.t_bef = self.t_bef * 2
+            self.t_aft = self.t_aft * 2
             self.compute_before_contact()
         else:
             ## Then phase 1 is OK
