@@ -55,5 +55,6 @@ if __name__=="__main__":
     print("Spring Neighbors (nodes):", f.spring_neighbors_nodes)
 
     print("Could collide:", f.could_collide(8, 10))
+    print("Total number of nodes:", f.nb_nodes)
 
 
