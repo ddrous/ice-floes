@@ -37,7 +37,12 @@ class Node:
         self.vx, self.vy = velocity
         self.R = radius
         self.id = id_number
-        self.parent_ice_floe = None     ## Ice floe to which this node belongs
+        ## Extra properties needed for fracture
+        self.parentFloe = None     ## Ice floe to which this node belongs
+        self.leftNode = None
+        self.rightNode = None
+        self.leftSpring = None
+        self.rightSpring = None
 
     def plot(self, figax=None):
         fig, ax = figax
@@ -53,14 +58,17 @@ class Spring:
     """
     A class representing one spring of an ice floe
     """
-    def __init__(self, node1:Node, node2:Node, initial_length, diameter, id_number):
+    def __init__(self, node1:Node, node2:Node, diameter, id_number):
         self.node1 = node1
         self.node2 = node2
-        self.L0 = initial_length
+        self.L0 = d_nodes(node1, node2)
         self.D = diameter
         self.theta = np.arctan2(node2.y-node1.y, node2.x-node1.x) + np.pi/2.0
         self.id = id_number
-        self.parent_ice_floe = None  ## Ice floe to which this spring belongs
+        ## Extra parameters for fracture
+        self.parentFloe = None  ## Ice floe to which this spring belongs
+        self.leftNode = None
+        self.rightNode = None
 
     def plot(self, figax=None):
         """
@@ -161,7 +169,6 @@ class IceFloe:
         for i in range(self.n - 1):
             spring = Spring(self.nodes[i],
                             self.nodes[i + 1],
-                            d_nodes(self.nodes[i], self.nodes[i + 1]),
                             (self.nodes[i].R + self.nodes[i + 1].R) / 2.0,
                             i)
             self.springs.append(spring)
