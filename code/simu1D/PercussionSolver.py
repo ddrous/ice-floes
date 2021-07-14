@@ -390,6 +390,9 @@ class Percussion:
 
 
     def compute_after_contact(self):
+        """
+        Computes the positions and velocities of the two colliding floes after a contact
+        """
         self.compute_at_contact()       ## Calculate new speeds ...
 
         t_sim, xvx1 = simulate_displacement_wrapper(self.floe1, self.t_aft, self.N_aft)

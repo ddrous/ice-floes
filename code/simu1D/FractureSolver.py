@@ -35,7 +35,6 @@ class Fracture:
         # self.springs = {}                   ## Springs must have global ids
         self.node_neighbors = {}            ## Left and right neighboring nodes for a node (potential collision with
         # them)
-        self.node_radius = {}               ## Radiuses for all nodes
         self.node_neighbors_springs = {}    ## Left and right neighboring springs for a node
         self.node_parent_floe = {}          ## Id of the ice floe to which this node belongs
         self.spring_parent_floe = {}        ## Id of the ice floe to which this spring belongs
@@ -47,11 +46,20 @@ class Fracture:
         self.init_pos = {}                  ## Initial positions for the nodes
         self.init_vel = {}                  ## Initial velocities for the nodes
 
+        self.node_radius = {}               ## Radiuses for all nodes
+        self.floe_masses = {}               ## Masses for all nodes
+        self.floe_stiffnesses = {}               ## Stiffnesses for all nodes
+        self.floe_viscosities = {}               ## VIscosities for all nodes
+        self.floe_init_lengths = {}              ## Initial lenghts for the springs for all nodes
         self.configurations = {}            ## All observed configurations until the end of simulation
 
         node_count = 0
         for i, floe in enumerate(floes):
             self.floes[i] = []
+            self.floe_masses[i] = floe.m
+            self.floe_stiffnesses = floe.k
+            self.floe_viscosities = floe.mu
+            self.floe_init_lengths = floe.initial_lengths()
             floe_position = floe.positions_array()
             floe_velocities = floe.velocities_array()
 
@@ -90,6 +98,7 @@ class Fracture:
         self.rec_count = {}         ## Recursions depth counter for each collision that happens
         self.contact_indices = {}   ## Each collision has a specific list of contact indices for the percussion
 
+
     def could_collide(self, i, j):
         """
         Checks if node of ids i and j could ever collide
@@ -123,9 +132,15 @@ class Fracture:
             for j in nodes[1:]:
                 self.x[:, j] = self.x[:, nodes[0]] + (self.init_pos[j] - self.init_pos[nodes[0]])
 
+    ####### ----------> Fire une boucle ici !
+        at_least_one_collision = False
+        for node_id, (left, right) in self.node_neighbors.items():
+            if self.could_collide(node_id, right) and self.check_colission(node_id, right):
+                at_least_one_collision = True
+                break
+
         ## Check whether any two ice floes will collide
-        collided = self.check_colission()
-        if not collided:
+        if not at_least_one_collision:
             ## Double simulation time and run phase 1 again
             self.t_bef = self.t_bef * 2
             self.t_aft = self.t_aft * 2
@@ -135,35 +150,124 @@ class Fracture:
             return
 
 
-    def check_colission(self):
+    def check_colission(self, left, right):
         """
-        Checks is any two floes will collide. If that is the case, save each nodes'
+        Checks is two floes will collide. If that is the case, save each nodes'
         position and velocity, then discard the remainder of the tensors.
         Returns whether or not there was at least one collision between two nodes.
         """
-        at_least_one_collision = False
+        start_index = max([self.confirmation_numbers[left], self.confirmation_numbers[right]])
+        springs = list(self.node_neighbors_springs[left]) + list(self.node_neighbors_springs[right])
+        end_index = min([self.potential_fractures[spring_id] for spring_id in springs])
+
+        collided = False
+        col_position = start_index
+        for i in range(start_index, end_index):
+            if self.x[i, left]+self.node_radius[left].R > self.x[i, right]-self.node_radius[right].R:
+                collided = True
+                col_position = i
+                self.contact_indices[i] = (left, right)
+                break
+
+        if collided:
+            ## Discard the positions and velocities after collision
+            neighbors = self.floes[self.node_parent_floe[left]] + self.floes[self.node_parent_floe[right]]
+            self.x[col_position+1:, neighbors ] = np.nan
+            self.v[col_position+1:, neighbors ] = np.nan
+            self.t[col_position+1:, neighbors ] = np.nan
+
+            ## Update confirmation numbers -- DO IT NOW ?
+            for node_id in neighbors:
+                self.confirmation_numbers[node_id] = col_position+1
+
+        return collided
+
+
+    def compute_at_contact(self, i, j):
+        """
+        Computes the resulting velocities of the two colliding nodes (i=left and j=right)
+        """
+
+        if (i is None) or (j is None): return
+        # assert self.could_collide(i, j), "These nodes cannot collide, why bring them here ?"
+
+        ## Compute the velocities after contact
+        v0 = np.abs(self.v[-1, i])
+        v0_ = np.abs(self.v[-1, j])
+        m = self.floe_masses[self.node_parent_floe[i]]
+        m_ = self.floe_masses[self.node_parent_floe[j]]
+        eps = self.eps
+
+        X = eps*(v0 - v0_)
+        Y = m*(v0**2) + m_*(v0_**2)
+        a = m+m_
+        b = 2*m_*X
+        c = m_*(X**2) - Y
+        Delta = b**2 - 4*a*c
+        V01 = (-b - np.sqrt(Delta)) / (2*a)
+        V02 = (-b + np.sqrt(Delta)) / (2*a)
+        V0 = V01 if V01 >= 0 else V02
+        V0_ = V0 + X
+
+        print("VELOCITIES BEFORE/AFTER CONTACT:")
+        print(" First floe:", [v0, -np.abs(V0)])
+        print(" Second floe:", [-v0_, np.abs(V0_)])
+
+        ## Update velocities at extreme nodes
+        self.v[-1, i] = -np.abs(V0)
+        self.v[-1, j] = np.abs(V0_)
+
+
+    def compute_after_contact(self):
+        """
+        Computes the positions and velocities of the any two colliding floes after a contact
+        """
         for node_id, (left, right) in self.node_neighbors.items():
-            if self.could_collide(node_id, right):
-                start_index = max([self.confirmation_numbers[node_id], self.confirmation_numbers[right]])
-                springs = list(self.node_neighbors_springs[node_id]) + list(self.node_neighbors_springs[right])
-                end_index = min([self.potential_fractures[spring_id] for spring_id in springs])
+            if self.could_collide(node_id, right) and self.check_colission(node_id, right):
+
+                self.compute_at_contact(node_id, right)       ## Calculate new speeds ...
+
+            ### -----------> Implement these wrappers
+                t_sim, xvx1 = self.simulate_displacement_wrapper(self.node_parent_floe[node_id], self.t_aft, self.N_aft)
+                t_sim, xvx2 = self.simulate_displacement_wrapper(self.node_parent_floe[right], self.t_aft, self.N_aft)
+
+                c_left, c_right = self.confirmation_numbers[node_id], self.confirmation_numbers[right]
+                assert c_left == c_right, "Must have same confirmation numbers"
+                self.t[c_left:c_left+self.N_aft] = self.t[-1] + t_sim
+
+                nodes_left = self.floes[self.node_parent_floe[node_id]]
+                nodes_right = self.floes[self.node_parent_floe[right]]
+                self.x[c_left:c_left+self.N_aft, nodes_left] = xvx1[:, :len(nodes_left)]
+                self.x[c_right:c_right+self.N_aft, nodes_right] = xvx2[:, :len(nodes_right)]
+
+                self.v[c_left:c_left+self.N_aft, nodes_left] = xvx1[:, len(nodes_left):]
+                self.v[c_right:c_right+self.N_aft, nodes_right] = xvx2[:, len(nodes_right):]
+
+                rec_id = len(self.rec_count)
+                print("Recursion depth:", self.rec_count[rec_id])
+
+                ## Check collision then recalculate if applicable
+                collided = self.check_colission(node_id, right)
+                if (not collided) or (c_left > self.N_bef+self.N_aft) or (self.rec_count[rec_id] > 9800):
+                        return
+                else:
+                    self.rec_count[rec_id] += 1
+                    self.compute_after_contact()
+
             else:
                 continue
 
-            collided = False
-            col_position = start_index
-            for i in range(start_index, end_index):
-                if self.x[i, node_id]+self.node_radius[node_id].R > self.x[i, right]-self.node_radius[right].R:
-                    collided = True
-                    col_position = i
-                    self.contact_indices[i] = (node_id, right)
-                    break
+    def simulate_displacement_wrapper(self, floe_id, t_simu=1.0, N=1000):
+        """
+        Wrapper function for simulate_displacement(), as a method for ease of use
+        """
+        n = len(self.floes[floe_id])
+        m = self.floe_masses[floe_id]
+        k = self.floe_stiffnesses[floe_id]
+        mu = self.floe_viscosities[floe_id]
+        all_nodes = self.floes[floe_id]
+        v0 = self.v[-1, all_nodes]
+        x0 = self.v[-1, all_nodes]
+        L0 = self.floe_init_lengths[floe_id]
 
-            if collided:
-                ## Discard the positions and velocities after collision
-                self.x[col_position+ 1: ] = np.nan
-                self.v[col_position+ 1: ] = np.nan
-                self.t[col_position+ 1: ] = np.nan
-
-            at_least_one_collision = at_least_one_collision or collided
-        return at_least_one_collision
+        return simulate_displacement(n, m, k, mu, x0, v0, L0, t_simu, N)
