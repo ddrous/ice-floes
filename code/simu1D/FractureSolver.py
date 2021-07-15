@@ -28,28 +28,28 @@ class Fracture:
 
         self.t_bef, self.t_aft = times          ## Simulation times before and after first contact
         self.N_bef = n_steps_before_contact     ## Number of time steps before first percussion
-        self.N_aft = int(n_steps_before_contact * (self.t_aft / self.t_bef))  ## Number of time steps after first percussion
+        self.N_aft = int(n_steps_before_contact * (self.t_aft / self.t_bef))  ## Number of time steps after first choc
 
         self.floes = {}                     ## A floe is a mutable list of nodes
         # self.nodes = {}                     ## Nodes must have global ids (same as dict keys)
         # self.springs = {}                   ## Springs must have global ids
-        self.node_neighbors = {}            ## Left and right neighboring nodes for a node (potential collision with
+        # self.node_neighbors = {}            ## Left and right neighboring nodes for a node (potential collision with
         # them)
-        self.node_neighbors_springs = {}    ## Left and right neighboring springs for a node
-        self.node_parent_floe = {}          ## Id of the ice floe to which this node belongs
-        self.spring_parent_floe = {}        ## Id of the ice floe to which this spring belongs
-        self.spring_neighbors_nodes = {}    ## Left and right neighboring nodes for a spring
+        # self.node_neighbors_springs = {}    ## Left and right neighboring springs for a node
+        # self.node_parent_floe = {}          ## Id of the ice floe to which this node belongs
+        # self.spring_parent_floe = {}        ## Id of the ice floe to which this spring belongs
+        # self.spring_neighbors_nodes = {}    ## Left and right neighboring nodes for a spring
 
         self.confirmation_numbers = {}      ## Point at which all calculations for one floe are confirmed
         self.potential_fractures = {}       ## Potential time step at which fracture occurs
         self.confirmed_fractures = {}       ## Confirmed time step at which fracture occurs
-        self.init_pos = {}                  ## Initial positions for the nodes
-        self.init_vel = {}                  ## Initial velocities for the nodes
+        # self.init_pos = {}                  ## Initial positions for the nodes
+        # self.init_vel = {}                  ## Initial velocities for the nodes
 
-        self.node_radius = {}               ## Radiuses for all nodes
-        self.floe_masses = {}               ## Masses for all nodes
-        self.floe_stiffnesses = {}               ## Stiffnesses for all nodes
-        self.floe_viscosities = {}               ## VIscosities for all nodes
+        # self.node_radius = {}               ## Radiuses for all nodes
+        # self.floe_masses = {}               ## Masses for all nodes
+        # self.floe_stiffnesses = {}               ## Stiffnesses for all nodes
+        # self.floe_viscosities = {}               ## VIscosities for all nodes
         self.floe_init_lengths = {}              ## Initial lenghts for the springs for all nodes
         self.configurations = {}            ## All observed configurations until the end of simulation
 
