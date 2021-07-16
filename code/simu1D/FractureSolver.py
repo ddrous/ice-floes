@@ -22,81 +22,94 @@ class Fracture:
     ice floes. Most of the function implemented in Percussion are
     repeated here.
     """
-    def __init__(self, floes, times, n_steps_before_contact, restitution_coef=0.4):
+    def __init__(self, floes, times, nStepsBefContact, restitutionCoef=0.4):
 
-        self.eps = restitution_coef             ## Resitution coefficient for all percussions
+        self.eps = restitutionCoef              ## Resitution coefficient for all percussions
 
-        self.t_bef, self.t_aft = times          ## Simulation times before and after first contact
-        self.N_bef = n_steps_before_contact     ## Number of time steps before first percussion
-        self.N_aft = int(n_steps_before_contact * (self.t_aft / self.t_bef))  ## Number of time steps after first choc
+        self.tBef, self.tAft = times            ## Simulation times before and after first contact
+        self.NBef = nStepsBefContact            ## Number of time steps before first percussion
+        self.NAft = int(nStepsBefContact * (self.tAft / self.tBef))  ## Number of time steps after first choc
 
-        self.floes = {}                     ## A floe is a mutable list of nodes
+        self.floes = {floe.id:floe for floe in floes}                     ## A floe is a mutable list of nodes
         # self.nodes = {}                     ## Nodes must have global ids (same as dict keys)
         # self.springs = {}                   ## Springs must have global ids
-        # self.node_neighbors = {}            ## Left and right neighboring nodes for a node (potential collision with
-        # them)
-        # self.node_neighbors_springs = {}    ## Left and right neighboring springs for a node
-        # self.node_parent_floe = {}          ## Id of the ice floe to which this node belongs
-        # self.spring_parent_floe = {}        ## Id of the ice floe to which this spring belongs
-        # self.spring_neighbors_nodes = {}    ## Left and right neighboring nodes for a spring
 
-        self.confirmation_numbers = {}      ## Point at which all calculations for one floe are confirmed
-        self.potential_fractures = {}       ## Potential time step at which fracture occurs
-        self.confirmed_fractures = {}       ## Confirmed time step at which fracture occurs
-        # self.init_pos = {}                  ## Initial positions for the nodes
-        # self.init_vel = {}                  ## Initial velocities for the nodes
+        self.confirmationNumbers = {}      ## Point at which all calculations for one floe are confirmed
+        self.potentialFractures = {}       ## Potential time step at which fracture occurs
+        self.confirmedFractures = {}       ## Confirmed time step at which fracture occurs
+        self.initPos = self.positionsArray()                  ## Initial positions for the nodes
+        self.initVel = self.velocitiesArray()                 ## Initial velocities for the nodes
+        self.initLengths = self.initialLengths()
 
-        # self.node_radius = {}               ## Radiuses for all nodes
-        # self.floe_masses = {}               ## Masses for all nodes
-        # self.floe_stiffnesses = {}               ## Stiffnesses for all nodes
-        # self.floe_viscosities = {}               ## VIscosities for all nodes
-        self.floe_init_lengths = {}              ## Initial lenghts for the springs for all nodes
+        self.floeInitLengths = {}           ## Initial lenghts for the springs for all nodes
         self.configurations = {}            ## All observed configurations until the end of simulation
 
-        node_count = 0
-        for i, floe in enumerate(floes):
-            self.floes[i] = []
-            self.floe_masses[i] = floe.m
-            self.floe_stiffnesses = floe.k
-            self.floe_viscosities = floe.mu
-            self.floe_init_lengths = floe.initial_lengths()
-            floe_position = floe.positions_array()
-            floe_velocities = floe.velocities_array()
+        nodeCount = 0
+        for i, floe in self.floes.items():
+            self.floes[i] = floe
 
             for j, node in enumerate(floe.nodes):
-                node.id = node_count                            ## Dangerous ! Not strictly necessary
-                # self.nodes[node_count] = node
-                self.node_radius[node_count] = node.R
-                self.confirmation_numbers[node_count] = 0
-                self.node_parent_floe[node_count] = i
-                self.init_pos[node_count] = floe_position[i]
-                self.init_vel[node_count] = floe_velocities[i]
+                node.id = nodeCount
+                self.confirmationNumbers[nodeCount] = 0
+                node.parentFloe = floe.id
 
                 if j == 0:
-                    self.node_neighbors[node_count] = (None, node_count+1)
-                    self.node_neighbors_springs[node_count] = (None, node_count)
+                    node.leftNode, node.rightNode = (None, nodeCount+1)
+                    node.leftSpring, node.rightSpring = (None, nodeCount)
                 elif j == floe.n - 1:
-                    self.node_neighbors[node_count] = (node_count-1, None)
-                    self.node_neighbors_springs[node_count] = (node_count-1, None)
+                    node.leftNode, node.rightNode = (nodeCount-1, None)
+                    node.leftSpring, node.rightSpring = (nodeCount-1, None)
                 else:
-                    self.node_neighbors[node_count] = (node_count - 1, node_count + 1)
-                    self.node_neighbors_springs[node_count] = (node_count-1, node_count)
+                    node.leftNode, node.rightNode = (nodeCount - 1, nodeCount + 1)
+                    node.leftSpring, node.rightSpring = (nodeCount-1, nodeCount)
+
+                if node.rightSpring == nodeCount:       ## Just a random test to get good ids!
+                    floe.springs[j].id = nodeCount
+                    floe.springs[j].parentFloe = i
+                    floe.springs[j].leftNode = nodeCount
+                    floe.springs[j].rigthNode = nodeCount + 1
+                    self.potentialFractures[nodeCount] = self.NBef + self.NAft
+                    self.confirmedFractures[nodeCount] = self.NBef + self.NAft
+
+                nodeCount += 1
+
+        self.nbNodes = nodeCount   ## Total number of nodes
+        self.recCount = {}         ## Recursions depth counter for each collision that happens
+        self.contactIndices = {}   ## Each collision has a specific list of contact indices for the percussion
 
 
-                if self.node_neighbors_springs[node_count][1] == node_count:
-                    # self.springs[node_count] = spring
-                    self.potential_fractures[node_count] = self.N_bef + self.N_aft
-                    self.confirmed_fractures[node_count] = self.N_bef + self.N_aft
-                    self.spring_parent_floe[node_count] = i
-                    self.spring_neighbors_nodes[node_count] = (node_count, node_count+1)
+    def positionsArray(self):
+        """
+        Returns positions of all nodes of all floes
+        """
+        x = np.zeros((self.nbNodes))
+        for floe in self.floes.values():
+            for node in floe.nodes:
+                x[node.id] = node.x
+        return x
 
-                self.floes[i].append(node_count)
-                node_count += 1
 
-        self.nb_nodes = node_count   ## Total number of nodes
+    def velocitiesArray(self):
+        """
+        Returns velocities of all nodes in a specific order
+        """
+        v = np.zeros((self.nbNodes))
+        for floe in self.floes.values():
+            for j, node in enumerate(floe.nodes):
+                v[node.id] = node.vx
+        return v
 
-        self.rec_count = {}         ## Recursions depth counter for each collision that happens
-        self.contact_indices = {}   ## Each collision has a specific list of contact indices for the percussion
+
+    def initialLengths(self):
+        """
+        Initial lengths of springs of all floes
+        """
+        L0 = []
+        for floe in self.floes.values():
+            for spring in floe.springs:
+                L0.append(spring.L0)
+        return np.array(L0)
+
 
 
     def could_collide(self, i, j):
