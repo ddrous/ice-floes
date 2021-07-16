@@ -31,8 +31,8 @@ class Fracture:
         self.NAft = int(nStepsBefContact * (self.tAft / self.tBef))  ## Number of time steps after first choc
 
         self.floes = {floe.id:floe for floe in floes}                     ## A floe is a mutable list of nodes
-        # self.nodes = {}                     ## Nodes must have global ids (same as dict keys)
-        # self.springs = {}                   ## Springs must have global ids
+        self.nodeIds = []                     ## A list of all node ids from all different floes
+        self.springIds = []                   ## A list of all spring ids from all different floes
 
         self.confirmationNumbers = {}      ## Point at which all calculations for one floe are confirmed
         self.potentialFractures = {}       ## Potential time step at which fracture occurs
@@ -112,7 +112,7 @@ class Fracture:
 
 
 
-    def could_collide(self, i, j):
+    def couldCollide(self, i, j):
         """
         Checks if node of ids i and j could ever collide
         """
@@ -120,20 +120,16 @@ class Fracture:
             return False
         else:
             a, b = min([i, j]), max([i, j])
-            are_neighbors = a >= 0 and b < len(self.node_neighbors) and b-a == 1
-            spring_not_exists = a not in self.spring_parent_floe
-            return are_neighbors and spring_not_exists
+            areNeighbors = a >= 0 and b < self.nbNodes and b-a == 1
+            springNotExists = a not in self.springIds
+            return areNeighbors and springNotExists
 
-    def add_configuration(self):
+    def addConfiguration(self, index):
         """
         Creates and saves a node configuration for our problem (important for plotting)
         """
-        self.configurations[len(self.configurations)] = {"ice_floes": self.floes,
-                                                         "node_neighbors": self.node_neighbors,
-                                                         "node_neighbors_springs": self.node_neighbors_springs,
-                                                         "node_parent_floe": self.node_parent_floe,
-                                                         "spring_parent_floe": self.spring_parent_floe,
-                                                         "spring_neighbors_nodes": self.spring_neighbors_nodes}
+        self.configurations[len(self.configurations)] = {"index": index,
+                                                         "floes": self.floes.copy()}
 
     def compute_before_contact(self):
         self.t = np.linspace(0, self.t_bef, self.N_bef+1)
