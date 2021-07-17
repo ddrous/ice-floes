@@ -110,6 +110,37 @@ class Fracture:
                 L0.append(spring.L0)
         return np.array(L0)
 
+    def locateNodeId(self, nodeId):
+        """
+        Tells you to witch floe a node belongs to and its local id
+        """
+        for i, floe in self.floes.items():
+            for j, node in enumerate(floe.nodes):
+                if node.id == nodeId:
+                    return (i, j)
+                else:
+                    raise IndexError("A node with this id doest not exist")
+
+    def locateNode(self, nodeId):
+        """
+        Returns the node corresponding to a certain id
+        """
+        c = self.locateNodeId(nodeId)
+        return self.floes[c[0]].nodes[c[1]]
+
+    def neighbouringNodes(self, nodeId):
+        """
+        Tells you neighboring nodes for a particular node id
+        """
+        node = self.locateNode(nodeId)     ## Local coordinates of the node
+        return (node.leftNode, node.rightnode)
+
+    def neighbouringSprings(self, nodeId):
+        """
+        Tells you neighboring springs for a particular node id
+        """
+        node = self.locateNode(nodeId)     ## Local coordinates of the node
+        return (node.leftSpring, node.rightSpring)
 
 
     def couldCollide(self, i, j):
@@ -131,80 +162,88 @@ class Fracture:
         self.configurations[len(self.configurations)] = {"index": index,
                                                          "floes": self.floes.copy()}
 
-    def compute_before_contact(self):
-        self.t = np.linspace(0, self.t_bef, self.N_bef+1)
-        self.x = np.zeros((self.t.size, self.nb_nodes))      ## Positions for each node
-        self.v = self.init_vel * np.ones((self.t.size, self.nb_nodes))      ## Velocities along x for floe1
+    def computeBeforeContact(self):
+        self.t = np.linspace(0, self.tBef, self.NBef+1)
+        initPos = self.positionsArray()
+        initVel = self.velocitiesArray()
+        self.x = initPos * np.ones((self.t.size, self.nbNodes))                              ## Positions for each node
+        self.v = initVel * np.ones((self.t.size, self.nbNodes))      ## Velocities along x
 
-        for nodes in self.floes.values():
-            self.x[:, nodes[0]] = simulate_uniform_mov(self.init_pos[nodes[0]], self.init_vel[nodes[0]], self.t)
-            for j in nodes[1:]:
-                self.x[:, j] = self.x[:, nodes[0]] + (self.init_pos[j] - self.init_pos[nodes[0]])
+        for floe in self.floes.values():
+            firstNode = floe.nodes[0].id
+            self.x[:, firstNode] = simulate_uniform_mov(initPos[firstNode],
+                                                               initVel[firstNode], self.t)
+            for node in floe.nodes[1:]:
+                self.x[:, node.id] = self.x[:, firstNode] + (self.initPos[node.id] - self.initPos[firstNode])
 
-    ####### ----------> Fire une boucle ici !
-        at_least_one_collision = False
-        for node_id, (left, right) in self.node_neighbors.items():
-            if self.could_collide(node_id, right) and self.check_colission(node_id, right):
-                at_least_one_collision = True
+    ####### ----------> Faire une boucle ici !
+        atLeastOneCollision = False
+        for floe in self.floes.values():
+            for node in floe.nodes:
+                if self.couldCollide(node.id, node.rightNode) and self.checkCollision(node.id, node.rightNode):
+                    atLeastOneCollision = True
+                    break
+            if atLeastOneCollision:
                 break
 
         ## Check whether any two ice floes will collide
-        if not at_least_one_collision:
+        if not atLeastOneCollision:
             ## Double simulation time and run phase 1 again
-            self.t_bef = self.t_bef * 2
-            self.t_aft = self.t_aft * 2
-            self.compute_before_contact()
+            self.tBef = self.tBef * 2
+            self.tAft = self.tAft * 2
+            self.computeBeforeContact()
         else:
             ## Then phase 1 is OK
             return
 
 
-    def check_colission(self, left, right):
+    def checkCollision(self, left, right):
         """
         Checks is two floes will collide. If that is the case, save each nodes'
         position and velocity, then discard the remainder of the tensors.
         Returns whether or not there was at least one collision between two nodes.
         """
-        start_index = max([self.confirmation_numbers[left], self.confirmation_numbers[right]])
-        springs = list(self.node_neighbors_springs[left]) + list(self.node_neighbors_springs[right])
-        end_index = min([self.potential_fractures[spring_id] for spring_id in springs])
+        startIndex = max([self.confirmationNumbers[left], self.confirmationNumbers[right]])
+        springs = list(self.neighbouringSprings(left)) + list(self.neighbouringSprings(right))
+        endIndex = min([self.potentialFractures[springId] for springId in springs])
 
+        leftNode, rightNode = self.locateNode(left), self.locateNode(right)
         collided = False
-        col_position = start_index
-        for i in range(start_index, end_index):
-            if self.x[i, left]+self.node_radius[left].R > self.x[i, right]-self.node_radius[right].R:
+        colPosition = startIndex
+        for i in range(startIndex, endIndex):
+            if self.x[i, left]+leftNode.R > self.x[i, right]-rightNode.R:
                 collided = True
-                col_position = i
-                self.contact_indices[i] = (left, right)
+                colPosition = i
+                self.contactIndices[i] = (left, right)
                 break
 
         if collided:
             ## Discard the positions and velocities after collision
-            neighbors = self.floes[self.node_parent_floe[left]] + self.floes[self.node_parent_floe[right]]
-            self.x[col_position+1:, neighbors ] = np.nan
-            self.v[col_position+1:, neighbors ] = np.nan
-            self.t[col_position+1:, neighbors ] = np.nan
+            neighbors = list(self.neighbouringNodes(left)) + list(self.neighbouringNodes(right))
+            self.x[colPosition+1:, neighbors ] = np.nan
+            self.v[colPosition+1:, neighbors ] = np.nan
+            self.t[colPosition+1:, neighbors ] = np.nan
 
             ## Update confirmation numbers -- DO IT NOW ?
-            for node_id in neighbors:
-                self.confirmation_numbers[node_id] = col_position+1
+            for nodeId in neighbors:
+                self.confirmationNumbers[nodeId] = colPosition+1
 
         return collided
 
 
-    def compute_at_contact(self, i, j):
+    def computeAtContact(self, left, right):
         """
         Computes the resulting velocities of the two colliding nodes (i=left and j=right)
         """
-
-        if (i is None) or (j is None): return
+        if (left is None) or (right is None): return
+        leftNode, rightNode = self.locateNode(left), self.locateNode(right)
         # assert self.could_collide(i, j), "These nodes cannot collide, why bring them here ?"
 
         ## Compute the velocities after contact
-        v0 = np.abs(self.v[-1, i])
-        v0_ = np.abs(self.v[-1, j])
-        m = self.floe_masses[self.node_parent_floe[i]]
-        m_ = self.floe_masses[self.node_parent_floe[j]]
+        v0 = np.abs(leftNode.vx)
+        v0_ = np.abs(rightNode.vx)
+        m = self.floes[leftNode.parentFloe].m
+        m_ = self.floes[rightNode.parentFloe].m
         eps = self.eps
 
         X = eps*(v0 - v0_)
@@ -223,60 +262,49 @@ class Fracture:
         print(" Second floe:", [-v0_, np.abs(V0_)])
 
         ## Update velocities at extreme nodes
-        self.v[-1, i] = -np.abs(V0)
-        self.v[-1, j] = np.abs(V0_)
+        leftNode.vx = -np.abs(V0)
+        rightNode.vx = np.abs(V0_)
 
 
-    def compute_after_contact(self):
+    def computeAfterContact(self):
         """
         Computes the positions and velocities of the any two colliding floes after a contact
         """
-        for node_id, (left, right) in self.node_neighbors.items():
-            if self.could_collide(node_id, right) and self.check_colission(node_id, right):
 
-                self.compute_at_contact(node_id, right)       ## Calculate new speeds ...
+        for floe in self.floes.values():
+            for node in floe.nodes:
+                left, right = node.id, node.rightNode
+                leftNode, rightNode = self.locateNode(left), self.locateNode(right)
+                if self.couldCollide(left, right) and self.checkCollision(left, right):
 
-            ### -----------> Implement these wrappers
-                t_sim, xvx1 = self.simulate_displacement_wrapper(self.node_parent_floe[node_id], self.t_aft, self.N_aft)
-                t_sim, xvx2 = self.simulate_displacement_wrapper(self.node_parent_floe[right], self.t_aft, self.N_aft)
+                    self.computeAtContact(left, right)       ## Calculate new speeds ...
 
-                c_left, c_right = self.confirmation_numbers[node_id], self.confirmation_numbers[right]
-                assert c_left == c_right, "Must have same confirmation numbers"
-                self.t[c_left:c_left+self.N_aft] = self.t[-1] + t_sim
+                    tSim, xvxL = simulate_displacement_wrapper(self.floes[leftNode.parentFloe], self.tAft, self.NAft)
+                    tSim, xvxR = simulate_displacement_wrapper(self.floes[rightNode.parentFloe], self.tAft, self.NAft)
 
-                nodes_left = self.floes[self.node_parent_floe[node_id]]
-                nodes_right = self.floes[self.node_parent_floe[right]]
-                self.x[c_left:c_left+self.N_aft, nodes_left] = xvx1[:, :len(nodes_left)]
-                self.x[c_right:c_right+self.N_aft, nodes_right] = xvx2[:, :len(nodes_right)]
+                    cL, cR = self.confirmationNumbers[left], self.confirmationNumbers[right]
+                    assert cL == cR, "Must have same confirmation numbers"
+                    self.t[cL:cL+self.NAft] = self.t[-1] + tSim
 
-                self.v[c_left:c_left+self.N_aft, nodes_left] = xvx1[:, len(nodes_left):]
-                self.v[c_right:c_right+self.N_aft, nodes_right] = xvx2[:, len(nodes_right):]
+                    nodesL = self.floes[leftNode.parentFloe]
+                    nodesR = self.floes[rightNode.parentFloe]
+                    self.x[cL:cL+self.NAft, nodesL] = xvxL[:, :len(nodesL)]
+                    self.x[cR:cR+self.NAft, nodesR] = xvxR[:, :len(nodesR)]
 
-                rec_id = len(self.rec_count)
-                print("Recursion depth:", self.rec_count[rec_id])
+                    self.v[cL:cL+self.NAft, nodesL] = xvxL[:, len(nodesL):]
+                    self.v[cR:cR+self.NAft, nodesR] = xvxR[:, len(nodesR):]
 
-                ## Check collision then recalculate if applicable
-                collided = self.check_colission(node_id, right)
-                if (not collided) or (c_left > self.N_bef+self.N_aft) or (self.rec_count[rec_id] > 9800):
-                        return
+                    recId = len(self.recCount)
+                    print("Recursion depth:", self.recCount[recId])
+
+                    ## Check collision then recalculate if applicable
+                    collided = self.checkColission(left, right)
+                    if (not collided) or (cL > self.NBef+self.NAft) or (self.recCount[recId] > 980):
+                            return
+                    else:
+                        self.recCount[recId] += 1
+                        self.computeAfterContact()
+
                 else:
-                    self.rec_count[rec_id] += 1
-                    self.compute_after_contact()
+                    continue
 
-            else:
-                continue
-
-    def simulate_displacement_wrapper(self, floe_id, t_simu=1.0, N=1000):
-        """
-        Wrapper function for simulate_displacement(), as a method for ease of use
-        """
-        n = len(self.floes[floe_id])
-        m = self.floe_masses[floe_id]
-        k = self.floe_stiffnesses[floe_id]
-        mu = self.floe_viscosities[floe_id]
-        all_nodes = self.floes[floe_id]
-        v0 = self.v[-1, all_nodes]
-        x0 = self.v[-1, all_nodes]
-        L0 = self.floe_init_lengths[floe_id]
-
-        return simulate_displacement(n, m, k, mu, x0, v0, L0, t_simu, N)
