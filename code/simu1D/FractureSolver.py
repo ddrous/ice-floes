@@ -34,8 +34,8 @@ class Fracture:
         for i, floe in enumerate(floes):
             floe.id = i
             self.floes[i] = floe
-        # self.nodeIds = []                     ## A list of all node ids from all different floes
-        # self.springIds = []                   ## A list of all spring ids from all different floes
+        self.nodeIds = []                     ## A list of all node ids from all different floes
+        self.springIds = []                   ## A list of all spring ids from all different floes
 
         self.confirmationNumbers = {}      ## Point at which all calculations for one floe are confirmed
         self.potentialFractures = {}       ## Potential time step at which fracture occurs
@@ -49,6 +49,7 @@ class Fracture:
                 node.id = nodeCount
                 self.confirmationNumbers[nodeCount] = 0
                 node.parentFloe = floe.id
+                self.nodeIds.append(nodeCount)
 
                 if j == 0:
                     node.leftNode, node.rightNode = (None, nodeCount+1)
@@ -67,6 +68,7 @@ class Fracture:
                     floe.springs[j].rigthNode = nodeCount + 1
                     self.potentialFractures[nodeCount] = self.NBef + self.NAft
                     self.confirmedFractures[nodeCount] = self.NBef + self.NAft
+                    self.springIds.append(nodeCount)
 
                 nodeCount += 1
 
@@ -85,6 +87,11 @@ class Fracture:
         """
         Prints details about each node in the problem
         """
+        print("\nFRACTURE PROBLEM PARAMETERS")
+        print("  times:", (self.tBef, self.tAft))
+        print("  nb steps:", (self.NBef, self.NAft))
+        print("  restitution coefficient:", self.eps)
+        print()
         for floe in self.floes.values():
             for node in floe.nodes:
                 print(node)
@@ -93,11 +100,6 @@ class Fracture:
         """
         Returns positions of all nodes of all floes
         """
-        print("\nFRACTURE PROBLEM PARAMETERS")
-        print("  times:", (self.tBef, self.tAft))
-        print("  nb steps:", (self.NBef, self.NAft))
-        print("  restitution coefficient:", self.eps)
-        print()
         x = np.zeros((self.nbNodes))
         for floe in self.floes.values():
             for node in floe.nodes:
@@ -159,18 +161,6 @@ class Fracture:
         return (node.leftSpring, node.rightSpring)
 
 
-    def couldCollide(self, i, j):
-        """
-        Checks if node of ids i and j could ever collide
-        """
-        if i is None or j is None:
-            return False
-        else:
-            a, b = min([i, j]), max([i, j])
-            areNeighbors = a >= 0 and b < self.nbNodes and b-a == 1
-            springNotExists = a not in self.springIds
-            return areNeighbors and springNotExists
-
     def addConfiguration(self, startIndex):
         """
         Creates and saves a node configuration for our problem (important for plotting)
@@ -184,18 +174,17 @@ class Fracture:
         self.x = initPos * np.ones((self.t.size, self.nbNodes))                              ## Positions for each node
         self.v = initVel * np.ones((self.t.size, self.nbNodes))      ## Velocities along x
 
+        # print("Time HERE:", self.t)
         for floe in self.floes.values():
             firstNode = floe.nodes[0].id
-            self.x[:, firstNode] = simulate_uniform_mov(initPos[firstNode],
-                                                               initVel[firstNode], self.t)
+            self.x[:, firstNode] = simulate_uniform_mov(initPos[firstNode], initVel[firstNode], self.t)
             for node in floe.nodes[1:]:
                 self.x[:, node.id] = self.x[:, firstNode] + (self.initPos[node.id] - self.initPos[firstNode])
 
-    ####### ----------> Faire une boucle ici !
         atLeastOneCollision = False
         for floe in self.floes.values():
             for node in floe.nodes:
-                if self.couldCollide(node.id, node.rightNode) and self.checkCollision(node.id, node.rightNode):
+                if self.checkCollision(node.id, node.rightNode):
                     atLeastOneCollision = True
                     break
             if atLeastOneCollision:
@@ -211,6 +200,18 @@ class Fracture:
             ## Then phase 1 is OK
             return
 
+    def couldCollide(self, left, right):
+        """
+        Checks if node of ids i and j could ever collide
+        """
+
+        a, b = min([left, right]), max([left, right])
+        areNeighbors = a >= 0 and b < self.nbNodes and b-a == 1
+        # springNotExists = a not in self.springIds
+        nL, nR = self.locateNode(left), self.locateNode(right)
+        differentParents = nL.parentFloe != nR.parentFloe
+        return areNeighbors and differentParents
+
 
     def checkCollision(self, left, right):
         """
@@ -218,32 +219,38 @@ class Fracture:
         position and velocity, then discard the remainder of the tensors.
         Returns whether or not there was at least one collision between two nodes.
         """
-        startIndex = max([self.confirmationNumbers[left], self.confirmationNumbers[right]])
-        springs = list(self.neighbouringSprings(left)) + list(self.neighbouringSprings(right))
-        endIndex = min([self.potentialFractures[springId] for springId in springs])
 
-        leftNode, rightNode = self.locateNode(left), self.locateNode(right)
-        collided = False
-        colPosition = startIndex
-        for i in range(startIndex, endIndex):
-            if self.x[i, left]+leftNode.R > self.x[i, right]-rightNode.R:
-                collided = True
-                colPosition = i
-                self.contactIndices[i] = (left, right)
-                break
+        if not self.couldCollide(left, right):
+            print("Could Not COllide:", (left, right))
+            return False
+        else:
+            startIndex = max([self.confirmationNumbers[left], self.confirmationNumbers[right]])
+            springs = list(self.neighbouringSprings(left)) + list(self.neighbouringSprings(right))
+            endIndex = min([self.potentialFractures[springId] for springId in springs])
 
-        if collided:
-            ## Discard the positions and velocities after collision
-            neighbors = list(self.neighbouringNodes(left)) + list(self.neighbouringNodes(right))
-            self.x[colPosition+1:, neighbors ] = np.nan
-            self.v[colPosition+1:, neighbors ] = np.nan
-            self.t[colPosition+1:, neighbors ] = np.nan
+            leftNode, rightNode = self.locateNode(left), self.locateNode(right)
+            collided = False
+            colPosition = startIndex
+            for i in range(startIndex, endIndex):
+                if self.x[i, left]+leftNode.R > self.x[i, right]-rightNode.R:
+                    collided = True
+                    colPosition = i
+                    self.contactIndices[i] = (left, right)
+                    break
 
-            ## Update confirmation numbers -- DO IT NOW ?
-            for nodeId in neighbors:
-                self.confirmationNumbers[nodeId] = colPosition+1
+            if collided:
+                ## Discard the positions and velocities after collision
+                neighbors = list(self.neighbouringNodes(left)) + list(self.neighbouringNodes(right))
+                self.x[colPosition+1:, neighbors ] = np.nan
+                self.v[colPosition+1:, neighbors ] = np.nan
+                self.t[colPosition+1:, neighbors ] = np.nan
 
-        return collided
+                ## Update confirmation numbers -- DO IT NOW ?
+                for nodeId in neighbors:
+                    self.confirmationNumbers[nodeId] = colPosition+1
+                print("Collided:", (left, right))
+
+            return collided
 
 
     def computeAtContact(self, left, right):
