@@ -44,6 +44,15 @@ class Node:
         self.leftSpring = None
         self.rightSpring = None
 
+    def __str__(self):
+        return "Node ["+ str(self.id) +"] properties: \n" \
+               + "  position: " + str(self.x) + "\n" \
+               + "  velocity: " + str(self.vx) + "\n" \
+               + "  radius: " + str(self.R) + "\n" \
+               + "  parent floe: " + str(self.parentFloe) + "\n" \
+               + "  neighbouring nodes: (" + str(self.leftNode) + ", " + str(self.rightNode) + ")\n" \
+               + "  neighbouring springs: (" + str(self.leftSpring) + ", " + str(self.rightSpring) + ")\n"
+
     def plot(self, figax=None):
         fig, ax = figax
 

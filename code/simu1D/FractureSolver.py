@@ -30,19 +30,16 @@ class Fracture:
         self.NBef = nStepsBefContact            ## Number of time steps before first percussion
         self.NAft = int(nStepsBefContact * (self.tAft / self.tBef))  ## Number of time steps after first choc
 
-        self.floes = {floe.id:floe for floe in floes}                     ## A floe is a mutable list of nodes
-        self.nodeIds = []                     ## A list of all node ids from all different floes
-        self.springIds = []                   ## A list of all spring ids from all different floes
+        self.floes = {}
+        for i, floe in enumerate(floes):
+            floe.id = i
+            self.floes[i] = floe
+        # self.nodeIds = []                     ## A list of all node ids from all different floes
+        # self.springIds = []                   ## A list of all spring ids from all different floes
 
         self.confirmationNumbers = {}      ## Point at which all calculations for one floe are confirmed
         self.potentialFractures = {}       ## Potential time step at which fracture occurs
         self.confirmedFractures = {}       ## Confirmed time step at which fracture occurs
-        self.initPos = self.positionsArray()                  ## Initial positions for the nodes
-        self.initVel = self.velocitiesArray()                 ## Initial velocities for the nodes
-        self.initLengths = self.initialLengths()
-
-        self.floeInitLengths = {}           ## Initial lenghts for the springs for all nodes
-        self.configurations = {}            ## All observed configurations until the end of simulation
 
         nodeCount = 0
         for i, floe in self.floes.items():
@@ -74,14 +71,33 @@ class Fracture:
                 nodeCount += 1
 
         self.nbNodes = nodeCount   ## Total number of nodes
+
+        self.initPos = self.positionsArray()                  ## Initial positions for the nodes
+        self.initVel = self.velocitiesArray()                 ## Initial velocities for the nodes
+        self.initLengths = self.initialLengths()              ## Initial lenghts for the springs for all nodes
+
         self.recCount = {}         ## Recursions depth counter for each collision that happens
         self.contactIndices = {}   ## Each collision has a specific list of contact indices for the percussion
+        self.configurations = {}            ## All observed configurations until the end of simulation
 
+
+    def printDetails(self):
+        """
+        Prints details about each node in the problem
+        """
+        for floe in self.floes.values():
+            for node in floe.nodes:
+                print(node)
 
     def positionsArray(self):
         """
         Returns positions of all nodes of all floes
         """
+        print("\nFRACTURE PROBLEM PARAMETERS")
+        print("  times:", (self.tBef, self.tAft))
+        print("  nb steps:", (self.NBef, self.NAft))
+        print("  restitution coefficient:", self.eps)
+        print()
         x = np.zeros((self.nbNodes))
         for floe in self.floes.values():
             for node in floe.nodes:
@@ -155,12 +171,11 @@ class Fracture:
             springNotExists = a not in self.springIds
             return areNeighbors and springNotExists
 
-    def addConfiguration(self, index):
+    def addConfiguration(self, startIndex):
         """
         Creates and saves a node configuration for our problem (important for plotting)
         """
-        self.configurations[len(self.configurations)] = {"index": index,
-                                                         "floes": self.floes.copy()}
+        self.configurations[startIndex] = {self.floes.copy()}
 
     def computeBeforeContact(self):
         self.t = np.linspace(0, self.tBef, self.NBef+1)
@@ -308,3 +323,60 @@ class Fracture:
                 else:
                     continue
 
+
+
+    def saveFig(self, fps=24, filename="Exports/Anim1D.gif", openFile=True):
+        """
+        Plot both ice floes whose nodes are at (x1,y1) and (x2,y2) with same radius R
+        """
+        leftMostNode = self.locateNode(0)
+        rightMostNode = self.locateNode(self.nbNodes)
+        min_X = leftMostNode.x0 - leftMostNode.R
+        max_X = rightMostNode.x0 + rightMostNode.R
+        max_R = np.max([floe.max_radius() for floe in self.floes.values()])
+
+        plt.style.use("default")
+        fig = plt.figure(figsize=(max_X-min_X, 5*max_R), dpi=72)
+        ax = fig.add_subplot(111)
+
+        # ax.set_xlim(min_X, max_X)
+        # ax.set_ylim(-4 * max_R, 4 * max_R)
+        # ax.set_aspect('equal', adjustable='box')
+
+        dt = self.t_bef/self.N_bef
+        di = int(1 / fps / dt)
+
+        img_list = []
+
+        print("Generating frames ...")
+        ## For loop to update the floes nodes, then plot
+        for i in range(0, self.t.size, di):
+
+            ##----------------------------------------
+            for index in self.configurations.keys():
+                if i >= index:
+                    floes = self.configurations[index]
+                    break
+            ##----------------------------------------
+
+            print("  ", i // di, '/', self.t.size // di)
+            for floe in floes:
+                for node in floe.nodes:
+                    node.x = self.x[i, node.id]
+                    node.vx = self.v[i, node.id]
+                floe.plot(figax=(fig,ax))
+
+            ax.set_xlim(min_X, max_X)
+            ax.set_ylim(-2 * max_R, 2 * max_R)
+            ax.set_aspect('equal', adjustable='box')
+
+            img_list.append(fig2img(fig))
+
+            plt.cla()      # Clear the Axes ready for the next image.
+
+        imageio.mimwrite(filename, img_list)
+        print("OK! saved file '"+filename+"'")
+
+        if openFile:
+            ## Open animation
+            os.system('gthumb '+filename)     ## Only on Linux

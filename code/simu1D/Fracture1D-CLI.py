@@ -45,16 +45,7 @@ if __name__=="__main__":
     floe2.generate_nodes(X_max-total_length2, X_max, n_nodes2, R)
 
     ## Create two ice floes
-    f = Fracture([floe1, floe2, floe2], times=(4.0,12.0), n_steps_before_contact=4000, restitution_coef=eps)
-
-    print("Floes:", f.floes)
-    print("Neighbors:", f.node_neighbors)
-    print("Node Neighbors (springs):", f.node_neighbors_springs)
-    print("Node Parent floe:", f.node_parent_floe)
-    print("Spring Parent floe:", f.spring_parent_floe)
-    print("Spring Neighbors (nodes):", f.spring_neighbors_nodes)
-
-    print("Could collide:", f.could_collide(8, 10))
-    print("Total number of nodes:", f.nb_nodes)
+    f = Fracture([floe1, floe2, floe2], times=(4.0,12.0), nStepsBefContact=4000, restitutionCoef=eps)
+    f.printDetails()
 
 
