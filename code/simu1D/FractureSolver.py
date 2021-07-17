@@ -51,15 +51,28 @@ class Fracture:
                 node.parentFloe = floe.id
                 self.nodeIds.append(nodeCount)
 
+                # if j == 0:
+                #     node.leftNode, node.rightNode = (None, nodeCount+1)
+                #     node.leftSpring, node.rightSpring = (None, nodeCount)
+                # elif j == floe.n - 1:
+                #     node.leftNode, node.rightNode = (nodeCount-1, None)
+                #     node.leftSpring, node.rightSpring = (nodeCount-1, None)
+                # else:
+                #     node.leftNode, node.rightNode = (nodeCount - 1, nodeCount + 1)
+                #     node.leftSpring, node.rightSpring = (nodeCount-1, nodeCount)
+
+                node.leftNode, node.rightNode = (nodeCount - 1, nodeCount + 1)
+                node.leftSpring, node.rightSpring = (nodeCount - 1, nodeCount)
+
                 if j == 0:
-                    node.leftNode, node.rightNode = (None, nodeCount+1)
+                    if i == 0:
+                        node.leftNode, node.rightNode = (None, nodeCount + 1)
                     node.leftSpring, node.rightSpring = (None, nodeCount)
                 elif j == floe.n - 1:
-                    node.leftNode, node.rightNode = (nodeCount-1, None)
+                    if i == len(self.floes) - 1:
+                        node.leftNode, node.rightNode = (nodeCount - 1, None)
                     node.leftSpring, node.rightSpring = (nodeCount-1, None)
-                else:
-                    node.leftNode, node.rightNode = (nodeCount - 1, nodeCount + 1)
-                    node.leftSpring, node.rightSpring = (nodeCount-1, nodeCount)
+
 
                 if node.rightSpring == nodeCount:       ## Just a random test to get good ids!
                     floe.springs[j].id = nodeCount
@@ -204,13 +217,15 @@ class Fracture:
         """
         Checks if node of ids i and j could ever collide
         """
-
-        a, b = min([left, right]), max([left, right])
-        areNeighbors = a >= 0 and b < self.nbNodes and b-a == 1
-        # springNotExists = a not in self.springIds
-        nL, nR = self.locateNode(left), self.locateNode(right)
-        differentParents = nL.parentFloe != nR.parentFloe
-        return areNeighbors and differentParents
+        if left is None or right is None:
+            return False
+        else:
+            a, b = min([left, right]), max([left, right])
+            areNeighbors = a >= 0 and b < self.nbNodes and b-a == 1
+            # springNotExists = a not in self.springIds
+            nL, nR = self.locateNode(left), self.locateNode(right)
+            differentParents = nL.parentFloe != nR.parentFloe
+            return areNeighbors and differentParents
 
 
     def checkCollision(self, left, right):
