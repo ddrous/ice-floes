@@ -871,6 +871,14 @@ def fig2img(fig):
     img = PILImage.open(buf)
     return img
 
+def fig2imgNotTight(fig):
+    """ Convert a Matplotlib figure to a PIL Image and return it """
+    buf = io.BytesIO()
+    fig.savefig(buf)
+    buf.seek(0)
+    img = PILImage.open(buf)
+    return img
+
 def simulate_displacement(n=2, m=1.0, k=18.0, mu=1.3, x0=None, v0=None, L0=None, t_simu=1.0, N=1000):
     """
     Calculates the positions and velocities of an ice floe as a dynamical system

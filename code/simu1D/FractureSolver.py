@@ -79,8 +79,8 @@ class Fracture:
                     floe.springs[j].parentFloe = i
                     floe.springs[j].leftNode = nodeCount
                     floe.springs[j].rigthNode = nodeCount + 1
-                    self.potentialFractures[nodeCount] = self.NBef + self.NAft
-                    self.confirmedFractures[nodeCount] = self.NBef + self.NAft
+                    self.potentialFractures[nodeCount] = self.NBef + self.NAft - 2
+                    self.confirmedFractures[nodeCount] = self.NBef + self.NAft - 2
                     self.springIds.append(nodeCount)
 
                 nodeCount += 1
@@ -149,8 +149,7 @@ class Fracture:
             for j, node in enumerate(floe.nodes):
                 if node.id == nodeId:
                     return (i, j)
-                else:
-                    raise IndexError("A node with this id doest not exist")
+        raise IndexError("A node with the id ["+str(nodeId)+"] does not exist")
 
     def locateNode(self, nodeId):
         """
@@ -164,7 +163,7 @@ class Fracture:
         Tells you neighboring nodes for a particular node id
         """
         node = self.locateNode(nodeId)     ## Local coordinates of the node
-        return (node.leftNode, node.rightnode)
+        return (node.leftNode, node.rightNode)
 
     def neighbouringSprings(self, nodeId):
         """
@@ -181,7 +180,7 @@ class Fracture:
         self.configurations[startIndex] = {self.floes.copy()}
 
     def computeBeforeContact(self):
-        self.t = np.linspace(0, self.tBef, self.NBef+1)
+        self.t = np.linspace(0, self.tBef, self.NBef+self.NAft+1)
         initPos = self.positionsArray()
         initVel = self.velocitiesArray()
         self.x = initPos * np.ones((self.t.size, self.nbNodes))                              ## Positions for each node
@@ -239,9 +238,10 @@ class Fracture:
             print("Could Not COllide:", (left, right))
             return False
         else:
+            print("Could actuelly Collide:", (left, right))
             startIndex = max([self.confirmationNumbers[left], self.confirmationNumbers[right]])
             springs = list(self.neighbouringSprings(left)) + list(self.neighbouringSprings(right))
-            endIndex = min([self.potentialFractures[springId] for springId in springs])
+            endIndex = min([self.potentialFractures[springId] for springId in springs if springId])
 
             leftNode, rightNode = self.locateNode(left), self.locateNode(right)
             collided = False
@@ -258,13 +258,13 @@ class Fracture:
                 neighbors = list(self.neighbouringNodes(left)) + list(self.neighbouringNodes(right))
                 self.x[colPosition+1:, neighbors ] = np.nan
                 self.v[colPosition+1:, neighbors ] = np.nan
-                self.t[colPosition+1:, neighbors ] = np.nan
+                self.t[colPosition+1:] = np.nan
 
                 ## Update confirmation numbers -- DO IT NOW ?
                 for nodeId in neighbors:
                     self.confirmationNumbers[nodeId] = colPosition+1
-                print("Collided:", (left, right))
 
+            print("Actuelly Collided:", (left, right))
             return collided
 
 
@@ -311,7 +311,11 @@ class Fracture:
         for floe in self.floes.values():
             for node in floe.nodes:
                 left, right = node.id, node.rightNode
-                leftNode, rightNode = self.locateNode(left), self.locateNode(right)
+                try:
+                    leftNode, rightNode = self.locateNode(left), self.locateNode(right)
+                except IndexError:
+                    continue
+
                 if self.couldCollide(left, right) and self.checkCollision(left, right):
 
                     self.computeAtContact(left, right)       ## Calculate new speeds ...
@@ -352,7 +356,7 @@ class Fracture:
         Plot both ice floes whose nodes are at (x1,y1) and (x2,y2) with same radius R
         """
         leftMostNode = self.locateNode(0)
-        rightMostNode = self.locateNode(self.nbNodes)
+        rightMostNode = self.locateNode(self.nbNodes-1)
         min_X = leftMostNode.x0 - leftMostNode.R
         max_X = rightMostNode.x0 + rightMostNode.R
         max_R = np.max([floe.max_radius() for floe in self.floes.values()])
@@ -365,7 +369,7 @@ class Fracture:
         # ax.set_ylim(-4 * max_R, 4 * max_R)
         # ax.set_aspect('equal', adjustable='box')
 
-        dt = self.t_bef/self.N_bef
+        dt = self.tBef/self.NBef
         di = int(1 / fps / dt)
 
         img_list = []
@@ -382,7 +386,7 @@ class Fracture:
             ##----------------------------------------
 
             print("  ", i // di, '/', self.t.size // di)
-            for floe in floes:
+            for floe in self.floes.values():
                 for node in floe.nodes:
                     node.x = self.x[i, node.id]
                     node.vx = self.v[i, node.id]
@@ -392,7 +396,7 @@ class Fracture:
             ax.set_ylim(-2 * max_R, 2 * max_R)
             ax.set_aspect('equal', adjustable='box')
 
-            img_list.append(fig2img(fig))
+            img_list.append(fig2imgNotTight(fig))           ### Use tight image !!!!!
 
             plt.cla()      # Clear the Axes ready for the next image.
 

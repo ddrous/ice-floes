@@ -49,6 +49,6 @@ if __name__=="__main__":
     frac.printDetails()
     frac.computeBeforeContact()
     frac.computeAfterContact()
-    frac.saveFig(openFile=True, fps=10, filename="Exports/Anim1D.gif")
+    frac.saveFig(openFile=True, fps=5, filename="Exports/Anim1D.gif")
 
 
