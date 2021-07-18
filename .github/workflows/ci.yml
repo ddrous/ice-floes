@@ -19,6 +19,6 @@ jobs:
 
       - name: Test 1D scripts
         run: |
-          cd code/simu1D,
-          python3 Percussion1D-CLI.py,
-          python3 Fracture1D-CLI.py.
+          cd code/simu1D
+          python3 Percussion1D-CLI.py
+          python3 Fracture1D-CLI.py
