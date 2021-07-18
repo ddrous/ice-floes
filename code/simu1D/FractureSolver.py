@@ -109,7 +109,7 @@ class Fracture:
         print()
         for floe in self.floes.values():
             for node in floe.nodes:
-                print(node)
+                print(node.get_details())
 
     def positionsArray(self):
         """
@@ -179,7 +179,7 @@ class Fracture:
         self.t = np.linspace(0, self.tBef, self.NBef+self.NAft+1)
         initPos = self.positionsArray()
         initVel = self.velocitiesArray()
-        self.x = initPos * np.ones((self.t.size, self.nbNodes))                              ## Positions for each node
+        self.x = initPos * np.ones((self.t.size, self.nbNodes))      ## Positions for each node
         self.v = initVel * np.ones((self.t.size, self.nbNodes))      ## Velocities along x
 
         # print("Time HERE:", self.t)
@@ -201,8 +201,10 @@ class Fracture:
         ## Check whether any two ice floes will collide
         if not atLeastOneCollision:
             ## Double simulation time and run phase 1 again
-            self.tBef = self.tBef * 2
-            self.tAft = self.tAft * 2
+            # self.tBef, self.NBef = self.tBef*2, self.NBef*2
+            # self.tAft, self.NAft = self.tAft*2, self.NAft*2
+            self.tBef = self.tBef*2
+            self.tAft = self.tAft*2
             self.computeBeforeContact()
         else:
             ## Then phase 1 is OK
@@ -245,6 +247,13 @@ class Fracture:
                     collided = True
                     colPosition = i
                     self.contactIndices[i] = (left, right)
+
+                    ## If collision, save each nodes positions and speed
+                    for floe in self.floes.values():
+                        for node in floe.nodes:
+                            node.x = self.x[colPosition, node.id ]
+                            node.vx = self.v[colPosition, node.id ]
+
                     break
 
             if collided:
@@ -307,12 +316,10 @@ class Fracture:
                 try:
                     leftNode, rightNode = self.locateNode(left), self.locateNode(right)
                 except IndexError:
-                    print("The got and error. SORRY Y'LL !", left, right)
                     continue
 
                 # if self.couldCollide(left, right) and self.checkCollision(left, right):
                 if self.checkCollision(left, right):
-                    print("I HAVE GOTTEN IN HERE MY MAN")
 
                     self.computeAtContact(left, right)       ## Calculate new speeds ...
 
@@ -322,7 +329,6 @@ class Fracture:
                     cL, cR = self.confirmationNumbers[left], self.confirmationNumbers[right]
                     assert cL == cR, "Must have same confirmation numbers"
 
-                    print("TSIM size:", self.t.size, "After:", self.NAft, "Confirm left:", cL)
                     end1, end2 = cL + self.NAft, cL + self.NAft - cL
                     if cL + self.NAft > self.t.size:
                         end1, end2 = self.t.size, self.t.size - cL
@@ -339,12 +345,19 @@ class Fracture:
                     self.v[cL:end1, nodeIdsL] = xvxL[:end2, floeL.n:]
                     self.v[cR:end1, nodeIdsR] = xvxR[:end2, floeR.n:]
 
-                    recId = len(self.recCount)
+                    # recId = len(self.recCount)
+                    recId = 0
+                    # self.recCount[recId] = 1
+                    self.recCount.setdefault(recId, 1)
                     print("Recursion depth:", self.recCount[recId])
+
+                    ## Edit confirmation numbers (just for now) <<-- REMEMBER TO REMOVE THIS LATTER ON WITH FRACTURE!
+                    self.confirmationNumbers[left] = cL+1
+                    self.confirmationNumbers[right] = cR+1
 
                     ## Check collision then recalculate if applicable
                     collided = self.checkCollision(left, right)
-                    if (not collided) or (cL > self.NBef+self.NAft) or (self.recCount[recId] > 980):
+                    if (not collided) or (cL > self.t.size) or (self.recCount[recId] > 980):
                             return
                     else:
                         self.recCount[recId] += 1
@@ -359,6 +372,7 @@ class Fracture:
         """
         Plot both ice floes whose nodes are at (x1,y1) and (x2,y2) with same radius R
         """
+        print("FINALY, THE BEFORE TIME IS:", self.tBef)
         leftMostNode = self.locateNode(0)
         rightMostNode = self.locateNode(self.nbNodes-1)
         min_X = leftMostNode.x0 - leftMostNode.R

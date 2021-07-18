@@ -45,6 +45,12 @@ class Node:
         self.rightSpring = None
 
     def __str__(self):
+        return "["+ str(self.id) +"]"
+
+    def get_details(self):
+        """
+        Returns all the details of the node
+        """
         return "Node ["+ str(self.id) +"] properties: \n" \
                + "  position: " + str(self.x) + "\n" \
                + "  velocity: " + str(self.vx) + "\n" \
@@ -145,6 +151,9 @@ class IceFloe:
         self.L = tenacity
         self.v0 = rigid_velocity       ## One velocity for all nodes
         self.id = id_number
+
+    def __str__(self):
+        return "["+ str(self.id) +"]"
 
     def generate_nodes(self, start, end, count, radius):
         """

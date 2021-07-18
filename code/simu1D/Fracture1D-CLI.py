@@ -8,10 +8,10 @@ from FractureSolver import *
 if __name__=="__main__":
     ## Problem constants
     m = 1.2     ## masse du premier floe
-
     m_ = 1.5    ## masse du deuxième floe
-    k = 70      ## raideurs
-    k_ = 80
+
+    k = 7      ## raideurs
+    k_ = 8
 
     mu = 0.5    ## viscosités
     mu_ = 2.0
@@ -29,10 +29,10 @@ if __name__=="__main__":
     R = 1.5 / 6.0    # Radius for the balls at the end of the springs
 
     total_length1 = 6.0
-    total_length2 = 12.0
+    total_length2 = 120.0
 
-    n_nodes1 = 4
-    n_nodes2 = 3
+    n_nodes1 = 5
+    n_nodes2 = 30
 
     ## Run a simple percussion task
 
@@ -45,10 +45,10 @@ if __name__=="__main__":
     floe2.generate_nodes(X_max-total_length2, X_max, n_nodes2, R)
 
     ## Create two ice floes
-    f = Fracture([floe1, floe2], times=(4.0,12.0), nStepsBefContact=4000, restitutionCoef=eps)
+    f = Fracture([floe1, floe2], times=(4.0, 12.0), nStepsBefContact=4000, restitutionCoef=eps)
     f.printDetails()
     f.computeBeforeContact()
     f.computeAfterContact()
-    f.saveFig(openFile=True, fps=1, filename="Exports/Anim1D.gif")
+    f.saveFig(openFile=True, fps=10, filename="Exports/AnimFrac1D.gif")
 
 

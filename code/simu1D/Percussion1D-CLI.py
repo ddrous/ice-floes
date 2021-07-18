@@ -8,10 +8,10 @@ from PercussionSolver import *
 if __name__=="__main__":
     ## Problem constants
     m = 1.2     ## masse du premier floe
-
     m_ = 1.5    ## masse du deuxième floe
-    k = 70      ## raideurs
-    k_ = 80
+
+    k = 7      ## raideurs
+    k_ = 8
 
     mu = 0.5    ## viscosités
     mu_ = 2.0
@@ -50,7 +50,7 @@ if __name__=="__main__":
 
     p.compute_before_contact()
     p.compute_after_contact()
-    # p.save_fig(open_file=True, fps=10, filename="Animation1D.gif")
+    p.save_fig(open_file=True, fps=1, filename="Exports/AnimPerc1D.gif")
 
     ## Plot the positions
     plt.style.use("seaborn")
