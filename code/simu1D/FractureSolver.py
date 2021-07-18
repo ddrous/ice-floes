@@ -93,8 +93,10 @@ class Fracture:
 
         self.recCount = {}         ## Recursions depth counter for each collision that happens
         self.contactIndices = {}   ## Each collision has a specific list of contact indices for the percussion
-        self.configurations = {}            ## All observed configurations until the end of simulation
 
+        self.configurations = {}            ## All observed configurations until the end of simulation
+        self.configurations[0] = self.floes.copy()
+        print("PRINT THE INITIAL CONFIG CONFIG ", self.configurations)
 
     def printDetails(self):
         """
@@ -173,12 +175,6 @@ class Fracture:
         return (node.leftSpring, node.rightSpring)
 
 
-    def addConfiguration(self, startIndex):
-        """
-        Creates and saves a node configuration for our problem (important for plotting)
-        """
-        self.configurations[startIndex] = {self.floes.copy()}
-
     def computeBeforeContact(self):
         self.t = np.linspace(0, self.tBef, self.NBef+self.NAft+1)
         initPos = self.positionsArray()
@@ -235,10 +231,8 @@ class Fracture:
         """
 
         if not self.couldCollide(left, right):
-            print("Could Not COllide:", (left, right))
             return False
         else:
-            print("Could actuelly Collide:", (left, right))
             startIndex = max([self.confirmationNumbers[left], self.confirmationNumbers[right]])
             springs = list(self.neighbouringSprings(left)) + list(self.neighbouringSprings(right))
             endIndex = min([self.potentialFractures[springId] for springId in springs if springId])
@@ -262,9 +256,8 @@ class Fracture:
 
                 ## Update confirmation numbers -- DO IT NOW ?
                 for nodeId in neighbors:
-                    self.confirmationNumbers[nodeId] = colPosition+1
+                    self.confirmationNumbers[nodeId] = colPosition
 
-            print("Actuelly Collided:", (left, right))
             return collided
 
 
@@ -314,9 +307,12 @@ class Fracture:
                 try:
                     leftNode, rightNode = self.locateNode(left), self.locateNode(right)
                 except IndexError:
+                    print("The got and error. SORRY Y'LL !", left, right)
                     continue
 
-                if self.couldCollide(left, right) and self.checkCollision(left, right):
+                # if self.couldCollide(left, right) and self.checkCollision(left, right):
+                if self.checkCollision(left, right):
+                    print("I HAVE GOTTEN IN HERE MY MAN")
 
                     self.computeAtContact(left, right)       ## Calculate new speeds ...
 
@@ -325,21 +321,29 @@ class Fracture:
 
                     cL, cR = self.confirmationNumbers[left], self.confirmationNumbers[right]
                     assert cL == cR, "Must have same confirmation numbers"
-                    self.t[cL:cL+self.NAft] = self.t[-1] + tSim
 
-                    nodesL = self.floes[leftNode.parentFloe]
-                    nodesR = self.floes[rightNode.parentFloe]
-                    self.x[cL:cL+self.NAft, nodesL] = xvxL[:, :len(nodesL)]
-                    self.x[cR:cR+self.NAft, nodesR] = xvxR[:, :len(nodesR)]
+                    print("TSIM size:", self.t.size, "After:", self.NAft, "Confirm left:", cL)
+                    end1, end2 = cL + self.NAft, cL + self.NAft - cL
+                    if cL + self.NAft > self.t.size:
+                        end1, end2 = self.t.size, self.t.size - cL
 
-                    self.v[cL:cL+self.NAft, nodesL] = xvxL[:, len(nodesL):]
-                    self.v[cR:cR+self.NAft, nodesR] = xvxR[:, len(nodesR):]
+                    self.t[cL:end1] = (self.t[cL] + tSim)[:end2]
+
+                    floeL = self.floes[leftNode.parentFloe]
+                    nodeIdsL = [node.id for node in floeL.nodes]
+                    floeR = self.floes[rightNode.parentFloe]
+                    nodeIdsR = [node.id for node in floeR.nodes]
+                    self.x[cL:end1, nodeIdsL] = xvxL[:end2, :floeL.n]
+                    self.x[cR:end1, nodeIdsR] = xvxR[:end2, :floeR.n]
+
+                    self.v[cL:end1, nodeIdsL] = xvxL[:end2, floeL.n:]
+                    self.v[cR:end1, nodeIdsR] = xvxR[:end2, floeR.n:]
 
                     recId = len(self.recCount)
                     print("Recursion depth:", self.recCount[recId])
 
                     ## Check collision then recalculate if applicable
-                    collided = self.checkColission(left, right)
+                    collided = self.checkCollision(left, right)
                     if (not collided) or (cL > self.NBef+self.NAft) or (self.recCount[recId] > 980):
                             return
                     else:
@@ -396,7 +400,7 @@ class Fracture:
             ax.set_ylim(-2 * max_R, 2 * max_R)
             ax.set_aspect('equal', adjustable='box')
 
-            img_list.append(fig2imgNotTight(fig))           ### Use tight image !!!!!
+            img_list.append(fig2img(fig))           ### Use tight borders !!!!!
 
             plt.cla()      # Clear the Axes ready for the next image.
 

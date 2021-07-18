@@ -864,16 +864,11 @@ def d_nodes(node_1, node_2):
     return np.sqrt((node_1.x - node_2.x) ** 2 + (node_1.y - node_2.y) ** 2)
 
 def fig2img(fig):
-    """ Convert a Matplotlib figure to a PIL Image and return it """
+    """
+    Convert a Matplotlib figure to a PIL Image and return it
+    """
     buf = io.BytesIO()
-    fig.savefig(buf, bbox_inches='tight')
-    buf.seek(0)
-    img = PILImage.open(buf)
-    return img
-
-def fig2imgNotTight(fig):
-    """ Convert a Matplotlib figure to a PIL Image and return it """
-    buf = io.BytesIO()
+    # fig.savefig(buf, bbox_inches='tight')
     fig.savefig(buf)
     buf.seek(0)
     img = PILImage.open(buf)
