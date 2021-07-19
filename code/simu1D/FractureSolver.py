@@ -259,7 +259,8 @@ class Fracture:
 
             if collided:
                 ## Discard the positions and velocities after collision
-                neighbors = list(self.neighbouringNodes(left)) + list(self.neighbouringNodes(right))
+                neighbors = [node.id for node in self.floes[leftNode.parentFloe].nodes + self.floes[rightNode.parentFloe].nodes]
+                # neighbors = list(self.neighbouringNodes(left)) + list(self.neighbouringNodes(right))
                 self.x[colPosition+1:, neighbors ] = np.nan
                 self.v[colPosition+1:, neighbors ] = np.nan
                 self.t[colPosition+1:] = np.nan
@@ -352,14 +353,14 @@ class Fracture:
                     self.recCount.setdefault(recId, 1)
                     print("Recursion depth:", self.recCount[recId])
 
-                    ## Edit confirmation numbers (just for now) <<-- REMEMBER TO REMOVE THIS LATTER ON WITH FRACTURE!
+                    ## Edit confirmation numbers (just for now) <<-- REMEMBER TO REMOVE THIS LATER ON WITH FRACTURE!
                     self.confirmationNumbers[left] = cL+1
                     self.confirmationNumbers[right] = cR+1
 
                     ## Check collision then recalculate if applicable
                     collided = self.checkCollision(left, right)
                     if (not collided) or (cL > self.t.size) or (self.recCount[recId] > 980):
-                            return
+                        return
                     else:
                         self.recCount[recId] += 1
                         self.computeAfterContact()
@@ -405,7 +406,8 @@ class Fracture:
             ##----------------------------------------
 
             print("  ", i // di, '/', self.t.size // di)
-            for floe in self.floes.values():
+            for floe in self.floes.values():        ### <<<--- Fix this by using copies of floes in configuration!
+            # for floe in floes:
                 for node in floe.nodes:
                     node.x = self.x[i, node.id]
                     node.vx = self.v[i, node.id]
