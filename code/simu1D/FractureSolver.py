@@ -176,7 +176,7 @@ class Fracture:
 
 
     def computeBeforeContact(self):
-        self.t = np.linspace(0, self.tBef, self.NBef+self.NAft+1)
+        self.t = np.linspace(0, self.tBef, self.NBef+1)
         initPos = self.positionsArray()
         initVel = self.velocitiesArray()
         self.x = initPos * np.ones((self.t.size, self.nbNodes))      ## Positions for each node
@@ -208,6 +208,9 @@ class Fracture:
             self.computeBeforeContact()
         else:
             ## Then phase 1 is OK
+            self.t = np.concatenate([self.t, np.zeros((self.NAft+1))])
+            self.x = np.concatenate([self.x, np.zeros((self.NAft+1, self.nbNodes))])
+            self.v = np.concatenate([self.v, np.zeros((self.NAft+1, self.nbNodes))])
             return
 
     def couldCollide(self, left, right):

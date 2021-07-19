@@ -29,10 +29,10 @@ if __name__=="__main__":
     R = 1.5 / 6.0    # Radius for the balls at the end of the springs
 
     total_length1 = 6.0
-    total_length2 = 120.0
+    total_length2 = 12.0
 
-    n_nodes1 = 5
-    n_nodes2 = 30
+    n_nodes1 = 6
+    n_nodes2 = 8
 
     ## Run a simple percussion task
 
@@ -45,10 +45,10 @@ if __name__=="__main__":
     floe2.generate_nodes(X_max-total_length2, X_max, n_nodes2, R)
 
     ## Create two ice floes
-    f = Fracture([floe1, floe2], times=(4.0, 12.0), nStepsBefContact=4000, restitutionCoef=eps)
+    f = Fracture([floe1, floe2], times=(6.0, 18.0), nStepsBefContact=100, restitutionCoef=eps)
     f.printDetails()
     f.computeBeforeContact()
     f.computeAfterContact()
-    f.saveFig(openFile=True, fps=10, filename="Exports/AnimFrac1D.gif")
+    f.saveFig(openFile=True, fps=5, filename="Exports/AnimFrac1D.gif")
 
 
