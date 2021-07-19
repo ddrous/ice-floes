@@ -201,8 +201,6 @@ class Fracture:
         ## Check whether any two ice floes will collide
         if not atLeastOneCollision:
             ## Double simulation time and run phase 1 again
-            # self.tBef, self.NBef = self.tBef*2, self.NBef*2
-            # self.tAft, self.NAft = self.tAft*2, self.NAft*2
             self.tBef = self.tBef*2
             self.tAft = self.tAft*2
             self.computeBeforeContact()
