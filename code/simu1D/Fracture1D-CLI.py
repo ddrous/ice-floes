@@ -10,8 +10,8 @@ if __name__=="__main__":
     m = 1.2     ## masse du premier floe
     m_ = 1.5    ## masse du deuxième floe
 
-    k = 7      ## raideurs
-    k_ = 8
+    k = 7.0      ## raideurs
+    k_ = 8.0
 
     mu = 0.5    ## viscosités
     mu_ = 2.0
@@ -55,6 +55,7 @@ if __name__=="__main__":
     f.printDetails()
     f.computeBeforeContact()
     f.computeAfterContact()
-    f.saveFig(openFile=True, fps=5, filename="Exports/AnimFrac1D.gif")
+    f.deformationEnergy(0, [1,2,4,None], end=100)
+    # f.saveFig(openFile=True, fps=5, filename="Exports/AnimFrac1D.gif")
 
 

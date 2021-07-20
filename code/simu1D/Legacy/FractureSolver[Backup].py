@@ -160,23 +160,6 @@ class Fracture:
         c = self.locateNodeId(nodeId)
         return self.floes[c[0]].nodes[c[1]]
 
-    def locateSpringId(self, springId):
-        """
-        Tells you to witch floe a spring belongs to and its local id
-        """
-        for i, floe in self.floes.items():
-            for j, spring in enumerate(floe.springs):
-                if spring.id == springId:
-                    return (i, j)
-        raise IndexError("A spring with the id ["+str(springId)+"] does not exist")
-
-    def locateSpring(self, springId):
-        """
-        Returns the spring corresponding to a certain id
-        """
-        c = self.locateNodeId(springId)
-        return self.floes[c[0]].springs[c[1]]
-
     def neighbouringNodes(self, nodeId):
         """
         Tells you neighboring nodes for a particular node id
@@ -190,13 +173,6 @@ class Fracture:
         """
         node = self.locateNode(nodeId)     ## Local coordinates of the node
         return (node.leftSpring, node.rightSpring)
-
-    def neighbouringSpringEdges(self, springId):
-        """
-        Tells you neighboring nodes (edges) for a particular spring id
-        """
-        spring = self.locateSpring(springId)     ## Local coordinates of the node
-        return (spring.leftNode, spring.rightNode)
 
 
     def computeBeforeContact(self):
@@ -468,69 +444,3 @@ class Fracture:
         if openFile:
             ## Open animation
             os.system('gthumb '+filename)     ## Only on Linux
-
-
-    def fractureEnergy(self, floeId, brokenSprings=None):
-        """
-        Computes the fracture energy of a fractured ice floe, i.e. some springs and broken.
-        """
-        ### Bien préciser qu'on est en déformation élastqiue: et donc la longueur de la fracture est la longeur initiale des ressorts
-        # energy = 0
-        # for i in brokenSprings:
-        #     try:
-        #         coord = self.locateSpringId(i)
-        #         energy += self.floes[coord[0]].L * self.floes[coord[0]].springs[coord[1]].L0
-        #     except IndexError:
-        #         print("Error: Spring ["+str(i)+"] is not a valid id for the current configuration.")
-        # return energy
-
-        try:
-            floe = self.floes[floeId]
-        except IndexError:
-            print("Error: Ice floe of id "+str(floeId)+"does not exist (yet).")
-            return 0
-
-        brokenLength = 0.0
-        for i in brokenSprings:
-            try:
-                brokenLength += floe.springs[i].L0
-            except IndexError:
-                print("Error: Spring id "+str(i)+" is not a valid id for ice floe "+str(floeId))
-
-        return floe.L * brokenLength
-
-
-
-    def deformationEnergy(self, floeId=None, brokenSprings=None, start=0, end=0):
-        """
-        Computes the deformation energy (sum of the elastic energy and the dissipated
-        energy) when the ice floe is fractured, i.e. some springs and broken.
-        """
-        assert start <= end, "Error: Starting time step is bigger than ending time step!"
-
-        try:
-            floe = self.floes[floeId]
-        except IndexError:
-            print("Error: Ice floe of id "+str(floeId)+" does not exist (yet).")
-            return 0
-
-        ## Energie potentielle elastique (au pas de temps `end`)
-        k = np.full((floe.n - 1), floe.k)
-        k[[i for i in brokenSprings if i]] = 0.0         ## Eliminate the broken springs
-
-        firstId, lastId = floe.nodes[0].id, floe.nodes[-1].id
-        E_el = 0.5 * np.sum(k * (self.x[end, firstId+1:lastId+1] - self.x[end, firstId:lastId]
-                                 - floe.init_lengths)**2, axis=-1)
-
-        ## Energie dissipée entre les temps `start` et `end`
-        # mu = np.full((floe.n - 1), floe.mu)
-        # mu[brokenSprings] = 0.0        ## Eliminate the broken dampers
-        #
-        # E_ap_r_OLD = np.sum(mu * (self.v[:end+1, firstId+1:lastId+1] - self.v[:end+1, firstId:lastId])**2, axis=-1)
-        # integrand = E_ap_r_OLD[start:]
-        # t = self.t[start:end+1] - self.t[start-1:end]
-        # E_r = np.sum(integrand*t)
-
-        # return E_el + E_r     #### ---- STUDY THIS PART AGAIN ---- ####
-        print("Def energy:", E_el)
-        return E_el
