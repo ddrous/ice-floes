@@ -236,7 +236,7 @@ class Fracture:
         if not self.couldCollide(left, right):
             return False
         else:
-            startIndex = max([self.confirmationNumbers[left], self.confirmationNumbers[right]])
+            startIndex = min([self.confirmationNumbers[left], self.confirmationNumbers[right]])
             springs = list(self.neighbouringSprings(left)) + list(self.neighbouringSprings(right))
             endIndex = min([self.potentialFractures[springId] for springId in springs if springId])
 
@@ -311,6 +311,7 @@ class Fracture:
         """
         Computes the positions and velocities of the any two colliding floes after a contact
         """
+        recId = 0
 
         for floe in self.floes.values():
             for node in floe.nodes:
@@ -368,6 +369,22 @@ class Fracture:
                 else:
                     continue
 
+        # for floe in self.floes.values():
+        #     for node in floe.nodes:
+        #         left, right = node.id, node.rightNode
+        #         try:
+        #             cL, cR = self.confirmationNumbers[left]-1, self.confirmationNumbers[right]-1
+        #         except KeyError:
+        #             # print("GOT ERROR")
+        #             continue
+        #         ## Check collision then recalculate if applicable
+        #         collided = self.checkCollision(left, right)
+        #         if (not collided) or (cL > self.t.size) or (self.recCount[recId] > 980):
+        #             continue
+        #         else:
+        #             self.recCount[recId] += 1
+        #             self.computeAfterContact()
+        #
 
 
     def saveFig(self, fps=24, filename="Exports/Anim1D.gif", openFile=True):
