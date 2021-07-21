@@ -826,7 +826,7 @@ class Percussion:
         old_energy = def_en + frac_en
         # print("OLD ENERGY IS:", old_energy)
 
-        ## Compute new energies, only stop is fracture of end of simulation
+        ## Compute new energies, only stop if fracture or end of simulation
         steps_counter = 0
         while (True):
             steps_counter += 10

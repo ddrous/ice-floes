@@ -501,12 +501,11 @@ class Fracture:
 
 
 
-    def deformationEnergy(self, floeId=None, brokenSprings=None, start=0, end=0):
+    def deformationEnergy(self, floeId=None, brokenSprings=None, end=0):
         """
         Computes the deformation energy (sum of the elastic energy and the dissipated
         energy) when the ice floe is fractured, i.e. some springs and broken.
         """
-        assert start <= end, "Error: Starting time step is bigger than ending time step!"
 
         try:
             floe = self.floes[floeId]
@@ -522,15 +521,76 @@ class Fracture:
         E_el = 0.5 * np.sum(k * (self.x[end, firstId+1:lastId+1] - self.x[end, firstId:lastId]
                                  - floe.init_lengths)**2, axis=-1)
 
-        ## Energie dissipée entre les temps `start` et `end`
+        ## Energie dissipée entre les temps `0` et `end`
         # mu = np.full((floe.n - 1), floe.mu)
         # mu[brokenSprings] = 0.0        ## Eliminate the broken dampers
         #
-        # E_ap_r_OLD = np.sum(mu * (self.v[:end+1, firstId+1:lastId+1] - self.v[:end+1, firstId:lastId])**2, axis=-1)
-        # integrand = E_ap_r_OLD[start:]
-        # t = self.t[start:end+1] - self.t[start-1:end]
+        # integrand = np.sum(mu * (self.v[:end+1, firstId+1:lastId+1] - self.v[:end+1, firstId:lastId])**2, axis=-1)
+        # t = self.t[1:end+1] - self.t[:end]
         # E_r = np.sum(integrand*t)
-
+        #
         # return E_el + E_r     #### ---- STUDY THIS PART AGAIN ---- ####
-        print("Def energy:", E_el)
+        # print("Def energy:", E_el)
         return E_el
+
+
+    def griffithMinimization(self, floeId=None):
+        """
+        Studies the fracture problem to see if it is worth addind a path to the crack.
+        The total energy here is the sum of the deformation energy and the fracture energy.
+        """
+
+        print("\nGRIFFITH FRACTURE STUDY FOR ICE FLOE " + str(floeId) + ':')
+
+        ## Specify the time steps for the computations
+        floe = self.floes[floeId]
+        confNums = [self.confirmationNumbers[node.id] for node in floe.nodes]
+        oldEnd = min(confNums)         ## Time step at witch we compute the current energy
+
+        ## Compute the current energy of the system (no broken spring)
+        oldBrokenSprings = []
+        defEn = self.deformationEnergy(floeId, oldBrokenSprings, oldEnd)
+        fracEn = self.fractureEnergy(floeId, oldBrokenSprings)
+        oldEnergy = defEn + fracEn
+        # print("OLD ENERGY IS:", old_energy)
+
+        ## Compute new energies, only stop if fracture or end of simulation
+        stepsCounter = 0
+        while (True):
+            stepsCounter += 10
+            newEnd = oldEnd + stepsCounter  ## Time step for new energy and crack path
+            if newEnd >= self.NBef+self.NAft:
+                return False, ()
+            energies = {}
+            ## Identifies all possible path cracks (easy in 1D)
+            ## The doisplacement has already been simulated
+            ## Computes all possible total energies for new paths and displacements
+            for i in range(1, floe.n):
+                for newTuple in combinations(range(floe.n-1), i):
+                    newBrokenSprings = list(newTuple)
+                    defEn = self.deformationEnergy(floeId, newBrokenSprings, newEnd)
+                    fracEn = self.fractureEnergy(floeId, newBrokenSprings)
+                    energies[newTuple] = defEn + fracEn
+
+            minConfig = sorted(energies.items(), key=lambda item: item[1])[0]
+
+            ## Compare to the old energy and conclude
+            if minConfig[1] < oldEnergy:
+                print("     Starting configuration was:", (tuple(oldBrokenSprings), oldEnergy))
+                print("     Minimum energy reached for:", minConfig)
+                print("     Fracture happens", stepsCounter, "time step(s) after last collision, at time:", self.t[stepsCounter])
+                for springId in minConfig[0]:
+                    self.potentialFractures[springId] = newEnd
+
+                return True, minConfig
+
+            else:
+                print("     During the whole simulation, there was no fracture !")
+                return False, ()
+
+
+    def checkFracture(self):
+        """
+        Checks if fracture happens on any ice floe in the system.
+        """
+        pass
