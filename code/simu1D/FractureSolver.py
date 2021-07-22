@@ -589,8 +589,10 @@ class Fracture:
                 return False, ()
 
 
-    def checkFracture(self):
+    def checkFracture(self, floeId):
         """
         Checks if fracture happens on any ice floe in the system.
         """
+        fracture, brokenSprings = self.griffithMinimization(floeId)
+        # if not fracture:
         pass
