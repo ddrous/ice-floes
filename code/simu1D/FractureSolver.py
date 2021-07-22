@@ -592,7 +592,20 @@ class Fracture:
     def checkFracture(self, floeId):
         """
         Checks if fracture happens on any ice floe in the system.
+        Returns the ids of the (ptentially) two newly created floes.
         """
         fracture, brokenSprings = self.griffithMinimization(floeId)
-        # if not fracture:
-        pass
+
+        if not fracture:
+            return
+        else:
+            for node in self.floes[floeId].nodes:
+                left, right = node.id, node.rightNode
+                collBefFrac = self.checkCollision(left, right)      ## Checks if nodes collided before the had time
+                # to fracture
+                if collBefFrac:
+                    self.computeAfterContact()
+                # else:
+                    ## Séparer les floes
+
+
