@@ -4,6 +4,9 @@ This module defines classes and functions for the collision and displacement of 
 import numpy as np
 
 from PercussionSolver import *
+from threading import Barrier, Thread
+from copy import deepcopy
+from sys import stdout          ## <<-- Only for printing immediately!!!
 
 sys.setrecursionlimit(10**4)      # Recursion is important for this problem
 
@@ -384,7 +387,7 @@ class Fracture:
 
                     ## Check collision then recalculate if applicable
                     collided = self.checkCollision(left, right)
-                    if (not collided) or (cL > self.t.size) or (self.recCount[recId] > 980):
+                    if (not collided) or (cL > self.t.size) or (self.recCount[recId] > 980):        ##<<--- Check this!
                         return
                     else:
                         self.recCount[recId] += 1
@@ -518,8 +521,14 @@ class Fracture:
         k[[i for i in brokenSprings if i]] = 0.0         ## Eliminate the broken springs
 
         firstId, lastId = floe.nodes[0].id, floe.nodes[-1].id
+        # print("\nK, FIRST AND LAST ID", len(k), firstId, lastId)
+        # print()
+        # stdout.flush()
+        # try:
         E_el = 0.5 * np.sum(k * (self.x[end, firstId+1:lastId+1] - self.x[end, firstId:lastId]
-                                 - floe.init_lengths)**2, axis=-1)
+                               - floe.init_lengths)**2, axis=-1)
+        # except ValueError:
+        #     print("Ahh Haaa: GOT YOU")
 
         ## Energie dissipée entre les temps `0` et `end`
         # mu = np.full((floe.n - 1), floe.mu)
@@ -544,8 +553,16 @@ class Fracture:
 
         ## Specify the time steps for the computations
         floe = self.floes[floeId]
+
+        if floe.n <= 3:
+            return False, ()        ## Only big floes can be fractured
+
         confNums = [self.confirmationNumbers[node.id] for node in floe.nodes]
         oldEnd = min(confNums)         ## Time step at witch we compute the current energy
+
+        potFrac = [self.potentialFractures[spring.id] for spring in floe.springs]
+        stopCheckAt = min(potFrac)         ## Time step at witch we compute the current energy
+
 
         ## Compute the current energy of the system (no broken spring)
         oldBrokenSprings = []
@@ -559,20 +576,25 @@ class Fracture:
         while (True):
             stepsCounter += 10
             newEnd = oldEnd + stepsCounter  ## Time step for new energy and crack path
-            if newEnd >= self.NBef+self.NAft:
+            # if newEnd >= self.NBef+self.NAft:
+            if newEnd >= stopCheckAt:
                 return False, ()
             energies = {}
             ## Identifies all possible path cracks (easy in 1D)
             ## The doisplacement has already been simulated
             ## Computes all possible total energies for new paths and displacements
-            for i in range(1, floe.n):
-                for newTuple in combinations(range(floe.n-1), i):
+            # for i in range(1, floe.n):
+            for i in range(1, 2):
+                for newTuple in combinations(range(1, floe.n-2), i):        ## The two extreme springs must stay
                     newBrokenSprings = list(newTuple)
                     defEn = self.deformationEnergy(floeId, newBrokenSprings, newEnd)
                     fracEn = self.fractureEnergy(floeId, newBrokenSprings)
                     energies[newTuple] = defEn + fracEn
 
+            # try:
             minConfig = sorted(energies.items(), key=lambda item: item[1])[0]
+            # except IndexError:
+            #     print("Got you !")
 
             ## Compare to the old energy and conclude
             if minConfig[1] < oldEnergy:
@@ -584,9 +606,9 @@ class Fracture:
 
                 return True, minConfig
 
-            else:
-                print("     During the whole simulation, there was no fracture !")
-                return False, ()
+        else:
+            print("     During the whole simulation, there was no fracture !")
+            return False, ()
 
 
     def checkFracture(self, floeId):
@@ -594,18 +616,98 @@ class Fracture:
         Checks if fracture happens on any ice floe in the system.
         Returns the ids of the (ptentially) two newly created floes.
         """
-        fracture, brokenSprings = self.griffithMinimization(floeId)
+        fracture, minConfig = self.griffithMinimization(floeId)
 
         if not fracture:
-            return
+            return None
         else:
-            for node in self.floes[floeId].nodes:
+            assert len(minConfig[0]) == 1, "Multiple spring fracturing simultanuously not yet studied "
+            cS = minConfig[0][0]
+
+            floe = self.floes[floeId]
+            for node in floe.nodes:
                 left, right = node.id, node.rightNode
                 collBefFrac = self.checkCollision(left, right)      ## Checks if nodes collided before the had time
                 # to fracture
                 if collBefFrac:
                     self.computeAfterContact()
-                # else:
+                else:
+                    ## Confirmer la fracture
+                    potFracPos = self.potentialFractures[floe.springs[cS].id]
+                    self.confirmedFractures[floe.springs[cS].id] = potFracPos
+
                     ## Séparer les floes
+                    # cS = self.locateSpring(brokenSprings[0])
+                    # assert cS[0] == floeId, "Floe id do not match broken springs' parent"
+                    # nodesL, nodesR = floe.nodes[:cS[1]+1], floe.nodes[cS[1]+1:]
+                    # springsL, springsR = floe.springs[:cS[1]], floe.springs[cS[1]+1:]
+
+                    oldInitLengths = floe.init_lengths
+
+                    nodesL, nodesR = floe.nodes[:cS+1], floe.nodes[cS+1:]
+                    springsL, springsR = floe.springs[:cS], floe.springs[cS+1:]
+
+                    floe.nodes, floe.springs, floe.n = nodesL, springsL, len(nodesL)
+                    floe.init_lengths = oldInitLengths[:cS]
+
+                    newFloe = deepcopy(floe)       ## <<------------- Implement this function !!
+                    newFloe.nodes, newFloe.springs, newFloe.n = nodesR, springsR, len(nodesR)
+                    newFloe.id = len(self.floes)
+                    newFloe.init_lengths = oldInitLengths[cS+1:]
+                    self.floes[len(self.floes)] = newFloe
+
+                    self.configurations[potFracPos] = self.floes
+
+                    self.computeAfterContact()
+
+                    return floeId, newFloe.id
+
+                    ## Lancement en parallèle
+                    # self.checkFracture(floe.id)
+                    # self.checkFracture(newFloe.id)
+
+    def checkFractureAndWait(self, floeId, barrier):
+        """
+        Checks the fracture just like in checkFracture(), but waits at the barrier afterwards.
+        If new floes were created, check fracture on them and then wait.
+        """
+        newFloes = self.checkFracture(floeId)
+        barrier.wait()
+
+        if newFloes:
+            newBarrier = Barrier(2)
+            thread1 = Thread(target=self.checkFractureAndWait, args=(newFloes[0], newBarrier))
+            thread2 = Thread(target=self.checkFractureAndWait, args=(newFloes[1], newBarrier))
+
+            thread1.start()
+            thread2.start()
+
+            thread1.join()
+            thread2.join()
 
 
+    def runSimulation(self):
+        """
+        Runs the simulation for the complete fracture problem
+        """
+
+        ## Run uniform mouvement phase up til first collision
+        self.computeBeforeContact()
+        self.computeAfterContact()
+
+        ## Run fracture check on each floe
+        initFloeIds = self.floes.keys()
+        initBarrier = Barrier(len(initFloeIds))
+        threads = []
+
+        for floeId in initFloeIds:
+            threads.append(Thread(target=self.checkFractureAndWait, args=(floeId, initBarrier)))
+
+        for thread in threads:
+            # thread.join()
+            thread.start()
+
+        for thread in threads:
+            thread.join()
+
+        print("FINISHED EVERYTHING")

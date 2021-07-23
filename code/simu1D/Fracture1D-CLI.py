@@ -54,8 +54,11 @@ if __name__=="__main__":
     f = Fracture([floe1, floe2, floe3], times=(8.0, 18.0), nStepsBefContact=100, restitutionCoef=eps)
     f.printDetails()
     f.computeBeforeContact()
-    f.computeAfterContact()
-    f.deformationEnergy(0, [1,2,4,None], end=100)
-    # f.saveFig(openFile=True, fps=5, filename="Exports/AnimFrac1D.gif")
+    # f.computeAfterContact()
+    f.runSimulation()
+    f.saveFig(openFile=True, fps=5, filename="Exports/AnimFrac1D.gif")
+
+    print("This is it !")
+    # print("CONFIG", f.configurations)
 
 
