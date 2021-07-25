@@ -77,8 +77,8 @@ class Fracture:
         self.configurations = {}            ## All observed configurations until the end of simulation
         self.configurations[0] = deepcopy(self.floes)
 
-        self.checkFrom = {}             ## Position from which to perform collision and fracture checks
-        self.simuTimeStep = self.NAft  ## ==NAft        ## Tne number of time steps we simulate at a time
+        self.checkFrom = 0             ## Position from which to perform collision and fracture checks
+        self.simuTimeStep = 10  ## ==NAft        ## Tne number of time steps we simulate at a time
 
 
     def printDetails(self):
@@ -238,12 +238,9 @@ class Fracture:
         """
 
         if not self.couldCollide(left, right):
-            self.checkFrom[(left, right)] = self.t.size+1
             return False
-
         else:
-            startIndex = self.checkFrom.setdefault((left, right), 0)
-            # startIndex = min(self.checkFrom.values()) if len(self.checkFrom) > 0 else 0
+            startIndex = self.checkFrom
             endIndex = self.t.size
 
             leftNode, rightNode = self.locateNode(left), self.locateNode(right)
@@ -263,15 +260,11 @@ class Fracture:
                     self.v = self.v[:i, :]
                     self.t = self.t[:i]
 
-                    self.checkFrom[(left, right)] = i + 1
+                    self.checkFrom = i + 1
 
                     self.computeAtContact(left, right)
 
                     return True
-
-            ## We only get here if there was no collision
-            self.checkFrom[(left, right)] = self.t.size+1
-            return False
 
 
     def computeAtContact(self, left, right):
@@ -585,8 +578,4 @@ class Fracture:
                 for node in floe.nodes:
                     self.checkCollision(node.id, node.rightNode)
 
-            ## Assign the same value to all keys tp check from now on
-            smallestCheckFrom = min(self.checkFrom.values())
-            for key in self.checkFrom.keys():
-                self.checkFrom[key] = smallestCheckFrom
-
+        print("I'M DONE Y'ALL")

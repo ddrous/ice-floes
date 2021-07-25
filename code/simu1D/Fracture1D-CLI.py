@@ -51,14 +51,13 @@ if __name__=="__main__":
     floe3.generate_nodes(X_max - total_length3, X_max, n_nodes3, R)
 
     ## Create two ice floes
-    f = Fracture([floe1, floe2, floe3], times=(6.0, 28.0), nStepsBefContact=1000, restitutionCoef=eps)
-    f.printDetails()
+    f = Fracture([floe1, floe2, floe3], times=(6.0, 24.0), nStepsBefContact=100, restitutionCoef=eps)
+    # f.printDetails()
     # f.computeBeforeContact()
     # f.computeAfterContact()
     f.runSimulation()
     f.saveFig(openFile=True, fps=5, filename="Exports/AnimFrac1D.gif")
 
-    print("This is it !")
     # print("CONFIG", f.configurations)
 
 
