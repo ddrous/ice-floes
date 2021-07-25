@@ -474,15 +474,22 @@ class Fracture:
         floe = self.floes[floeId]
 
         if floe.n <= 3:
-            return False, ()        ## Only big floes can be fractured
+            return False, None, ()        ## Only big floes can be fractured
 
         oldEnd = self.checkFrom         ## Time step at witch we compute the current energy
+        startCheckPos = []
+        for node in floe.nodes:
+            startCheckPos.append(self.checkFrom.setdefault((node.id, node.rightNode), 0))
+        oldEnd = min(startCheckPos)         ## Time step at witch we compute the current energy
 
         stopCheckAt = self.t.size         ## Time step at witch we compute the current energy
 
         ## Compute the current energy of the system (no broken spring)
         oldBrokenSprings = []
-        defEn = self.deformationEnergy(floeId, oldBrokenSprings, oldEnd)
+        try:
+            defEn = self.deformationEnergy(floeId, oldBrokenSprings, oldEnd)
+        except IndexError:
+            print("Got you!")
         fracEn = self.fractureEnergy(floeId, oldBrokenSprings)
         oldEnergy = defEn + fracEn
         # print("OLD ENERGY IS:", old_energy)
@@ -578,9 +585,10 @@ class Fracture:
             self.computeAfterContact()
             ############### Envoyer tout ce qui suit dans runsimulation
 
-            floes = self.floes.values()
-            for floe in floes:
-                # self.checkFracture(floe.id)
+            # floes = self.floes.values()
+            floeDict = deepcopy(self.floes)
+            for floe in floeDict.values():
+                self.checkFracture(floe.id)
 
                 for node in floe.nodes:
                     self.checkCollision(node.id, node.rightNode)
