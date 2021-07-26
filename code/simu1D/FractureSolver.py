@@ -489,7 +489,7 @@ class Fracture:
         try:
             defEn = self.deformationEnergy(floeId, oldBrokenSprings, oldEnd)
         except IndexError:
-            print("Got you!")
+            print("Got you!")       ### <-- check here
         fracEn = self.fractureEnergy(floeId, oldBrokenSprings)
         oldEnergy = defEn + fracEn
         # print("OLD ENERGY IS:", old_energy)
