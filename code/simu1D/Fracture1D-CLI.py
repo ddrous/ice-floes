@@ -30,7 +30,7 @@ if __name__=="__main__":
 
     total_length1 = 6.0
     total_length2 = 10.0
-    total_length3 = 8.0
+    total_length3 = 12.0
 
     n_nodes1 = 6
     n_nodes2 = 8
@@ -56,7 +56,7 @@ if __name__=="__main__":
     # f.computeBeforeContact()
     # f.computeAfterContact()
     f.runSimulation()
-    f.saveFig(openFile=True, fps=5, filename="Exports/AnimFrac1D.gif")
+    f.saveFig(openFile=True, fps=2, filename="Exports/AnimFrac1D.gif")
 
     # print("CONFIG", f.configurations)
 

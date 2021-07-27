@@ -77,7 +77,8 @@ class Fracture:
         self.configurations = {}            ## All observed configurations until the end of simulation
         self.configurations[0] = deepcopy(self.floes)
 
-        self.checkFrom = {}             ## Position from which to perform collision and fracture checks
+        self.checkCollFrom = {}             ## Position from which to perform collision and fracture checks
+        self.checkFracFrom = {}             ## Position from which to perform collision and fracture checks
         self.simuTimeStep = self.NAft  ## ==NAft        ## Tne number of time steps we simulate at a time
 
 
@@ -238,11 +239,11 @@ class Fracture:
         """
 
         if not self.couldCollide(left, right):
-            self.checkFrom[(left, right)] = self.t.size+1
+            self.checkCollFrom[(left, right)] = self.t.size + 1
             return False
 
         else:
-            startIndex = self.checkFrom.setdefault((left, right), 0)
+            startIndex = self.checkCollFrom.setdefault((left, right), 0)
             # startIndex = min(self.checkFrom.values()) if len(self.checkFrom) > 0 else 0
             endIndex = self.t.size
 
@@ -263,14 +264,14 @@ class Fracture:
                     self.v = self.v[:i, :]
                     self.t = self.t[:i]
 
-                    self.checkFrom[(left, right)] = i + 1
+                    self.checkCollFrom[(left, right)] = i + 1
 
                     self.computeAtContact(left, right)
 
                     return True
 
             ## We only get here if there was no collision
-            self.checkFrom[(left, right)] = self.t.size+1
+            self.checkCollFrom[(left, right)] = self.t.size + 1
             return False
 
 
@@ -360,37 +361,43 @@ class Fracture:
         # ax.set_ylim(-4 * max_R, 4 * max_R)
         # ax.set_aspect('equal', adjustable='box')
 
-        dt = self.tBef/self.NBef
+        dt = self.tBef / self.NBef
         di = int(1 / fps / dt)
 
         img_list = []
 
         print("Generating frames ...")
+
         ## For loop to update the floes nodes, then plot
-        for i in range(0, self.t.size, di):
+        configKeys = list(self.configurations.keys())
+        for j in range(0, len(configKeys)):
+            floes = self.configurations[configKeys[j]]
 
-            ##----------------------------------------
-            for index in self.configurations.keys():
-                if i >= index:
-                    floes = self.configurations[index]
-                    break
-            ##----------------------------------------
+            start = configKeys[j]
+            end = configKeys[j+1] if j != len(configKeys)-1 else self.t.size
+            for i in range(start, end, di):
+                if self.t[i] <= self.tBef+self.tAft:
 
-            print("  ", i // di, '/', self.t.size // di)
-            for floe in self.floes.values():        ### <<<--- Fix this by using copies of floes in configuration!
-            # for floe in floes:
-                for node in floe.nodes:
-                    node.x = self.x[i, node.id]
-                    node.vx = self.v[i, node.id]
-                floe.plot(figax=(fig,ax))
+                    print("  ", i // di, '/', self.t.size // di)
 
-            ax.set_xlim(min_X, max_X)
-            ax.set_ylim(-2 * max_R, 2 * max_R)
-            ax.set_aspect('equal', adjustable='box')
+                    ax.set_title("t = "+str(np.round(self.t[i], 3)), size="xx-large")
+                    for floe in floes.values():
+                        for node in floe.nodes:
+                            node.x = self.x[i, node.id]
+                            node.vx = self.v[i, node.id]
 
-            img_list.append(fig2img(fig))           ### Use tight borders !!!!!
+                        # plot = list(floes.keys())
+                        plot = [0,3]
+                        if floe.id in plot:
+                            floe.plot(figax=(fig,ax))
 
-            plt.cla()      # Clear the Axes ready for the next image.
+                    ax.set_xlim(min_X, max_X)
+                    ax.set_ylim(-2 * max_R, 2 * max_R)
+                    ax.set_aspect('equal', adjustable='box')
+
+                    img_list.append(fig2img(fig))           ### Use tight borders !!!!!
+
+                    plt.cla()      # Clear the Axes ready for the next image.
 
         imageio.mimwrite(filename, img_list)
         print("OK! saved file '"+filename+"'")
@@ -476,11 +483,11 @@ class Fracture:
         if floe.n <= 3:
             return False, None, ()        ## Only big floes can be fractured
 
-        oldEnd = self.checkFrom         ## Time step at witch we compute the current energy
-        startCheckPos = []
-        for node in floe.nodes:
-            startCheckPos.append(self.checkFrom.setdefault((node.id, node.rightNode), 0))
-        oldEnd = min(startCheckPos)         ## Time step at witch we compute the current energy
+        oldEnd = self.checkFracFrom[floeId]        ## Time step at witch we compute the current energy
+        # startCheckPos = []
+        # for node in floe.nodes:
+        #     startCheckPos.append(self.checkFracFrom.setdefault((node.id, node.rightNode), 0))
+        # oldEnd = min(startCheckPos)         ## Time step at witch we compute the current energy
 
         stopCheckAt = self.t.size         ## Time step at witch we compute the current energy
 
@@ -523,9 +530,9 @@ class Fracture:
             if minConfig[1] < oldEnergy:
                 print("     Starting configuration was:", (tuple(oldBrokenSprings), oldEnergy))
                 print("     Minimum energy reached for:", minConfig)
-                print("     Fracture happens", stepsCounter, "time step(s) after last collision, at time:", self.t[stepsCounter])
+                print("     Fracture happens at time step", newEnd, ", at time:", self.t[newEnd])
 
-                return True, stepsCounter, minConfig
+                return True, newEnd, minConfig
 
         else:
             print("     During the whole simulation, there was no fracture !")
@@ -540,6 +547,7 @@ class Fracture:
         fracture, fracPos, minConfig = self.griffithMinimization(floeId)
 
         if not fracture:
+            self.checkFracFrom[floeId] = self.t.size  ## Will change later
             return False
         else:
             assert len(minConfig[0]) == 1, "Multiple spring fracturing simultanuously not yet studied "
@@ -562,10 +570,19 @@ class Fracture:
 
             self.configurations[fracPos] = deepcopy(self.floes)
 
+            ## If fracture, save each node's positions and speed
+            for floe in self.floes.values():
+                for node in floe.nodes:
+                    node.x = self.x[fracPos, node.id]
+                    node.vx = self.v[fracPos, node.id]
+
             ## Discard the positions and velocities after collision
             self.x = self.x[:fracPos + 1, :]
             self.v = self.v[:fracPos + 1, :]
             self.t = self.t[:fracPos + 1]
+
+            self.checkFracFrom[floeId] = fracPos + 1
+            self.checkFracFrom[newFloe.id] = fracPos + 1
 
             return True
 
@@ -578,8 +595,11 @@ class Fracture:
         ## Run uniform mouvement phase up til first collision
         self.computeBeforeContact()
 
+        for key in self.floes.keys():
+            self.checkFracFrom[key] = self.t.size
 
         while self.t.size <= self.NBef + self.NAft:
+        # while self.t[-1] < self.tBef+self.tAft:
             # print("T SIZE = ", self.t.size)
 
             self.computeAfterContact()
@@ -593,8 +613,16 @@ class Fracture:
                 for node in floe.nodes:
                     self.checkCollision(node.id, node.rightNode)
 
-            ## Assign the same value to all keys tp check from now on
-            smallestCheckFrom = min(self.checkFrom.values())
-            for key in self.checkFrom.keys():
-                self.checkFrom[key] = smallestCheckFrom
+            ## Assign the same value to all keys tp check collision from now on
+            smallestCheckFrom = min(self.checkCollFrom.values())
+            for key in self.checkCollFrom.keys():
+                self.checkCollFrom[key] = smallestCheckFrom
 
+            ## Assign the same value to all keys tp check fracture from now on
+            smallestCheckFrom = min(self.checkFracFrom.values())
+            for key in self.checkFracFrom.keys():
+                self.checkFracFrom[key] = smallestCheckFrom
+
+        #### <<-- il faut couper les tenseurs ici !! pour avoir la bonne taille finale (et retire les if dans saveFig)
+
+        print("FINIHSED")
