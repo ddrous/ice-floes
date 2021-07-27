@@ -388,8 +388,8 @@ class Fracture:
 
                         # plot = list(floes.keys())
                         plot = [0,3]
-                        if floe.id in plot:
-                            floe.plot(figax=(fig,ax))
+                        # if floe.id in plot:
+                        floe.plot(figax=(fig,ax))
 
                     ax.set_xlim(min_X, max_X)
                     ax.set_ylim(-2 * max_R, 2 * max_R)
@@ -551,6 +551,13 @@ class Fracture:
             return False
         else:
             assert len(minConfig[0]) == 1, "Multiple spring fracturing simultanuously not yet studied "
+
+            ## Checks that this is the lowest position before fractionning
+            # lowest = min(self.checkFracFrom.values())
+            # lowest = max(self.configurations.keys())
+            # if fracPos < lowest:
+            #     return False
+
             cS = minConfig[0][0]
 
             floe = self.floes[floeId]
@@ -569,6 +576,10 @@ class Fracture:
             self.floes[len(self.floes)] = newFloe
 
             self.configurations[fracPos] = deepcopy(self.floes)
+            ## Delete configurations that had been created before !
+            toDel = [key for key in self.configurations.keys() if key > fracPos]
+            for key in toDel:
+                self.configurations.pop(key)
 
             ## If fracture, save each node's positions and speed
             for floe in self.floes.values():
@@ -613,15 +624,20 @@ class Fracture:
                 for node in floe.nodes:
                     self.checkCollision(node.id, node.rightNode)
 
+
             ## Assign the same value to all keys tp check collision from now on
-            smallestCheckFrom = min(self.checkCollFrom.values())
+            smallestCheckCollFrom = min(self.checkCollFrom.values())
             for key in self.checkCollFrom.keys():
-                self.checkCollFrom[key] = smallestCheckFrom
+                self.checkCollFrom[key] = smallestCheckCollFrom
+                # self.checkFracFrom[key] = min([smallestCheckFracFrom, smallestCheckCollFrom])
+
 
             ## Assign the same value to all keys tp check fracture from now on
-            smallestCheckFrom = min(self.checkFracFrom.values())
+            smallestCheckFracFrom = min(self.checkFracFrom.values())
             for key in self.checkFracFrom.keys():
-                self.checkFracFrom[key] = smallestCheckFrom
+                # self.checkFracFrom[key] = min([smallestCheckFracFrom, smallestCheckCollFrom])
+                self.checkFracFrom[key] = smallestCheckFracFrom
+
 
         #### <<-- il faut couper les tenseurs ici !! pour avoir la bonne taille finale (et retire les if dans saveFig)
 
