@@ -241,7 +241,7 @@ class Fracture:
         """
 
         if not self.couldCollide(left, right):
-            self.checkCollFrom[(left, right)] = self.t.size + 1
+            self.checkCollFrom[(left, right)] = self.t.size
             return False
 
         else:
@@ -263,22 +263,22 @@ class Fracture:
                     ## If collision, save each nodes positions and speed
                     for floe in self.floes.values():
                         for node in floe.nodes:
-                            node.x = self.x[i, node.id ]
-                            node.vx = self.v[i, node.id ]
+                            node.x = self.x[i-1, node.id ]
+                            node.vx = self.v[i-1, node.id ]
 
                     ## Discard the positions and velocities after collision
-                    self.x = self.x[:i, :]
-                    self.v = self.v[:i, :]
-                    self.t = self.t[:i]
+                    self.x = self.x[:i-1, :]
+                    self.v = self.v[:i-1, :]
+                    self.t = self.t[:i-1]
 
-                    self.checkCollFrom[(left, right)] = i + 1
+                    self.checkCollFrom[(left, right)] = i
 
                     self.computeAtContact(left, right)
 
                     return True
 
             ## We only get here if there was no collision
-            self.checkCollFrom[(left, right)] = self.t.size + 1
+            self.checkCollFrom[(left, right)] = self.t.size
             return False
 
 
@@ -308,9 +308,9 @@ class Fracture:
         V0 = V01 if V01 >= 0 else V02
         V0_ = V0 + X
 
-        # print("VELOCITIES BEFORE/AFTER CONTACT:")
-        # print(" First floe:", [v0, -np.abs(V0)])
-        # print(" Second floe:", [-v0_, np.abs(V0_)])
+        print("\nCONTACT ("+str(left)+", "+str(right)+") OCCURRED, VELOCITIES ARE:")
+        print("   Left floe: ", [v0, -np.abs(V0)])
+        print("   Right floe:", [-v0_, np.abs(V0_)])
 
         ## Update velocities at extreme nodes
         leftNode.vx = -np.abs(V0)
@@ -363,6 +363,8 @@ class Fracture:
         fig = plt.figure(figsize=(max_X-min_X, 5*max_R), dpi=72)
         ax = fig.add_subplot(111)
 
+        self.colors = ['b', 'g', 'r', 'c', 'm', 'y']
+
         # ax.set_xlim(min_X, max_X)
         # ax.set_ylim(-4 * max_R, 4 * max_R)
         # ax.set_aspect('equal', adjustable='box')
@@ -396,7 +398,7 @@ class Fracture:
                             node.vx = self.v[i, node.id]
 
                         # plot = list(floes.keys())
-                        # plot = [0,3]
+                        plot = [5,2]
                         # if floe.id in plot:
                         floe.plot(figax=(fig,ax))
 
@@ -540,7 +542,7 @@ class Fracture:
 
             ## Compare to the old energy and conclude
             if minConfig[1] < oldEnergy:
-                print("\nGRIFFITH FRACTURE STUDY FOR ICE FLOE " + str(floeId) + ':')
+                print("\nFRACTURE OCCURRED FOR ICE FLOE " + str(floeId) + ':')
 
                 print("     Starting configuration was:", (tuple(oldBrokenSprings), oldEnergy))
                 print("     Minimum energy reached for:", minConfig)
@@ -630,6 +632,7 @@ class Fracture:
         for key in self.floes.keys():
             self.checkFracFrom[key] = self.t.size
 
+        countIter = 0
         while self.t.size <= self.NBef + self.NAft:
         # while self.t[-1] < self.tBef+self.tAft:
             # print("T SIZE = ", self.t.size)
@@ -647,13 +650,17 @@ class Fracture:
                 # self.checkFracture(floe.id)
 
                 for node in floe.nodes:
+                    countIter += 1
+
                     wantedId = node.id
                     size_ = self.t.size
                     val13_ = self.x[-1,13]
                     val14_ = self.x[-1,14]
                     compare_ = val13_ > val14_ and wantedId==13
 
-                    self.checkCollision(node.id, node.rightNode)
+                    res = self.checkCollision(node.id, node.rightNode)
+
+                    is103 = wantedId==13 and self.checkCollFrom[(13,14)] == 103
 
                     val13 = self.x[-1,13]
                     val14 = self.x[-1,14]

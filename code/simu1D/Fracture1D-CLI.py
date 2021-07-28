@@ -56,7 +56,7 @@ if __name__=="__main__":
     # f.computeBeforeContact()
     # f.computeAfterContact()
     f.runSimulation()
-    f.saveFig(openFile=True, fps=2, filename="Exports/AnimFrac1D.gif")
+    f.saveFig(openFile=True, fps=5, filename="Exports/AnimFrac1D.gif")
 
     # print("CONFIG", f.configurations)
 
