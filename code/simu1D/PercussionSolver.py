@@ -59,10 +59,10 @@ class Node:
                + "  neighbouring nodes: (" + str(self.leftNode) + ", " + str(self.rightNode) + ")\n" \
                + "  neighbouring springs: (" + str(self.leftSpring) + ", " + str(self.rightSpring) + ")\n"
 
-    def plot(self, figax=None):
+    def plot(self, figax=None, color='k'):
         fig, ax = figax
 
-        c = Circle((self.x, self.y), self.R, fc='white', ec='k', lw=2, zorder=10)
+        c = Circle((self.x, self.y), self.R, fc='white', ec=color, lw=2, zorder=10)
         ax.add_patch(c)
         return figax
 
@@ -85,7 +85,7 @@ class Spring:
         self.leftNode = None
         self.rightNode = None
 
-    def plot(self, figax=None):
+    def plot(self, figax=None, color='k'):
         """
         Plot the spring from node1 to node2 as the projection of a helix.
         """
@@ -122,7 +122,7 @@ class Spring:
                       [np.sin(self.theta), np.cos(self.theta)]])
         xs, ys = - R @ np.vstack((xp, w))
 
-        ax.plot(startx + xs, starty + (0.9*self.D * ys) / np.max(ys), c='k', lw=2)
+        ax.plot(startx + xs, starty + (0.9*self.D * ys) / np.max(ys), c=color, lw=2)
 
         return figax
 
@@ -241,7 +241,7 @@ class IceFloe:
             node.x = x_array[i]
             node.vx = vx_array[i]
 
-    def plot(self, figax=None):
+    def plot(self, figax=None, color='k'):
         """
         Plot an ice floe whose nodes are at (x1,y1) and (x2,y2) with same radius R
         """
@@ -252,10 +252,10 @@ class IceFloe:
             fig, ax = figax
 
         for node in self.nodes:
-            node.plot(figax)
+            node.plot(figax, color)
 
         for spring in self.springs:
-            spring.plot(figax)
+            spring.plot(figax, color)
 
         return figax
 
@@ -877,8 +877,8 @@ def fig2img(fig):
     Convert a Matplotlib figure to a PIL Image and return it
     """
     buf = io.BytesIO()
-    # fig.savefig(buf, bbox_inches='tight')
-    fig.savefig(buf)
+    fig.savefig(buf, bbox_inches='tight')
+    # fig.savefig(buf)
     buf.seek(0)
     img = PILImage.open(buf)
     return img

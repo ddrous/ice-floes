@@ -306,6 +306,8 @@ class Fracture:
         V01 = (-b - np.sqrt(Delta)) / (2*a)
         V02 = (-b + np.sqrt(Delta)) / (2*a)
         V0 = V01 if V01 >= 0 else V02
+        # V0 = V01 if np.abs(V01) <= np.abs(V02) else V02            ##### <<-- C'est la ligne d'en haut qui devrait etre
+        # !!!!!!!!!!!!!
         V0_ = V0 + X
 
         print("\nCONTACT ("+str(left)+", "+str(right)+") OCCURRED, VELOCITIES ARE:")
@@ -315,6 +317,8 @@ class Fracture:
         ## Update velocities at extreme nodes
         leftNode.vx = -np.abs(V0)
         rightNode.vx = np.abs(V0_)
+        # leftNode.vx = -V0
+        # rightNode.vx = V0_
 
 
     def computeAfterContact(self):
@@ -363,7 +367,7 @@ class Fracture:
         fig = plt.figure(figsize=(max_X-min_X, 5*max_R), dpi=72)
         ax = fig.add_subplot(111)
 
-        self.colors = ['b', 'g', 'r', 'c', 'm', 'y']
+        colors = ['b', 'g', 'r', 'c', 'm', 'y']
 
         # ax.set_xlim(min_X, max_X)
         # ax.set_ylim(-4 * max_R, 4 * max_R)
@@ -371,7 +375,7 @@ class Fracture:
 
         dt = self.tBef / self.NBef
         di = int(1 / fps / dt)
-        if di==0.0:
+        if di == 0.0:
             print("Error: The frame rate is to high. Reduce it please !")
             exit(1)
 
@@ -397,10 +401,7 @@ class Fracture:
                             node.x = self.x[i, node.id]
                             node.vx = self.v[i, node.id]
 
-                        # plot = list(floes.keys())
-                        plot = [5,2]
-                        # if floe.id in plot:
-                        floe.plot(figax=(fig,ax))
+                        floe.plot(figax=(fig,ax), color=colors[floe.id%len(colors)])
 
                     ax.set_xlim(min_X, max_X)
                     ax.set_ylim(-2 * max_R, 2 * max_R)
@@ -642,31 +643,13 @@ class Fracture:
 
             # floes = self.floes.values()
             floeDict = deepcopy(self.floes)
-
-            for floe in floeDict.values():
-                self.checkFracture(floe.id)
+            # for floe in floeDict.values():
+            #     self.checkFracture(floe.id)
 
             for floe in self.floes.values():
-                # self.checkFracture(floe.id)
-
                 for node in floe.nodes:
-                    countIter += 1
-
-                    wantedId = node.id
-                    size_ = self.t.size
-                    val13_ = self.x[-1,13]
-                    val14_ = self.x[-1,14]
-                    compare_ = val13_ > val14_ and wantedId==13
-
                     res = self.checkCollision(node.id, node.rightNode)
 
-                    is103 = wantedId==13 and self.checkCollFrom[(13,14)] == 103
-
-                    val13 = self.x[-1,13]
-                    val14 = self.x[-1,14]
-                    compare = val13 > val14 and wantedId==13
-                    couldC = self.couldCollide(13, 14)
-                    justnot = compare
 
 
             ## Assign the same value to all keys tp check collision from now on
