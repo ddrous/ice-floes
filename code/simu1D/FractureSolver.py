@@ -311,8 +311,8 @@ class Fracture:
         V0_ = V0 + X
 
         print("\nCONTACT ("+str(left)+", "+str(right)+") OCCURRED, VELOCITIES ARE:")
-        print("   Left floe: ", [v0, -np.abs(V0)])
-        print("   Right floe:", [-v0_, np.abs(V0_)])
+        print("   Left node: ", [v0, -np.abs(V0)])
+        print("   Right node:", [-v0_, np.abs(V0_)])
 
         ## Update velocities at extreme nodes
         leftNode.vx = -np.abs(V0)
@@ -344,79 +344,12 @@ class Fracture:
 
         try:
             self.x = np.concatenate([self.x, x])
-        except ValueError:
+        except ValueError:                                  ####<<--clean this !
             print("hey got ya")
         self.v = np.concatenate([self.v, vx])
         self.t = np.concatenate([self.t, self.t[-1] + tNew])
 
         return
-
-
-    def saveFig(self, fps=24, filename="Exports/Anim1D.gif", openFile=True):
-        """
-        Plot both ice floes whose nodes are at (x1,y1) and (x2,y2) with same radius R
-        """
-        print("FINALY, THE BEFORE TIME IS:", self.tBef)
-        leftMostNode = self.locateNode(0)
-        rightMostNode = self.locateNode(self.nbNodes-1)
-        min_X = leftMostNode.x0 - leftMostNode.R
-        max_X = rightMostNode.x0 + rightMostNode.R
-        max_R = np.max([floe.max_radius() for floe in self.floes.values()])
-
-        plt.style.use("default")
-        fig = plt.figure(figsize=(max_X-min_X, 5*max_R), dpi=72)
-        ax = fig.add_subplot(111)
-
-        colors = ['b', 'g', 'r', 'c', 'm', 'y']
-
-        # ax.set_xlim(min_X, max_X)
-        # ax.set_ylim(-4 * max_R, 4 * max_R)
-        # ax.set_aspect('equal', adjustable='box')
-
-        dt = self.tBef / self.NBef
-        di = int(1 / fps / dt)
-        if di == 0.0:
-            print("Error: The frame rate is to high. Reduce it please !")
-            exit(1)
-
-        img_list = []
-
-        print("Generating frames ...")
-
-        ## For loop to update the floes nodes, then plot
-        configKeys = list(self.configurations.keys())
-        for j in range(0, len(configKeys)):
-            floes = self.configurations[configKeys[j]]
-
-            start = configKeys[j]
-            end = configKeys[j+1] if j != len(configKeys)-1 else self.t.size
-            for i in range(start, end, di):
-                if self.t[i] <= self.tBef+self.tAft:
-
-                    print("  ", i // di, '/', self.t.size // di)
-
-                    ax.set_title("t = "+str(np.round(self.t[i], 3)), size="xx-large")
-                    for floe in floes.values():
-                        for node in floe.nodes:
-                            node.x = self.x[i, node.id]
-                            node.vx = self.v[i, node.id]
-
-                        floe.plot(figax=(fig,ax), color=colors[floe.id%len(colors)])
-
-                    ax.set_xlim(min_X, max_X)
-                    ax.set_ylim(-2 * max_R, 2 * max_R)
-                    ax.set_aspect('equal', adjustable='box')
-
-                    img_list.append(fig2img(fig))           ### Use tight borders !!!!!!!!!!!!!!!!!!!!!!!
-
-                    plt.cla()      # Clear the Axes ready for the next image.
-
-        imageio.mimwrite(filename, img_list)
-        print("OK! saved file '"+filename+"'")
-
-        if openFile:
-            ## Open animation
-            os.system('gthumb '+filename)     ## Only on Linux
 
 
     def fractureEnergy(self, floeId, brokenSprings=None):
@@ -643,8 +576,8 @@ class Fracture:
 
             # floes = self.floes.values()
             floeDict = deepcopy(self.floes)
-            # for floe in floeDict.values():
-            #     self.checkFracture(floe.id)
+            for floe in floeDict.values():
+                self.checkFracture(floe.id)
 
             for floe in self.floes.values():
                 for node in floe.nodes:
@@ -667,10 +600,75 @@ class Fracture:
 
 
         #### <<-- il faut couper les tenseurs ici !! pour avoir la bonne taille finale (et retire les if dans saveFig)
+        self.x = self.x[:self.NBef+self.NAft+2, :]
+        self.v = self.v[:self.NBef+self.NAft+2, :]
+        self.t = self.t[:self.NBef+self.NAft+2]
 
-        could = {}
-        for floe in self.floes.values():
-            for node in floe.nodes:
-                could[(node.id, node.rightNode)] = self.couldCollide(node.id, node.rightNode)
         # print("Could collide", self.couldCollide(1, 2))
         print("FINIHSED")
+
+
+    def saveFig(self, fps=24, filename="Exports/Anim1D.gif", openFile=True):
+        """
+        Plot both ice floes whose nodes are at (x1,y1) and (x2,y2) with same radius R
+        """
+        leftMostNode = self.locateNode(0)
+        rightMostNode = self.locateNode(self.nbNodes-1)
+        min_X = leftMostNode.x0 - leftMostNode.R
+        max_X = rightMostNode.x0 + rightMostNode.R
+        max_R = np.max([floe.max_radius() for floe in self.floes.values()])
+
+        plt.style.use("default")
+        fig = plt.figure(figsize=(max_X-min_X, 5*max_R), dpi=72)
+        ax = fig.add_subplot(111)
+
+        colors = ['b', 'g', 'r', 'c', 'm', 'y']
+
+        # ax.set_xlim(min_X, max_X)
+        # ax.set_ylim(-4 * max_R, 4 * max_R)
+        # ax.set_aspect('equal', adjustable='box')
+
+        dt = self.tBef / self.NBef
+        di = int(1 / fps / dt)
+        if di == 0:
+            print("Error: The frame rate is to high. Reduce it please !")
+            exit(1)
+
+        img_list = []
+
+        print("Generating frames ...")
+
+        ## For loop to update the floes nodes, then plot
+        configKeys = list(self.configurations.keys())
+        for j in range(0, len(configKeys)):
+            floes = self.configurations[configKeys[j]]
+
+            start = configKeys[j]
+            end = configKeys[j+1] if j != len(configKeys)-1 else self.t.size
+            for i in range(start, end, di):
+
+                print("  ", (i // di)+1, '/', self.t.size // di)
+
+                ax.set_title("t = "+str(np.round(self.t[i], 3)), size="xx-large")
+                for floe in floes.values():
+                    for node in floe.nodes:
+                        node.x = self.x[i, node.id]
+                        node.vx = self.v[i, node.id]
+
+                    floe.plot(figax=(fig,ax), color=colors[floe.id%len(colors)])
+
+                ax.set_xlim(min_X, max_X)
+                ax.set_ylim(-2 * max_R, 2 * max_R)
+                ax.set_aspect('equal', adjustable='box')
+
+                img_list.append(fig2img(fig))           ### Use tight borders !!!!!!!!!!!!!!!!!!!!!!!
+
+                plt.cla()      # Clear the Axes ready for the next image.
+
+        imageio.mimwrite(filename, img_list)
+        print("OK! saved file '"+filename+"'")
+
+        if openFile:
+            ## Open animation
+            os.system('gthumb '+filename)     ## Only on Linux
+
