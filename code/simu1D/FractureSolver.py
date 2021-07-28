@@ -293,6 +293,8 @@ class Fracture:
         ## Compute the velocities after contact
         v0 = np.abs(leftNode.vx)
         v0_ = np.abs(rightNode.vx)
+        # v0 = leftNode.vx
+        # v0_ = rightNode.vx
         m = self.floes[leftNode.parentFloe].m
         m_ = self.floes[rightNode.parentFloe].m
         eps = self.eps
@@ -305,6 +307,13 @@ class Fracture:
         Delta = b**2 - 4*a*c
         V01 = (-b - np.sqrt(Delta)) / (2*a)
         V02 = (-b + np.sqrt(Delta)) / (2*a)
+
+        # qav = m*np.abs(v0) + m_*np.abs(v0_)
+        # qap1 = m*np.abs(V01) + m_*np.abs(V01+X)
+        # qap2 = m*np.abs(V02) + m_*np.abs(V02+X)
+        # qap3 = m*np.abs(V01) + m_*np.abs(V01-X)
+        # qap4 = m*np.abs(V02) + m_*np.abs(V02-X)
+
         V0 = V01 if V01 >= 0 else V02
         # V0 = V01 if np.abs(V01) <= np.abs(V02) else V02            ##### <<-- C'est la ligne d'en haut qui devrait etre
         # !!!!!!!!!!!!!
@@ -313,6 +322,11 @@ class Fracture:
         print("\nCONTACT ("+str(left)+", "+str(right)+") OCCURRED, VELOCITIES ARE:")
         print("   Left node: ", [v0, -np.abs(V0)])
         print("   Right node:", [-v0_, np.abs(V0_)])
+
+        # print("Increases momentum 1:", qap1 > qav)
+        # print("Increases momentum 2:", qap2 > qav)
+        # # print("Increases momentum 3:", qap3 > qav)
+        # # print("Increases momentum 4:", qap4 > qav)
 
         ## Update velocities at extreme nodes
         leftNode.vx = -np.abs(V0)
