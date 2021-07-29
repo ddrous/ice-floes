@@ -75,7 +75,7 @@ class Fracture:
         self.initVel = self.velocitiesArray()                 ## Initial velocities for the nodes
         self.initLengths = self.initialLengths()              ## Initial lenghts for the springs for all nodes
 
-        self.recCount = 0         ## Recursions depth counter for each collision that happens
+        self.collCount = {}         ## Recursions depth counter for each collision that happens
 
         self.configurations = {}            ## All observed configurations until the end of simulation
         self.configurations[0] = deepcopy(self.floes)
@@ -258,7 +258,11 @@ class Fracture:
 
             for i in range(startIndex, endIndex):
 
-                if self.x[i, left]+leftNode.R > self.x[i, right]-rightNode.R:
+                # diffVel = np.abs(self.v[i, left]-self.v[i, right]) > 1e-2
+                # collCount = self.collCount.setdefault((left, right), 0)
+                # if self.x[i, left]+leftNode.R > self.x[i, right]-rightNode.R and collCount < 100:
+
+                if self.x[i, left] + leftNode.R > self.x[i, right] - rightNode.R:
 
                     ## If collision, save each nodes positions and speed
                     for floe in self.floes.values():
@@ -291,14 +295,15 @@ class Fracture:
         # assert self.could_collide(i, j), "These nodes cannot collide, why bring them here ?"
 
         ## Compute the velocities after contact
-        v0 = np.abs(leftNode.vx)
-        v0_ = np.abs(rightNode.vx)
-        # v0 = leftNode.vx
-        # v0_ = rightNode.vx
+        v0 = leftNode.vx
+        v0_ = rightNode.vx
         m = self.floes[leftNode.parentFloe].m
         m_ = self.floes[rightNode.parentFloe].m
         eps = self.eps
 
+        ###########     TROISIÈME ALTERNATIVE     ####################
+        # v0 = np.abs(leftNode.vx)
+        # v0_ = np.abs(rightNode.vx)
         X = eps*(v0 - v0_)
         Y = m*(v0**2) + m_*(v0_**2)
         a = m+m_
@@ -308,31 +313,31 @@ class Fracture:
         V01 = (-b - np.sqrt(Delta)) / (2*a)
         V02 = (-b + np.sqrt(Delta)) / (2*a)
 
-        # qav = m*np.abs(v0) + m_*np.abs(v0_)
-        # qap1 = m*np.abs(V01) + m_*np.abs(V01+X)
-        # qap2 = m*np.abs(V02) + m_*np.abs(V02+X)
-        # qap3 = m*np.abs(V01) + m_*np.abs(V01-X)
-        # qap4 = m*np.abs(V02) + m_*np.abs(V02-X)
-
         V0 = V01 if V01 >= 0 else V02
-        # V0 = V01 if np.abs(V01) <= np.abs(V02) else V02            ##### <<-- C'est la ligne d'en haut qui devrait etre
-        # !!!!!!!!!!!!!
         V0_ = V0 + X
+        #############################################################
+
+        ###########     QUATRIÈME ALTERNATIVE       ####################
+        ## Ici on utilise la page 37 du brouillon avec l'impulsion
+        # V0 = (-m*eps*np.abs(v0-v0_) + m*v0 + m_*v0_) / (m+m_)
+        # V0_ = (m_*eps*np.abs(v0-v0_) + m*v0 + m_*v0_) / (m+m_)
+
+        V0 = v0 - (m_ * (1.0+eps) * (v0-v0_)) / (m + m_)
+        V0_ = v0_ + (m * (1.0+eps) * (v0-v0_)) / (m + m_)
+        ##################################################################
 
         print("\nCONTACT ("+str(left)+", "+str(right)+") OCCURRED, VELOCITIES ARE:")
-        print("   Left node: ", [v0, -np.abs(V0)])
-        print("   Right node:", [-v0_, np.abs(V0_)])
-
-        # print("Increases momentum 1:", qap1 > qav)
-        # print("Increases momentum 2:", qap2 > qav)
-        # # print("Increases momentum 3:", qap3 > qav)
-        # # print("Increases momentum 4:", qap4 > qav)
+        print("   Left node: ", [v0, V0])
+        print("   Right node:", [v0_, V0_])
+        self.collCount[(left, right)] = self.collCount.setdefault((left, right), 0) + 1
+        print("Collision count for (" + str(left) + ", " + str(right) + "):", self.collCount[(left, right)])
+        print("Current time size:", self.t.size)
 
         ## Update velocities at extreme nodes
-        leftNode.vx = -np.abs(V0)
-        rightNode.vx = np.abs(V0_)
-        # leftNode.vx = -V0
-        # rightNode.vx = V0_
+        # leftNode.vx = -np.abs(V0)
+        # rightNode.vx = np.abs(V0_)
+        leftNode.vx = V0
+        rightNode.vx = V0_
 
 
     def computeAfterContact(self):
@@ -581,14 +586,13 @@ class Fracture:
             self.checkFracFrom[key] = self.t.size
 
         countIter = 0
-        while self.t.size <= self.NBef + self.NAft:
+        while self.t.size <= self.NBef + self.NAft and max(self.collCount.values()) < 1000:
         # while self.t[-1] < self.tBef+self.tAft:
             # print("T SIZE = ", self.t.size)
 
             self.computeAfterContact()
             ############### Envoyer tout ce qui suit dans runsimulation
 
-            # floes = self.floes.values()
             floeDict = deepcopy(self.floes)
             for floe in floeDict.values():
                 self.checkFracture(floe.id)
@@ -619,7 +623,7 @@ class Fracture:
         self.t = self.t[:self.NBef+self.NAft+2]
 
         # print("Could collide", self.couldCollide(1, 2))
-        print("FINIHSED")
+        print("FINISHED")
 
 
     def saveFig(self, fps=24, filename="Exports/Anim1D.gif", openFile=True):
@@ -661,9 +665,12 @@ class Fracture:
             end = configKeys[j+1] if j != len(configKeys)-1 else self.t.size
             for i in range(start, end, di):
 
-                print("  ", (i // di)+1, '/', self.t.size // di)
+                if i >= self.t.size: break
 
-                ax.set_title("t = "+str(np.round(self.t[i], 3)), size="xx-large")
+                print("  ", (i // di), '/', self.t.size // di)
+
+                ax.set_title("t = "+str(np.round(self.t[i], 2)), size="xx-large")
+
                 for floe in floes.values():
                     for node in floe.nodes:
                         node.x = self.x[i, node.id]

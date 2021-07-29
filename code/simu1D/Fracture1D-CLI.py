@@ -22,7 +22,7 @@ if __name__=="__main__":
     v0 = 2.2    ## vitesses avant le choc
     v0_ = -1.8
 
-    eps = 0.4   ## coefficient de restitution
+    eps = 0.95   ## coefficient de restitution
 
     ## Geometric constants
     X_min, X_max = 0, 50.0        # Position of the farthest node in the grid
@@ -51,12 +51,12 @@ if __name__=="__main__":
     floe3.generate_nodes(X_max - total_length3, X_max, n_nodes3, R)
 
     ## Create two ice floes
-    f = Fracture([floe1, floe2, floe3], times=(6.0, 24.0), nStepsBefContact=100, restitutionCoef=eps)
+    f = Fracture([floe1, floe2, floe3], times=(6.0, 24.0), nStepsBefContact=500, restitutionCoef=eps)
     # f.printDetails()
     # f.computeBeforeContact()
     # f.computeAfterContact()
     f.runSimulation()
-    # f.saveFig(openFile=True, fps=5, filename="Exports/AnimFrac1D.gif")
+    f.saveFig(openFile=True, fps=5, filename="Exports/AnimFrac1D.gif")
 
     # print("CONFIG", f.configurations)
 
