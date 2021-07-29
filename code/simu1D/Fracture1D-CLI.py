@@ -22,7 +22,7 @@ if __name__=="__main__":
     v0 = 2.2    ## vitesses avant le choc
     v0_ = -1.8
 
-    eps = 0.95   ## coefficient de restitution
+    eps = 0.5   ## coefficient de restitution
 
     ## Geometric constants
     X_min, X_max = 0, 50.0        # Position of the farthest node in the grid

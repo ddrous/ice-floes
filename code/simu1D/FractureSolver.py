@@ -321,15 +321,19 @@ class Fracture:
         ## Ici on utilise la page 37 du brouillon avec l'impulsion
         # V0 = (-m*eps*np.abs(v0-v0_) + m*v0 + m_*v0_) / (m+m_)
         # V0_ = (m_*eps*np.abs(v0-v0_) + m*v0 + m_*v0_) / (m+m_)
-
+        self.collCount[(left, right)] = self.collCount.setdefault((left, right), 0) + 1
         V0 = v0 - (m_ * (1.0+eps) * (v0-v0_)) / (m + m_)
         V0_ = v0_ + (m * (1.0+eps) * (v0-v0_)) / (m + m_)
+        if self.collCount[(left, right)] > 100:
+            eps = 1.0
+            self.collCount[(left, right)] = 100
+            V0 = -np.abs(v0 - (m_ * (1.0+eps) * (v0-v0_)) / (m + m_))
+            V0_ = np.abs(v0_ + (m * (1.0+eps) * (v0-v0_)) / (m + m_))
         ##################################################################
 
         print("\nCONTACT ("+str(left)+", "+str(right)+") OCCURRED, VELOCITIES ARE:")
         print("   Left node: ", [v0, V0])
         print("   Right node:", [v0_, V0_])
-        self.collCount[(left, right)] = self.collCount.setdefault((left, right), 0) + 1
         print("Collision count for (" + str(left) + ", " + str(right) + "):", self.collCount[(left, right)])
         print("Current time size:", self.t.size)
 
