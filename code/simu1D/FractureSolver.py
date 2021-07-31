@@ -83,6 +83,7 @@ class Fracture:
         self.checkCollFrom = {}             ## Position from which to perform collision and fracture checks
         self.checkFracFrom = {}             ## Position from which to perform collision and fracture checks
 
+        self.collLoc = []
 
     def printDetails(self):
         """
@@ -304,23 +305,23 @@ class Fracture:
         ###########     TROISIÈME ALTERNATIVE     ####################
         # v0 = np.abs(leftNode.vx)
         # v0_ = np.abs(rightNode.vx)
-        X = eps*(v0 - v0_)
-        Y = m*(v0**2) + m_*(v0_**2)
-        a = m+m_
-        b = 2*m_*X
-        c = m_*(X**2) - Y
-        Delta = b**2 - 4*a*c
-        V01 = (-b - np.sqrt(Delta)) / (2*a)
-        V02 = (-b + np.sqrt(Delta)) / (2*a)
-
-        V0 = V01 if V01 >= 0 else V02
-        V0_ = V0 + X
+        # X = eps*(v0 - v0_)
+        # Y = m*(v0**2) + m_*(v0_**2)
+        # a = m+m_
+        # b = 2*m_*X
+        # c = m_*(X**2) - Y
+        # Delta = b**2 - 4*a*c
+        # V01 = (-b - np.sqrt(Delta)) / (2*a)
+        # V02 = (-b + np.sqrt(Delta)) / (2*a)
+        #
+        # V0 = V01 if V01 >= 0 else V02
+        # V0_ = V0 + X
         #############################################################
 
         ###########     QUATRIÈME ALTERNATIVE       ####################
         ## Ici on utilise la page 37 du brouillon avec l'impulsion
-        # V0 = (-m*eps*np.abs(v0-v0_) + m*v0 + m_*v0_) / (m+m_)
-        # V0_ = (m_*eps*np.abs(v0-v0_) + m*v0 + m_*v0_) / (m+m_)
+        ### V0 = (-m*eps*np.abs(v0-v0_) + m*v0 + m_*v0_) / (m+m_)
+        ### V0_ = (m_*eps*np.abs(v0-v0_) + m*v0 + m_*v0_) / (m+m_)
         self.collCount[(left, right)] = self.collCount.setdefault((left, right), 0) + 1
         V0 = v0 - (m_ * (1.0+eps) * (v0-v0_)) / (m + m_)
         V0_ = v0_ + (m * (1.0+eps) * (v0-v0_)) / (m + m_)
@@ -331,6 +332,12 @@ class Fracture:
             V0_ = np.abs(v0_ + (m * (1.0+eps) * (v0-v0_)) / (m + m_))
         ##################################################################
 
+        ###########     CINQUIEME ALTERNATIVE       ####################
+        ### Conservation classice de l'Ec et de la qte de mouv
+        # V0 = (2*m_*v0_ + (m-m_) * v0) / (m + m_)
+        # V0_ = (2 * m * v0 + (m_ - m) * v0_) / (m + m_)
+        ################################################################
+
         print("\nCONTACT ("+str(left)+", "+str(right)+") OCCURRED, VELOCITIES ARE:")
         print("   Left node: ", [v0, V0])
         print("   Right node:", [v0_, V0_])
@@ -338,10 +345,10 @@ class Fracture:
         print("Current time size:", self.t.size)
 
         ## Update velocities at extreme nodes
-        # leftNode.vx = -np.abs(V0)
-        # rightNode.vx = np.abs(V0_)
         leftNode.vx = V0
         rightNode.vx = V0_
+        # leftNode.vx = -np.abs(V0)
+        # rightNode.vx = np.abs(V0_)
 
 
     def computeAfterContact(self):
@@ -605,14 +612,12 @@ class Fracture:
                 for node in floe.nodes:
                     res = self.checkCollision(node.id, node.rightNode)
 
-
-
             ## Assign the same value to all keys tp check collision from now on
             smallestCheckCollFrom = min(self.checkCollFrom.values())
             for key in self.checkCollFrom.keys():
                 self.checkCollFrom[key] = smallestCheckCollFrom
                 # self.checkFracFrom[key] = min([smallestCheckFracFrom, smallestCheckCollFrom])
-
+            self.collLoc.append(smallestCheckCollFrom)
 
             ## Assign the same value to all keys tp check fracture from now on
             smallestCheckFracFrom = min(self.checkFracFrom.values())
@@ -697,3 +702,195 @@ class Fracture:
             ## Open animation
             os.system('gthumb '+filename)     ## Only on Linux
 
+
+
+    def plot_energy(self, figax):
+        """
+        Plots the total energy of the system before and after first chocs
+        """
+        if figax:
+            fig, ax = figax
+        else:
+            figax = plt.subplots()
+            fig, ax = figax
+
+        ## Masses des noeuds
+        m = np.zeros((self.nbNodes))
+        for floe in self.floes.values():
+            for node in floe.nodes:
+                m[node.id] = floe.m
+
+        ## Energie cinetique
+        E_c = (0.5 * np.sum(m[np.newaxis, :] * self.v**2, axis=-1))
+
+        ## Energie elastique
+        E_el = np.zeros_like(self.t)
+        initLen = np.zeros((self.nbNodes - 1))
+        for start, floes in self.configurations.items():
+            k = np.zeros((self.nbNodes - 1))
+
+            for floe in floes.values():
+                for spring in floe.springs:
+                    k[spring.id] = floe.k
+                    initLen[spring.id] = spring.L0
+
+            E_el[start:] = 0.5 * np.sum(k[np.newaxis, :] * (self.x[start:, 1:] - self.x[start:, :-1]
+                                                            - initLen[np.newaxis, :])**2, axis=-1)
+
+        ## Energie dissipative
+        E_r = np.zeros_like(self.t)
+        for start, floes in self.configurations.items():
+            mu = np.zeros((self.nbNodes - 1))
+
+            for floe in floes.values():
+                for spring in floe.springs:
+                    mu[spring.id] = floe.mu
+
+            integrand = np.sum(mu[np.newaxis, :] * (self.v[start:, 1:] - self.v[start:, :-1]) ** 2, axis=-1)
+            t = self.t[start+1:] - self.t[start:-1]
+            # E_r[start:-1] = E_r[start-1] + np.cumsum(integrand[:-1] * t)
+            E_r[start:-1] = E_r[start-1] + np.cumsum(integrand[:-1] * t)
+
+        E_r[-1] = np.nan
+
+        E_tot = E_c + E_el + E_r
+
+        # print("Énergie totale immediatement avant 1er choc:", E_tot[N_first])
+        # print("Énergie totale immediatement après 1er choc:", E_tot[N_first + 1])
+        # print("Rapport APRÈS/AVANT:", E_ap[N_first + 1] / E_av[N_first])
+        # print("Epsilon:", self.eps)
+
+        ax.plot(self.t, E_tot, "-", linewidth=2, label="énergie totale")
+
+        ax.plot(self.t, E_c, "--", linewidth=1, label="énergie cinétique")
+        ax.plot(self.t, E_el, "--", linewidth=1, label="énergie élastique")
+        ax.plot(self.t, E_r, "--", linewidth=1, label="énergie dissipée")
+
+        # for i, N_choc in enumerate(self.contact_indices):
+        #     # label = "1er" if i==0 else str(i+1)+"eme"
+        #     # ax.plot([self.t[N_choc+1]], [E_ap[N_choc+1]], marker='X', label=label+" choc")
+        #     label = "chocs" if i==0 else None
+        #     ax.plot([self.t[N_choc+1]], [E_ap[N_choc+1]], 'kX', alpha=0.5, label=label)
+
+        collLoc = np.unique(self.collLoc)
+        for i in range(0, len(collLoc)):
+            label = "collisions" if i == 0 else None
+            if collLoc[i] < self.t.size:
+                ax.plot([self.t[collLoc[i]]], [E_tot[collLoc[i]]], 'k.', label=label, alpha=0.5)
+
+        fracLoc = list(self.configurations.keys())
+        for i in range(1, len(fracLoc)):
+            label = "fractures" if i == 1 else None
+            ax.plot([self.t[fracLoc[i]]], [E_tot[fracLoc[i]]], 'rX', label=label)
+
+        ax.set_title("Énergie mécanique totale")
+        ax.set_xlabel("temps")
+        text = 'rapport fin/début: ' + str(np.round(E_tot[-2] / E_tot[0], 3)) \
+               + '\nepsilon: ' + str(np.round(self.eps, 3))
+        ax.text(0.9, 0.1, text,
+             horizontalalignment='right',
+             verticalalignment='baseline',
+             transform=ax.transAxes)
+        ax.legend()
+        fig.tight_layout()
+
+        return figax
+
+
+
+    def plot_momentum(self, figax):
+        """
+        Plots the momentum of the system before and after first choc
+        """
+        if figax:
+            fig, ax = figax
+        else:
+            figax = plt.subplots()
+            fig, ax = figax
+
+        ## Masses des noeuds
+        m = np.zeros((self.nbNodes))
+        for floe in self.floes.values():
+            for node in floe.nodes:
+                m[node.id] = floe.m
+
+        P = np.sum(m * self.v, axis=-1)
+
+        ax.set_ylim([0, 2*P[0]])
+
+        ax.plot(self.t, P, label="quantité de mouvement")
+        # for i, N_choc in enumerate(self.contact_indices[:]):
+        #     label = "chocs" if i==0 else None
+        #     ax.plot([self.t[N_choc+1]], [P_ap[N_choc+1]], 'kX', alpha=0.5, label=label)
+
+        ax.set_title("Quantité de mouvement")
+        ax.set_xlabel("temps")
+        text = 'rapport fin/début: ' + str(np.round(P[-1] / P[0], 2)) \
+               + '\nepsilon: ' + str(self.eps)
+        ax.text(0.9, 0.1, text,
+             horizontalalignment='right',
+             verticalalignment='baseline',
+             transform=ax.transAxes)
+        ax.legend()
+        fig.tight_layout()
+
+        return (fig, ax)
+
+
+
+    def plot_positions(self, node_ids=None, figax=None):
+        """
+        Plot the positions of (some) nodes of an ice floe part of this percussion problem.
+        """
+
+        if figax:
+            fig, ax = figax
+        else:
+            figax = plt.subplots()
+            fig, ax = figax
+
+        if not node_ids:
+            node_ids = list(range(self.nbNodes))
+
+        try:
+            for i in node_ids:
+                ax.plot(self.t, self.x[:, i], label=r"$z_"+str(i)+"$")
+        except IndexError:
+            print("Error plotting: A given node id not valid!")
+
+        ax.set_title("Trajectoires des noeuds")
+        ax.set_xlabel("temps")
+        if len(node_ids) < 8:
+            ax.legend()
+        fig.tight_layout()
+
+        return (fig, ax)
+
+
+    def plot_velocities(self, node_ids=None, figax=None):
+        """
+        Plot the positions of (some) nodes of an ice floe part of this percussion problem.
+        """
+
+        if figax:
+            fig, ax = figax
+        else:
+            figax = plt.subplots()
+            fig, ax = figax
+
+        if not node_ids:
+            node_ids = list(range(self.nbNodes))
+
+        try:
+            for i in node_ids:
+                ax.plot(self.t, self.v[:, i], label=r"$z_"+str(i)+"$")
+        except IndexError:
+            print("Error plotting: A given node id not valid!")
+
+        ax.set_title("Vitesses des noeuds")
+        ax.set_xlabel("temps")
+        if len(node_ids) < 8:
+            ax.legend()
+        fig.tight_layout()
+
+        return (fig, ax)

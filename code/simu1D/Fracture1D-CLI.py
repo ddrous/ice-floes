@@ -1,6 +1,7 @@
 """
 This script runs and animates the of two ice floes.
 """
+import matplotlib.pyplot as plt
 
 from FractureSolver import *
 
@@ -22,7 +23,7 @@ if __name__=="__main__":
     v0 = 2.2    ## vitesses avant le choc
     v0_ = -1.8
 
-    eps = 0.5   ## coefficient de restitution
+    eps = 0.95   ## coefficient de restitution
 
     ## Geometric constants
     X_min, X_max = 0, 50.0        # Position of the farthest node in the grid
@@ -56,8 +57,16 @@ if __name__=="__main__":
     # f.computeBeforeContact()
     # f.computeAfterContact()
     f.runSimulation()
-    f.saveFig(openFile=True, fps=5, filename="Exports/AnimFrac1D.gif")
+    # f.saveFig(openFile=True, fps=5, filename="Exports/AnimFrac1D.gif")
 
-    # print("CONFIG", f.configurations)
+    plt.style.use("seaborn")
+    nrow, ncol = 2, 2
+    fig, ax = plt.subplots(nrow, ncol, figsize=(3.4*(ncol+1),3.4*(nrow)))
+    ax = ax.flatten()
+    f.plot_positions(None, (fig, ax[0]))
+    f.plot_velocities(None, (fig, ax[1]))
+    f.plot_momentum((fig, ax[2]))
+    f.plot_energy((fig, ax[3]))
 
+    plt.show()
 
