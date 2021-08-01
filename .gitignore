@@ -39,3 +39,6 @@ main-blx.bib*
 
 ## Jetbrains
 *iml
+code/simu1D/__pycache__/FractureSolverOld.cpython-38.pyc
+code/simu1D/__pycache__/FractureSolver.cpython-38.pyc
+code/simu1D/__pycache__/PercussionSolver.cpython-38.pyc
