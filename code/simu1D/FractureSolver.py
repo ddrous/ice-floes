@@ -294,6 +294,7 @@ class Fracture:
         if (left is None) or (right is None): return
         leftNode, rightNode = self.locateNode(left), self.locateNode(right)
         # assert self.could_collide(i, j), "These nodes cannot collide, why bring them here ?"
+        self.collCount[(left, right)] = self.collCount.setdefault((left, right), 0) + 1
 
         ## Compute the velocities after contact
         v0 = leftNode.vx
@@ -319,10 +320,15 @@ class Fracture:
         #############################################################
 
         ###########     QUATRIÈME ALTERNATIVE       ####################
+        ### Conservation classice de l'Ec et de la qte de mouv
+        # V0 = (2*m_*v0_ + (m-m_) * v0) / (m + m_)
+        # V0_ = (2 * m * v0 + (m_ - m) * v0_) / (m + m_)
+        ################################################################
+
+        ###########      CINQUIEME ALTERNATIVE       ####################
         ## Ici on utilise la page 37 du brouillon avec l'impulsion
         ### V0 = (-m*eps*np.abs(v0-v0_) + m*v0 + m_*v0_) / (m+m_)
         ### V0_ = (m_*eps*np.abs(v0-v0_) + m*v0 + m_*v0_) / (m+m_)
-        self.collCount[(left, right)] = self.collCount.setdefault((left, right), 0) + 1
         V0 = v0 - (m_ * (1.0+eps) * (v0-v0_)) / (m + m_)
         V0_ = v0_ + (m * (1.0+eps) * (v0-v0_)) / (m + m_)
         if self.collCount[(left, right)] > 100:
@@ -332,11 +338,22 @@ class Fracture:
             V0_ = np.abs(v0_ + (m * (1.0+eps) * (v0-v0_)) / (m + m_))
         ##################################################################
 
-        ###########     CINQUIEME ALTERNATIVE       ####################
-        ### Conservation classice de l'Ec et de la qte de mouv
-        # V0 = (2*m_*v0_ + (m-m_) * v0) / (m + m_)
-        # V0_ = (2 * m * v0 + (m_ - m) * v0_) / (m + m_)
-        ################################################################
+        ###########     SIXIÈME ALTERNATIVE       ####################
+        ## Ici on améliore la technique des jeux vidéos
+        leftDist = leftNode.x - self.locateNode(leftNode.leftNode).x
+        leftForce = self.floes[leftNode.parentFloe].k * (self.locateSpring(leftNode.leftSpring).L0 - leftDist)
+
+        rightDist = self.locateNode(rightNode.rightNode).x - rightNode.x
+        rightForce = self.floes[rightNode.parentFloe].k * (rightDist - self.locateSpring(rightNode.rightSpring).L0)
+
+        tStar = 0.01
+
+
+
+        V0 = v0 - (m_ * (1.0+eps) * (v0-v0_)) / (m + m_)
+        V0_ = v0_ + (m * (1.0+eps) * (v0-v0_)) / (m + m_)
+
+        ##################################################################
 
         print("\nCONTACT ("+str(left)+", "+str(right)+") OCCURRED, VELOCITIES ARE:")
         print("   Left node: ", [v0, V0])
