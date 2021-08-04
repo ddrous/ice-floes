@@ -555,13 +555,13 @@ Il en est de même pous le deuxième floe.
 
 
 \subsection{Deuxième modèle pour la collision avec séparation des masses}
+\label{subsec:model1d2}
 
 
 
+Dans cette section, nous introduisons un modèle 1D plus général que ceux présentés dans les deux sections précédentes (voir \cref{subsubsec:moddep1D,subsubsec:colinesepma}). Les floes sont cette fois représntés par une multitude de noeuds, de ressorts et de dispositifs visqueux. 
 
-Dans cette section, nous généralisons le modèle 1D présenté dans les deux sections précédentes (voir \cref{subsubsec:moddep1D,subsubsec:colinesepma}). Les floes sont cette fois représntés par une multitude de noeuds, de ressorts et de dispositifs visqueux. 
-
-\paragraph{Déplacement d'un floe.} Considérons la FIGURE CI-BAS où $n$ le nombre de noeuds du floe, $k$ la constante de raideur uniforme de tous ses ressorts, et $\mu$ le coefficient de dissipation pour tous les dispositifs visqueux. 
+Considérons la FIGURE CI-BAS où $n$ le nombre de noeuds du floe, $k$ la constante de raideur uniforme de tous ses ressorts, et $\mu$ le coefficient de dissipation pour tous les dispositifs visqueux. 
 
 FIGURE MODÈLE 1D AVEC PLUSIEURS NOEUDS (NE PAS OUBLIÉ DE REPRÉSENTER LE REPÈRE ABSOLU).
 
@@ -569,18 +569,35 @@ Contrairement à l'approche par déplacement que nous avons adopté à la \cref{
 
 RECOPIER LES PAGES 30 ET 31 DU BROUILLON EN RÉSUMANT TANT QUE POSSIBLE
 
+Concernant la percussion, nous proposons aussi une approche différente de calculer les vitesses des noeuds après choc. En effet, nous appliquons non pas le principe de la conservation de la quantité de mouvement, mais celui de la conservation de l'énergie cinétique. Ce choix provient du fait que dans ce modèle, les deux noeuds en contact ne sont pas considérés comme un système isolé. En effet, les deux noeuds sont affectés par les forces des ressorts et des dispositifs visqueux qui leur sont ratachés. Ces deux forces ont un travail non nul et ne sont donc pas conservatives (voir FIGURE CI BAS). 
+
+FIGURE DE LA PERCUSSION 1D AVEC JUSTE LES DEUX NOEUDS CONCERNES, ET LEUR 2 NOEUDS VOISINS. LE RESTE DE NOEUD EN POINTILLÉS POUR MONTRER QU'IL Y A UNE FORCE QUI S'APPLIQUE. 
+
+Nous appliquons donc la conservation de l'énergie cinétique pour obtenir une équation pour les vitesses après choc:
+
+EQUATION DE CONSERVATION DE L'EC
+
+Nous maintenons l'équation de restitution \cref{eq:crammer2} utilisé dans les sections précédentes:
+\begin{align}
+    - V_0 + V'_0 = \varepsilon (v_0 - v'_0) \,.
+\end{align}
+
+La résolution des ... nous permet d'obtenir les vitesses $V_0$ et $V'_0$ respectivement pour les noeuds de gauche et de droite dans la collision\footnote{Notons que les tous les noeuds qui ne sont pas en contact conservent leurs vitesss pendant le choc.}:
+
+EQUATION DES VITESSES APRES CHOCS
+
+Pour tester ce modèle, nous effectuons des simulations avec deux noeuds ayant $7$ et $8$ neuods respectivement. Nous étudions aussi la conservation de la quantité de mouvement et de l'énergie mécanique totale\footnote{Somme de l'énergie cinétique, de l'énergie potentielle élastique, et de l'énergie dissipée par frotement visqueux.} et nous obtenons les résultats présentés à la FIGURE CI BAS.
+
+FIGURE DES RÉSULTATS AVEC CE MODÈLE
 
 
-\paragraph{Etude de la percussion.} Observons que les équations \cref{eq:debuteq1,eq:crammer1,eq:crammer2,eq:vitessesapres1D} de la \cref{subsubsec:colinesepma} restent valident du moment que seuls 2 floes sont en contact. Soit $n_1$ et $n_2$ les nombres de floes respectifs pour les floes de gauche et de droite (voir FIGURE CI-DESSOUS)
+Bien que ce modèle conserve l'énergie mécanique du système, nous nous rendons compte à travers les résultats de la FIGURE qu'il présente plusieurs manquements:
+\begin{itemize}
+    \item L'énergie mécanique ne saurait etre conservée dans un système non conservatif (voir ), ce qui est le cas du notre.
+    \item La conservation de l'énrgie cinétique entre en opposition directe avec la notion d'élastitité au rebondissement (traduite par le coeffient de restitution $\varepsilon$).
+\end{itemize}
 
-FIGURE DE LA PERCUSSION 1D AVEC PLUSIEURS NOEUDS 
-
-
-La figure ci-dessus montre que la quantité $I$ présenté à \cref{eq:debuteq1} s'écrit:
-
-\noindent Et les vitesses après choc sont données par \cref{eq:vitessesapres1D}\footnote{Notons que les tous les noeuds qui ne sont pas en contact conservent leurs vitesss pendant le choc.}.
-
-
+C'est pour résoudre ces nombreux problèmes que nous avons développé un troisième modèle pour la percussion 1D.
 
 
 
@@ -588,9 +605,20 @@ La figure ci-dessus montre que la quantité $I$ présenté à \cref{eq:debuteq1}
 
 \subsection{Troisième modèle pour la collision avec séparation des masses}
 
+Ce modèle a été développé pour aborder la question de non conservation de l'énergie mécanique totale après la collision.
+Il prend plus au sérieux la question du passage macro/micro. Celà dit, les équations qui régissent le déplacement des noeuds (voir EQUATION ...) de chaque floe en collision sont maintenues. La différence avec le modèle présenté dans la sous-section précédente (\cref{subsec:model1d2}) apparait au niveau du calcul des vitesses après choc.
 
+Rappelons que le modèle macroscopique a été développé par M. Rabatel, S. Labbé, et J. Weiss \parencite{rabatel2015dynamics} et nous l'avons présenté avec détails à travers un résumé de la thèse de M. Rabatel \parencite{rabatel2015thesis} dans la \cref{sec:thesematthias}. Le modèle qui y est développé considère un morceau de glace comme un solide indéformable et le système perd de l'énergie mécanique à travers le coefficient de restitution macroscopique $\varepsilon$. Dans le modèle miscroscopique que développons ici, les floes sont des solides élastiques (système masse-ressort-dispositif visqueux) et le problème est de trouver à quelle perte d'énergie le $\varepsilon$ correpondrait lorsque deux noeuds de deux floes entrent en collision. Autrement dit, il faudrait trouver une correspondance entre les coefiencents de restitution macoscopiques et microscopiques.
 
+Notre système de deux noeuds au moment de la collision perd donc de l'énergie. L'absence de forces de frotements\footnote{Dans le modèle actuel, les frotements de l'air et de la mer ne sont pas pris en compte.} veut dire que l'énergie mécanique est transformée en énergie interne (thermique). 
 
+FIGURE DES DEUX NOEUDS EN COLLISION. NE PAS OUBLIER LES FORCES QUI NAISSENT EN RAISON DE LA COLLISION, ET LES FORCES DES DEUX RESSORTS QUI LEUR SONT VOISINS.
+
+Pour calculer les vitesses des noeuds après choc, nous reconsidérons \cref{eq:crammer2} qui introduit le coefficient de restitution de Newton:
+\begin{align}
+    V_0 - V'_0 = - \varepsilon (v_0 - v'_0) \,.
+\end{align}
+Pour trouver une deuxième équation et obtenir les vitesses des noeuds, nous nous tournons vers une technique fréqument utilisée dans l'industrie du jeux vidéo pour gérer les collisions d'objets.
 
 
 
@@ -643,9 +671,11 @@ DIAGRAMME UML DU CODE 1D
 
 %4----------------------------------------------------------------------------------------
 
-\section{Visualisation et validation des résultats}
+\section{Résumé des résultats obtenus}
 
 
+
+PRÉSENTER AUSSI COMMENT LES RÉSULTATS ONT ÉTÉ VALIDÉS
 
 
 \paragraph{Visualisation des résultats.} 
@@ -655,16 +685,6 @@ PRÉSENTER 5 A 10 TIME STEPS D'UNE SIMULATION AVEC PLUSIEURS FLOES
 \paragraph{Validation du modèle.} Le moyen principal de validation de notre modèle 1D fut l'étude énergétique. AU MOINS LES QUANTITTÉS DE MOUVEMENT ET LES ÉNERGIES TOTALES JUSTE AVANT ET APRÈS CHAQUE CHOCS SONT LES MÊMES.
 
 PLOT DES QUANTITÉS DE MOUVEMENT ET ENERGIE TOTALES 
-
-
-
-
-%5----------------------------------------------------------------------------------------
-
-\section{Résumé des résultats obtenus}
-
-
-
 
 
 
