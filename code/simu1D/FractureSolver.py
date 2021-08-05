@@ -329,13 +329,13 @@ class Fracture:
         ## Ici on utilise la page 37 du brouillon avec l'impulsion
         ### V0 = (-m*eps*np.abs(v0-v0_) + m*v0 + m_*v0_) / (m+m_)
         ### V0_ = (m_*eps*np.abs(v0-v0_) + m*v0 + m_*v0_) / (m+m_)
-        V0 = v0 - (m_ * (1.0+eps) * (v0-v0_)) / (m + m_)
-        V0_ = v0_ + (m * (1.0+eps) * (v0-v0_)) / (m + m_)
-        if self.collCount[(left, right)] > 100:
-            eps = 1.0
-            self.collCount[(left, right)] = 100
-            V0 = -np.abs(v0 - (m_ * (1.0+eps) * (v0-v0_)) / (m + m_))
-            V0_ = np.abs(v0_ + (m * (1.0+eps) * (v0-v0_)) / (m + m_))
+        # V0 = v0 - (m_ * (1.0+eps) * (v0-v0_)) / (m + m_)
+        # V0_ = v0_ + (m * (1.0+eps) * (v0-v0_)) / (m + m_)
+        # if self.collCount[(left, right)] > 100:
+        #     eps = 1.0
+        #     self.collCount[(left, right)] = 100
+        #     V0 = -np.abs(v0 - (m_ * (1.0+eps) * (v0-v0_)) / (m + m_))
+        #     V0_ = np.abs(v0_ + (m * (1.0+eps) * (v0-v0_)) / (m + m_))
         ##################################################################
 
         ###########     SIXIÈME ALTERNATIVE       ####################
@@ -346,13 +346,22 @@ class Fracture:
         rightDist = self.locateNode(rightNode.rightNode).x - rightNode.x
         rightForce = self.floes[rightNode.parentFloe].k * (rightDist - self.locateSpring(rightNode.rightSpring).L0)
 
-        tStar = 0.01
+        print("Dist", leftDist, rightDist)
+        print("Force", leftForce, rightForce)
 
+        deltaTStar = 0.01            ## Temps que dure la collision
+        L = deltaTStar * leftForce
+        R = deltaTStar * rightForce
 
+        I = ((v0 - v0_)*(1.0 + eps) + (L/m)-(R/m_)) / ((1.0/m) + (1.0/m_))
 
-        V0 = v0 - (m_ * (1.0+eps) * (v0-v0_)) / (m + m_)
-        V0_ = v0_ + (m * (1.0+eps) * (v0-v0_)) / (m + m_)
-
+        V0 = v0 + (L-I)/m
+        V0_ = v0_ + (R+I)/m_
+        if self.collCount[(left, right)] > 100:
+            eps = 1.0
+            self.collCount[(left, right)] = 100
+            V0 = -np.abs(v0 - (m_ * (1.0+eps) * (v0-v0_)) / (m + m_))
+            V0_ = np.abs(v0_ + (m * (1.0+eps) * (v0-v0_)) / (m + m_))
         ##################################################################
 
         print("\nCONTACT ("+str(left)+", "+str(right)+") OCCURRED, VELOCITIES ARE:")

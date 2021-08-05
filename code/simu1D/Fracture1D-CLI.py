@@ -23,7 +23,7 @@ if __name__=="__main__":
     v0 = 2.2    ## vitesses avant le choc
     v0_ = -1.8
 
-    eps = 0.95   ## coefficient de restitution
+    eps = 0.55   ## coefficient de restitution
 
     ## Geometric constants
     X_min, X_max = 0, 50.0        # Position of the farthest node in the grid
@@ -57,7 +57,7 @@ if __name__=="__main__":
     # f.computeBeforeContact()
     # f.computeAfterContact()
     f.runSimulation()
-    # f.saveFig(openFile=True, fps=5, filename="Exports/AnimFrac1D.gif")
+    f.saveFig(openFile=True, fps=5, filename="Exports/AnimFrac1D.gif")
 
     plt.style.use("seaborn")
     nrow, ncol = 2, 2
