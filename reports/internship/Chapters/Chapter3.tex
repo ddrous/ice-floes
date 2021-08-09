@@ -639,9 +639,72 @@ Nous obervons effectivement qu'il y a diminution de l'énergie totale à chaque 
 \section{Modélisation de la fracture}
 
 
+\subsection{Méthode du champ de phase}
+
+La nécésité de prédire les fractures des matériaux dans les matériaux industriels gagne en importance chaque année. En méchanique des sciences computationnelles, la Virtual Crack Closure Technique (VCCT) (REFERENCE A LA PAGE 2 DE PHASE FIELD EN ANGLAIS), la Extended Finite Element Method (X-FEM), Cohesive Zone Method (CZM), et d'autres models de fractures discret représentent la fracture comme une entité discontinue à partir de laquelle la variable d'intéret est obtenue. Ces méthodes demandent non seulement des re-maillaiges plus fins, mais aussi des algorithms robustes pour pouvoir capturer les fractures. Ceci est numériquement couteux, particulèrement lorsque les fractures ont des géoétries complexes.
+
+FIGURES (a) et (c) de FIGURE 1 DU PHASE FIELD EN FRANCAIS
+
+L'approche par champ de phase est née des travaux de Franckfort et Marigo (REFERENCE), et de leur régularisation par Bourdin de al. (REF). Rappellons que l’approche variationnelle développée dans ces travaux consiste à formuler le problème de fissuration comme un problème de minimisation de l’énergie du solide fissuré exprimée comme:
+
+ÉQUATION 1 DE PHASE FIELD EN FRANCAIS
+
+Cette approche conduit à une implémentation numérique élégante où les complexité dues aux fractures discrètes sont élimiées. Pour éviter cette difficulté, une approche régularisée de la description
+des discontinuités associées aux fissures consiste à remplacer la fonctionnelle originale par une fonctionnelle approchée (REFERENCES PHASE FIELD EN FRANCAIS). Dans ce cadre, les fissures ne sont plus décrites par des surfaces mais par un champ de phase endommagée $d(\bvec{x})$. L’énergie est alors exprimée par:
+
+ÉQUATION 2 DE PHASE FIELD EN FRANCAIS
+
+En introduisant une discrétisation en temps $T = \{ t^0, t^1, \ldots, t^n, t^{n+1}, \ldots, t^N \}$. A chaque pas de temps $t^{n+1}$, le problème consiste à déterminer le champ de déplacements $u^{n+1}$ et le champ de phase endommagée $d^{n+1}$ tels que :
+$$
+\bvec{u}^n+1, d^{n+1} = \underset{\bvec{u}\in \mathcal{K}_A \\ 0 \leq d^n \leq d^{n+1}}{argmin} E
+$$
+où $\mathcal{K}_A$ est un champ de déplacements cinématiquement admissible. Un exemple de densité de fissure pour un modèle de premier ordre est donné par :
+$$
+\gamma (d, \nabla d) = \frac{1}{2l}d^2 + \frac{l}{2}\nabla d \cdot \nabla d,
+$$
+où $l$ est un paramètre de régularisation des discontinuités de fissures. Une fonction d'histoire est introduite pour décrires les effets d'histoire, et des possibles chargments et déchargements \parencite{miehe2010phase}:
+\begin{align}
+    \label{eq:histoire}
+    \mathcal{H}(\bvec{x}, t) = \max{\Psi^{+}(\bvec{x},\tau)}_{\tau \in [0,t]} .
+\end{align}
+Dans \cref{eq:histoire}, $\Psi^+$ est la partie positive de la fonction densité d’énergie élastique telle que $\Psi(\varepsilon) = \Psi^{+}(\varepsilon) + \Psi^{-}(\varepsilon)$
+et est définie par :
+
+EQUATION 8
+
+où $\varepsilon$ est le tenseur des déformations linéarisé. $\langle x\rangle_{\pm} = (x \pm \vert x \vert) / 2$ et $\varepsilon^{\pm}$ sont les parties positives et négatives du tenseur des déformations. Nous posont à présent $g_c$ le taux de liération critique de l'énergie de type Griffith \parencite[p.5]{miehe2010phase}, $\bvec{f}$ un vecteur de forces de volumes, $\bar{u}$ et $\bar{F}$ les déplacements et efforts imposés sur les bords associés $\partial \Omega_u$ et $\partial \Omega_F$ (VOIR FIGURE CI-HAUT). Nous écrivons enfin la loi de comportement comme:
+
+EQUATION 9
+
+ce qui nous permet d'obtenir le probèleme couplé suivant pour déterminer $d(\bvec{x})$ et $\bvec{u}(\bvec{x})$.
+
+EQUATIONS 5 ET 6
+
+
+Quelques résultats obtenus par cette méthode ont été présentés dans les travaux de D. Balasoiu à la SECTION (VOIR FIGURE). Malgrès l'éfficacité de cette méthode, notre travail à son sujet durant ce stage s'est limité à son assimilation. En effet, nous ne l'avons pas implémentée par faute de temps. Il se trouve qu'en 1D avec un fable nombre de noeuds, une astuce alternative est envisageable. 
 
 
 
+
+\subsection{Une approache combinatoire pour la fracture}
+
+Etant donné le déplacement des noeuds du floes à un temps précis $t^{n+1}$, nous recherchons la fracture qui minimise l'énergie potentielle totalle au temps $t^{n+1}$:
+\begin{align}
+    \boxed{
+    \begin{array}{rcl}
+    E^{n+1} & = \text{énergie potentielle élastique au temps } t^{n+1}  \\
+    & + \text{ténacité}\times \text{longeur de la fracture évenetuelle au temps }t^{n+1}.  
+    \end{array}
+    }
+\end{align}
+La longeur de la fracture correspondant ici à la longueur à vide du ressort\footnote{Nous utiliserons la désignation \emph{ressort} ici pour indiquer à la fois le ressort et le dispositif visqueux situé entre deux neouds adjacents (VOIR FIGURE SUR LA PARTIE PRÉCÉDENTE)} à cette position si celui ci s'était brisé. Notre approche combinatoire consite ainsi à calculer les énergie correspond à toutes les fractures possibles dans le floe, et nous récupérons la plus petite de ces énergies $E^{n+1}_{min}$. Conformément à l'approche de Griffith, une fracture n'apparait que si $E^{n+1}_{min}\leq E^{n}_{min}$.
+
+FIGURE ILLUSTRATIVE DE CETTE APPROCHE
+
+
+L'approche combinatoire n'est supportable qu'en 1D car à chaque pas de temps, il y a autant de fracture admissibles qu'il ya de ressorts\footnote{En réalité, les deux ressorts exptrèmes ne peuvent se briser, car cela donnerait naissance à des floes sans ressorts}. En effet, à chaque ressort brisé, c'est un nouveau floe qui est créé. Cette simplication élimine aussi le problème de \emph{propagation de la fracture}; en 1D, nous ne traiterons donc que le problème de \emph{nucléation de la fracture}. 
+
+Tous ceci n'est évidement pas le cas en dimension supérieur, et nous devons étudier toutes les combinaisons psossibles de ressorts qui cèdent simultanément; ce qui est très couteux. Il est donc primordial d'implémenter la méthode du champ de phase pour toute adaptation de nos résultats en dimension 2 ou 3.
 
 
 %4----------------------------------------------------------------------------------------
