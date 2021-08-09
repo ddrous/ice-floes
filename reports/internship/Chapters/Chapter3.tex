@@ -604,6 +604,7 @@ C'est pour résoudre ces nombreux problèmes que nous avons développé un trois
 
 
 \subsection{Troisième modèle pour la collision avec séparation des masses}
+\label{subsubsec:troisiemecol}
 
 Ce modèle a été développé pour aborder la question de non conservation de l'énergie mécanique totale après la collision.
 Il prend plus au sérieux la question du passage macro/micro. Celà dit, les équations qui régissent le déplacement des noeuds (voir EQUATION ...) de chaque floe en collision sont maintenues. La différence avec le modèle présenté dans la sous-section précédente (\cref{subsec:model1d2}) apparait au niveau du calcul des vitesses après choc.
@@ -687,6 +688,8 @@ Quelques résultats obtenus par cette méthode ont été présentés dans les tr
 
 
 \subsection{Une approache combinatoire pour la fracture}
+\label{subsubsec:approchecombi}
+
 
 Etant donné le déplacement des noeuds du floes à un temps précis $t^{n+1}$, nous recherchons la fracture qui minimise l'énergie potentielle totalle au temps $t^{n+1}$:
 \begin{align}
@@ -715,29 +718,38 @@ Tous ceci n'est évidement pas le cas en dimension supérieur, et nous devons é
 
 \section{Algorithme de calcul 1D}
 
-DIAGRAMME UML ET README DU REPOSITORY
 
+Nous présentons dans cette section l'algorithme que nous avons adopté pour développer notre code de simulation de la percussion ainsi que la fracture de floes 1D. Notons que l'implémtation de la percussion correspond au modèle présenté à la \cref{subsubsec:troisiemecol}. Cependant, les autres modèles de percussion peuvent facilement etre obtenus en changeant le contenu de la fonction \texttt{computeAtContact} que nous détaillerons plus tard. Quant à la fracture, nous avons implémenter l'approche combinatoire présentée à la \cref{subsubsec:approchecombi}. En résumé, l'algorithme dans l'intervalle de temps $[t^n, t^{N}]$ est le suivant:
 
-
-
-
-\paragraph{Algorithme de percussion 1D.} Par défnition, la percussion implique de nombreuses collisions entres les floes. Nous présentons donc l'algorithme ci-bas pour déterminer les vitesses et positions des noeuds des floes après la percussion.
+METTRE L'ALGORITHME DANS UNE BOITE
 \begin{enumerate}
-    \item Creer deux floes\footnote{Le floe de gauche sera identifié par floe1 et le celui de droite floe2.} tous deux animés de mouvemtn uniforme rectilignes\footnote{Tous les noeuds de chacun des floes ont la même vitesse.}
-    \item Créer le problème de percussion et y ajouter le deux floes et les paramètres phyisiques
-    \item Tant que non collision: - calculer les trajectoire des floes - doubler le temps de simulation avant choc
-    \item Tant que (collision) ou (temps simu atteint) ou (max recussion profondeur): - identifier le moment de collision - calculer les vitesses des noeuds en contact après choc - calculer les trajectoires après choc 
+    \item Initialisation: Les positions $\bvec{q}^{n}$, les vitesses $\bvec{v}^n$ de tous les noeuds de tous les floes sont connus. Mettre à jours les chargements aux bords au temps courant $t^{n+1}$\footnote{Pour simplifier nos calculs, aucun chargement n'est imposé aux bords du floe; nous avons des conditions de Neumann durant toutes nos simulations.}
+    \item Calcul des déplacements: Calcul des postions des noeuds $\bvec{q}^{n+1}, \ldots \bvec{q}^{N}$ et des vitesses associées $\bvec{v}^{n+1}, \ldots \bvec{v}^{N}$. Nous utilisont ici les équations ... 
+    \item Détection des fractures: pour chaque pas de temps $t^k \in [t^{n+1}, t^{N}]$ et pour chaque floe, rechercher la configuration qui présente l'énergie potentielle totale minimale $E^{k}_{min}$, et la comparer avec l'énergie $E^n_{min}$. En cas de fracture, i.e. $E^{k}_{min} \leq E^n_{min}$, on retient l'indice de fracture potentielle\footnote{Les indices potentielles sont aussi les temps à partir desquels nous vérifions les fractures/collisons à l'étape suivante} du floe concerné (disons $f$) $\text{checkFrac}_f = k$; sinon, $\text{checkFrac}_f = N$.
+    \item Détection des collisions: pour chaque pas de temps $t^k \in [t^{n+1}, t^{N}]$ et pour chaque noeud, on se demande s'il y a collision avec le noeud voisin de droite. En cas de collision,, on retient l'indice de collision potentielle des noeuds concerné (disons $e_1$ et $e_2$) $\text{checkColl}_{e_1} = \text{checkColl}_{e_2} =k$; sinon, $\text{checkColl}_{e_1} = \text{checkColl}_{e_2} = N$.
+    \item Mise à jour des indices potentielles de fracture: Tous ces indices sont reinitialisés au minimum de tous les indices de fracture $\text{checkFrac} = \min{\text{checkFrac}_f}_{f \in \mathcal{F}}$, où $\mathcal{F}$ désigne l'ensemble des floes.
+    \item Mise à jour des indices potentielles de collision: Désignons par $\text{checkColl}'$ le minimum de tous les indices de collisions$\min{\text{checkColl}_e}_{e \in \mathcal{E}}$, où $\mathcal{E}$ désigne l'ensemble des neouds du problème. Tous les indices sont reinitialisés à $\text{checkColl} = \min{\text{checkColl}', \text{checkFrac}}$.
+    \item Invalidation des quantités: Toutes les positions et les vitesses calculées (à l'étape $2$) qui survienne après une collision ou une fracture sont invalidées.
+    \item Finalisation: on recommence à l'étape $1$ à partir de $\text{checkColl}$. On repète ainsi jusqu'a ce que $\text{checkColl} = N$
 \end{enumerate}
 
 
-\paragraph{diagramme UML du code.} Le code de calcul est conservé dans le FICHIER-REPOSITORY\dots (INDIQUER COMMENT LACER LE CODE). Le diagramme UML définissant les différentes classes et fonctions de notre implémentation est le suivant:
+Notons que l'algorithme présenté ci-haut omet plusieurs détails indispensables pour une implémentation efficace en language Python. Par exemple, l'invalidation des quantitées est prise en main par les fonctions de détection des collision et de fracture. Nous fournissons donc la méthode $\texttt{runSimulation()}$ de la classe $\texttt{FractureSolver}$ ci-bas:
 
-DIAGRAMME UML DU CODE 1D
+COLLER COLLER runSimulation (Indiquer ce que chaqune des fonction indiquée fait)
+
+Pour mieux assimiler le programme, nous proposons ci-bas un diagramme UML qui illustre la structure du code à travers ses différentes classes et fonctions.
+
+DIAGRAMME UML ET README DU REPOSITORY (Indiquer qu'il suffit de changer la fonction computeAtContact pour passer d'un modèle à l'autre.)
+
+Tous ce code est stocké dans un dépot GitHub privé dont une explication du contenu est donnée dans le fichier README dont la capture est présentée ci-bas. 
+
+README DU REPO GITHUB
 
 
+Nous fournissons aussi ci-bas quelques frames d'un simulation obtenue par le l'algorithme et le code Python présentés ci-haut:
 
-
-
+PRÉSENTER 5 A 10 TIME STEPS D'UNE SIMULATION AVEC PLUSIEURS FLOES
 
 
 %4----------------------------------------------------------------------------------------
@@ -745,21 +757,12 @@ DIAGRAMME UML DU CODE 1D
 \section{Résumé des résultats obtenus}
 
 
+Pour le problème 1D, nous avons non seulemetn étudié le déplacement des noeuds d'un floe, mais aussi ce qui se passe après une collision de ces noeuds. En considérant le floe comme un réseau de ressorts, nous avons pu étudier la nucléation (et la propagation) d'une fracture suivant le modèle de Griffith sans recourir à la méthode du champ de phase.
 
-PRÉSENTER AUSSI COMMENT LES RÉSULTATS ONT ÉTÉ VALIDÉS
-
-
-\paragraph{Visualisation des résultats.} 
-PRÉSENTER 5 A 10 TIME STEPS D'UNE SIMULATION AVEC PLUSIEURS FLOES
+Nous avons éffectué plusieurs simulation qui ont montrer que les ressorts se brisent lorsqu'ils sont fortement compréssés. Le modèle 1D adopté (voir \cref{subsubsec:troisiemecol}) a également montré que le système perds de son énergie (cinétique) au cours du temps, ce qui 
 
 
-\paragraph{Validation du modèle.} Le moyen principal de validation de notre modèle 1D fut l'étude énergétique. AU MOINS LES QUANTITTÉS DE MOUVEMENT ET LES ÉNERGIES TOTALES JUSTE AVANT ET APRÈS CHAQUE CHOCS SONT LES MÊMES.
-
-PLOT DES QUANTITÉS DE MOUVEMENT ET ENERGIE TOTALES 
-
-
-
-
+Quand à la validation des résultats, nous n'avons pas réussi à effectuer des tests en laboratoire. Cette tache représente la prochaine étape avant l'adoption de ce modèle 1D. Ceci dit, les floes de glace sont généralement considérés comme des objets 2D du fait de leur taille négligeable face au rayon de la terre. Une étude en dimension supérieure est donc indispendable pour un déployment de notre modèle de fracture à l'échelle des floes de glace.
 
 
 
