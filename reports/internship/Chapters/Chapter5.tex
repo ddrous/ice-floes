@@ -27,7 +27,13 @@
 
 \section{Bilan et future travail}
 
-RÉSUMÉ DÉTAILLE DES TRAVAUX DE STAGE, ET TRAVAIL RESTANT
+Durant ce stage, nous avons modéliser et simuler la percussion de floes de glace. Nous avons fait cela en 1 dimension et nous avons convenablement adapté les résultats en simension supérieure, en se servant des travaux précédents sur ce sujet. En plus, nous modélisé et implémenté la fracture en d'un floe de glace 1D. Ceci dit, plusieurs taches restent à effectuer pour porter à fruition notre objectif primaire de creation d'un code de calcul de l’évolution de la banquise à l’échelle des floes de glace.
+
+\paragraph{Implémentation de la méthode du champ de phase sue le modèle 1D.} L'approche du champ de phase a longement été présentée à la \cref{subsubsec:approchephase}. Comme nous l'avons indiquée, elle est la mieux adaptée à l'étude de la fracture suivant l'approche variationnel de Francfort et Marigo.
+
+\paragraph{Implementation de la fracture au problème 2D.} Durant sa thèse, \citeauthor{balasoiu2020halthesis} a implémenté un modèle quasi-statique de fracture variationnel à travers une méthode éléments finis reposant sur une approche par champ de phase pour régulariser la fracture. Ces travaux sont regroupé dans le dépot sur \texttt{framagit} nommé \href{https://framagit.org/RaK/Griffith}{Griffith}. Il faudra intégré ces travaux au modèle de percussion 2D que nous avons développé durant ce stage.
+
+\paragraph{Tests de validation en laboratoire.} Des tests en laboratoire sont nécéssaire pour validé les modèles développés. Tout comme \citeauthor{rabatel2015thesis} l'a fait, l'on pourra se servir des données \textbf{ERAinterim} et \textbf{TOPAZ} pour effectuer ces tests.
 
 
 
