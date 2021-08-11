@@ -14,8 +14,12 @@
 \section{Journal de bord}
 
 
+DONNER AUSSI LES DIFFICULTÉES MAJEURES RENCONTRÉES SEMAINES APRÈS SEMAINES
 
 
+
+
+A LA FIN, FAIRE UN GRAPHIQUE QUI RÉSUME CA
 
 
 %2----------------------------------------------------------------------------------------
@@ -27,17 +31,16 @@
 
 \section{Bilan et future travail}
 
-Durant ce stage, nous avons modéliser et simuler la percussion de floes de glace. Nous avons fait cela en 1 dimension et nous avons convenablement adapté les résultats en simension supérieure, en se servant des travaux précédents sur ce sujet. En plus, nous modélisé et implémenté la fracture en d'un floe de glace 1D. Ceci dit, plusieurs taches restent à effectuer pour porter à fruition notre objectif primaire de creation d'un code de calcul de l’évolution de la banquise à l’échelle des floes de glace.
+Durant ce stage, nous avons modéliser et simuler la percussion de floes de glace. Nous avons fait cela en 1 dimension et nous avons convenablement adapté les résultats en simension supérieure, en se servant des travaux précédents sur ce sujet. En plus, nous modélisé et implémenté la fracture en d'un floe de glace 1D. Ceci dit, plusieurs taches restent à effectuer pour porter à fruition notre objectif primaire de creation d'un code de calcul de l’évolution de la banquise à l’échelle des floes de glace:
 
-\paragraph{Implémentation de la méthode du champ de phase sue le modèle 1D.} L'approche du champ de phase a longement été présentée à la \cref{subsubsec:approchephase}. Comme nous l'avons indiquée, elle est la mieux adaptée à l'étude de la fracture suivant l'approche variationnel de Francfort et Marigo.
-
-\paragraph{Implementation de la fracture au problème 2D.} Durant sa thèse, \citeauthor{balasoiu2020halthesis} a implémenté un modèle quasi-statique de fracture variationnel à travers une méthode éléments finis reposant sur une approche par champ de phase pour régulariser la fracture. Ces travaux sont regroupé dans le dépot sur \texttt{framagit} nommé \href{https://framagit.org/RaK/Griffith}{Griffith}. Il faudra intégré ces travaux au modèle de percussion 2D que nous avons développé durant ce stage.
-
-\paragraph{Tests de validation en laboratoire.} Des tests en laboratoire sont nécéssaire pour validé les modèles développés. Tout comme \citeauthor{rabatel2015thesis} l'a fait, l'on pourra se servir des données \textbf{ERAinterim} et \textbf{TOPAZ} pour effectuer ces tests.
-
-
-
-
+\begin{itemize}
+    \item \textbf{Implémentation de la méthode du champ de phase sue le modèle 1D.} L'approche du champ de phase a longement été présentée à la \cref{subsubsec:approchephase}. Comme nous l'avons indiquée, elle est la mieux adaptée à l'étude de la fracture suivant l'approche variationnel de Francfort et Marigo.
+    \item \textbf{Implementation de la fracture au problème 2D.} Durant sa thèse, \citeauthor{balasoiu2020halthesis} a implémenté un modèle quasi-statique de fracture variationnel à travers une méthode éléments finis reposant sur une approche par champ de phase pour régulariser la fracture. Ces travaux sont regroupé dans le dépot sur \texttt{framagit} nommé \href{https://framagit.org/RaK/Griffith}{Griffith}. Il faudra intégré ces travaux au modèle de percussion 2D que nous avons développé durant ce stage.
+    \item \textbf{Intégration de la fracture fragile au code de \citeauthor{rabatel2015thesis}.} Comme nous l'avons précisé, \citeauthor{rabatel2015thesis} a, durant sa thèse étudié la dérive d'un ensemble de floes de glace dans la mer. Il faudra donc introduire la fracture de la glace dans ce modèle.
+    \item \textbf{Passage en dimension supérieure.} Pour aller plus loin, nous conseillons de passer en trois dimension. Celà dit, les tailles des floes peuvent etre négligeable devant le rayon de la Terre, où la taille de la mer. Il faudra donc prendre celà en considération pour faire des simplifications.
+    \item \textbf{Optimiser des codes avec Cython.} En effet, les codes sont écrits en Python durant cette phase . Ce language ne nous permet pour l'instant que d'éfffectuer des simulation avec un nombre restraint de neouds. On pourra donc utiliser \href{https://cython.org/}{Cython} pour faire appel aux fonctions à haute performace du language C. Ou mieux encore, nous pourront reimplémenter tous le code en C$++$ en intégrant les librairies HPC telles que \href{http://www.netlib.org/blas/}{Blas}, \href{https://www.openmp.org/}{OpenMP}, \href{https://developer.nvidia.com/cuda-zone}{CUDA}, etc.
+    \item \textbf{Tests de validation en laboratoire.} Des tests en laboratoire sont nécéssaire pour validé les modèles développés. Tout comme \citeauthor{rabatel2015thesis} l'a fait, l'on pourra se servir des données \textbf{ERAinterim} et \textbf{TOPAZ} pour effectuer ces tests.
+\end{itemize}
 
 
 
@@ -51,21 +54,39 @@ Durant ce stage, nous avons modéliser et simuler la percussion de floes de glac
 
 \section{Les apports du stage}
 
-LES OUTILES ET LES RESSOURCES UTILISÉS ENTRENT ICI.
+
+J'ai maitrisé la majeure partie des objectifs que nous nous étions fixés. Cela dit, les apports de ce stages ont été incomptables, et sur plusieurs plans. Tout d'abord sur un plan académique, ou j'ai pris en mains des notions clées des mathématiques appliquées et de l'informatique. Ensuite sur un plan technique, j'ai pu maitriser des outils et faire usage de ressources varirées. Enfin, sur un plan profesionnel ou j'ai pu apprendre d'avantage sur le monde de la recherche.
 
 
 
-
+\subsection{Compétences académique}
 
 \begin{itemize}
-   \item L' utilisation de TIKZ
-   \item La maitrise de Flask
-   \item La maitrise de Bokeh
-\end{itemize}
-
-%% Ce qui reste à faire:
-\begin{itemize}
-    \item Optimiser mes codes (1D et 2D) avec Cpython
+    \item \textbf{Simulation de processus physiques:} Ce stage m'a appris à simuler des objects répondant à une loi de comportement bien présice (loi de Newton-Euler, EDO du second ordre) par l'intermédiare de schéma appropriés. Par exmple, un schéma explicite d'ordre 2 pour l'SYSTÈME 2D diverge très fréquement, alors qu'un shéma symplectique (voir \cref{AppendixA}), où un schéma explicite Runge-Kutta d'ordre 4 (RK4) à pas de temps suivant RK5 (comme ceux implémenté par \href{https://docs.scipy.org/doc/scipy/reference/generated/scipy.integrate.solve_ivp.html}{Scipy}) conserve les invariants du système.
+    \item \textbf{Prise en main du modèle de rupture de Griffith dans les milieux élastiques:} En lisant les travaux qui ont ptécédé \parencite{balasoiu2020halthesis}, j'ai pu apprendre beacoup sur le modèle de Griffith et la compétition entre les énergie de déformation et de fracture du matériau. J'ai aussi lu les articles \parencite{francfort1998revisiting,bourdin2008variational} et j'ai ainsi assimilé l'approche variationnelle de Francfort, Marigo, Bourdin. Ces notions m'ont poussé à visiter des outils mathématiques très puissant tels que le calcul des variations et la $\Gamma$-convergence (voir \cref{AppendixB}).
+    \item \textbf{Maitrise des réseaux de ressorts:} Les travaux de \citeauthor{balasoiu2020halthesis} m'ont également appris comment étudier un matéraux élastiques (réseau de ressorts) par l'intermédiaire d'un processus de poissons \parencite{khasminskii2011stochastic}\footnote{Merci à M. Labbé de m'avoir offert ce livre :)}. J'ai par exmeple appris comment créer (manuellement ou en se servant de la librarie \texttt{Scipy}) un processus de Poinsson répondant à un certain nombre de critères (en particulier l'\emph{intensité}).
+    \item \textbf{Développement d'applications en language Python:} Durant ce stage, j'ai énormément améliorer mes compétences en simulation numérique via Python. J'ai par exemple appris comment créer, modifier et déployer un package Python, comment utiliser plusieurs libraries (\texttt{numdifftools}) de calcul scientifique pour mener à bien un projet.
 \end{itemize}
 
 
+
+
+\subsection{Compétences techniques}
+
+\begin{itemize}
+   \item \textbf{Utilisation de TikZ:} Le premier outils que j'ai maitrisé durant ce stage fut le package LaTex nommé \textt{TikZ}. Sous la recommendation de M. Labbé, je l'ai utilisé au départ comme complémentaire à \href{https://www.diagrams.net/}{diagrams.net}, mais j'ai très vite vu son potentiel et la possibilité de l'utiliser pour virtuellement toutes les dessins.
+   \item \textbf{Maitrise de Flask:} \href{https://flask.palletsprojects.com/en/2.0.x/}{Flask} est une micro-framework de développement web en Python. J'ai trouvé que c'est outils permet de construire de belles interface pour effectuer des simulation. Ainsi, l'utilisateur n'a pas besoin d'etre familier avec notre code de calcul pour s'en servir. 
+   \item \textbf{Maitrise de Bokeh:} Je me suis très vite rendu compte de la nécéssité de visualiser les résultats. J'ai pris en main la librarie Python \href{https://bokeh.org/}{Bokeh} pour visualiser les déplacements et les vitessess des réseaux de ressorts dans les notebooks interacrifs. 
+   \item \textbf{Matrise de Symbolab:} \href{https://www.symbolab.com/}{Symbolab} est un logiciel de calcul symbolique que j'utilise depuis longtemps. Durant ce stage j'ai découvert de nouvelles fonctionnalité et des raccourcis, puis je m'en suis servi surtout pour faire des calculs matriciels en taille élévée ($4\times 4$ par exemple). 
+\end{itemize}
+
+
+
+
+
+\subsection{Compétences professionnnelles}
+
+\begin{itemize}
+    \item \textbf{Recherche en milieu professionel:} La première compétence professionnnelle que j'ai gagnée est celle de la recherche dans un milieu aussi prestigieux que le Laboratoire Jacques-Louis Lions. Je n'ai pas manqué d'aide ni de moyens pour effectuer mes taches. J'ai appris à collaborer avec mes pairs et demander de l'aide lorsque nécéssaire. Bien que le LJLL soit un lieu très convivial, la situation sanitaire actuelle m'a ammené à me discipliner pour pouvoir conduire mes travaux de recherche en télétravail.
+    \item \textbf{Savoir-faire transfesrables:} A travers ses journées "thé du labo". Ce fut l'occasion de mieux se connaitre et de tisser des liens. Parmis les conpétences transferables que j'ai pu acquerrir durant ce stage, je peux citer l'esprit de recherche, d'entreprise, la gestion du temps, et la collaboration.
+\end{itemize}
