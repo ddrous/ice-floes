@@ -13,11 +13,224 @@
 
 \section{Journal de bord}
 
+Le stage s'est déroulé de facon agile. Chaque semaine, un rapport d'activité fur rédigé. Dans ce dernier figurait principalement le travail effectué, les difficultés rencontrées, et le travail à venir durant le nouvelle semaine a venir. Dans cette section, nous résumons le travail effectué durant chacune de ces 26 semaines. Pour des rapports détaillés, le lecteur est invité à se rendre sur le dépot \href{https://github.com/desmond-rn/ice-floes/tree/master/reports/weeks}{ice-floes}.
 
-DONNER AUSSI LES DIFFICULTÉES MAJEURES RENCONTRÉES SEMAINES APRÈS SEMAINES
+\paragraph{Semaine 1 (\DTMdisplaydate{2021}{2}{3}{-1} - \DTMdisplaydate{2021}{2}{9}{-1})} 
+\begin{enumerate}
+    \item Mise en place du \href{https://github.com/desmond-rn/ice-floes}{dépot GutHub} \textbf{privé} pour le suivi de la rédaction des différents documents et le travail à distance plus aisé; 
+    \item Lecture de l'article de M. Rabatel et al. \parencite{rabatel2015dynamics}
+    \item Lecture de la thèse de M. Rabatel \parencite{rabatel2015thesis} (introduction, chapitres 1 et 2):
+    \item Apprentissage et utilisation des principales fonctionnalités du module TikZ.   
+\end{enumerate}
+  
+\paragraph{Semaine 2 (\DTMdisplaydate{2021}{2}{10}{-1} - \DTMdisplaydate{2021}{2}{16}{-1})} 
+\begin{enumerate}
+    \item Fin de lecture des chapitres 2 et 3 de la thèse de M. Rabatel \parencite{rabatel2015thesis}.
+    \item Début de lecture de la thèse de D. Balasoiu \parencite{balasoiu2020thesis}.
+    \item Continuation de rédaction de l'état de l'art pour le rapport de stage.
+  \end{enumerate}
+  
+
+\paragraph{Semaine 3 (\DTMdisplaydate{2021}{2}{17}{-1} - \DTMdisplaydate{2021}{2}{23}{-1})} 
+\begin{enumerate}
+    \item Révision des notions de mécanique de la rupture (et de mécanique du solide) à travers le livre \parencite{gross2017fracture}.
+    \item Lecture de la première partie de la thèse de D. Balasoiu \parencite{balasoiu2020halthesis}).
+    \item Début de lecture de la deuxième partie (chapitre 3) \parencite{balasoiu2020halthesis}.
+\end{enumerate}
+  
+
+\paragraph{Semaine 4 (\DTMdisplaydate{2021}{2}{24}{-1} - \DTMdisplaydate{2021}{3}{2}{-1})} 
+\begin{enumerate}
+  \item Lecture du chapitre 3, et démonstration de la proposition 3.3.1 \parencite[p.93]{balasoiu2020halthesis}.
+  \item Lecture des annexes et relecture (rapide) des chapitres 1 et 2 de la thèse \parencite{balasoiu2020halthesis}.
+  \item Lecture du chapitre 4 (sans vraiment comprendre). Des outils avancés de \textbf{théorie de la mesure}, de \textbf{probabilité appliquée}, de \textbf{géométrie stochastique}, \textbf{etc}. sont nécessaires pour comprendre.
+  \item Lecture du chapitre 1 du livre \parencite{chiu2013stochastic} cité à plusieurs reprises dans le chapitre 4 de la thèse \parencite{balasoiu2020halthesis}. 
+\end{enumerate}
+
+\paragraph{Semaine 5 (\DTMdisplaydate{2021}{3}{3}{-1} - \DTMdisplaydate{2021}{3}{9}{-1})} 
+\begin{enumerate}
+    \item Réessaie de lecture du chapitre 4 du livre \parencite{balasoiu2020halthesis}.
+    \item Lecture du chapitre 2 du livre \parencite{chiu2013stochastic}.
+    \item Révisions de notions de théorie de la mesure : \textbf{mesure et formules de Campbell}, \textbf{distribution de Palm}, etc.
+    \item Lecture des chapitres 5 et 6 de la thèse \parencite{balasoiu2020halthesis}.
+\end{enumerate}
+  
+
+\paragraph{Semaine 6 (\DTMdisplaydate{2021}{3}{10}{-1} - \DTMdisplaydate{2021}{3}{16}{-1})} 
+\begin{enumerate}
+    \item Lecture approfondie des chapitres 4 et 5 du livre \parencite{balasoiu2020halthesis};
+    \item Rédaction de l'\/état de l'\/art dans le rapport de stage. 
+\end{enumerate}
+  
+
+\paragraph{Semaine 7 (\DTMdisplaydate{2021}{3}{17}{-1} - \DTMdisplaydate{2021}{3}{23}{-1})} 
+
+\begin{enumerate}
+    \item Test et debuggage du code \verb|spingslattice| sur \href{https://framagit.org/RaK/SimuRessorts}{Framagit}. 
+    \item Étude de l'état de l'art pour des problèmes de collision utilisant des réseaux de ressorts \parencite{islam2020numerical,gerivani2019proposing,homodeling,manea2021simplified}.
+    \item Relecture de la section 1.1.2 du chapitre 1 de la thèse de \citeauthor{rabatel2015thesis} \parencite[p.18]{rabatel2015thesis}, et proposition d'un problèmes lineaires de complémentarité pour modéliser la collision singulière.
+  \end{enumerate}
 
 
+\paragraph{Semaine 8 (\DTMdisplaydate{2021}{3}{24}{-1} - \DTMdisplaydate{2021}{3}{30}{-1})} 
+\begin{enumerate}
+    \item Relecture des parties importantes pour la modélisation dans les thèses \parencite{balasoiu2020halthesis,rabatel2015thesis};
+    \item Lecture de travaux ayant trait au contact ponctuel entre deux solides (par exemple \parencite{lotstedt1981coulomb}, etc.);
+    \item Développement du modèle de percussion et essaies de résolution analytique. 
+\end{enumerate}
+  
 
+\paragraph{Semaine 9 (\DTMdisplaydate{2021}{3}{31}{-1} - \DTMdisplaydate{2021}{4}{06}{-1})} 
+\begin{enumerate}
+    \item Lecture de plusieurs modèles de systèmes masses-ressorts avec dispositifs visqueux, en particulier dans \parencite{homodeling}.
+    \item Posage du porblème de percission 1D, et d'écrire les équations régissant le système.
+    \item Simulation du modèle à l'aide des librairies \verb|Scipy| et \verb|Bokeh| (la simulation interactive a permis de constater des erreurs dans le modèle qui ont aussitot été corrigées). 
+\end{enumerate}
+  
+
+\paragraph{Semaine 10 (\DTMdisplaydate{2021}{4}{07}{-1} - \DTMdisplaydate{2021}{4}{13}{-1})} 
+\begin{enumerate}
+    \item J'ai modélisé le contact avec séparaƟon, tout en simulant les différents systèmes 1D décrits dans \emph{Percussion1D-3.ipynb}. 
+    \item Preuve des questions d'existence, d'unicité, etc. par rapport au modèle développé.
+\end{enumerate}
+
+
+\paragraph{Semaine 11 (\DTMdisplaydate{2021}{4}{13}{-1} - \DTMdisplaydate{2021}{4}{20}{-1})} 
+\begin{enumerate}
+    \item La principale tâche effectuée à été l'animation du modèle de percussion 1D. J'ai divisé cette partie en deux phase:
+    \begin{itemize}
+        \item \textbf{Avant le contact}: pour faciliter les travaux, on suppose que les floes sont en mouvement rectilignes uniformes.
+        \item \textbf{Après le contact}: la semaine dernière, nous avons calculé les "vitesses initiales" pour cette phase. On les utilise pour simuler le déplacement.
+    \end{itemize}
+\end{enumerate}
+
+
+\paragraph{Semaine 12 (\DTMdisplaydate{2021}{4}{21}{-1} - \DTMdisplaydate{2021}{4}{27}{-1})} 
+\begin{enumerate}
+    \item Démonstration de la non-convergence du modèle 1D; 
+    Une trigonalisation de la matrice du système permet d'exhiber l'expression explicite des déplacements, et de conclure.
+    \item Initialisation de la modélisation et de la simulation du modèle 2D.
+  \end{enumerate}
+  
+\paragraph{Semaine 13 (\DTMdisplaydate{2021}{4}{28}{-1} - \DTMdisplaydate{2021}{5}{4}{-1})} 
+\begin{enumerate}
+    \item Vérification du modèle et du code de calcul 2D. Etude des paramètres et du système masse-ressort en Python.
+    \item Relecture du code et la thèse de Dimitri afin de trouver des nouvelles idées.
+\end{enumerate}
+
+
+\paragraph{Semaine 14 (\DTMdisplaydate{2021}{5}{5}{-1} - \DTMdisplaydate{2021}{5}{11}{-1})} 
+\begin{enumerate}
+    \item Lecture détaillée du code de Dimitri; compréhension des fonction et demande d'aide lorsque nécessaire.
+    \item Développement d'un modèle de percussion en 2D compatible avec le code préexistant.
+    \item Début d'écriture d'une présentation Beamer pour la soutenance de mi-stage.
+\end{enumerate}
+  
+
+\paragraph{Semaine 15 (\DTMdisplaydate{2021}{5}{12}{-1} - \DTMdisplaydate{2021}{5}{18}{-1})} 
+\begin{enumerate}
+    \item Fin de l'écriture de la présentation Beamer pour la soutenance de mi-stage. Modification et incorporation des différentes remarques de M. Labbé. 
+    \item Suite de la lecture détaillée du code de Dimitri.
+  \end{enumerate}
+
+
+\paragraph{Semaine 16 (\DTMdisplaydate{2021}{5}{19}{-1} - \DTMdisplaydate{2021}{5}{25}{-1})} 
+\begin{enumerate}
+    \item Suite de lecture du code de Dimitri, en particulier le module \texttt{Mesh}. J'ai commencé à définir le module \texttt{MultiMesh}, qui représente deux floes en contact. 
+    \item Codage de la deuxième phase de la percussion 1D. Les résultats ne sont pas au point, et seront sans doute améliorés dans les semaines à venir.
+\end{enumerate}
+  
+
+\paragraph{Semaine 17 (\DTMdisplaydate{2021}{5}{26}{-1} - \DTMdisplaydate{2021}{6}{01}{-1})} 
+\begin{enumerate}
+    \item Finition de l'animation 1D en corrigeant les bugs;
+    \item Rédaction du problème de percussion 2D dans le rapport;
+    \item Définition et test du maillage \href{https://framagit.org/RaK/SimuRessorts/-/blob/master/springslattice/multimesh.py}{MultiMesh} en vue de la percussion ; et intégration au code de Dimitri.
+\end{enumerate}
+  
+
+\paragraph{Semaine 18 (\DTMdisplaydate{2021}{6}{02}{-1} - \DTMdisplaydate{2021}{6}{08}{-1})} 
+\begin{enumerate}
+    \item Début d'implémentation de la classe \href{https://framagit.org/RaK/SimuRessorts/-/blob/master/springslattice/multisolver.py}{MultiSolver} pour gérer la percussion 2D dans le code de Dimitri.
+    \item Revisitation de l'animation 1D en distinguant deux cas en fonction des vitesses des floes après le contact.
+    \item Étude énergétique pour la validation du système.
+    \item Début de l'étude d'une percussion avec plusieurs noeuds par floes (voir \href{https://github.com/desmond-rn/ice-floes/blob/master/code/simu1D/FractureSolver.py}{FractureSolver.py}).
+\end{enumerate}
+  
+
+\paragraph{Semaine 19 (\DTMdisplaydate{2021}{6}{09}{-1} - \DTMdisplaydate{2021}{6}{15}{-1})} 
+\begin{enumerate}
+    \item Implémentation du module \href{https://github.com/desmond-rn/ice-floes/blob/master/code/simu1D/FractureSolver.py}{FractureSolver.py} pour la simulation de la percussion.
+    \item Migration du code préexistant (depuis les notebook Python) vers le module \texttt{FractureSolver.py} lorsque possible afin d'accélérer le travail.
+    \item Étude du coefficient de restitution utilisé en mécanique du contact (voir \parencite[p.21]{acary2004coefficients}).
+    \item Étude énergétique pour la validation du nouveau système.
+\end{enumerate}
+  
+
+\paragraph{Semaine 20 (\DTMdisplaydate{2021}{6}{16}{-1} - \DTMdisplaydate{2021}{6}{22}{-1})} 
+\begin{enumerate}
+    \item Rédaction du travail de modélisation et de simulation 1D dans le rapport de stage.
+    \item Implémentation du module \href{https://framagit.org/RaK/SimuRessorts/-/blob/master/springslattice/multisolver.py}{multisolver.py} et du script \href{https://framagit.org/RaK/SimuRessorts/-/blob/master/percussion-cli.py}{percussion-cli.py} pour la simulation de la percussion 2D. En se servant des code préexistant, on n'a pas à calculer les vitesses après choc. 
+\end{enumerate}
+  
+\paragraph{Semaine 21 (\DTMdisplaydate{2021}{6}{23}{-1} - \DTMdisplaydate{2021}{6}{29}{-1})} 
+\begin{enumerate}
+    \item Implémentation d'une interface web adaptée au problème de percussion 2D. 
+    \item Étude approfondie de l'énergie totale du système en 1D. Après avoir décelé une erreur de quadrature dans mes calculs, j'ai du complètement changer le modèle pour avoir la conservation de l'énergie totale.
+    \item Début d'étude du système 1D \emph{à grande raideur}.
+\end{enumerate}
+  
+\paragraph{Semaine 22 (\DTMdisplaydate{2021}{6}{30}{-1} - \DTMdisplaydate{2021}{7}{05}{-1})} 
+\begin{enumerate}
+    \item Relecture des chapitres 1 et 2 de la thèse de Dimitri, et des parties de la thèse de Mr. Hanen Amor \parencite{amor2008approche}. 
+    \item Extraction des déplacements des noeuds de chaque floe impliqués dans la percussion en supprimer le mouvement d'ensemble du floe par comparaison des positions des noeuds à celle du centre de masse du floe.
+    \item Étude de la rentabilité d'une fracture suivant le modèle de Griffith.
+\end{enumerate}
+  
+  
+\paragraph{Semaine 23 (\DTMdisplaydate{2021}{7}{07}{-1} - \DTMdisplaydate{2021}{7}{13}{-1})} 
+\begin{enumerate}
+    \item Redesign du code de calcul 1D : en effet, le code préexistant ne traitait que deux floes, alors qu'on veut à présent en traiter potentiellement plusieurs (\emph{à chaque fracture d'un ressort, c'est un nouveau floe de glace qui se forme}).
+    \item Début de l'écriture du code avec debuggage et test au fur et a mesure (approche \emph{agile}).
+\end{enumerate}
+
+
+\paragraph{Semaine 24 (\DTMdisplaydate{2021}{7}{14}{-1} - \DTMdisplaydate{2021}{7}{20}{-1})} 
+\begin{enumerate}
+    \item Suppression des dictionnaires et adoption d'une approche par classes ; ce qui a considérablement accélérer le développement.
+    \item Implémentation des différentes fonctions nécessaires pour simuler le déplacement de plus de deux floes 1D simultanément.
+\end{enumerate}
+  
+\paragraph{Semaine 25 (\DTMdisplaydate{2021}{7}{14}{-1} - \DTMdisplaydate{2021}{7}{20}{-1})} 
+\begin{enumerate}
+    \item Reconception du code. Nous avons dû éliminer la méthode par numéro de confirmation postulée la semaine dernière ;
+    \item Simulation de la fracture de deux floes suivant le modèle de Griffith par une approche combinatoire;
+    \item Correction de la visualisation des différents floes après percussion et fracture.
+\end{enumerate}
+  
+\paragraph{Semaine 26 (\DTMdisplaydate{2021}{7}{28}{-1} - \DTMdisplaydate{2021}{8}{03}{-1})} 
+\begin{enumerate}
+    \item Réussite de la simulation de la percussion et de la fracture de plusieurs floes 1D.
+    \item Réétude de l'influence du coefficient de restitution $\varepsilon$. En effet, l'nénergie totale (en particulier l'énergie cinétique) ne devrait pas etre conservée pour $\varepsilon \not 1$.
+    \item Rédaction de l'introduction du rapport de stage.
+\end{enumerate}
+  
+\paragraph{Semaine 27 (\DTMdisplaydate{2021}{8}{04}{-1} - \DTMdisplaydate{2021}{8}{13}{-1})} 
+\begin{enumerate}
+    \item Rédaction du corps et de la conclusion pour le rapport de stage;
+    \item Génération des plots et écriture des équations à introduire dans le rapport. 
+\end{enumerate}
+
+\paragraph{Semaine 28 (\DTMdisplaydate{2021}{8}{14}{-1} - \DTMdisplaydate{2021}{8}{20}{-1})} 
+\begin{enumerate}
+    \item Incorporation des notes et des remarques de M. Labbé dans le rapport de stage.
+    \item Mise à jour de la présentation de mi-stage;
+    \item Rédaction de la présentation de soutenance de stage.
+\end{enumerate}
+
+
+\paragraph{Résumé}
+Pour résumer les taches effectutées et mieux observer le déroulement du stage, nous avons effectué le graphique de la FIGURE. En comparant ce graphique aux objectifs que nous nous somme fixés dans la partie INTRODUCTION-OBJECTIFS, nous pouvons faire un bilan du travail qui a été fait.
 
 A LA FIN, FAIRE UN GRAPHIQUE QUI RÉSUME CA
 
