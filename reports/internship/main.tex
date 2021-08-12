@@ -125,6 +125,21 @@ openany, %% Use this option to make chapters start on the next page, irrespectiv
 \newcommand{\tplus}{t^{+}}
 \newcommand{\tdelta}{\delta t^{*}}
 
+
+% \newtheoremstyle{colortheorem}{}{}{}{}{\color{purple}\bfseries}{.}{ }{}
+% \theoremstyle{colortheorem}
+
+\newtheoremstyle{plain}
+  {\topsep}   % ABOVESPACE
+  {\topsep}   % BELOWSPACE
+  {\itshape}  % BODYFONT
+  {0pt}       % INDENT (empty value is the same as 0pt)
+  {\color{purple}\bfseries} % HEADFONT
+  {.}         % HEADPUNCT
+  {5pt plus 1pt minus 1pt} % HEADSPACE
+  {}          % CUSTOM-HEAD-SPEC
+\theoremstyle{plain}
+
 \newtheorem{theorem}{Théorème}
 \numberwithin{theorem}{section}  %% Pour numeroter par section
 \newtheorem{corollary}[theorem]{Corollaire}
@@ -436,10 +451,10 @@ openany, %% Use this option to make chapters start on the next page, irrespectiv
 % Uncomment the lines as you write the chapters
 
 % \include{Chapters/Chapter1}       %% Introduction
-% \include{Chapters/Chapter2}       %% État de l'art
+\include{Chapters/Chapter2}       %% État de l'art
 % \include{Chapters/Chapter3}       %% Problème 1D et étude de la fracture
 % \include{Chapters/Chapter4}       %% Problème 2D et percussion des floes de glace
-\include{Chapters/Chapter5}       %% Déroulement et apports du stage
+% \include{Chapters/Chapter5}       %% Déroulement et apports du stage
 % \include{Chapters/Chapter6}       %% Conclusion
 
 %----------------------------------------------------------------------------------------
