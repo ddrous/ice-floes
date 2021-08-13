@@ -31,8 +31,8 @@ if __name__=="__main__":
     total_length1 = 6.0
     total_length2 = 12.0
 
-    n_nodes1 = 6
-    n_nodes2 = 8
+    n_nodes1 = 2
+    n_nodes2 = 2
 
     ## Run a simple percussion task
 
@@ -48,9 +48,8 @@ if __name__=="__main__":
                                     n_steps_before_contact=4000,
                                     restitution_coef=eps)
 
-    p.compute_before_contact()
-    p.compute_after_contact()
-    p.save_fig(open_file=True, fps=1, filename="Exports/AnimPerc1D.gif")
+    p.run_simulation()
+    p.save_fig(open_file=True, fps=10, filename="Exports/AnimPerc1D.gif")
 
     ## Plot the positions
     plt.style.use("seaborn")
@@ -66,7 +65,7 @@ if __name__=="__main__":
     p.plot_displacements(2, node_ids=None, figax=(fig,ax[3]))
 
     ## Study the Griffith minimization problem (for a specific ice floe)
-    p.griffith_minimization(floe_id=1)
+    # p.griffith_minimization(floe_id=1)
 
     ## Plot the momentum and the energy of the system
     ### fig, ax = plt.subplots(1, 2, figsize=(3.4*3,3.4))

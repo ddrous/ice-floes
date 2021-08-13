@@ -324,30 +324,30 @@ class Percussion:
         """
 
         ## Compute the integrand for speed calculation
-        # t_con, xvx1 = simulate_displacement_wrapper(self.floe1, self.t_at, self.N_at)
-        # t_con, xvx2 = simulate_displacement_wrapper(self.floe2, self.t_at, self.N_at)
+        t_con, xvx1 = simulate_displacement_wrapper(self.floe1, self.t_at, self.N_at)
+        t_con, xvx2 = simulate_displacement_wrapper(self.floe2, self.t_at, self.N_at)
 
-        # intgr = self.floe1.k*(xvx1[:,self.floe1.n-2] - xvx1[:,self.floe1.n-1] + self.floe1.springs[-1].L0) \
-        #         + self.floe1.mu*(xvx1[:,-2] - xvx1[:,-1]) \
-        #         - self.floe2.k*(xvx2[:,0] - xvx2[:,1] + self.floe2.springs[0].L0) \
-        #         - self.floe2.mu*(xvx2[:,self.floe2.n] - xvx2[:, self.floe2.n+1])
+        intgr = self.floe1.k*(xvx1[:,self.floe1.n-2] - xvx1[:,self.floe1.n-1] + self.floe1.springs[-1].L0) \
+                + self.floe1.mu*(xvx1[:,-2] - xvx1[:,-1]) \
+                - self.floe2.k*(xvx2[:,0] - xvx2[:,1] + self.floe2.springs[0].L0) \
+                - self.floe2.mu*(xvx2[:,self.floe2.n] - xvx2[:, self.floe2.n+1])
 
-        # I = np.trapz(y=intgr, x=t_con)
-        # ## I = 0       ## Conservation de la quantité de mouvement
-        # print("Value of I for computation:", I)
+        I = np.trapz(y=intgr, x=t_con)
+        ## I = 0       ## Conservation de la quantité de mouvement
+        print("Value of I for computation:", I)
 
         ## Compute the velocities after contact
-        v0 = np.abs(self.floe1.nodes[-1].vx)
-        v0_ = np.abs(self.floe2.nodes[0].vx)
-        # v0 = self.floe1.nodes[-1].vx
-        # v0_ = self.floe2.nodes[0].vx
+        # v0 = np.abs(self.floe1.nodes[-1].vx)
+        # v0_ = np.abs(self.floe2.nodes[0].vx)
+        v0 = self.floe1.nodes[-1].vx
+        v0_ = self.floe2.nodes[0].vx
         m = self.floe1.m
         m_ = self.floe2.m
         eps = self.eps
 
         ##------------Solution par défaut----------------------------------
-        #    # V0 = (I + (m - eps * m_) * v0 + (1 + eps) * m * v0_) / (m + m_)
-        #    # V0_ = (I + (1 + eps) * m * v0 + (m_ - eps * m) * v0_) / (m + m_)
+        V0 = (I + (m - eps * m_) * v0 + (1 + eps) * m * v0_) / (m + m_)
+        V0_ = (I + (1 + eps) * m * v0 + (m_ - eps * m) * v0_) / (m + m_)
 
         # V0 = (I + (m + eps * m_) * v0 + (1.0 - eps) * m * v0_) / (m + m_)
         # V0_ = (I + (1.0 - eps) * m * v0 + (m_ + eps * m) * v0_) / (m + m_)
@@ -387,18 +387,18 @@ class Percussion:
         ##-------------------------------------------------------------
 
         ##------------3eme alternative----------------------------------
-        X = eps*(v0 - v0_)
-        Y = m*(v0**2) + m_*(v0_**2)
-        a = m+m_
-        b = 2*m_*X
-        c = m_*(X**2) - Y
-        Delta = b**2 - 4*a*c
-        V01 = (-b - np.sqrt(Delta)) / (2*a)
-        V02 = (-b + np.sqrt(Delta)) / (2*a)
-        # print("V0 values:", Delta, V01, V02)
-        V0 = V01 if V01 >= 0 else V02
-        V0_ = V0 + X
-        # print("TEST:", m*(V0**2) + m_*(V0_**2) == Y)
+        # X = eps*(v0 - v0_)
+        # Y = m*(v0**2) + m_*(v0_**2)
+        # a = m+m_
+        # b = 2*m_*X
+        # c = m_*(X**2) - Y
+        # Delta = b**2 - 4*a*c
+        # V01 = (-b - np.sqrt(Delta)) / (2*a)
+        # V02 = (-b + np.sqrt(Delta)) / (2*a)
+        # # print("V0 values:", Delta, V01, V02)
+        # V0 = V01 if V01 >= 0 else V02
+        # V0_ = V0 + X
+        # # print("TEST:", m*(V0**2) + m_*(V0_**2) == Y)
         ##-------------------------------------------------------------
 
         print("VELOCITIES BEFORE/AFTER CONTACT:")
@@ -408,10 +408,10 @@ class Percussion:
         # print(" Second floe:", [v0_, V0_])
 
         ## Update velocities at extreme nodes
-        self.floe1.nodes[-1].vx = -np.abs(V0)
-        self.floe2.nodes[0].vx = np.abs(V0_)
-        # self.floe1.nodes[-1].vx = -V0
-        # self.floe2.nodes[0].vx = V0_
+        # self.floe1.nodes[-1].vx = -np.abs(V0)
+        # self.floe2.nodes[0].vx = np.abs(V0_)
+        self.floe1.nodes[-1].vx = V0
+        self.floe2.nodes[0].vx = V0_
 
 
     def compute_after_contact(self):
@@ -447,6 +447,13 @@ class Percussion:
         else:
             self.rec_count += 1
             self.compute_after_contact()
+
+    def run_simulation(self):
+        """
+        A wrapper function more indicative that we are running simulations
+        """
+        self.compute_before_contact()
+        self.compute_after_contact()
 
 
     def check_colission(self, start_index=0):
@@ -625,13 +632,17 @@ class Percussion:
             figax = plt.subplots()
             fig, ax = figax
 
-        P_av = (self.floe1.n * self.floe1.m * np.abs(self.floe1.v0)
-                + self.floe2.n * self.floe2.m * np.abs(self.floe2.v0)) * np.ones_like(self.t)
+        # P_av = (self.floe1.n * self.floe1.m * np.abs(self.floe1.v0)
+        #         + self.floe2.n * self.floe2.m * np.abs(self.floe2.v0)) * np.ones_like(self.t)
         # P_av = self.floe1.m * np.sum(np.abs(self.v1), axis=-1) + self.floe2.m * np.sum(np.abs(self.v2), axis=-1)
+        P_av = (self.floe1.n * self.floe1.m * self.floe1.v0
+                + self.floe2.n * self.floe2.m * self.floe2.v0) * np.ones_like(self.t)
         N_first = self.contact_indices[0]
         P_av[N_first + 1:] = np.nan
 
-        P_ap = self.floe1.m * np.sum(np.abs(self.v1), axis=-1) + self.floe2.m * np.sum(np.abs(self.v2), axis=-1)
+        # P_ap = self.floe1.m * np.sum(np.abs(self.v1), axis=-1) + self.floe2.m * np.sum(np.abs(self.v2), axis=-1)
+        P_ap = self.floe1.m * np.sum(self.v1, axis=-1) \
+               + self.floe2.m * np.sum(self.v2, axis=-1)
         P_ap[:N_first + 1] = np.nan
 
         print("\nQuantité de mouvement immediatement avant 1er choc:", P_av[N_first])
@@ -653,7 +664,7 @@ class Percussion:
              horizontalalignment='right',
              verticalalignment='baseline',
              transform=ax.transAxes)
-        ax.legend()
+        ax.legend(loc="upper right")
         fig.tight_layout()
 
         return (fig, ax)

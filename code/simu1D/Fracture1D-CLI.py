@@ -23,7 +23,7 @@ if __name__=="__main__":
     v0 = 2.2    ## vitesses avant le choc
     v0_ = -1.8
 
-    eps = 0.55   ## coefficient de restitution
+    eps = 0.75   ## coefficient de restitution
 
     ## Geometric constants
     X_min, X_max = 0, 50.0        # Position of the farthest node in the grid
@@ -45,7 +45,7 @@ if __name__=="__main__":
 
     floe2 = IceFloe(nodes=None, springs=None, mass=m_, stiffness=2*k_, viscosity=mu_, tenacity=3*L_, rigid_velocity=v0_,
                     id_number=1)
-    floe2.generate_nodes(X_max/1.3-total_length2, X_max/1.5, n_nodes2, R)
+    floe2.generate_nodes(X_max/1.5-total_length2, X_max/1.5, n_nodes2, R)
 
     floe3 = IceFloe(nodes=None, springs=None, mass=m_, stiffness=k_, viscosity=mu_, tenacity=L_, rigid_velocity=-2.0,
                     id_number=2)
@@ -57,7 +57,7 @@ if __name__=="__main__":
     # f.computeBeforeContact()
     # f.computeAfterContact()
     f.runSimulation()
-    f.saveFig(openFile=True, fps=5, filename="Exports/AnimFrac1D.gif")
+    f.saveFig(openFile=True, fps=10, filename="Exports/AnimFrac1D.gif")
 
     plt.style.use("seaborn")
     nrow, ncol = 2, 2
