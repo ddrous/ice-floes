@@ -96,7 +96,7 @@ Avec $t_0= 0$, la solution analytique de ce système d'EDO du premier ordre à c
 \end{align}
 Nous obtenons le théorème suivant:
 \begin{theorem}[Convergence du modèle 1D isolé] \label{th:div1D}
-    Les déplacements $x_1$ et $x_2$ des noeuds du floe 1D convergent si et seulement si leurs vitesses initiales sont des vecteurs opposés.
+    Partant d'une position d'équilibre $x_1(0) = x_2(0) = 0$, les déplacements $x_1$ et $x_2$ des deux noeuds du floe 1D convergent si et seulement si leurs vitesses initiales sont des vecteurs opposés.
 \end{theorem}
 
 \begin{proof}
@@ -234,11 +234,11 @@ On tire les mêmes conclusions en effectuant un raisonnement similaire.
 
 
 
-Nous effectuons ici une modélisation 1D de notre problème. Un floe est modélisé par un système masse-ressort de deux nœuds. Le floe 1 est immobilisé face au mur, et le floe 2 approche à la vitesse $\bvec{v}_0$. On identifie les nœuds $q_0$ et $p_0$ de la section précédente à leur masses respectives $m$ et $m'$ (voir \cref{fig:contact1d}).
+Nous effectuons ici une modélisation 1D de notre problème de percussion. Un floe est modélisé par un système masse-ressort de deux noeuds. Le floe 1 est immobilisé face au mur, et le floe 2 approche à la vitesse $\bvec{v}_0$. On identifie chaque noeud à la masse qu'il porte ($m$ ou $m'$), chaque ressort à sa raideur ($k$ ou $k'$), chaque dispositif visqueux à sa viscosité ($\mu$ ou $\mu'$) (voir \cref{fig:contact1d}).
 \begin{figure}[!h]
     \centering
     \frame{\includegraphics[width=0.8\textwidth]{Percussion1D-Systeme}}
-    \caption{Contact 1D parfaitement inélastique entre deux floes. Le floe percuté étant immobile et coincé au mur avant le choc.}
+    \caption{Contact 1D parfaitement inélastique (choc mou) entre deux floes. Le floe percuté étant immobile et coincé au mur avant, durant, et après le choc.}
     \label{fig:contact1d}
 \end{figure}
 
@@ -287,9 +287,7 @@ initiale. La vitesse initiale de $x_1$ est-elle vraiment nulle?}:
 \end{align}
 En posant $X = (x_1, x_2)^T \in \mathbb{R}^2$, l' \cref{eq:percussion1d} devient
 \begin{align}
-    \underbrace{\mymat{m+m'}{0}{0}{m'}}_{A} \myvec{\ddot{x}_1}{\ddot{x}_2} = \underbrace{\mymat{-\mu -
-    \mu^\prime}{\mu'}{\mu'}{-\mu'}}_{B}
-    \myvec{\dot{x}_1}{\dot{x}_2} + \underbrace{\mymat{-k-k'}{k'}{k'}{-k'}}_{C} \myvec{x_1}{x_2} \,.
+    \underbrace{\mymat{m+m'}{0}{0}{m'}}_{A} \myvec{\ddot{x}_1}{\ddot{x}_2} = \underbrace{\mymat{-k-k'}{k'}{k'}{-k'}}_{B} \myvec{x_1}{x_2} + \underbrace{\mymat{-\mu -\mu^\prime}{\mu'}{\mu'}{-\mu'}}_{C} \myvec{\dot{x}_1}{\dot{x}_2} \,.
 \end{align}
 Puisque $m, m'\neq 0$, la matrice $A$ est inversible et on obtient au final le problème de Cauchy suivant:
 \begin{align} \label{eq:percussion1d2}
@@ -311,7 +309,7 @@ devient
         Y_0 = Y(t_0) = (0,0,0,-v_0)^T
     \end{dcases}
 \end{align}
-avec la matrice par blocs \[ E = \mymat{0}{I_2}{C'}{B'} \,, \] où $I_2$ désigne la matrice identité de
+avec la matrice par blocs \[ E = \mymat{0}{I_2}{B'}{C'} \,, \] où $I_2$ désigne la matrice identité de
 $\mathbb{R}^{2\times2}$.
 
 \noindent Avec $t_0= 0$, la solution de ce système d'EDO du premier ordre à coefficients constants est unique et est donnée par
@@ -319,19 +317,41 @@ $\mathbb{R}^{2\times2}$.
     Y(t) = \exp(tE)Y_0
 \end{align}
 
-La résolution analytique du système passe par le calcul de l'exponentielle de la matrice $E \in \mathbb{R}^4$, ce qui s'avère difficile du à la taille de ladite matrice. Nous optons donc pour une solution numérique (voir figure \cref{fig:simucontact1d} issue du notebook $\verb|code/simu1D/Percussion1D-1.ipynb|$ ) \ldots
-\begin{figure}[!h]
+La résolution analytique du système passe par le calcul de l'exponentielle de la matrice $E \in \mathbb{R}^4$, ce qui s'avère difficile du à la taille de ladite matrice. Nous optons donc pour une solution numérique (voir figure \cref{fig:simucontact1dun}) issue du notebook $\verb|code/simu1D/Percussion1D-1.ipynb|$.
+% \begin{figure}[!h]
+%     \centering
+%     \includegraphics[width=0.4\textwidth]{SimuPercussion1D.png}
+%     \caption{Simulation de la percussion 1D entre deux floes avec $m=1$, $m'=1$, $k=16$, $k'=5$, $\mu=6$,
+%         $\mu'=2$, $v_0=-1.0$, $t_{f}=32$. On observe effectivement le ralentissement du système et une convergence
+%         vers l'état d'équilibre $Y_{eq}= (0,0,0,0)$.}
+%     \label{fig:simucontact1d}
+% \end{figure}
+\begin{figure*}[!h]
     \centering
-    \includegraphics[width=0.4\textwidth]{SimuPercussion1D.png}
-    \caption{Simulation de la percussion 1D entre deux floes avec $m=1$, $m'=1$, $k=16$, $k'=5$, $\mu=6$,
-        $\mu'=2$, $v_0=-1.0$, $t_{f}=32$. On observe effectivement le ralentissement du système et une convergence
-        vers l'état d'équilibre $Y_{eq}= (0,0,0,0)$.}
-    \label{fig:simucontact1d}
-\end{figure}
 
-\noindent Pour certaines valeurs (specifiquement de $\mu$ et $\mu'$), on constate que le système converge vers son état d'équilibre attendu $Y_{eq} = (0,0,0,0)$. Il nous reste dans cette section:
+    \begin{subfigure}[t]{0.48\textwidth}
+        \centering
+        \includegraphics[width=\textwidth]{SimuPercussion1D-1.png}
+        \caption{$\mu= 4.0$ et $\mu' = 2.5$ }
+        \label{fig:simucontact1dun}
+    \end{subfigure}
+    \begin{subfigure}[t]{0.48\textwidth}
+        \centering
+        \includegraphics[width=\textwidth]{SimuPercussion1D-2.png}
+        \caption{$\mu= 2.8$ et $\mu' = 2.5$ }
+        \label{fig:simucontact1ddeux}
+    \end{subfigure}
+    \caption{Simulation de la percussion 1D entre deux floes avec $m=1$, $m'=1$, $k=16$, $k'=5$, $v_0=-1.0$, $t_{f}=32$. Dans le premier cas (a), on observe effectivement le ralentissement du système et une convergence
+    vers l'état d'équilibre $Y_{eq}= (0,0,0,0)$. Dans le second cas (b), on constate que le système diverge.}
+    \label{fig:simucontact1d}
+\end{figure*}
+
+
+
+
+\noindent Pour certaines valeurs (specifiquement de $\mu$ et $\mu'$), on constate que le système converge vers son état d'équilibre attendu $Y_{eq} = (0,0,0,0)$. En revanche pour certaines (voir \cref{fig:simucontact1ddeux}), il diverge\footnote{La divergence pour ce cas est particulièrement évidente lorsque $\mu < \mu'$.}. Pour étendre les travaux dans cette section, on pourrait:
 \begin{enumerate}
-    \item Calculer analytiquement et numériquement tous les état d'équilibres $Y_{eq} \in \ker(E)$; distinguer les états stables des autres.
+    \item Calculer analytiquement et numériquement les état d'équilibres $Y_{eq} \in \ker(E)$; puis en distinguer les états stables des autres.
     \item Calculer analytiquement l'exponentielle de la matrice $E$, et donner l'expression de la solution; déduire la condition sur les parametres pour que le système converge vers l'état d'équilibre voulu.
 \end{enumerate} 
 
@@ -344,7 +364,7 @@ La résolution analytique du système passe par le calcul de l'exponentielle de 
 
 \subsection{Collision parfaitement inélastique sans présence du mur}
 
-Contrairement au cas étudié dans la section précédente, le mur est supprimé dans cette section. On obtient donc une troisième variable $x_3$ décrivant le comportement du noeud qui était rattaché au mur. La schéma régissant ce système est donnée à la \cref{fig:contact1d2}. Le bilan des forces appliquées aux noeuds est présenté à la \cref{fig:bilan2}.
+Contrairement au cas étudié dans la section précédente, le mur est supprimé ici. On ajoute donc une troisième variable afin de décrire le comportement du noeud qui était rattaché au mur. La schéma régissant ce système est donnée à la \cref{fig:contact1d2}. Le bilan des forces appliquées aux noeuds est présenté à la \cref{fig:bilan2}.
 
 \begin{figure}[!h]
     \centering
@@ -403,7 +423,7 @@ où $B' = A^{-1}B$ et $C' = A^{-1}C$. On pose ensuite $Y= (X, \dot X)^T \in \mat
 avec $$ E = \mymat{0}{I_3}{B'}{C'} \,.$$
 
 
-Remarquons qu'en enlevant le mur à gauche du domaine (voir \cref{fig:contact1d}), le système est devenu isolé. Nous pouvons donc appliquer la conservation de la quantité de mouvement pour identifier la vitesse de l'ensemble $m+m'$ après collision et fixation de la masse $m'$ (à vitesse $\bvec{v}_0$) sur la masse $m$ (de vitesse $\bvec{v}'_0$)\footnote{Le vecteur $\bvec{v}'_0$ n'est pas marqué à la \cref{fig:contact1d2} (i.e. $\bvec{v}'_0 = 0$). L'introduction de ce vecteur permet de généraliser le problème.}. Pour simplifier les calculs, nous considérons les floes comme des solides rigides. La vitesse de l'ensemble juste après collision est notée $v_f$, et les quantités de mouvement avant et après choc sont notées $P_{\text{avant}}$ et $P_{\text{après}}$. On a :
+Remarquons qu'en enlevant le mur à gauche du domaine (voir \cref{fig:contact1d}), le système est devenu isolé. Nous pouvons donc appliquer la conservation de la quantité de mouvement pour identifier la vitesse de l'ensemble de masse $2(m+m')$ après collision et fixation de la masse $m'$ (à vitesse $\bvec{v}_0$) sur la masse $m$ (de vitesse $\bvec{v}'_0$)\footnote{Le vecteur $\bvec{v}'_0$ n'est pas marqué à la \cref{fig:contact1d2} (i.e. $\bvec{v}'_0 = 0$). L'introduction de ce vecteur permet de généraliser le problème.}. Pour simplifier les calculs, nous considérons les floes comme des solides rigides. La vitesse de l'ensemble juste après collision est notée $v_f$, et les quantités de mouvement avant et après choc sont notées $P_{\text{avant}}$ et $P_{\text{après}}$. On a :
 \begin{align*}
     & \quad P_{\text{avant}} = P_{\text{après}} \\
     \Rightarrow & \quad 2m \bvec{v}_0 + 2m'\bvec{v'}_0 = (2m + 2m') \bvec{v}_f \\
@@ -442,7 +462,7 @@ Remarquons qu'en enlevant le mur à gauche du domaine (voir \cref{fig:contact1d}
 
 
 
-\subsection{Premier modèle pour la collision avec séparation des masses}
+\subsection{Premier modèle pour la collision inélastique avec séparation des masses}
 \label{subsubsec:colinesepma}
 
 Reprennons le cas du contact 1D et étudions ce qui se passe durant l'intervale de temps $\tdelta = [\tmoins, \tplus]$ de la collision. Cette fois, pour étudier la dynamique non régulière, nous décidons de séparer les masses $m$ et $m'$ en contact (et ce même durant le contact). Le système résultant est très similaire aux deux cas traités précédemment (\cref{fig:contact1d,fig:contact1d2}), et nous le présentons à la \cref{fig:contact1d3} ci-bas, et son bilan de forces à la \cref{fig:bilan3}.
@@ -463,21 +483,21 @@ Reprennons le cas du contact 1D et étudions ce qui se passe durant l'intervale 
         \label{fig:bilan13}
     \end{subfigure}
 %     \hfill
-    \begin{subfigure}[b]{0.35\textwidth}
+    \begin{subfigure}[b]{0.42\textwidth}
         \centering
         \frame{\includegraphics[width=\textwidth]{Percussion1D3-Masse2}}
         \caption{Sur $m$ de droite ($x_2$).}
         \label{fig:bilan23}
     \end{subfigure}
 %     \hfill
-    \begin{subfigure}[b]{0.35\textwidth}
+    \begin{subfigure}[b]{0.423\textwidth}
         \centering
         \frame{\includegraphics[width=\textwidth]{Percussion1D3-Masse3}}
         \caption{Sur $m'$ de gauche ($x_3$).}
         \label{fig:bilan33}
     \end{subfigure}
 %     \hfill
-    \begin{subfigure}[b]{0.30\textwidth}
+    \begin{subfigure}[b]{0.297\textwidth}
         \centering
         \frame{\includegraphics[width=\textwidth]{Percussion1D3-Masse4}}
         \caption{Sur $m'$ de droite ($x_4$).}
@@ -542,7 +562,7 @@ Une fois leur vitesses "initiales"\footnote{Ces vitesses sont les vitesses de d�
     \item son noeud de gauche $x_1$ a pour vitesse $v_0$ avant et le choc et conserve cette vitesse après le choc;
     \item son noeud de droite $x_2$ a pour vitesse $v_0$ avant le choc, mais passe de facon discontinue à $V_0$ apres le choc.
 \end{itemize}
-Il en est de même pous le deuxième floe.
+En procédant de manière similaire, nous obtenons les déplacements et les vitesses des noeuds du deuxième floe après la collision.
 
 % N'ayant aucune garantie que les vecteurs vitesses $v_0$ et $V_0$ seront opposés immédiatemetn après le choc, nous ne pouvons garantir la convergence de ce modèle (voir \cref{th:div1D}). Ce modèle dégénère (probablement) après la première collision. Effectuons à présent une modélisation 2D et observons si le même problème se repète.
 
