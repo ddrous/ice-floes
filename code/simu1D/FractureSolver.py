@@ -616,48 +616,43 @@ class Fracture:
         Runs the simulation for the complete fracture problem
         """
 
-        ## Run uniform mouvement phase up til first collision
+        ## Run uniform mouvement phase up to the first collision
         self.computeBeforeContact()
 
         for key in self.floes.keys():
             self.checkFracFrom[key] = self.t.size
 
-        countIter = 0
         while self.t.size <= self.NBef + self.NAft and max(self.collCount.values()) < 1000:
-        # while self.t[-1] < self.tBef+self.tAft:
-            # print("T SIZE = ", self.t.size)
 
             self.computeAfterContact()
-            ############### Envoyer tout ce qui suit dans runsimulation
 
+            ## (Potential) Fracture detection 
             floeDict = deepcopy(self.floes)
             for floe in floeDict.values():
                 self.checkFracture(floe.id)
 
+            ## Collision detection 
             for floe in self.floes.values():
                 for node in floe.nodes:
                     res = self.checkCollision(node.id, node.rightNode)
 
-            ## Assign the same value to all keys tp check collision from now on
+            ## Assign the same value to all keys to check collision from now on
             smallestCheckCollFrom = min(self.checkCollFrom.values())
             for key in self.checkCollFrom.keys():
                 self.checkCollFrom[key] = smallestCheckCollFrom
-                # self.checkFracFrom[key] = min([smallestCheckFracFrom, smallestCheckCollFrom])
             self.collLoc.append(smallestCheckCollFrom)
 
             ## Assign the same value to all keys tp check fracture from now on
             smallestCheckFracFrom = min(self.checkFracFrom.values())
             for key in self.checkFracFrom.keys():
                 self.checkFracFrom[key] = min([smallestCheckFracFrom, smallestCheckCollFrom])
-                # self.checkFracFrom[key] = smallestCheckFracFrom
 
-
-        #### <<-- il faut couper les tenseurs ici !! pour avoir la bonne taille finale (et retire les if dans saveFig)
+        ## Truncate exeeding data (not strick;y necessary)  
         self.x = self.x[:self.NBef+self.NAft+2, :]
         self.v = self.v[:self.NBef+self.NAft+2, :]
         self.t = self.t[:self.NBef+self.NAft+2]
 
-        # print("Could collide", self.couldCollide(1, 2))
+
         print("FINISHED")
 
 
