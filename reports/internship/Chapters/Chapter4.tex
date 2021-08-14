@@ -76,23 +76,22 @@ La simulation de ce modèle par un schéma d'Euler explicite à pas constant sur
         \caption{Illustration des positions initiales et finales des neouds.}
         \label{fig:pos}
     \end{subfigure}
-    \caption{Simulation du système \ref{eq:systeme2D} par un schéma d'Euler explicite avec $T = 4$. La couleurs rouge repésente le noeud $\bvec{q}_1$, le vert le noeud $\bvec{q}_2$, le blue le $\bvec{q}_3$. Les paramètres utilisés ici sont les suivants: $m=6.2$, $k=23.3$, $\mu=3$; à l'instant initiale, les trois noeuds perturbés avec des vitesses d'intensité respectives $v_1=0.3$, $v_2=0.1$, et $v_3=0.1$. Par rapport à l'axe des abcisses, ces vitesses ont sont orintées respectivement de $\theta_1=180^\circ$, $\theta_2=270^\circ$, et $\theta_3=240^\circ$ (voir \texttt{code/simu2D/Deplacement2D-1.ipynb}).}
+    \caption{Simulation du système \ref{eq:systeme2D} par un schéma d'Euler explicite avec $T = 4$ lorsqu'\textbf{un des noeuds est fixé} (le noeud rouge). La couleur rouge repésente le noeud $\bvec{q}_1$, le vert le noeud $\bvec{q}_2$, le blue le $\bvec{q}_3$. Les paramètres utilisés ici sont les suivants: $m=6.2$, $k=23.3$, $\mu=3$; à l'instant initiale, les trois noeuds perturbés avec des vitesses d'intensité respectives $v_1=0.3$, $v_2=0.1$, et $v_3=0.1$. Par rapport à l'axe des abcisses, ces vitesses ont sont orintées respectivement de $\theta_1=180^\circ$, $\theta_2=270^\circ$, et $\theta_3=240^\circ$ (voir \texttt{code/simu2D/Deplacement2D-1.ipynb}).}
     \label{fig:PlotDeplacement2D1Conv}
 \end{figure}
 
-METTRE PLUS DE PHOTOS DES SIMULATIONS AVEC LES BOULES
 
 \begin{figure}[!h]
     \centering
     \includegraphics[width=0.7\textwidth]{PlotDeplacement2D-1-NonConv.png}
-    \caption{Simulation du système \ref{eq:systeme2D} par un schéma d'Euler explicite avec $T = 10$. Cette figure utilise les même paramtètres que la \cref{fig:PlotDeplacement2D1Conv}. On observe ici une divergence totale du système.}
+    \caption{Simulation du système \ref{eq:systeme2D} par un schéma d'Euler explicite avec $T = 10$ lorsqu'\textbf{aucun des noeuds n'est fixé}. Cette figure utilise les mêmes paramtètres que la \cref{fig:PlotDeplacement2D1Conv}. On observe ici une divergence complète du système (voir \texttt{code/simu2D/Deplacement2D-2.ipynb}).}
     \label{fig:PlotDeplacement2D1NonConv}
 \end{figure}
 
 Les \cref{fig:PlotDeplacement2D1Conv,fig:PlotDeplacement2D1NonConv} permettent de constater que le schéma d'Euler explicite (peu importe son pas de temps), n'est pas adapté à ce problème. Nous étudierons donc d'autres alternatives. 
 
  
-\paragraph{Simulation à l'aide des fonction de la librarie Scipy.} À travers ses fonction telle que \texttt{odeint} et $\verb|solve_ivp|$, \texttt{Scipy} offre une solution robuste et élégante pour simuler les systèmes d'ODE de la forme $Y' = AY$.
+\paragraph{Simulation à l'aide des fonctions de la librarie Scipy.} À travers ses fonction telle que \texttt{odeint} et $\verb|solve_ivp|$, \texttt{Scipy} offre une solution robuste et élégante pour simuler les systèmes d'ODE de la forme $Y' = AY$. Avec \texttt{Scipy}, nous résolvons numériquement nos EDO à l'ordre \href{https://docs.scipy.org/doc/scipy/reference/generated/scipy.integrate.solve_ivp.html}{RK45}. Autrement dit, l'erreur est controllée par un schéma de Runke-Kutta à l'ordre 4, et les pas de temps sont pris à l'ordre 5.
 
 
 
@@ -111,12 +110,13 @@ Les \cref{fig:PlotDeplacement2D1Conv,fig:PlotDeplacement2D1NonConv} permettent d
 
 
 Les travaus antérieures sur le problème 2D ont été présentés dans la 
-\cref{Chapter2}. Particulièrement, nous avons adopté et amoliorer des résultats obtenus par D. Balasiou \parencite{balasoiu2020thesis}. Ces résultats concernent la simulation du comportement des floes de glace une fois une fois percuté par un object ponctuel; et on été présentés à la \cref{subsubsec:chap6dimitri}. Ici, nous explicitons les points sur lesquels nous nous sommes directement inspirés pour notre travail de stage.
-
-
-En effet, \citeauthor{balasoiu2020halthesis} à simulé l'\cref{eq:eeps} en language Python et a créer une interface graphique web pour interagir avec le programme. Ces résulats sont illustrés à la figure CI-BAS 
-
-FIGURE 6.5 THESE DIMITRI
+\cref{Chapter2}. Particulièrement, nous avons adopté et amoliorer des résultats obtenus par D. Balasiou \parencite{balasoiu2020halthesis}. Ces résultats concernent la simulation du comportement des floes de glace une fois une fois percuté par un object ponctuel; et on été présentés à la \cref{subsubsec:chap6dimitri} (voir aussi \cref{fig:clientwebbal} pour une interface graphique web pour interagir avec le programme). Ici, nous explicitons les points sur lesquels nous nous sommes directement inspirés pour notre travail de stage.
+\begin{figure}[!h]
+    \centering
+    \includegraphics[width=0.85\textwidth]{ClientWebBal.jpg}
+    \caption{Client web \texttt{springslattice-web.py} développé dans \parencite[p.197]{balasoiu2020halthesis}.}
+    \label{fig:clientwebbal}
+\end{figure}
 
 
 
@@ -126,17 +126,23 @@ FIGURE 6.5 THESE DIMITRI
 
 
 Les floes de glace $\Omega_k$ et $\Omega_l$ sont modélisés par des systèmes masse-ressort (à grande raideur). Pour l'instant, nous considérons une moélisation simplifiée qui assimile un floe à un système de (trois) masses reliés par des ressorts (de constante de raideur $k$), et par des dispositifs visqueux de constante $\mu$.
-Nous désignerons par $n+1$ le nombre total de noeuds du floe $\Omega_k$, chaque noeud ayant pour masse $m$. De facon similaire, on définit les constantes $k'$, $\mu'$, $n'+1$, $m'+1$ pour le floe $\Omega_l$. Les positions des noeds de $\Omega_k$ seront noté $(q_i)_{0\leq i\leq n}$, tandis que ceux de $\Omega_l$ seront notés $(p_i)_{0 \leq i\leq n'}$ (voir \cref{fig:contactmanuel}). 
+Nous désignerons par $n+1$ le nombre total de noeuds du floe $\Omega_k$, chaque noeud ayant pour masse $m$. De facon similaire, on définit les constantes $k'$, $\mu'$, $n'+1$, $m'+1$ pour le floe $\Omega_l$. Les positions des noeds de $\Omega_k$ seront noté $(q_i)_{0\leq i\leq n}$, tandis que ceux de $\Omega_l$ seront notés $(p_i)_{0 \leq i\leq n'-1}$ (voir \cref{fig:contactmanuel}). 
 
 \begin{figure}[!h]
     \centering
-    \includegraphics[width=0.3\textwidth, angle=-90]{ContactManuel.jpg}
-    \caption{Contact entre deux floes aux points $p_0 = q_0$.}
+    % \includegraphics[width=0.3\textwidth, angle=-90]{ContactManuel.jpg}
+    \frame{\includegraphics[width=0.65\textwidth]{Percussion2DNew.png}}
+    \caption{Contact entre deux floes aux points $\bvec{q}_0$ et $\bvec{p}_0$ respectivement.}
     \label{fig:contactmanuel}
 \end{figure}
 
-\noindent On définit la matrice de contact $C$...(voir these Dimitri), et $L_{0j}$.. et $u_{0j}$ ..
-
+\noindent On définit la longeur à vide $L_{0j}$ et le vecteur unitaire $\bvec{u}_{0j}$ (orienté de $\bvec{q}_0$ vers $\bvec{q}_j$) entre le noeud $\bvec{q}_0$ et le noeud $\bvec{q}_j$ et $u_{0j}$. Notons que ces définittions restent valable si nous remplacons le noeud $\bvec{q}_0$ par un noeud $(\bvec{q}_i)_{0 \leq i \leq n-1}$. On définit aussi la matrice de connectivité $C$:
+\begin{align*}
+    \forall \, 0 \leq i < j \leq n-1, \quad C_{ij} = C_{ji} = \begin{dcases}
+    1 \text{ si } \bvec{q}_i \text{ est voisin de } \bvec{q}_j \,, \\
+    0 \text{ sinon }.
+\end{dcases}
+\end{align*}
 \noindent Comme présenté dans les travaux \parencite[p.186]{balasoiu2020halthesis}, le système différentiel qui modélise la percussion s’écrit comme le couplage de deux sous-systèmes. Le premier, dit système intérieur (SI), est à évolution rapide et modélise la propagation des ondes élastiques dans le système masse-ressort. Ici, nous dérivons facilement et réutilisont le SI comme présenté par \citeauthor{balasoiu2020halthesis}. Le second, dit système extérieur (SE), est à évolution lente et modélise la pénétration de l’objet solide dans le système masse-ressorts. Pour dériver le SE sur le floe $\Omega_k$, nous écrivons l'équation de Newton-Euler linéaire\footnote{La rotation du point matériel $q_0$ n'est pas prise en compte ici, d'où l'abscence de l'équation de Newton-Euler angulaire.} au point de contact $q_0$:
 \begin{align}  \label{eq:SE}
 m \ddot{\bvec{q}}_0 = \bvec{F}_0 + \bvec{F}^c_0 \,,
@@ -153,14 +159,14 @@ Le système intérieur (SE) s'obtient facilement en combinant les équations \cr
 \begin{align} \tag{$E$} \label{eq:e}
 \begin{dcases}
     m \ddot{\bvec{q}}_0 = \bvec{F}_0 + \bvec{F}^c_0  \,, &\qquad \text{(SE)} \\
-    m \ddot{\bvec{q}}_i = \bvec{F}_i   \,, \quad \quad \quad \forall 1 \leq i \leq n \,. &\qquad \text{(SI)}
+    m \ddot{\bvec{q}}_i = \bvec{F}_i   \,, \quad \quad \quad \forall 1 \leq i \leq n-1 \,. &\qquad \text{(SI)}
 \end{dcases}
 \end{align}
 En ce qui concerne le floe $\Omega_l$, nous procédons de facons similaire et appliqons la 3ème loi de Newton (action-réaction) pour obtenir le système:
 \begin{align} \tag{$E'$} \label{eq:eprime}
 \begin{dcases}
     m' \ddot{\bvec{p}}_0 = \bvec{F}^{'}_0 - \bvec{F}^c_0  \,, &\qquad \text{(SE)} \\
-    m' \ddot{\bvec{p}}_i = \bvec{F}^{'}_i   \,, \quad \quad \quad \forall 1 \leq i \leq n' \,, &\qquad \text{(SI)}
+    m' \ddot{\bvec{p}}_i = \bvec{F}^{'}_i   \,, \quad \quad \quad \forall 1 \leq i \leq n'-1 \,, &\qquad \text{(SI)}
 \end{dcases}
 \end{align}
 où $(\bvec{F}^{'}_i)_{0 \leq i \leq n'}$ sont définis de facon similaire à $\bvec{F}_0$ (voir \cref{eq:F0}):
@@ -176,21 +182,23 @@ Remarquons que les positions relatives des noeuds $\bvec{q}_0$ et $\bvec{p}_0$ r
 \begin{align}
 \forall t \in \mathbb{R}^+ \,, \quad \bvec{q}_0(t) - \bvec{p}_0(t) = \Delta_0\,.
 \end{align}
-Pour satifaire cette condition, nous exhibons $n+n'+2$ équations nécessaire pour que notre problème de percussion soit bien posé. Elles sont :
+Pour satifaire cette condition, nous exhibons autant d'équations nécessaire pour que notre problème de percussion soit bien posé. Elles sont :
 \begin{align} \tag{$\mathcal{P}$} \label{eq:problemeP}
 \begin{dcases}
     (m+m') \ddot{\bvec{q}}_0  = \bvec{F}_0 + \bvec{F}^{'}_0  \,, &\qquad \text{(SE)} \\
-    \ddot{\bvec{p}}_0 = \ddot{\bvec{q}}_0 \,, &\qquad \text{(SE)} \\
-    m \ddot{\bvec{q}}_i = \bvec{F}_i   \,, \quad \quad \quad \forall 1 \leq i \leq n \,. &\qquad \text{(SI)} \\
-    m' \ddot{\bvec{p}}_i = \bvec{F}^{'}_i   \,, \quad \quad \quad \forall 1 \leq i \leq n' \,, &\qquad \text{(SI)}
+    \ddot{\bvec{p}}_0 = \ddot{\bvec{q}}_0 \,, \quad \dot{\bvec{p}}_0 = \dot{\bvec{q}}_0 \,, \quad \bvec{p}_0 = \bvec{q}_0 - \Delta_0 \,, &\qquad \text{(SE)} \\
+    m \ddot{\bvec{q}}_i = \bvec{F}_i   \,, \quad \quad \quad \forall 1 \leq i \leq n-1 \,. &\qquad \text{(SI)} \\
+    m' \ddot{\bvec{p}}_i = \bvec{F}^{'}_i   \,, \quad \quad \quad \forall 1 \leq i \leq n'-1 \,, &\qquad \text{(SI)}
 \end{dcases}
 \end{align}
 
-Ensuite, il nous avons construit une interface graphique web pour interagir avec le programme. A travers cette interface, nous pouvons modifier tous les parametres du problèmes et lancer des simulations. Un tel exemple se trouve à la figure CI-BAS
-
-FIGURE DE MON INTERFACE GRAPHIQUE WEB 
-
-
+Quant à la visualisation des résultats, nous avons construit une interface graphique web pour interagir avec le programme. A travers cette interface, nous pouvons modifier tous les parametres du problèmes et lancer des simulations. Un tel exemple se trouve à la figure \cref{fig:clientwebmoi}, et la simulation correspondant peut etre visualisée via \href{ww}{ce lien SEAFILE}. 
+\begin{figure}[!h]
+    \centering
+    \frame{\includegraphics[width=0.85\textwidth]{ClientWebMoi.jpg}}
+    \caption{Client web développé durant le stage pour les percussion 2D. Comparativement à la \cref{fig:clientwebbal}, on constate la présence de plus de champ pour préciser les paramètre du second floe entrant en collision.}
+    \label{fig:clientwebmoi}
+\end{figure}
 
 
 
@@ -208,11 +216,13 @@ L'algorithme de calcul 2D est largement inspiré des travaux de \citeauthor{bala
     \item \textbf{percussion-web}: pour l'execution des simulations avec des paramètres donnés dans une interface web. Ici, on peut en plus observer les vecteur et les valeurs propres (toutes négatives) du système.
 \end{enumerate}
 
-Nous présentons CI-BAS un diagramme UML explicitant le code que nous développé. Dans ce diagramme, on peut voire les relation d'héritage entre les classes. Quelques frames d'une simulation sont présentés CI-BAS.
-
-DIAGRAMME UML 2d
-
-QUELQUES FRAMES DU RESULTAT DE SIMULATION 2D
+Nous présentons à la \cref{fig:readme2d} le fichier README du dépot \texttt{springslattice} sur \texttt{Framagit} créer par Balasoiu dans ses travaux, et amélioré par nous durant ce stage. Tout comme le dépot principal \href{https://github.com/desmond-rn/ice-floes}{ice-floes} sur \texttt{GitHub}, ce dépot secondaire est privé.
+\begin{figure}[!h]
+    \centering
+    \includegraphics[width=0.85\textwidth]{ReadmeRepoSpringsLattice.jpg}
+    \caption{Appercu du dépot secondaire \href{https://framagit.org/RaK/SimuRessorts/-/tree/master}{springslattice} maintenu et amélioré durant le stage.}
+    \label{fig:readme2d}
+\end{figure}
 
 
 %4----------------------------------------------------------------------------------------
