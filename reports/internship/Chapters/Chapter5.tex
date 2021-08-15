@@ -247,30 +247,6 @@ Pour résumer les tâches effectutées et mieux observer le déroulement du stag
 
 
 
-\section{Bilan et future travail}
-
-Durant ce stage, nous avons modéliser et simuler la percussion de floes de glace. Nous avons fait cela en 1 dimension et nous avons convenablement adapté les résultats en simension supérieure, en se servant des travaux précédents sur ce sujet. En plus, nous modélisé et implémenté la fracture en d'un floe de glace 1D. Ceci dit, plusieurs tâches restent à effectuer pour porter à fruition notre objectif primaire de creation d'un code de calcul de l’évolution de la banquise à l’échelle des floes de glace:
-
-\begin{itemize}
-    \item \textbf{Implémentation de la méthode du champ de phase sue le modèle 1D.} L'approche du champ de phase a longement été présentée à la \cref{subsubsec:approchephase}. Comme nous l'avons indiquée, elle est la mieux adaptée à l'étude de la fracture suivant l'approche variationnel de Francfort et Marigo.
-    \item \textbf{Implementation de la fracture au problème 2D.} Durant sa thèse, \citeauthor{balasoiu2020halthesis} a implémenté un modèle quasi-statique de fracture variationnel à travers une méthode éléments finis reposant sur une approche par champ de phase pour régulariser la fracture. Ces travaux sont regroupé dans le dépot sur \texttt{framagit} nommé \href{https://framagit.org/RaK/Griffith}{Griffith}. Il faudra intégré ces travaux au modèle de percussion 2D que nous avons développé durant ce stage.
-    \item \textbf{Intégration de la fracture fragile au code de \citeauthor{rabatel2015thesis}.} Comme nous l'avons précisé, \citeauthor{rabatel2015thesis} a, durant sa thèse étudié la dérive d'un ensemble de floes de glace dans la mer. Il faudra donc introduire la fracture de la glace dans ce modèle.
-    \item \textbf{Passage en dimension supérieure.} Pour aller plus loin, nous conseillons de passer en trois dimension. Celà dit, les tailles des floes peuvent etre négligeable devant le rayon de la Terre, où la taille de la mer. Il faudra donc prendre celà en considération pour faire des simplifications.
-    \item \textbf{Confiramtion de l'approximation par réseaux de ressorts.} D'après la modelisation de Balasoui \parencite{balasoiu2020halthesis}, un assemblage de masses reliées par des ressorts n'est une bonne approximation que si les raiderur on une forte raideur. IL faudra donc augmenter la raideur des ressorts dans les simulations pour observer le comportement des floes, celà permettra d'extraire une deuxième limite spatiale. De plus, Balasoiu a ajouté les dispositifs visqueux pour dissiper les vibrations dans le matériaux. Un futur travail pourrrait donc étudier la nécéssité d'introduire ces dispositifs (qui complexifie considérablement les calculs) dans nos modèles.  
-    \item \textbf{Optimiser des codes avec Cython.} En effet, les codes sont écrits en Python durant cette phase . Ce language ne nous permet pour l'instant que d'éfffectuer des simulation avec un nombre restraint de neouds. On pourra donc utiliser \href{https://cython.org/}{Cython} pour faire appel aux fonctions à haute performace du language C. Ou mieux encore, nous pourront reimplémenter tous le code en C$++$ en intégrant les librairies HPC telles que \href{http://www.netlib.org/blas/}{Blas}, \href{https://www.openmp.org/}{OpenMP}, \href{https://developer.nvidia.com/cuda-zone}{CUDA}, etc.
-    \item \textbf{Tests de validation en laboratoire.} Des tests en laboratoire sont nécéssaire pour validé les modèles développés. Tout comme \citeauthor{rabatel2015thesis} l'a fait, l'on pourra se servir des données \textbf{ERAinterim} et \textbf{TOPAZ} pour effectuer ces tests.
-\end{itemize}
-
-
-
-
-
-
-%3----------------------------------------------------------------------------------------
-
-
-
-
 \section{Les apports du stage}
 
 
@@ -310,3 +286,32 @@ J'ai maitrisé la majeure partie des objectifs que nous nous étions fixés. Cel
     \item \textbf{Vision globale dans tout projet:} J'ai appris à quel point il est important d'avoir une vision globale portée vers le futur lorsqu'on entreprend un projet. Par exemple, j'ai du reconcevoir et reedvelopper le code de calcul 1D (souvent de font en comble) à chaque fois qu'il fallait ajouter une fonctionnalité. J'estime à un mois le retard acculé du à ces reimplémentations. Celà aurait pu etre éviter si j'avais été plus ambitieux dès le départ.
     \item \textbf{Savoir-faire transfesrables:} A travers ses journées "thé du labo". Ce fut l'occasion de mieux se connaitre et de tisser des liens. Parmis les conpétences transferables que j'ai pu acquerrir durant ce stage, je peux citer l'esprit de recherche, d'entreprise, la gestion du temps, et la collaboration.
 \end{itemize}
+
+
+
+%3----------------------------------------------------------------------------------------
+
+
+
+
+
+
+
+\section{Bilan et future travail}
+
+Durant ce stage, nous avons modéliser et simuler la percussion de floes de glace. Nous avons fait cela en 1 dimension et nous avons convenablement adapté les résultats en simension supérieure, en se servant des travaux précédents sur ce sujet. En plus, nous modélisé et implémenté la fracture en d'un floe de glace 1D. Ceci dit, plusieurs tâches restent à effectuer pour porter à fruition notre objectif primaire de creation d'un code de calcul de l’évolution de la banquise à l’échelle des floes de glace:
+
+\begin{itemize}
+    \item \textbf{Implémentation de la méthode du champ de phase sue le modèle 1D.} L'approche du champ de phase a longement été présentée à la \cref{subsubsec:approchephase}. Comme nous l'avons indiquée, elle est la mieux adaptée à l'étude de la fracture suivant l'approche variationnel de Francfort et Marigo.
+    \item \textbf{Implementation de la fracture au problème 2D.} Durant sa thèse, \citeauthor{balasoiu2020halthesis} a implémenté un modèle quasi-statique de fracture variationnel à travers une méthode éléments finis reposant sur une approche par champ de phase pour régulariser la fracture. Ces travaux sont regroupé dans le dépot sur \texttt{framagit} nommé \href{https://framagit.org/RaK/Griffith}{Griffith}. Il faudra intégré ces travaux au modèle de percussion 2D que nous avons développé durant ce stage.
+    \item \textbf{Intégration de la fracture fragile au code de \citeauthor{rabatel2015thesis}.} Comme nous l'avons précisé, \citeauthor{rabatel2015thesis} a, durant sa thèse étudié la dérive d'un ensemble de floes de glace dans la mer. Il faudra donc introduire la fracture de la glace dans ce modèle.
+    \item \textbf{Passage en dimension supérieure.} Pour aller plus loin, nous conseillons de passer en trois dimension. Celà dit, les tailles des floes peuvent etre négligeable devant le rayon de la Terre, où la taille de la mer. Il faudra donc prendre celà en considération pour faire des simplifications.
+    \item \textbf{Confiramtion de l'approximation par réseaux de ressorts.} D'après la modelisation de Balasoui \parencite{balasoiu2020halthesis}, un assemblage de masses reliées par des ressorts n'est une bonne approximation que si les raiderur on une forte raideur. IL faudra donc augmenter la raideur des ressorts dans les simulations pour observer le comportement des floes, celà permettra d'extraire une deuxième limite spatiale. De plus, Balasoiu a ajouté les dispositifs visqueux pour dissiper les vibrations dans le matériaux. Un futur travail pourrrait donc étudier la nécéssité d'introduire ces dispositifs (qui complexifie considérablement les calculs) dans nos modèles.  
+    \item \textbf{Optimiser des codes avec Cython.} En effet, les codes sont écrits en Python durant cette phase . Ce language ne nous permet pour l'instant que d'éfffectuer des simulation avec un nombre restraint de neouds. On pourra donc utiliser \href{https://cython.org/}{Cython} pour faire appel aux fonctions à haute performace du language C. Ou mieux encore, nous pourront reimplémenter tous le code en C$++$ en intégrant les librairies HPC telles que \href{http://www.netlib.org/blas/}{Blas}, \href{https://www.openmp.org/}{OpenMP}, \href{https://developer.nvidia.com/cuda-zone}{CUDA}, etc.
+    \item \textbf{Tests de validation en laboratoire.} Des tests en laboratoire sont nécéssaire pour validé les modèles développés. Tout comme \citeauthor{rabatel2015thesis} l'a fait, l'on pourra se servir des données \textbf{ERAinterim} et \textbf{TOPAZ} pour effectuer ces tests.
+\end{itemize}
+
+
+
+
+
