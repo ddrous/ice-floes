@@ -1,0 +1,1 @@
+{"rule":"EN_DIACRITICS_REPLACE","sentence":"^\\QLe déclin massif de la glace arctique ces dernières décenies est considéré comme l'une manifestations les plus marquante du changement climatique (voir \\E(?:Dummy|Ina|Jimmy-)[0-9]+\\Q).\\E$"}

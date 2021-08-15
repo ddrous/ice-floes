@@ -9,7 +9,7 @@
 %1----------------------------------------------------------------------------------------
 
 
-Dans cette section, nous étudierons le floe de glace en une dimention (1D). Nous avons montré dans les section précédentes qu'un assemblage de masses reliées par des ressorts et de sdispositifs visqueux constitue une bonne approximation d'un matériaux élastique et du phénomène de percussion associé. Nous partirons de cette approche par réseau de ressort pour modéliser dans un premier temps le déplacement d'un floe de glace contenant juste deux noeuds (masses), ensuite nous modéliserons la percussion inélastique des noeuds de floes avec et sans rebonds, avec un nombre varaible de noeuds par floes. 
+Dans cette section, nous étudierons le floe de glace en une dimention (1D). Nous avons montré dans les section précédentes qu'un assemblage de masses reliées par des ressorts et de sdispositifs visqueux constitue une bonne approximation d'un matériaux élastique et du phénomène de percussion associé. Nous partirons de cette approche par réseau de ressort pour modéliser dans un premier temps le déplacement d'un floe de glace contenant juste deux n\oe{}uds (masses), ensuite nous modéliserons la percussion inélastique des n\oe{}uds de floes avec et sans rebonds, avec un nombre varaible de n\oe{}uds par floes. 
 
 
 
@@ -20,11 +20,11 @@ Dans cette section, nous étudierons le floe de glace en une dimention (1D). Nou
 \label{subsubsec:moddep1D}
 
 
-Avant d'entamer la question de la percussion avec séparation des masses (voir \cref{subsubsec:colinesepma}), étudions le comportement d'un floe de glace 1D isolé et modélisé par un réseau de ressorts (1 ressort, 1 dispositif visqueu, et 2 noeuds) (voir \cref{fig:deplacement1d}).
+Avant d'entamer la question de la percussion avec séparation des masses (voir \cref{subsubsec:colinesepma}), étudions le comportement d'un floe de glace 1D isolé et modélisé par un réseau de ressorts (1 ressort, 1 dispositif visqueu, et 2 n\oe{}uds) (voir \cref{fig:deplacement1d}).
 \begin{figure}[!h]
     \centering
     \frame{\includegraphics[width=0.6\textwidth]{Deplacement1D-Systeme.png}}
-    \caption{Floe de glace 1D modélisé par un réseau de ressorts. Le floe est isolé de toutes forces extérieurs. Les varaibles $x_1$ et $x_2$ traduisent les déplacemnts des noeuds de gauche et de droite respectifs. À l'instant initial, les masses sont soumises aux vitesses $v_0$ et $v'_0$ indiquées.}
+    \caption{Floe de glace 1D modélisé par un réseau de ressorts. Le floe est isolé de toutes forces extérieurs. Les varaibles $x_1$ et $x_2$ traduisent les déplacemnts des n\oe{}uds de gauche et de droite respectifs. À l'instant initial, les masses sont soumises aux vitesses $v_0$ et $v'_0$ indiquées.}
     \label{fig:deplacement1d}
 \end{figure}
 
@@ -41,12 +41,12 @@ Avant d'entamer la question de la percussion avec séparation des masses (voir \
         \frame{\includegraphics[width=\textwidth]{Deplacement1D-Masse2.png}}
         \caption{Sur la masse $m$ de droite.}
     \end{subfigure}
-       \caption{Bilan des forces appliquée sur les noeuds du système. Les valeurs indiquées sont les intensitées (positives) des forces (par exemple juste après l'instant initial, on a $x_1 > 0$, et $x_2 < 0$ d'où $k(x_1-x_2) > 0$).}
+       \caption{Bilan des forces appliquée sur les n\oe{}uds du système. Les valeurs indiquées sont les intensitées (positives) des forces (par exemple juste après l'instant initial, on a $x_1 > 0$, et $x_2 < 0$ d'où $k(x_1-x_2) > 0$).}
        \label{fig:bilan0}
 \end{figure}
 
 
-\noindent Un bilan des forces effectué sur les deux noeuds du floe (voir \cref{fig:bilan0}) permet d'obtenir les équations suivantes:
+\noindent Un bilan des forces effectué sur les deux n\oe{}uds du floe (voir \cref{fig:bilan0}) permet d'obtenir les équations suivantes:
 \begin{align}
     \begin{dcases}
     m\ddot x_1 = - k(x_1 - x_2) - \mu(\dot x_1 - \dot x_2) \,,\\
@@ -96,7 +96,7 @@ Avec $t_0= 0$, la solution analytique de ce système d'EDO du premier ordre à c
 \end{align}
 Nous obtenons le théorème suivant:
 \begin{theorem}[Non-convergence du modèle 1D isolé] \label{th:div1D}
-    Partant d'une position d'équilibre $x_1(0) = x_2(0) = 0$, les déplacements $x_1(\cdot)$ et $x_2(\cdot)$ des deux noeuds du floe 1D (avec viscosité $\mu \neq 0$) convergent\footnote{Convergence au sens où la foncton tend vers une limite finie.} si et seulement si leurs vitesses initiales sont opposées, i.e. $\dot x_1(0) = - \dot x_2(0)$.
+    Partant d'une position d'équilibre $x_1(0) = x_2(0) = 0$, les déplacements $x_1(\cdot)$ et $x_2(\cdot)$ des deux n\oe{}uds du floe 1D (avec viscosité $\mu \neq 0$) convergent\footnote{Convergence au sens où la foncton tend vers une limite finie.} si et seulement si leurs vitesses initiales sont opposées, i.e. $\dot x_1(0) = - \dot x_2(0)$.
 \end{theorem}
 
 \begin{proof}
@@ -204,7 +204,7 @@ Le cas où $\Delta < 0$ (à étudier dans $\mathbb{C}$) peut se ramener au cas r
 \begin{align} \label{eq:solcomplexe}
     x_1(t) = \frac{t}{2}\left( v_0 - v'_0 \right) + \frac{e^{\alpha t} \sin(\beta t)}{2\beta} \left( v_0 + v'_0 \right).
 \end{align}
-Les \cref{eq:solreel,eq:solcomplexe} permettent d'observer que le déplacement $x_1(\cdot)$ ne converge pas lorsque $t \rightarrow +\infty$, à moins que $v_0 = v'_0$, ce qui est observé à la \cref{fig:simudept1d}. Pour le déplacement du deuxième noeud, on a:
+Les \cref{eq:solreel,eq:solcomplexe} permettent d'observer que le déplacement $x_1(\cdot)$ ne converge pas lorsque $t \rightarrow +\infty$, à moins que $v_0 = v'_0$, ce qui est observé à la \cref{fig:simudept1d}. Pour le déplacement du deuxième n\oe{}ud, on a:
 \begin{align} \label{eq:solcomplexe}
     x_2(t) = \frac{t}{2}\left( v_0 - v'_0 \right) - \frac{e^{\alpha t} \sin(\beta t)}{2\beta} \left( v_0 + v'_0 \right);
 \end{align}
@@ -239,7 +239,7 @@ On tire les mêmes conclusions en effectuant un raisonnement similaire. De plus,
 
 
 
-Nous effectuons ici une modélisation 1D de notre problème de percussion. Un floe est modélisé par un système masse-ressort de deux noeuds. Le floe 1 est immobilisé face au mur, et le floe 2 approche à la vitesse $\bvec{v}_0$. On identifie chaque noeud à la masse qu'il porte ($m$ ou $m'$), chaque ressort à sa raideur ($k$ ou $k'$), chaque dispositif visqueux à sa viscosité ($\mu$ ou $\mu'$) (voir \cref{fig:contact1d}).
+Nous effectuons ici une modélisation 1D de notre problème de percussion. Un floe est modélisé par un système masse-ressort de deux n\oe{}uds. Le floe 1 est immobilisé face au mur, et le floe 2 approche à la vitesse $\bvec{v}_0$. On identifie chaque n\oe{}ud à la masse qu'il porte ($m$ ou $m'$), chaque ressort à sa raideur ($k$ ou $k'$), chaque dispositif visqueux à sa viscosité ($\mu$ ou $\mu'$) (voir \cref{fig:contact1d}).
 \begin{figure}[!h]
     \centering
     \frame{\includegraphics[width=0.8\textwidth]{Percussion1D-Systeme}}
@@ -267,7 +267,7 @@ deux masses.
          \caption{Sur $m'$.}
          \label{fig:bilan12}
      \end{subfigure}
-        \caption{Bilan des forces appliquée sur les noeuds du système. Les valeurs indiquées sont les intensitées
+        \caption{Bilan des forces appliquée sur les n\oe{}uds du système. Les valeurs indiquées sont les intensitées
             (positives) des forces durant une phase imaginée de compression des ressorts ($\bvec{v}_0 <0$ et donc
             $x_1 <0$). Pour obtenir l'intesité de la force de rappel du ressort $k'$, on peut imaginer $x_1$ imobile
             (on aura $x_2 < 0$, d'où $x_1 - x_2 > 0$) (voir \parencite{homodeling}).}
@@ -369,12 +369,12 @@ La résolution analytique du système passe par le calcul de l'exponentielle de 
 
 \subsection{Collision parfaitement inélastique sans présence du mur}
 
-Contrairement au cas étudié dans la section précédente, le mur est supprimé ici. On ajoute donc une troisième variable afin de décrire le comportement du noeud qui était rattaché au mur. La schéma régissant ce système est donnée à la \cref{fig:contact1d2}. Le bilan des forces appliquées aux noeuds est présenté à la \cref{fig:bilan2}.
+Contrairement au cas étudié dans la section précédente, le mur est supprimé ici. On ajoute donc une troisième variable afin de décrire le comportement du n\oe{}ud qui était rattaché au mur. La schéma régissant ce système est donnée à la \cref{fig:contact1d2}. Le bilan des forces appliquées aux n\oe{}uds est présenté à la \cref{fig:bilan2}.
 
 \begin{figure}[!h]
     \centering
     \frame{\includegraphics[width=0.8\textwidth]{Percussion1D-Systeme-2}}
-    \caption{Contact 1D parfaitement inélastique entre deux floes. Le floe percuté étant non immobile (et non coincé au mur) avant le choc. On représnte également les variables $x_1$, $x_2$, et $x_3$ décrivant les movements de chaque noeud.}
+    \caption{Contact 1D parfaitement inélastique entre deux floes. Le floe percuté étant non immobile (et non coincé au mur) avant le choc. On représnte également les variables $x_1$, $x_2$, et $x_3$ décrivant les movements de chaque n\oe{}ud.}
     \label{fig:contact1d2}
 \end{figure}
 
@@ -399,7 +399,7 @@ Contrairement au cas étudié dans la section précédente, le mur est supprimé
         \caption{Sur $m'$.}
         \label{fig:bilan32}
     \end{subfigure}
-       \caption{Bilan des forces appliquée sur les noeuds du système. On procède de facon similaire à \cref{fig:bilan} pour obtenir les sens et les intensités de ces forces.}
+       \caption{Bilan des forces appliquée sur les n\oe{}uds du système. On procède de facon similaire à \cref{fig:bilan} pour obtenir les sens et les intensités de ces forces.}
        \label{fig:bilan2}
 \end{figure}
 
@@ -475,7 +475,7 @@ Reprennons le cas du contact 1D et étudions ce qui se passe durant l'intervale 
 \begin{figure}[!h]
     \centering
     \frame{\includegraphics[width=0.8\textwidth]{Percussion1D-Systeme-3}}
-    \caption{Contact 1D inélastique entre deux floes. Durant le choc, les nœuds $m$ et $m'$ en contact sont étudiés séparement. On représnte les variables $x_1$, $x_2$, $x_3$, et $x_4$ décrivant les movements de chaque noeud.}
+    \caption{Contact 1D inélastique entre deux floes. Durant le choc, les nœuds $m$ et $m'$ en contact sont étudiés séparement. On représnte les variables $x_1$, $x_2$, $x_3$, et $x_4$ décrivant les movements de chaque n\oe{}ud.}
     \label{fig:contact1d3}
 \end{figure}
 
@@ -508,7 +508,7 @@ Reprennons le cas du contact 1D et étudions ce qui se passe durant l'intervale 
         \caption{Sur $m'$ de droite ($x_4$).}
         \label{fig:bilan43}
     \end{subfigure}
-       \caption{Bilan des forces appliquée sur les $4$ noeuds du système. On procède de facon similaire aux \cref{fig:bilan,fig:bilan2} pour obtenir les sens et les intensités de ces forces. $F_c$ représente la force de contact dont l'intensité est inconnue.}
+       \caption{Bilan des forces appliquée sur les $4$ n\oe{}uds du système. On procède de facon similaire aux \cref{fig:bilan,fig:bilan2} pour obtenir les sens et les intensités de ces forces. $F_c$ représente la force de contact dont l'intensité est inconnue.}
        \label{fig:bilan3}
 \end{figure}
 
@@ -539,11 +539,11 @@ est aussi calculé suivant le modèle \cref{eq:systeme1d2} (voir l'article \pare
 \begin{align}    \label{eq:debuteq1}
     \int_{\tmoins}^{\tplus} m\ddot x_2 + m'\ddot x_3 \diff t = \underbrace{\int_{\tmoins}^{\tplus} k(x_1 - x_2) + \mu (\dot x_1 - \dot x_2) - k'(x_3 - x_4) - \mu'(\dot x_3 - \dot x_4) \diff t}_{I} \,.
 \end{align}
-Afin d'éviter toute confusion, nous notons $v_0 = \dot{x}_2(\tmoins)$ et $v'_0 = \dot{x}_3(\tmoins)$ les vitesses des noeuds en contact avant collision, et $V_0 = \dot{x}_2(\tplus)$ et $V'_0 = \dot{x}_3(\tplus)$ les vitesses après contact. L'équation \cref{eq:debuteq1} devient donc:
+Afin d'éviter toute confusion, nous notons $v_0 = \dot{x}_2(\tmoins)$ et $v'_0 = \dot{x}_3(\tmoins)$ les vitesses des n\oe{}uds en contact avant collision, et $V_0 = \dot{x}_2(\tplus)$ et $V'_0 = \dot{x}_3(\tplus)$ les vitesses après contact. L'équation \cref{eq:debuteq1} devient donc:
 \begin{align} \label{eq:crammer1}
     mV_0 + m'V'_0 = I + mv_0 + m'v'_0 \,.
 \end{align}
-À présent, nous pouvons étudier l'énergie cinétique du système à travers le coefficient de restitution $\varepsilon$ \footnote{Le coefficient de restitution est le même que celui utilisé dans la thèse \parencite{rabatel2015thesis}.}. On suppose (algébriquement) que les noeuds prennent des directions indiquées à la \cref{fig:contact1dapres}. 
+À présent, nous pouvons étudier l'énergie cinétique du système à travers le coefficient de restitution $\varepsilon$ \footnote{Le coefficient de restitution est le même que celui utilisé dans la thèse \parencite{rabatel2015thesis}.}. On suppose (algébriquement) que les n\oe{}uds prennent des directions indiquées à la \cref{fig:contact1dapres}. 
 \begin{figure}[!h]
     \centering
     \frame{\includegraphics[width=0.6\textwidth]{Percussion1D3-Apres.png}}
@@ -562,12 +562,12 @@ Le système de Cramer qui découle des \cref{eq:crammer1,eq:crammer2} permet d'o
 
 % Nous faisons donc ici la grosse hypothèse que \underline{le mouvement de $x_2$ et $x_3$ devient uniforme après la collision}. 
 
-Une fois leur vitesses "initiales"\footnote{Ces vitesses sont les vitesses de départ pour le deuxième phase de la percussion.} obtenues, on calcule donc les déplacements des différents noeuds des réseaux, et les fractures éventuelles qui s'en suivent. Plus précisément, on a par exmple pour le premier floe:
+Une fois leur vitesses "initiales"\footnote{Ces vitesses sont les vitesses de départ pour le deuxième phase de la percussion.} obtenues, on calcule donc les déplacements des différents n\oe{}uds des réseaux, et les fractures éventuelles qui s'en suivent. Plus précisément, on a par exmple pour le premier floe:
 \begin{itemize}
-    \item son noeud de gauche $x_1$ a pour vitesse $v_0$ avant et le choc et conserve cette vitesse après le choc;
-    \item son noeud de droite $x_2$ a pour vitesse $v_0$ avant le choc, mais passe de facon discontinue à $V_0$ apres le choc.
+    \item son n\oe{}ud de gauche $x_1$ a pour vitesse $v_0$ avant et le choc et conserve cette vitesse après le choc;
+    \item son n\oe{}ud de droite $x_2$ a pour vitesse $v_0$ avant le choc, mais passe de facon discontinue à $V_0$ apres le choc.
 \end{itemize}
-En procédant de manière similaire, nous obtenons les déplacements et les vitesses des noeuds du deuxième floe après la collision. Une simulation permet d'obtenir le résultat de la \cref{fig:frac1d3}.
+En procédant de manière similaire, nous obtenons les déplacements et les vitesses des n\oe{}uds du deuxième floe après la collision. Une simulation permet d'obtenir le résultat de la \cref{fig:frac1d3}.
 \begin{figure}[!h]
     \centering
     \includegraphics[width=0.8\textwidth]{EnsPlotPerc1.png}
@@ -581,7 +581,7 @@ En procédant de manière similaire, nous obtenons les déplacements et les vite
 % Pour $\varepsilon \neq 0$, l'\cref{eq:crammer2} permet de constater que $V_0 = V'_0$ si et seulement si $v_0 = v'_0$. En se basant sur le \cref{th:div1D}, nous pouvons donc énoncer le corrolaire suivant:
 
 % \begin{corollary} \label{cr:div1D}
-%     Le modèle de collision inélastique 1D avec séparation des masses converge si les vitesses des noeuds avant le choc sont des vecteurs opposés.
+%     Le modèle de collision inélastique 1D avec séparation des masses converge si les vitesses des n\oe{}uds avant le choc sont des vecteurs opposés.
 
 %     Le modèle de collision inélastique 1D avec séparation des masses converge si et seulement si leurs vitesses initiales sont des vecteurs opposés.
 % \end{corollary}
@@ -600,16 +600,16 @@ En procédant de manière similaire, nous obtenons les déplacements et les vite
 
 
 
-Dans cette section, nous introduisons un modèle 1D plus général que ceux présentés dans les deux sections précédentes (voir \cref{subsubsec:moddep1D,subsubsec:colinesepma}). Les floes sont cette fois représntés par une multitude de noeuds, de ressorts et de dispositifs visqueux. 
+Dans cette section, nous introduisons un modèle 1D plus général que ceux présentés dans les deux sections précédentes (voir \cref{subsubsec:moddep1D,subsubsec:colinesepma}). Les floes sont cette fois représntés par une multitude de n\oe{}uds, de ressorts et de dispositifs visqueux. 
 \begin{figure}[!h]
     \centering
     \frame{\includegraphics[width=0.8\textwidth]{Deplacement1D-2.png}}
     \caption{Modélisation d'un floe 1D comme un assemblage de $n$ masses reliées par des ressorts et des dispositifs visqueux. Nous nous servons dorénavant des positions $z$ des neouds dans le repère absolu. $k$ est la constante de raideur uniforme de tous ses ressorts, et $\mu$ le coefficient de dissipation pour tous les dispositifs visqueux. Aussi, le terme $L0_i$ désigne les longueur à vide du ressort $i$.}
     \label{fig:dep1d4}
 \end{figure}
-Contrairement à l'approche par déplacement que nous avons adopté à la \cref{subsubsec:moddep1D}, nous considérons ici une approche par position des noeuds dans le repère absolu $\mathcal{R}= (O, \bvec{e}_x, \bvec{e}_y)$ (voir \cref{fig:dep1d4}).\footnote{Pour une raison inexpliquée, l'approche par déplacement ici ne conserve pas les positions à l'équilibres des ressorts.} Signalons que dans la suite, les dispositifs visqueux ne serons plus représenté afin de faciliter les simulations.  
+Contrairement à l'approche par déplacement que nous avons adopté à la \cref{subsubsec:moddep1D}, nous considérons ici une approche par position des n\oe{}uds dans le repère absolu $\mathcal{R}= (O, \bvec{e}_x, \bvec{e}_y)$ (voir \cref{fig:dep1d4}).\footnote{Pour une raison inexpliquée, l'approche par déplacement ici ne conserve pas les positions à l'équilibres des ressorts.} Signalons que dans la suite, les dispositifs visqueux ne serons plus représenté afin de faciliter les simulations.  
 
-Commencons par simuler les déplacements et les vitesses des noeuds d'un floe contenant $n$ noeuds. De facons similaire aux sections précédentes, la loi de comportement du système est la suivante:
+Commencons par simuler les déplacements et les vitesses des n\oe{}uds d'un floe contenant $n$ n\oe{}uds. De facons similaire aux sections précédentes, la loi de comportement du système est la suivante:
 \begin{align} \label{eq:multiressortsdep}
     \begin{dcases}
         m\ddot z_0 = k(z_1 - z_0 - L0_0) + \mu (\dot z_1 - \dot z_0)\, , \\
@@ -691,7 +691,7 @@ D = \frac{1}{m} \begin{pmatrix}
     \end{pmatrix}\,.
 $$
 
-Concernant la percussion\footnote{Tout comme dans les sections précédentes, nous réservons l'exposant "prime" (') pour décrire les paramètres du deuxième floe de glace.}, nous proposons aussi une approche différente de calculer les vitesses des noeuds après choc. En effet, nous appliquons non pas le principe de la conservation de la quantité de mouvement, mais celui de la conservation de l'énergie cinétique. Ce choix provient du fait que dans ce modèle, les deux noeuds en contact ne sont pas considérés comme un système isolé. En effet, les deux noeuds sont affectés par les forces des ressorts et des dispositifs visqueux qui leur sont ratachés. Ces deux forces ont un travail non nul et ne sont donc pas conservatives (voir \cref{fig:situationcontact4}). 
+Concernant la percussion\footnote{Tout comme dans les sections précédentes, nous réservons l'exposant "prime" (') pour décrire les paramètres du deuxième floe de glace.}, nous proposons aussi une approche différente de calculer les vitesses des n\oe{}uds après choc. En effet, nous appliquons non pas le principe de la conservation de la quantité de mouvement, mais celui de la conservation de l'énergie cinétique. Ce choix provient du fait que dans ce modèle, les deux n\oe{}uds en contact ne sont pas considérés comme un système isolé. En effet, les deux n\oe{}uds sont affectés par les forces des ressorts et des dispositifs visqueux qui leur sont ratachés. Ces deux forces ont un travail non nul et ne sont donc pas conservatives (voir \cref{fig:situationcontact4}). 
 \begin{figure}[!h]
     \begin{subfigure}[b]{0.48\textwidth}
         \centering
@@ -704,7 +704,7 @@ Concernant la percussion\footnote{Tout comme dans les sections précédentes, no
         \frame{\includegraphics[width=\textwidth]{Percussion1D-4-Apres.png}}
         \caption{Après le choc}
     \end{subfigure}
-       \caption{Situation avant et après la percussion de deux floes. Nous considetons ici que le floe de gauche dans la percussion possède $n$ noeuds. Les forces appliquées par les floes voisins aux noeuds en contact sont: $F_{n-1} = k(z_{n-1} - z_{n-1} - L0_{n-2}) + \mu (\dot z_{n} - \dot z_{n-1})$, et $F'_0 = k'(z'_1 - z'_0 - L0'_0) + \mu (\dot z'_1 - \dot z'_0)$, conformément à l'\cref{eq:multiressortsdep}.}
+       \caption{Situation avant et après la percussion de deux floes. Nous considetons ici que le floe de gauche dans la percussion possède $n$ n\oe{}uds. Les forces appliquées par les floes voisins aux n\oe{}uds en contact sont: $F_{n-1} = k(z_{n-1} - z_{n-1} - L0_{n-2}) + \mu (\dot z_{n} - \dot z_{n-1})$, et $F'_0 = k'(z'_1 - z'_0 - L0'_0) + \mu (\dot z'_1 - \dot z'_0)$, conformément à l'\cref{eq:multiressortsdep}.}
        \label{fig:situationcontact4}
 \end{figure}
 Nous appliquons donc la conservation de l'énergie cinétique pour obtenir une équation pour les vitesses après choc:
@@ -715,7 +715,7 @@ Nous maintenons l'équation de restitution \cref{eq:crammer2} utilisé dans les 
 \begin{align}
     - V_0 + V'_0 = \varepsilon (v_0 - v'_0) \,.
 \end{align}
-La résolution du système ci-haut nous permet d'obtenir les vitesses $V_0$ et $V'_0$ respectivement pour les noeuds de gauche et de droite dans la collision\footnote{Notons que les tous les noeuds qui ne sont pas en contact conservent leurs vitesss pendant le choc.}.:
+La résolution du système ci-haut nous permet d'obtenir les vitesses $V_0$ et $V'_0$ respectivement pour les n\oe{}uds de gauche et de droite dans la collision\footnote{Notons que les tous les n\oe{}uds qui ne sont pas en contact conservent leurs vitesss pendant le choc.}.:
 \begin{align}
 V_0 = \frac{-b \pm \sqrt{\Delta}}{2a}, \text{ et} \quad V'_0 = V_0 + X\,,
 \end{align}
@@ -725,7 +725,7 @@ X= \varepsilon(v_0 - v'_0), Y = m(v_0)^2 + m'(v'_0)^2,  a = m+m', b = -2m'X, c =
 $$
 
 
-Pour tester ce modèle, nous effectuons des simulations avec trois noeuds ayant $7$ et $8$ neuods respectivement. Nous étudions aussi la conservation de la quantité de mouvement et de l'énergie mécanique totale\footnote{Somme de l'énergie cinétique, de l'énergie potentielle élastique, et de l'énergie dissipée par frotement visqueux.} et nous obtenons les résultats présentés à la \cref{fig:frac1d4}.
+Pour tester ce modèle, nous effectuons des simulations avec trois n\oe{}uds ayant $7$ et $8$ neuods respectivement. Nous étudions aussi la conservation de la quantité de mouvement et de l'énergie mécanique totale\footnote{Somme de l'énergie cinétique, de l'énergie potentielle élastique, et de l'énergie dissipée par frotement visqueux.} et nous obtenons les résultats présentés à la \cref{fig:frac1d4}.
 \begin{figure}[!h]
     \centering
     \includegraphics[width=0.85\textwidth]{EnsPlotPerc2.png}
@@ -742,22 +742,22 @@ Bien que ce modèle conserve l'énergie mécanique du système (voir \cref{fig:f
 \label{subsubsec:troisiemecol}
 
 Ce modèle a été développé pour aborder la question de non conservation de l'énergie mécanique totale après la collision.
-Il prend plus au sérieux la question du passage macro/micro. Celà dit, les équations qui régissent le déplacement des noeuds (voir EQUATION ...) de chaque floe en collision sont maintenues. La différence avec le modèle présenté dans la sous-section précédente (\cref{subsec:model1d2}) apparait au niveau du calcul des vitesses après choc.
+Il prend plus au sérieux la question du passage macro/micro. Celà dit, les équations qui régissent le déplacement des n\oe{}uds (voir EQUATION ...) de chaque floe en collision sont maintenues. La différence avec le modèle présenté dans la sous-section précédente (\cref{subsec:model1d2}) apparait au niveau du calcul des vitesses après choc.
 
-Rappelons que le modèle macroscopique a été développé par M. Rabatel, S. Labbé, et J. Weiss \parencite{rabatel2015dynamics} et nous l'avons présenté avec détails à travers un résumé de la thèse de M. Rabatel \parencite{rabatel2015thesis} dans la \cref{sec:thesematthias}. Le modèle qui y est développé considère un morceau de glace comme un solide indéformable et le système perd de l'énergie mécanique à travers le coefficient de restitution macroscopique $\varepsilon$. Dans le modèle miscroscopique que développons ici, les floes sont des solides élastiques (système masse-ressort-dispositif visqueux) et le problème est de trouver à quelle perte d'énergie le $\varepsilon$ correpondrait lorsque deux noeuds de deux floes entrent en collision. Autrement dit, il faudrait trouver une correspondance entre les coefiencents de restitution macoscopiques et microscopiques.
+Rappelons que le modèle macroscopique a été développé par M. Rabatel, S. Labbé, et J. Weiss \parencite{rabatel2015dynamics} et nous l'avons présenté avec détails à travers un résumé de la thèse de M. Rabatel \parencite{rabatel2015thesis} dans la \cref{sec:thesematthias}. Le modèle qui y est développé considère un morceau de glace comme un solide indéformable et le système perd de l'énergie mécanique à travers le coefficient de restitution macroscopique $\varepsilon$. Dans le modèle miscroscopique que développons ici, les floes sont des solides élastiques (système masse-ressort-dispositif visqueux) et le problème est de trouver à quelle perte d'énergie le $\varepsilon$ correpondrait lorsque deux n\oe{}uds de deux floes entrent en collision. Autrement dit, il faudrait trouver une correspondance entre les coefiencents de restitution macoscopiques et microscopiques.
 
-Notre système de deux noeuds au moment de la collision perd donc de l'énergie. L'absence de forces de frotements\footnote{Dans le modèle actuel, les frotements de l'air et de la mer ne sont pas pris en compte.} veut dire que l'énergie mécanique est transformée en énergie interne (thermique). 
+Notre système de deux n\oe{}uds au moment de la collision perd donc de l'énergie. L'absence de forces de frotements\footnote{Dans le modèle actuel, les frotements de l'air et de la mer ne sont pas pris en compte.} veut dire que l'énergie mécanique est transformée en énergie interne (thermique). 
 \begin{figure}[!h]
     \centering
     \frame{\includegraphics[width=0.6\textwidth]{Percussion1D-5.png}}
-    \caption{Situation durant la percussion de deux floes. Nous observons ici la force $R$ exercée par chaque noeud sur l'autre, qui sui la loi de l'action et de la réaction.}
+    \caption{Situation durant la percussion de deux floes. Nous observons ici la force $R$ exercée par chaque n\oe{}ud sur l'autre, qui sui la loi de l'action et de la réaction.}
     \label{fig:situationcontact5}
 \end{figure}
-Les \cref{fig:situationcontact4,fig:situationcontact5} permettent de mieux appréhender la percussion dans ce cas. Pour calculer les vitesses des noeuds après choc, nous reconsidérons \cref{eq:crammer2} qui introduit le coefficient de restitution de Newton:
+Les \cref{fig:situationcontact4,fig:situationcontact5} permettent de mieux appréhender la percussion dans ce cas. Pour calculer les vitesses des n\oe{}uds après choc, nous reconsidérons \cref{eq:crammer2} qui introduit le coefficient de restitution de Newton:
 \begin{align} \label{eq:perc5eq1}
     V_0 - V'_0 = - \varepsilon (v_0 - v'_0) \,.
 \end{align}
-Pour trouver une deuxième équation et obtenir les vitesses des noeuds, nous nous tournons vers une technique fréqument utilisée dans l'industrie du jeux vidéo\parencite{hecker1997collision} pour gérer les collisions d'objets. Dans cette technique, nous considérons que la collision se produit entre les instants $t^{-}$ et $t^{+}$. Cet intervalle de temps, très cours, fut calculé durant les travaux de M. Rabatel \parencite[p.87]{rabatel2015thesis} sur la collusion rigide entre deux floes. On a:
+Pour trouver une deuxième équation et obtenir les vitesses des n\oe{}uds, nous nous tournons vers une technique fréqument utilisée dans l'industrie du jeux vidéo\parencite{hecker1997collision} pour gérer les collisions d'objets. Dans cette technique, nous considérons que la collision se produit entre les instants $t^{-}$ et $t^{+}$. Cet intervalle de temps, très cours, fut calculé durant les travaux de M. Rabatel \parencite[p.87]{rabatel2015thesis} sur la collusion rigide entre deux floes. On a:
 $$
 m \ddot z_{n-1} = F_{n-1} - R, \text{ et} \quad  m'z'_0 = F'_0 + R.
 $$
@@ -858,7 +858,7 @@ et :
     \end{dcases}
 \end{align}
 
-Quelques résultats obtenus par cette méthode ont été présentés dans les travaux de D. Balasoiu à la \cref{fig:PhaseField}. Malgrès l'éfficacité de cette méthode, notre travail à son sujet durant ce stage s'est limité à son assimilation. En effet, nous ne l'avons pas implémentée par faute de temps. Il se trouve qu'en 1D avec un fable nombre de noeuds, une astuce alternative est envisageable. 
+Quelques résultats obtenus par cette méthode ont été présentés dans les travaux de D. Balasoiu à la \cref{fig:PhaseField}. Malgrès l'éfficacité de cette méthode, notre travail à son sujet durant ce stage s'est limité à son assimilation. En effet, nous ne l'avons pas implémentée par faute de temps. Il se trouve qu'en 1D avec un fable nombre de n\oe{}uds, une astuce alternative est envisageable. 
 
 
 
@@ -867,7 +867,7 @@ Quelques résultats obtenus par cette méthode ont été présentés dans les tr
 \label{subsubsec:approchecombi}
 
 
-Etant donné le déplacement des noeuds du floes à un temps précis $t^{n+1}$, nous recherchons la fracture qui minimise l'énergie potentielle totalle au temps $t^{n+1}$:
+Etant donné le déplacement des n\oe{}uds du floes à un temps précis $t^{n+1}$, nous recherchons la fracture qui minimise l'énergie potentielle totalle au temps $t^{n+1}$:
 \begin{align} \label{eq:modelcombi}
     \boxed{
     \begin{array}{rll}
@@ -901,10 +901,10 @@ Tous ceci n'est évidement pas le cas en dimension supérieur, et nous devons é
 Nous présentons dans cette section l'algorithme que nous avons adopté pour développer notre code de simulation de la percussion ainsi que la fracture de floes 1D. Notons que l'implémtation de la percussion correspond au modèle présenté à la \cref{subsubsec:troisiemecol}. Cependant, les autres modèles de percussion peuvent facilement etre obtenus en changeant le contenu de la fonction \texttt{computeAtContact} que nous détaillerons plus tard. Quant à la fracture, nous avons implémenter l'approche combinatoire présentée à la \cref{subsubsec:approchecombi}. Un résumé de la procédure dans l'intervalle de temps $[t^n, t^{N}]$ est présenté à la \cref{alg:algo}.
 % \begin{tcolorbox}
 % \begin{enumerate}
-%     \item \textbf{Initialisation}: Les positions $\bvec{q}^{n}$, les vitesses $\bvec{v}^n$ de tous les noeuds de tous les floes sont connus. Mettre à jours les chargements aux bords au temps courant $t^{n+1}$\footnote{Pour simplifier nos calculs, aucun chargement n'est imposé aux bords du floe; nous avons des conditions de Neumann durant toutes nos simulations.}
-%     \item \textbf{Calcul des déplacements}: Calcul des postions des noeuds $\bvec{q}^{n+1}, \ldots \bvec{q}^{N}$ et des vitesses associées $\bvec{v}^{n+1}, \ldots \bvec{v}^{N}$. Nous utilisont ici les équations ... 
+%     \item \textbf{Initialisation}: Les positions $\bvec{q}^{n}$, les vitesses $\bvec{v}^n$ de tous les n\oe{}uds de tous les floes sont connus. Mettre à jours les chargements aux bords au temps courant $t^{n+1}$\footnote{Pour simplifier nos calculs, aucun chargement n'est imposé aux bords du floe; nous avons des conditions de Neumann durant toutes nos simulations.}
+%     \item \textbf{Calcul des déplacements}: Calcul des postions des n\oe{}uds $\bvec{q}^{n+1}, \ldots \bvec{q}^{N}$ et des vitesses associées $\bvec{v}^{n+1}, \ldots \bvec{v}^{N}$. Nous utilisont ici les équations ... 
 %     \item \textbf{Détection des fractures}: pour chaque pas de temps $t^k \in [t^{n+1}, t^{N}]$ et pour chaque floe, rechercher la configuration qui présente l'énergie potentielle totale minimale $E^{k}_{min}$, et la comparer avec l'énergie $E^n_{min}$. En cas de fracture, i.e. $E^{k}_{min} \leq E^n_{min}$, on retient l'indice de fracture potentielle\footnote{Les indices potentielles sont aussi les temps à partir desquels nous vérifions les fractures/collisons à l'étape suivante} du floe concerné (disons $f$) $\text{checkFrac}_f = k$; sinon, $\text{checkFrac}_f = N$.
-%     \item \textbf{Détection des collisions}: pour chaque pas de temps $t^k \in [t^{n+1}, t^{N}]$ et pour chaque noeud, on se demande s'il y a collision avec le noeud voisin de droite. En cas de collision,, on retient l'indice de collision potentielle des noeuds concerné (disons $e_1$ et $e_2$) $\text{checkColl}_{e_1} = \text{checkColl}_{e_2} =k$; sinon, $\text{checkColl}_{e_1} = \text{checkColl}_{e_2} = N$.
+%     \item \textbf{Détection des collisions}: pour chaque pas de temps $t^k \in [t^{n+1}, t^{N}]$ et pour chaque n\oe{}ud, on se demande s'il y a collision avec le n\oe{}ud voisin de droite. En cas de collision,, on retient l'indice de collision potentielle des n\oe{}uds concerné (disons $e_1$ et $e_2$) $\text{checkColl}_{e_1} = \text{checkColl}_{e_2} =k$; sinon, $\text{checkColl}_{e_1} = \text{checkColl}_{e_2} = N$.
 %     \item \textbf{Mise à jour des indices potentielles de fracture}: Tous ces indices sont reinitialisés au minimum de tous les indices de fracture $\text{checkFrac} = \min{\text{checkFrac}_f}_{f \in \mathcal{F}}$, où $\mathcal{F}$ désigne l'ensemble des floes.
 %     \item \textbf{Mise à jour des indices potentielles de collision}: Désignons par $\text{checkColl}'$ le minimum de tous les indices de collisions$\min{\text{checkColl}_e}_{e \in \mathcal{E}}$, où $\mathcal{E}$ désigne l'ensemble des neouds du problème. Tous les indices sont reinitialisés à $\text{checkColl} = \min{\text{checkColl}', \text{checkFrac}}$.
 %     \item \textbf{Invalidation des quantités}: Toutes les positions et les vitesses calculées (à l'étape $2$) qui survienne après une collision ou une fracture sont invalidées.
@@ -914,23 +914,23 @@ Nous présentons dans cette section l'algorithme que nous avons adopté pour dé
 
 \begin{algorithm}
     \caption{Algorithme de simulation de percussion et de fracture}\label{alg:algo}
-    \KwData{Les positions $\bvec{q}^{n}$, les vitesses $\bvec{v}^n$ de tous les noeuds de tous les floes à l'instant $t^n$ sont connus\footnote{Pour simplifier nos calculs, aucun chargement n'est imposé aux bords du floe; nous avons des conditions de Neumann durant toutes nos simulations.}; Mettre à jours les chargements aux bords au temps courant $t^{n+1}$;
+    \KwData{Les positions $\bvec{q}^{n}$, les vitesses $\bvec{v}^n$ de tous les n\oe{}uds de tous les floes à l'instant $t^n$ sont connus\footnote{Pour simplifier nos calculs, aucun chargement n'est imposé aux bords du floe; nous avons des conditions de Neumann durant toutes nos simulations.}; Mettre à jours les chargements aux bords au temps courant $t^{n+1}$;
     Pour chaque neud $e$, début des vérifications de collsion à partir de $Coll_e = 0$;
     Pour chaque floe $f$, une fracture potentielle apparait au temps $Frac_f = N$; }
 
-    \KwResult{Positions et vitesses des noeuds à l'instants $t^N$}
+    \KwResult{Positions et vitesses des n\oe{}uds à l'instants $t^N$}
     If{$n=0$ (premier pas de temps)}{
-    Calcul des trajectoires des noeuds $\bvec{q}^{n+1}, \ldots \bvec{q}^{N}$ et des vitesses associées $\bvec{v}^{n+1}, \ldots \bvec{v}^{N}$;
+    Calcul des trajectoires des n\oe{}uds $\bvec{q}^{n+1}, \ldots \bvec{q}^{N}$ et des vitesses associées $\bvec{v}^{n+1}, \ldots \bvec{v}^{N}$;
     Vérification de l'apparition d'au moins une collision;
 
     \While{(pas de collision)}{
         doubler le temps de simulation; 
         recalculer le trajectoires; 
-        pour tous les noeud $e$, $Coll_e = k$ ($k$ est le pas de temps courant);
+        pour tous les n\oe{}ud $e$, $Coll_e = k$ ($k$ est le pas de temps courant);
         revérifier la collision;
     }}
 
-    \While{($Coll_e < N$ pour tous les noeuds $e$)}{
+    \While{($Coll_e < N$ pour tous les n\oe{}uds $e$)}{
         Calcul des déplacements après chocs;
         Détection des fractures: pour chaque pas de temps $t^k \in [t^{n+1}, t^{N}]$ et pour chaque floe, rechercher la configuration qui présente l'énergie potentielle totale minimale $E^{k}_{min}$, et la comparer avec l'énergie $E^n_{min}$;
 
@@ -940,7 +940,7 @@ Nous présentons dans cette section l'algorithme que nous avons adopté pour dé
             $Frac_f = N$;
         }
         
-        Détection des collisions: pour chaque pas de temps $t^k \in [t^{n+1}, t^{N}]$ et pour chaque noeud, on se demande s'il y a collision avec le noeud voisin de droite;
+        Détection des collisions: pour chaque pas de temps $t^k \in [t^{n+1}, t^{N}]$ et pour chaque n\oe{}ud, on se demande s'il y a collision avec le n\oe{}ud voisin de droite;
 
         \eIf{(collision entre $e_1$ et $e_2$)}{
             $Coll_{e_1} = Coll_{e_2} = k$;
@@ -1018,11 +1018,11 @@ Notre code est stocké dans un dépot GitHub privé dont une explication du cont
 \section{Résumé des résultats obtenus}
 
 
-Pour le problème 1D, nous avons non seulemetn étudié le déplacement des noeuds d'un floe, mais aussi ce qui se passe après une collision de ces noeuds. En considérant le floe comme un réseau de ressorts, nous avons pu étudier la nucléation (et la propagation) d'une fracture suivant le modèle de Griffith sans recourir à la méthode du champ de phase.
+Pour le problème 1D, nous avons non seulemetn étudié le déplacement des n\oe{}uds d'un floe, mais aussi ce qui se passe après une collision de ces n\oe{}uds. En considérant le floe comme un réseau de ressorts, nous avons pu étudier la nucléation (et la propagation) d'une fracture suivant le modèle de Griffith sans recourir à la méthode du champ de phase.
 
 Nous avons éffectué plusieurs simulation qui ont montrer que les ressorts se brisent lorsqu'ils sont fortement compréssés. Le modèle 1D adopté (voir \cref{subsubsec:troisiemecol}) a également montré que le système perds de son énergie (cinétique) au cours du temps, ce qui 
 
-Quand à la validation des résultats, nous n'avons pas réussi à effectuer des tests en laboratoire. Cette tache représente la prochaine étape avant l'adoption de ce modèle 1D. Ceci dit, les floes de glace sont généralement considérés comme des objets 2D du fait de leur taille négligeable face au rayon de la terre. Une étude en dimension supérieure est donc indispendable pour un déployment de notre modèle de fracture à l'échelle des floes de glace.
+Quand à la validation des résultats, nous n'avons pas réussi à effectuer des tests en laboratoire. Cette tâche représente la prochaine étape avant l'adoption de ce modèle 1D. Ceci dit, les floes de glace sont généralement considérés comme des objets 2D du fait de leur taille négligeable face au rayon de la terre. Une étude en dimension supérieure est donc indispendable pour un déployment de notre modèle de fracture à l'échelle des floes de glace.
 
 
 
