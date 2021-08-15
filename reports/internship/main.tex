@@ -25,19 +25,30 @@ openany, %% Use this option to make chapters start on the next page, irrespectiv
 
 
 %%-----------------------
+
 % \usepackage{mathpazo} % Use the Palatino font by default
 % \usepackage[charter]{mathdesign}
+
 %%-----------------------
-% \usepackage[partialup,lighttext]{kpfonts}        %% For math only
-% \usepackage{fontspec}       %% Because we are using XeTEX
-% \setromanfont{Minion Pro}   %% For text (Minion Math is commercial)
-% \setsansfont{Fira Sans Light}
+\usepackage{mathpazo}
+
+\usepackage[partialup,lighttext]{kpfonts}        %% For math only
+\DeclareSymbolFont{rmlargesymbols}{OMX}{mdbch}{m}{n}
+\DeclareMathSymbol{\intop}{\mathop}{rmlargesymbols}{82}		%% Defines a new integral symbol (wont use the one from kpfonts)
+
+\usepackage{fontspec}       %% Because we are using XeTEX
+% \setromanfont{Minion Pro}   		%% For text (most be defined if we use fontspec)
+\setromanfont{Palatino Linotype}   		%% For text (most be defined if we use fontspec)
+\setsansfont{Fira Sans Light}		%% For sans font
+
 %%-----------------------
-\usepackage[utf8]{inputenc} % Required for inputting international characters
-\usepackage[T1]{fontenc} % Output font encoding for international characters
-\usepackage{textcomp}
-\usepackage[lf]{venturis}
-\usepackage{libertinust1math}
+
+% \usepackage[utf8]{inputenc} % Required for inputting international characters
+% \usepackage[T1]{fontenc} % Output font encoding for international characters
+% \usepackage{textcomp}
+% \usepackage[lf]{venturis}
+% \usepackage{libertinust1math}
+
 %%-----------------------
 
 \usepackage{sectsty}        %% Pour mettre les titres en Sans Serif
@@ -273,7 +284,7 @@ openany, %% Use this option to make chapters start on the next page, irrespectiv
 
 \HRule \\[0.4cm] % Horizontal line
 {\huge \bfseries \ttitle\par}\vspace{0.4cm} % Thesis title
-\HRule \\[1.5cm] % Horizontal line
+\HRule \\[0.9cm] % Horizontal line
 
 \begin{minipage}[t]{0.4\textwidth}
 \begin{flushleft} \large

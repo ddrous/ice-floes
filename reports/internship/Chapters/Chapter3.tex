@@ -63,7 +63,7 @@ On pose ensuite la matrice par blocs:
 \[ E = \mymat{0}{I_2}{B}{C}  =  \begin{pmatrix}
     0 & 0 & 1 & 0 \\ 0 & 0& 0& 1 \\ -\frac{k}{m} & \frac{k}{m} & -\frac{\mu}{m} & \frac{\mu}{m} \\ \frac{k}{m} & -\frac{k}{m} & \frac{\mu}{m} & -\frac{\mu}{m}
 \end{pmatrix}   \in \mathbb{R}^{4\times 4} \,, \quad \text{où} \quad I_2 = \mymat{1}{0}{0}{1} \in \mathbb{R}^{2\times 2} \,. \]
-On pose maintenant $Y = (x_1, x_2, \dot{x}_1, \dot{x}_2) \in \mathbb{R}^4$, et on reprend la condition initiale pour obtenir le système de Cauchy:
+On pose maintenant $Y = (x_1, x_2, \dot{x}_1, \dot{x}_2) \in \mathbb{R}^4$, et on reprend la condition initiale $\dot x_1(0) = v_0$, $\dot x_2(0) = -v'_0$, pour obtenir le système de Cauchy:
 \begin{align} \label{eq:dep1d}
     \begin{dcases}
         \dot{Y}(t)= E Y(t) \,, \\
@@ -71,7 +71,7 @@ On pose maintenant $Y = (x_1, x_2, \dot{x}_1, \dot{x}_2) \in \mathbb{R}^4$, et o
     \end{dcases}
 \end{align}
 
-La solution numérique est présentée dans à la \cref{fig:simudept1d} (voir fichier \verb|code/simu1D/Deplacement1D-1.ipynb| pour plus de détails). La plus grosse remarque à faire du point de vue numérique est que lorsque $v_0 \neq v'_0$, les vitesses convergent vers $0$, mais les déplacements diverge.
+La solution numérique est présentée dans à la \cref{fig:simudept1d} (voir fichier \verb|code/simu1D/Deplacement1D-1.ipynb| pour plus de détails). La plus grosse remarque à faire du point de vue numérique est que lorsque $v_0 \neq v'_0$, les vitesses convergent vers $0$, mais les déplacements divergent.
 \begin{figure*}[!h]
     \centering
 
@@ -95,8 +95,8 @@ Avec $t_0= 0$, la solution analytique de ce système d'EDO du premier ordre à c
     Y(t) = \exp(tE)Y_0 \,.
 \end{align}
 Nous obtenons le théorème suivant:
-\begin{theorem}[Convergence du modèle 1D isolé] \label{th:div1D}
-    Partant d'une position d'équilibre $x_1(0) = x_2(0) = 0$, les déplacements $x_1$ et $x_2$ des deux noeuds du floe 1D convergent si et seulement si leurs vitesses initiales sont des vecteurs opposés.
+\begin{theorem}[Non-convergence du modèle 1D isolé] \label{th:div1D}
+    Partant d'une position d'équilibre $x_1(0) = x_2(0) = 0$, les déplacements $x_1(\cdot)$ et $x_2(\cdot)$ des deux noeuds du floe 1D (avec viscosité $\mu \neq 0$) convergent\footnote{Convergence au sens où la foncton tend vers une limite finie.} si et seulement si leurs vitesses initiales sont opposées, i.e. $\dot x_1(0) = - \dot x_2(0)$.
 \end{theorem}
 
 \begin{proof}
@@ -113,41 +113,42 @@ Posons $\Delta = 4\mu^2 - 8km$. On distingue deux cas:
     \item Si $\Delta \geq 0$: on pose $\lambda_1 = \frac{-\mu - \sqrt{\mu^2 - 2km}}{m}$ et $\lambda_2 = \frac{-\mu + \sqrt{\mu^2 - 2km}}{m}$;
     \item Si $\Delta < 0$: on pose $\lambda_1 = \frac{-\mu - i\sqrt{2km - \mu^2}}{m}$ et $\lambda_2 = \frac{-\mu + i\sqrt{2km - \mu^2}}{m}$.
 \end{itemize}
-Nous avons donc exhiber les trois valeurs propres de notre matrice: $\lambda_0 = 0$, $\lambda_1$, et $\lambda_2$. Avec $\lambda$ désignant l'une des valeurs propres, on recherche les vecteurs $x = (x_1, x_2, x_3, x_4)^T \in \mathbb{R}^4$ appartenant aux sous espaces propres $E_\lambda$. On a:
+
+\noindent Nous avons donc exhiber les trois valeurs propres de notre matrice: $\lambda_0 = 0$, $\lambda_1$, et $\lambda_2$. Avec $\lambda$ désignant l'une de ces valeurs propres, on recherche les vecteurs\footnote{Attention: ne pas confondre les composante de ce vecteur avec les déplacement $x_1(\cdot)$ et $x_2(\cdot)$ recherchés.} $x = (x_1, x_2, x_3, x_4)^T \in \mathbb{R}^4$ appartenant aux sous espaces propres $E_\lambda$. On a:
 \begin{align} \label{eq:espacepropre}
     Ex = \lambda x \Rightarrow \begin{dcases}
-        x_3 = \lambda x_1 \\
-        x_4 = \lambda x_2 \\
-        -(k + \mu \lambda + m \lambda^2) x_1 + (k + \mu \lambda) x_2 = 0 \\
-        (k + \mu \lambda) x_1 - (k + \mu \lambda + m \lambda^2) x_2 = 0
+        x_3 = \lambda x_1 \,, \\
+        x_4 = \lambda x_2 \,, \\
+        -(k + \mu \lambda + m \lambda^2) x_1 + (k + \mu \lambda) x_2 = 0 \,, \\
+        (k + \mu \lambda) x_1 - (k + \mu \lambda + m \lambda^2) x_2 = 0 .
     \end{dcases}
 \end{align}
 \begin{itemize}
     \item Pour $\lambda = 0$, l'\cref{eq:espacepropre} revient à:
     \begin{align*}
         \begin{dcases}            
-        x_3 = 0 \\
-        x_4 = 0 \\
-        x_1 - x_2 = 0
+        x_3 = 0 \,, \\
+        x_4 = 0 \,, \\
+        x_1 - x_2 = 0 .
         \end{dcases}
     \end{align*} 
     On en déduit $E_0 = \text{vect}\{ e_1 \}$, avec $e_1 = (1,1,0,0)^T$.
-    \item Pour $\lambda = \lambda_1, \lambda_2$, on remarque que $k + \mu \lambda + m \lambda^2 = - (k + \mu \lambda)$. l'\cref{eq:espacepropre} revient donc à:
+    \item Pour $\lambda = \lambda_1$ ou $\lambda_2$, on remarque que $k + \mu \lambda + m \lambda^2 = - (k + \mu \lambda)$. l'\cref{eq:espacepropre} revient donc à:
     \begin{align*}
         \begin{dcases}            
-        x_3 = \lambda x_1 \\
-        x_4 = \lambda x_2 \\
-        x_1 + x_2 = 0
+        x_3 = \lambda x_1 \,, \\
+        x_4 = \lambda x_2 \,, \\
+        x_1 + x_2 = 0 .
         \end{dcases}
     \end{align*} 
     On en déduit donc $E_{\lambda_1} = \text{vect}\{ e_3 \}$, avec $e_3 = (1,-1,\lambda_1,-\lambda_1)^T$; et $E_{\lambda_2} = \text{vect}\{ e_4 \}$ avec $e_4 = (1,-1,\lambda_2,-\lambda_2)^T$.
 \end{itemize}
-La meutilisicté arithmetique de $\lambda = 0$ est differente de sa multiplicité géometrique. La matrice $E$ n'est donc pas diagonalisable. Son polynome caractéristique étant scindé, nous alons la trigonaliser. On pose donc une base $\mathcal{B}' = (v_1, v_2, v_3, v_4)$ dans laquelle la matrice $E$ s'exprime par:
-\begin{align*}
+La meutilisicté arithmetique de $\lambda = 0$ (égale à $2$) est differente de sa multiplicité géometrique (égale à $1$). La matrice $E$ n'est donc pas diagonalisable. Son polynome caractéristique étant scindé, nous alons la trigonaliser. On pose donc une base $\mathcal{B}' = (v_1, v_2, v_3, v_4)$ dans laquelle la matrice $E$ s'exprime par:
+\begin{align}
     P^{-1}EP = \begin{pmatrix}
         0 & a & b & c \\ 0 & 0 & d & e \\ 0 & 0 & \lambda_1 & f \\ 0 & 0 & 0 & \lambda_2
     \end{pmatrix},
-\end{align*}
+\end{align}
 où $P$ est la matrice de passage de la base canonique de $\mathbb{R}^4$ (notée $\mathcal{B}$) à $\mathcal{B}'$. On a:
 \begin{itemize}
     \item Dans $\mathcal{B}'$, le vecteur $v_1$ s'écrit $v_1 = (1,0,0,0)^T$ et on a $P^{-1}EP v_1 = 0$. $v_1$ est donc le vecteur propre associé à $0$ et on prend $v_1 = e_1 = (1,1,0,0)^T$ dans $\mathcal{B}$;
@@ -155,18 +156,22 @@ où $P$ est la matrice de passage de la base canonique de $\mathbb{R}^4$ (notée
     \begin{align*}
         E v_2 = a v_1 \Rightarrow
         \begin{dcases}            
-        x_3 = a  \\
-        x_4 = a  \\
-        x_1 - x_2 = 0
-        \end{dcases}.
+        x_3 = a \,,  \\
+        x_4 = a  \,, \\
+        x_1 - x_2 = 0.
+        \end{dcases}
     \end{align*} 
     Avec $a = 1$, on écrit $v_2 = e_2 = (1,1,1,1)^T$.
     \item Dans $\mathcal{B}'$, le vecteur $v_3$ s'écrit $v_1 = (0,0,1,0)^T$ et on a $P^{-1}EP v_1 = \lambda_1 v_1 + bv_1 + d v_2$. En posant $b=d=0$, $v_1$ devient un vecteur propre associé à $\lambda_1$ et on prend $v_3 = e_3 = (1,-1,\lambda_1,-\lambda_1)^T$ dans $\mathcal{B}$;
     \item De facon similaire, on obtient $v_4 = e_4 = (1,-1,\lambda_2,-\lambda_2)^T$ en posant $c=e=f=0$.
 \end{itemize}
 Nous avons donc trigonaliser la matrice $E$, et on écrit :
+\begin{align}
+    P^{-1}EP = A \,,
+\end{align}
+avec :
 \begin{align*}
-    P^{-1}EP = A, \text{avec} A = \begin{pmatrix}
+    A = \begin{pmatrix}
         0 & 1 & 0 & 0 \\ 0 & 0 & 0 & 0 \\ 0 & 0 & \lambda_1 & 0 \\ 0 & 0 & 0 & \lambda_2
     \end{pmatrix}, \text{  } P = \begin{pmatrix}
         1 & 1 & 1 & 1 \\ 1 & 1 & -1 & -1 \\ 0 & 1 & \lambda_1 & \lambda_2 \\ 0 & 1 & -\lambda_1 & -\lambda_2
@@ -199,11 +204,11 @@ Le cas où $\Delta < 0$ (à étudier dans $\mathbb{C}$) peut se ramener au cas r
 \begin{align} \label{eq:solcomplexe}
     x_1(t) = \frac{t}{2}\left( v_0 - v'_0 \right) + \frac{e^{\alpha t} \sin(\beta t)}{2\beta} \left( v_0 + v'_0 \right).
 \end{align}
-Les \cref{eq:solreel,eq:solcomplexe} permettent d'observer que le déplacement $x_1$ ne converge pas lorsque $t \rightarrow +\infty$, à moins que $v_0 = v'_0$, ce qui est observé à la \cref{fig:simudept1d}. Pour le déplacement du deuxième noeud, on a:
+Les \cref{eq:solreel,eq:solcomplexe} permettent d'observer que le déplacement $x_1(\cdot)$ ne converge pas lorsque $t \rightarrow +\infty$, à moins que $v_0 = v'_0$, ce qui est observé à la \cref{fig:simudept1d}. Pour le déplacement du deuxième noeud, on a:
 \begin{align} \label{eq:solcomplexe}
     x_2(t) = \frac{t}{2}\left( v_0 - v'_0 \right) - \frac{e^{\alpha t} \sin(\beta t)}{2\beta} \left( v_0 + v'_0 \right);
 \end{align}
-On tire les mêmes conclusions en effectuant un raisonnement similaire.
+On tire les mêmes conclusions en effectuant un raisonnement similaire. De plus, si $\mu=0$, nous avons $\alpha=0$ et donc pas de convergence pour $x_1(\cdot)$ comme pour $x_2(\cdot)$. 
 
 \end{proof}
 
