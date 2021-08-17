@@ -809,13 +809,13 @@ Un processus stochastique ponctuel $\Phi$ est dit de Poisson (cf. \cref{fig:pois
 : 
 \begin{enumerate}
     \item $\Phi$ est à éparpillement indépendant, c’est-à-dire que si $(B_i)_{i \in {1,...,k}}$ sont des boréliens deux à deux disjoints ; alors les variables aléatoires $\Phi(B_i)$ sont indépendantes ;
-    \item pour tout $B$ borélien, la variable aléatoire $\Phi(B) = \text{Card } (\Phi \cap B)$ suit une loi de poisson de moyenne $\mu =  \lambda \nu_d(B)$ , c’est-à-dire que :
+    \item pour tout $B$ borélien, la variable aléatoire $\Phi(B) = \text{Card } (\Phi \cap B)$ suit une loi de Poisson de moyenne $\mu =  \lambda \nu_d(B)$ , c’est-à-dire que :
     \[
     \mathbb{P}(\Phi (B) = m) = \frac{\mu^m}{m!}\exp(-\mu) \,.
     \]
 \end{enumerate}
 
-\begin{figure}[H]
+\begin{figure}[!h]
     \centering
     \includegraphics[width=.4\textwidth]{Poisson.png}\
     \caption{Tirages d’un processus de Poisson d’intensité $10$ sur le carré unité \parencite[p.137]{balasoiu2020halthesis}. En premier, le nombre de point est obtenu par une v.a. suivant une loi de Poisson d'espérence $10$. Ensuite les coordonnés des points sont obtenues par simulation de deux v.a. suivant des lois uniformes \parencite{keeler2018simu}.}
@@ -1159,7 +1159,7 @@ $$
 avec $a_0 (\tau)$ une quantité qui dépend du maillage $\tau$, et $\alpha$ une constante universelle, indépendante de $\tau$ et $\varepsilon$ numériquement estimée à la valeur :
 $$\alpha = −2 \pm 10^{−3} \,.$$
 La \cref{fig:res2} ci-dessous a été obtenue, pour un processus de Poisson-Delaunay d’intensité $500 000$, l’histogramme de la valeur de $a_0$ associée sur $1 000$ tirages.
-\begin{figure}[H]
+\begin{figure}[!h]
     \centering
     \begin{subfigure}{0.29\textwidth}
         \includegraphics[width=\textwidth]{Res3.png}
