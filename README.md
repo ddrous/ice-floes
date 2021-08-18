@@ -12,7 +12,7 @@ This repository contains files used and developed for the percussion and the fra
 
 ---
 ## Screenshots
-A few results from simulations are available through [this link](SEAFILE).
+A few results from simulations are available through [this link](https://seafile.unistra.fr/d/a6c3680909624b22be7c/).
 <!-- ![Screenshot 1](.\reports\internship\Figures\Screenshot1.jpg)
 ![Screenshot 2](.\reports\internship\Figures\Screenshot2.jpg)
 ![Screenshot 3](.\reports\internship\Figures\Screenshot3.jpg)
