@@ -1,6 +1,8 @@
 # Code
 .vscode/*
 code/simu1D/Exports/Frames/*
+reports/internship/Figures/Simu1D/*
+reports/internship/Figures/Simu2D/*
 code/simu1D/Modules/__pycache__/Solveur1D.cpython-38.pyc
 
 

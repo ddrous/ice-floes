@@ -107,7 +107,7 @@ Le stage s'est globalement déroulé dans une méthodologie \emph{agile}. Chaque
 
 \paragraph{Semaine 12 (\DTMdisplaydate{2021}{4}{21}{-1} - \DTMdisplaydate{2021}{4}{27}{-1})} 
 \begin{enumerate}
-    \item Démonstration de la non-convergence du modèle 1D; 
+    \item Démonstration de la (non-)convergence du modèle 1D; 
     Une trigonalisation de la matrice du système permet d'exhiber l'expression explicite des déplacements, et de conclure.
     \item Initialisation de la modélisation et de la simulation du modèle 2D.
   \end{enumerate}
@@ -256,7 +256,7 @@ J'ai maitrisé la majeure partie des objectifs que nous nous étions fixés. Cel
 \subsection{Compétences académiques}
 
 \begin{itemize}
-    \item \textbf{Simulation de processus physiques:} Ce stage m'a appris à simuler des objets répondant à une loi de comportement bien précise (loi de Newton-Euler, EDO du second ordre) par l'intermédiaire de schémas appropriés. Par exemple, le schéma explicite d'ordre 2 pour le problème 2D diverge presque toujours, et les schéma symplectique où explicite Runge-Kutta d'ordre 4 (RK4) à pas de temps suivant RK5 (comme ceux implémenté par \href{https://docs.scipy.org/doc/scipy/reference/generated/scipy.integrate.solve_ivp.html}{Scipy}) convergent et conservent les invariants du système (à condition de fixer certains du n\oe{}uds système).
+    \item \textbf{Simulation de systèmes dynamiques:} Ce stage m'a appris à simuler des objets répondant à une loi de comportement bien précise (loi de Newton-Euler, EDO du second ordre) par l'intermédiaire de schémas appropriés. Par exemple, le schéma explicite d'ordre 2 pour le problème 2D diverge presque toujours, et les schéma symplectique où explicite Runge-Kutta d'ordre 4 (RK4) à pas de temps suivant RK5 (comme ceux implémenté par \href{https://docs.scipy.org/doc/scipy/reference/generated/scipy.integrate.solve_ivp.html}{Scipy}) convergent et conservent les invariants du système (à condition de fixer certains du n\oe{}uds système).
     \item \textbf{Prise en main du modèle de rupture de Griffith dans les milieux élastiques:} En lisant les travaux qui ont précédé \parencite{balasoiu2020halthesis}, j'ai pu apprendre beaucoup sur le modèle de Griffith et la compétition entre les énergies de déformation et de fracture du matériau. J'ai aussi lu les articles \parencite{francfort1998revisiting,bourdin2008variational} et j'ai ainsi assimilé l'approche variationnelle de Francfort, Marigo, et Bourdin. Ces notions m'ont poussé à (re)visiter des outils mathématiques très puissants tels que le calcul des variations et la $\Gamma$-convergence.
     \item \textbf{Maitrise des réseaux de ressorts:} Les travaux de \citeauthor{balasoiu2020halthesis} m'ont également appris comment étudier un matériau élastique (réseau de ressorts) par l'intermédiaire d'un processus de Poisson \parencite{khasminskii2011stochastic}\footnote{Merci à M. Labbé de m'avoir prêté ce livre :).}. J'ai par exemple appris comment créer (manuellement ou en se servant de la libraire \texttt{Scipy}) un processus de Poisson répondant à un certain nombre de critères (en particulier l'\emph{intensité} du processus).
     \item \textbf{Développement d'applications en langage Python:} Durant ce stage, j'ai énormément amélioré mes compétences en simulation numérique. J'ai par exemple appris comment créer, modifier et déployer un package Python, comment utiliser plusieurs librairies (\texttt{numdifftools}, \texttt{Pillow}) de calcul scientifique et de visualisation pour mener à bien un projet.
@@ -296,7 +296,7 @@ J'ai maitrisé la majeure partie des objectifs que nous nous étions fixés. Cel
 
 
 
-\section{Bilan et future travail}
+\section{Bilan et recherches ultérieures}
 
 Durant ce stage, nous avons modélisé et simuler la percussion de floes de glace. Nous avons fait cela en une dimension et nous avons convenablement adapté les résultats en dimension supérieure, en se servant des travaux précédents sur le sujet. En plus, nous avons modélisé et implémenté la fracture d'un floe de glace 1D. Ceci dit, plusieurs tâches restent à effectuer pour porter à fruition notre objectif primaire de création d'un code de calcul de l’évolution de la banquise à l’échelle des floes de glace:
 

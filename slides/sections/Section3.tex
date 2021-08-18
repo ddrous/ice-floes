@@ -5,10 +5,10 @@
 
 
 
-\section{\textsc{Travaux et résultats}}
+\section{\textsc{Travaux et résultats 1D}}
 
 
-\subsection{Résultats en 1D}
+\subsection{Déplacement des n\oe{}uds}
 
 \begin{frame}{Déplacement des noeuds d’un floe isolé (1)}
 
@@ -41,7 +41,7 @@
                 \end{dcases}
             \end{align*}
 
-            On préfère la forme générique:
+            On préfère la forme matricielle:
             \begin{align*}
                 \begin{dcases}
                     \dot{Y}(t)= E Y(t) \,,\\
@@ -67,9 +67,10 @@
 \begin{frame}[fragile]{Déplacement des noeuds d’un floe isolé (2)}
 
     \begin{columns}[onlytextwidth]
-
-        \begin{column}{0.5\textwidth}
-            \begin{lstlisting}[language=Python,caption=Code de simulation avec Scipy]
+		
+		\small
+        \begin{column}{0.4\textwidth}
+            \begin{lstlisting}[language=Python,captionpos=b,caption=Code de simulation]
     Y0 = np.array([0,0, v0, -v_0])
     t = np.linspace(0, tmax, N+1)
     def model(Y, t):
@@ -78,10 +79,11 @@
             \end{lstlisting}
         \end{column}
 
-        \mycol{50}{    
-        \begin{theorem}[Convergence du modèle 1D isolé]
-            Les déplacements $x_1$ et $x_2$ des noeuds du floe 1D convergent si et seulement si leurs vitesses initiales sont des vecteurs opposés.
-        \end{theorem}
+		\normalsize
+        \mycol{60}{    
+        \begin{exampleblock}{Théorème (Convergence du modèle 1D isolé)}
+            Partant d'une position d'équilibre $x_1(0) = x_2(0) = 0$, les déplacements $x_1(\cdot)$ et $x_2(\cdot)$ des deux n\oe{}uds du floe 1D (avec viscosité $\mu > 0$) convergent  si et seulement si leurs vitesses initiales sont opposées, i.e. $\bvec v_0 = - \bvec v'_0$.
+        \end{exampleblock}
         }
     \end{columns}
     
@@ -99,7 +101,7 @@
             \includegraphics[width=\textwidth]{SimuDeplacement1D2.png}
             \caption{$v_0= 0.6$ et $v'_0 = 0.8$}
         \end{subfigure}    
-        \caption{Simulation du déplacement d'un floe en 1D}
+        \caption{Simulation du déplacement d'un floe 1D à 2 n\oe{}uds}
     \end{figure}
 
 \end{frame}
@@ -107,7 +109,12 @@
 
 
 
-\begin{frame}{Collision parfaitement inélastique avec un floe encastré à l’instant initial}
+
+\subsection{Percussion entre floes}
+
+
+
+\begin{frame}{Collision parfaitement inélastique avec un floe encastré}
 
     \mycols{
 
@@ -129,8 +136,8 @@
             Le système est régi par les équations :
             \begin{align*}
                 \begin{dcases}
-                (m+m')\ddot x_1 = -kx_1 - \mu \dot x_1 + k'(x_2 - x_1) + \mu'(\dot x_2 - \dot x_1) \\
-                    m' \ddot x_2 =  -k'(x_2 - x_1) - \mu'(\dot x_2 - \dot x_1) 
+                (m+m')\ddot x_1 = -kx_1 - \mu \dot x_1 + k'(x_2 - x_1) + \mu'(\dot x_2 - \dot x_1) \,, \\
+                    m' \ddot x_2 =  -k'(x_2 - x_1) - \mu'(\dot x_2 - \dot x_1). 
                 \end{dcases}
             \end{align*}
 
@@ -196,12 +203,14 @@
                     \includegraphics[width=0.9\textwidth]{SimuPercussion1D2NonConv.png}
                     \caption{Cas non convergent}
                 \end{subfigure}
-                   \caption{Résultat de simulation}
+                   \caption{Résultats de simulation}
             \end{figure}
 
+			\scriptsize
             \begin{alertblock}{Note}
-                Critère de convergence pas clair!
+                Le critère de convergence n'est pas clair (i.e. $\mu << \mu'$, etc.)!
             \end{alertblock}
+            \normalsize
 
         }
 
@@ -210,7 +219,7 @@
 \end{frame}
 
 
-\begin{frame}{Collision inélastique avec séparation des masses (1)}
+\begin{frame}{Collision inélastique avec séparation des masses}
 
     \mycols{
 
@@ -265,9 +274,11 @@
             \normalsize
             les vitesses après contact sont :
             \begin{align*}
-                V_0 = \frac{I + (m+\varepsilon m')v_0 + (1-\varepsilon)m'v'_0}{m+m'}\,, \\
-                V'_0 = \frac{I + (1-\varepsilon)mv_0 + (m'+\varepsilon m)v'_0}{m+m'}\,.
+                V_0 = \frac{I + (m-\varepsilon m')v_0 + (1+\varepsilon)m'v'_0}{m+m'}\,, \\
+                V'_0 = \frac{I + (1+\varepsilon)mv_0 + (m'-\varepsilon m)v'_0}{m+m'}\,.
             \end{align*}
+            
+            \note{Le calcul des vitesses ici était notre première tentative de trouver ce qui se passe véritablement après un contact. Nous avons complexifier les choses par la suite.}
 
         }
 
@@ -276,87 +287,231 @@
 \end{frame}
 
 
-\begin{frame}{Collision inélastique avec séparation des masses (2)}
 
-    \centering
-    Animation de la première phase de la percussion (\alert{avant} contact)
 
-    \begin{adjustwidth}{-6em}{-6em}
-        \animategraphics[loop,controls,autoplay,width=\linewidth]{10}{_img00}{00}{52}
-    \end{adjustwidth}
+\begin{frame}{Des modèles généraux pour la percussion avec séparation des masses (1)}
 
+	\myfigframesize{Deplacement1D-2.png}{Illustration d'un floe 1D contenant $n$ masses}{80}
+	
+	\small
+	\vspace*{-0.1cm}
+	Sous forme matricielle, on a le système:
+	\begin{align} \label{eq:percussion1d4}
+    \begin{pmatrix}
+        \dot z_0 \\ \dot z_1 \\ \vdots \\ \dot z_{n-1} \\ \ddot z_0 \\ \ddot z_1 \\ \vdots \\ \ddot z_{n-1}
+    \end{pmatrix}
+    = 
+    \underbrace{\begin{pmatrix}
+        \begin{matrix}
+       & & &  \\ & & &  \\ & & \bigzero & \\ & & & \\      
+        \end{matrix}
+        & \rvline 
+        & \begin{matrix}
+        & & & \\ & & &  \\ & & I_n & \\ & & & \\
+        \end{matrix}  \\ 
+        \hline
+        \begin{matrix}
+            & & &  \\ & & B & \\ & & & \\ & & & \\     
+        \end{matrix}
+        & \rvline 
+        &\begin{matrix}
+            & & & \\ & & C & \\ & & & \\ & & & \\        
+        \end{matrix}
+      \end{pmatrix}}_{2n \times 2n}
+      \begin{pmatrix}
+        z_0 \\ z_1 \\ \vdots \\ z_{n-1} \\ \dot z_0 \\ \dot z_1 \\ \vdots \\ \dot z_{n-1}
+        \end{pmatrix}
+    +
+    \underbrace{\begin{pmatrix}
+        \begin{matrix}
+       & & &  \\ & & &  \\ & & \bigzero & \\ & & & \\      
+        \end{matrix}
+        & \rvline 
+        &     \begin{matrix}
+            & & &  \\ & & &  \\ & & \bigzero & \\ & & & \\      
+             \end{matrix}  \\ 
+        \hline
+        \begin{matrix}
+            & & &  \\ & & D & \\ & & & \\ & & & \\     
+        \end{matrix}
+        & \rvline 
+        &   \begin{matrix}
+            & & &  \\ & & \bigzero &  \\ & &  & \\ & & & \\      
+            \end{matrix}
+      \end{pmatrix}}_{(2n) \times (2n-2)}
+      \begin{pmatrix}
+        L0_0 \\ L0_1 \\ \vdots \\ L0_{n-2} \\ 0 \\ 0 \\ \vdots \\ 0
+        \end{pmatrix} \,,
+	\end{align}
+	
+	où:
+	\scriptsize
+	$$
+B = \frac{1}{m} \begin{pmatrix}
+    -k & k &  &  &  \\
+    k & -2k & k &  &  \\
+     & \ddots & \ddots & \ddots &  \\
+     &  & k & -2k & k \\
+     &  &  & k & -k
+    \end{pmatrix} , 
+C = \frac{1}{m} \begin{pmatrix}
+    -\mu & \mu &  &  &  \\
+    \mu & -2\mu & \mu &  &  \\
+     & \ddots & \ddots & \ddots &  \\
+     &  & \mu & -2\mu & \mu \\
+     &  &  & \mu & -\mu
+    \end{pmatrix} , 
+D = \frac{1}{m} \begin{pmatrix}
+    -k &  &  &  \\
+    k & -k &  &  \\
+     & \ddots & \ddots &  \\
+     &  & \ddots & -k \\
+     &  &  & k 
+    \end{pmatrix}.
+	$$
+    \normalsize
 \end{frame}
 
 
+\begin{frame}{Des modèles généraux pour la percussion avec séparation des masses (2)}
 
-\subsection{Résultats en 2D}
-
-
-\begin{frame}{Déplacement d'un floe isolé (1)}
-
-    \mycols{
-
-        \mycol{40}{
-
-            \begin{figure}
-                \centering
-                \includegraphics[width=0.6\textwidth]{Deplacement2D-1.png}
-                \caption{Floe de glace 2D}
-            \end{figure}
-
-        }
-
-        \mycol{60}{
-            \myfig{PlotDeplacement2D-1-NonConv.png}{Simulation avec $T=10$}
-
-            % \myfig{PositionInitFinales.png}{Illustration à $T=4$}
-        }
-
-    }
-
-    Les équations de Newton-Euler :
-    \begin{align*}
-        \forall i \in \mathbb{Z}/3\mathbb{Z}+\{1\}, \quad m \ddot{\bvec{q}}_i = \sum_{j=i+1}^{i+2}C_{ij} \left[  k \left( \Vert \bvec{q}_j - \bvec{q}_i \Vert - L_{ij} \right) \bvec{u}_{ij} - \mu \left\langle \dot{\bvec{q}}_j - \dot{\bvec{q}}_i, \, \bvec{u}_{ij}  \right\rangle  \bvec{u}_{ij}  \right] . 
-    \end{align*}
-
-    Schéma d’Euler explicite :
-    \begin{align*} \label{eq:systeme2D}
-        \bvec{q}_{i}^{n+1} = 2\bvec{q}_{i}^{n}-\bvec{q}_{i}^{n-1} + \frac{\Delta t^2}{m} \sum_{j=i+1}^{i+2}C_{ij}\left[ k \left( \Vert \bvec{q}_j^n - \bvec{q}_i^n \Vert - L_{ij} \right) \bvec{u}_{ij} - \frac{\mu}{\Delta t} \left\langle \bvec{q}_{j}^{n}-\bvec{q}_{j}^{n-1} - \bvec{q}_{i}^{n}+\bvec{q}_{i}^{n-1}, \, \bvec{u}_{ij} \right\rangle  \bvec{u}_{ij}  \right].
-    \end{align*}
-    
-\end{frame}
-
-
-\begin{frame}[fragile]{Déplacement d'un floe isolé (2)}
-
-    \tiny
-    \begin{lstlisting}[language=Python,caption=Code de simulation et schéma avec Scipy]
-                                    q0 = np.stack([q1_0, dotq1_0, q2_0, dotq2_0, q3_0, dotq3_0])
-                                    q0_ = np.reshape(q0, (nb_nodes*4))
-
-                                    def model(t, Q_):
-                                        Q = np.reshape(Q_, (nb_nodes*2, 2))
-                                        Q_ret = np.zeros_like(Q)
-                                        Q_ret[2*0] = 0; Q_ret[2*1] = 0
-                                        
-                                        for i in range(1, nb_nodes):
-                                            Q_ret[2*i] = Q[2*i+1] 
-                                            
-                                            for neighbor in range(i+1, i+3):
-                                                j = neighbor % nb_nodes
-                                                u[i,j] = (Q[2*j] - Q[2*i]) / nplin.norm(Q[2*j] - Q[2*i])
-                                                Q_ret[2*i+1] += (1 / m)*C[i,j]*( k*(nplin.norm(Q[2*j]-Q[2*i]) - L[i,j])*u[i,j]
-                                                                -  mu*(np.dot(Q[2*j+1] - Q[2*i+1], u[i,j]))*u[i,j] )
-                                        return np.reshape(Q_ret, (nb_nodes*4))
-
-                                    sol = solve_ivp(model, [0,T], q0_, t_eval=t)
-    \end{lstlisting}
-
-    \begin{figure}
+\begin{figure}[!h]
+    \begin{subfigure}[b]{0.30\textwidth}
         \centering
-        \includegraphics[width=0.6\textwidth]{PositionInitFinales.png}
-        \caption{Illustration à $T=4$}
-    \end{figure}
+        \frame{\includegraphics[width=\textwidth]{Percussion1D-4-Avant.png}}
+        \caption{Avant le choc}
+    \end{subfigure}
+%     \hfill
+    \begin{subfigure}[b]{0.29\textwidth}
+        \centering
+        \frame{\includegraphics[width=\textwidth]{Percussion1D-5.png}}
+        \caption{Pendant le choc}
+    \end{subfigure}
+    \begin{subfigure}[b]{0.30\textwidth}
+        \centering
+        \frame{\includegraphics[width=\textwidth]{Percussion1D-4-Apres.png}}
+        \caption{Après le choc}
+    \end{subfigure}
+\end{figure}
 
 
+%\myfigframesize{Percussion1D-4-Avant.png}{Avant le choc}{40}
+%\myfigframesize{Percussion1D-4-Apres.png}{Après le choc}{40}
+
+
+	\mycols{
+		\mycol{50}{	
+        \begin{alertblock}{Un modèle qui conserve l'énergie cinétique après chaque choc}
+        \begin{align}
+			V_0 = \frac{-b \pm \sqrt{\Delta}}{2a}, \quad V'_0 = V_0 + X\,,
+		\end{align}
+		avec :
+		\begin{align*}
+		X = \varepsilon(v_0 - v'_0)&, \, Y = m(v_0)^2 + m'(v'_0)^2\,,\\  a &= m+m'\,,\\ b &= -2m'X\,,\\ c &= m'X^2 - Y \,,\\ \Delta &= b^2 - 4ac.
+		\end{align*}
+		\end{alertblock}
+		}
+		
+		\mycol{50}{	
+        \begin{exampleblock}{Un modèle qui met en évidence le coefficient de restitution \parencite{hecker1997collision}}
+		\begin{align} \label{eq:perc5eq2}
+    V_0 = v_0 + \frac{J-I}{m} , \quad
+    V'_0 = v'_0 + \frac{K+I}{m'}\,,
+		\end{align}
+		avec:
+		\begin{align*}
+    I = \frac{(v_0 - v'_0)(1+\varepsilon) +\frac{J}{m} - \frac{K}{m'}}{\frac{1}{m}+\frac{1}{m'}}, \\
+    		J = \int_{t^{-}}^{t^{+}} F_{n-1} \diff t = F_{n-1} \, \Delta t, \\ 
+    		K = \int_{t^{-}}^{t^{+}} F'_{0} \diff t = F'_{0} \, \Delta t.
+		\end{align*}
+
+		\end{exampleblock}
+		}
+		
+		\note{Technique répandue dans le monde du jeux vidéo pour le codage des graphics engines!!}
+
+	}
 \end{frame}
+
+
+
+\begin{frame}{Des modèles généraux pour la percussion avec séparation des masses (3)}
+
+	\myfig{Screenshot1.jpg}{Configuration des floes pour la simulation}
+
+	\mycols{
+		\mycol{50}{	
+        \begin{alertblock}{\vspace*{-0.5cm}}
+		\myfig{EnsPlotPerc2.png}{Résultat pour le modèle qui conserve l'énergie cinétique après chaque choc}
+		\vspace*{-0.4cm}
+		\end{alertblock}
+		}
+		
+		\mycol{50}{	
+        \begin{exampleblock}{\vspace*{-0.5cm}}
+		\myfig{EnsPlotPerc3.png}{Résultat pour le modèle qui met en évidence le coefficient de restitution}
+		\vspace*{-0.4cm}
+		\end{exampleblock}
+		}
+		
+		\note{Technique répandue dans le monde du jeux vidéo pour le codage des graphics engines!!}
+
+	}
+\end{frame}
+
+
+
+
+
+
+
+
+
+\subsection{Fracturation des floes}
+
+
+\begin{frame}{Différents modèles de fracture fragile}
+
+\vspace{-0.5cm}
+\myfigsize{PhaseFieldExplainer.png}{Champ de phase pour la régularisation d'une fissure \parencite{yvonnet2018fissuration}}{45}
+\vspace{-0.5cm}
+	
+	\mycols{
+		\mycol{45}{	
+        \begin{block}{Méthode du champ de phase}
+        \vspace{-0.4cm}
+        \small
+\begin{align*}
+    E = \int_{\Omega} \Psi(\bvec{u},\Gamma) &\diff\Omega + G_c\int_{\Gamma} \diff \Gamma, \\
+&\big\Downarrow \\
+    E = \int_{\Omega} \Psi(\bvec{u},\Gamma) \diff\Omega &+ G_c\int_{\Gamma} \textcolor{blue}{\gamma(d, \nabla d)} \diff \Gamma.
+\end{align*}
+		 \vspace{-0.2cm} 
+		\end{block}
+		}
+
+		\normalsize
+		\mycol{55}{	
+        \begin{block}{Méthode combinatoire}
+            \begin{align*} \label{eq:modelcombi}
+                E^{n+1} & = \text{eng. pot. élastique au temps } t^{n+1}  \\
+                & + \text{ ténacité}\times \text{lg. de la fracture envisagée à }t^{n+1}.  
+            \end{align*}
+		\vspace*{0.001cm} 
+		\end{block}
+		}
+
+	}
+	\vspace{0.2cm}
+
+
+	\centering
+    \textcolor{mygray}{\href{run:../../../../Share/ShortAnim2D.gif}{\textbf{Animation de la fracture 1D par un algorithme \emph{event-driven}}}}
+
+	\animategraphics[loop,controls,autoplay,width=\linewidth]{10}{Simu1D/FracSimu-}{0}{312}
+	
+\end{frame}
+
+
+
+

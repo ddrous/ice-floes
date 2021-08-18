@@ -4,223 +4,152 @@
 %-------------------------------------------------------------------------------
 
 
-\section{\textsc{Results in 2D}}
+\section{\textsc{Travaux et résultats 2D}}
 
 
-\subsection{Simulation}
-
-\setbeamercovered{invisible}
-
-\begin{frame}
-  \frametitle{The enriched problem in 2D}
-  \begin{alertblock}{\vspace*{-3cm}}
-    In 2D, we are not only studying the location and the height of an obstacle, we are trying to rebuild the complete density of the medium.     
-  \end{alertblock}
-
-  \begin{columns}
-    \begin{column}{0.45\textwidth}
-      \begin{center}
-        %%% Ajouter l'image des hierarchie de machine learning
-        \begin{figure}
-        \includegraphics[width=.7\textwidth]{DensiteTest.png}    % Modifier la sortie pour avoir 1D/Class2D/Reg 2D
-        \mycap{An example of a medium's density where we can see two distinct "tumours"}
-        \end{figure}
-    \end{center}
-    \end{column}
-
-    \pause
-
-    \begin{column}{0.55\textwidth}
-      \begin{center}
-        %%% Ajouter l'image des hierarchie de machine learning
-        \begin{figure}
-        \includegraphics[width=.6\textwidth]{CTScan.jpg}    % Modifier la sortie pour avoir 1D/Class2D/Reg 2D
-        \includegraphics[width=.5\textwidth]{Sinogram.png} 
-        \mycap{CT scan overview (up), Shepp Logan Phantom (lower left), and corresponding sinogram (lower right) (Beatty, 2012)}
-        \end{figure}
-    \end{center}
-    \end{column}
-
-  \end{columns}
-\end{frame}
+\subsection{Déplacement des n\oe{}uds}
 
 
-\begin{frame}[fragile]
-  \frametitle{Example of a 2D simulation}
-  
-  \begin{center}
-    \textcolor{violet}{\href{run:../img/Video2D.mp4}{Click here for the RTE simulation in 2D.}}
-    % \href{run:./img/Video2D.mp4}{Click here for the RTE simulation in 2D.}
-  \end{center}
+\begin{frame}{Déplacement des n\oe{}uds d'un floe isolé (1)}
 
-% \begin{center}
-%   \includemedia[
-%     width=0.95\linewidth,
-%     activate=pageopen,
-%     addresource=Video2D.mp4,
-%     flashvars={
-%        source=Video2D.mp4
-%       &autoPlay=true
-%     },
-%     passcontext, % enable VPlayer's right-click menue
-%   ]{\includegraphics{Thumbnail2D.png}}{VPlayer.swf}%
-% \end{center}
+    \mycols{
 
-\end{frame}
+        \mycol{40}{
 
-\begin{frame}[fragile]
-  \frametitle{Inputs/outputs in 2D}
-
-      \begin{figure}
-      \includegraphics[width=11cm]{SimuCirculaires.png}       
-      \mycap{An input for the Neural Network (around the pictures) and the awaited output (in the middles)}
-      \end{figure}
-
-      \begin{columns}
-        \begin{column}{0.5\textwidth}
-          \begin{figure}
-            \includegraphics[width=3cm]{Entrees2D}       
-            \mycap{Size of an input}
+            \begin{figure}
+                \centering
+                \includegraphics[width=0.6\textwidth]{Deplacement2D-1.png}
+                \caption{Floe de glace 2D}
             \end{figure}
-        \end{column}
-        \begin{column}{0.5\textwidth}
-          \begin{figure}
-            \includegraphics[width=3cm]{Sortie2D.png}       
-            \mycap{Size of an output}
-            \end{figure}
-        \end{column}
-      \end{columns}
 
+        }
+
+        \mycol{60}{
+            \myfig{PlotDeplacement2D-1-NonConv.png}{Simulation avec $T=10$}
+
+            % \myfig{PositionInitFinales.png}{Illustration à $T=4$}
+        }
+
+    }
+
+	\vspace{-0.5cm}
+    Les équations de Newton-Euler :
+    \begin{align*}
+        \forall i \in \mathbb{Z}/3\mathbb{Z}, \quad m \ddot{\bvec{q}}_i = \underbrace{\sum_{j=i+1}^{i+2} \textcolor{teal}{C_{ij}} \left[  \textcolor{blue}{k \left( \Vert \bvec{q}_j - \bvec{q}_i \Vert - L_{ij} \right) \bvec{u}_{ij}} \textcolor{orange}{- \mu \left\langle \dot{\bvec{q}}_j - \dot{\bvec{q}}_i, \, \bvec{u}_{ij}  \right\rangle  \bvec{u}_{ij}}  \right]}_{\bvec F_i} . 
+    \end{align*}
+
+    Schéma d’Euler explicite :
+    \begin{align*} \label{eq:systeme2D}
+        \bvec{q}_{i}^{n+1} = 2\bvec{q}_{i}^{n}-\bvec{q}_{i}^{n-1} + \frac{\Delta t^2}{m} \sum_{j=i+1}^{i+2}C_{ij}\left[ k \left( \Vert \bvec{q}_j^n - \bvec{q}_i^n \Vert - L_{ij} \right) \bvec{u}_{ij} - \frac{\mu}{\Delta t} \left\langle \bvec{q}_{j}^{n}-\bvec{q}_{j}^{n-1} - \bvec{q}_{i}^{n}+\bvec{q}_{i}^{n-1}, \, \bvec{u}_{ij} \right\rangle  \bvec{u}_{ij}  \right].
+    \end{align*}
+    
+\end{frame}
+
+
+\begin{frame}[fragile]{Déplacement des n\oe{}uds d'un floe isolé (2)}
+
+    \tiny
+    \begin{lstlisting}[language=Python,caption=Code de simulation et schéma avec Scipy]
+                                    q0 = np.stack([q1_0, dotq1_0, q2_0, dotq2_0, q3_0, dotq3_0])
+                                    q0_ = np.reshape(q0, (nb_nodes*4))
+
+                                    def model(t, Q_):
+                                        Q = np.reshape(Q_, (nb_nodes*2, 2))
+                                        Q_ret = np.zeros_like(Q)
+                                        Q_ret[2*0] = 0; Q_ret[2*1] = 0
+                                        
+                                        for i in range(1, nb_nodes):  ## <-- Node 0 is immobilized
+                                            Q_ret[2*i] = Q[2*i+1] 
+                                            
+                                            for neighbor in range(i+1, i+3):
+                                                j = neighbor % nb_nodes
+                                                u[i,j] = (Q[2*j] - Q[2*i]) / nplin.norm(Q[2*j] - Q[2*i])
+                                                Q_ret[2*i+1] += (1 / m)*C[i,j]*( k*(nplin.norm(Q[2*j]-Q[2*i]) - L[i,j])*u[i,j]
+                                                                -  mu*(np.dot(Q[2*j+1] - Q[2*i+1], u[i,j]))*u[i,j] )
+                                        return np.reshape(Q_ret, (nb_nodes*4))
+
+                                    sol = solve_ivp(model, [0,T], q0_, t_eval=t)
+    \end{lstlisting}
+    
+	\hspace*{-1cm}
+	\mycols{
+	
+	\mycol{70}{
+	    \begin{figure}
+        \centering
+        \hspace{-1cm}
+        \includegraphics[width=0.8\textwidth]{PositionInitFinales.png}
+        %\hspace{-1.5cm}
+        \caption{Illustration à $t=0$ et $t=4$}
+    	\end{figure}
+	}
+	
+	\hspace{-0.5cm}
+	
+	
+	\mycol{32}{
+	\vspace{-0.5cm}
+	\normalsize
+	\hspace{-1cm}
+	\begin{adjustwidth}{1cm}{2cm}
+	   \begin{alertblock}{En somme}
+         Avec un schéma Euler explicite, symplectique ou Scipy (RK45), il faut fixer certains n\oe{}uds pour que le système reste stable!
+        \end{alertblock}
+	\end{adjustwidth}	
+	}	
+	\normalsize
+	}
+	
 
 \end{frame}
 
 
 
-\subsection{Model, training, and predictions}
+
+\subsection{Percussion entre floes}
 
 
-\begin{frame}
-  \frametitle{Model architecture in Keras and Tensorflow}
-  \begin{center}
-      %%% Ajouter l'image des hierarchie de machine learning
-      \begin{figure}
-      \includegraphics[width=.95\textwidth]{Vnet.png}    % Modifier la sortie pour avoir 1D/Class2D/Reg 2D
-      \mycap{V-Net architecture \parencite{rapportstagevnet} based on U-Net \parencite{DBLP:journals/corr/RonnebergerFB15}}
-      \end{figure}
-  \end{center}
-\end{frame}
+\begin{frame}{Collision parfaitement inélastique entre deux floes (1)}
 
-\begin{frame}[fragile]
-  \frametitle{Python code for the V-Net}
-	\begin{lstlisting}[language=Python,caption={Definition of the constructor for the VNet class \parencite{rapportstagevnet}.},breaklines]
-  class VNet:
-    def __init__(self,
-                  input_shape,
-                  output_shape,                  
-                  levels=5,
-                  depth=32,
-                  kernel_size=5, 
-                  activation="relu",
-                  batch_norm=True,
-                  dropout_rate=0, 
-                  ):
-    ..."more code"
-  \end{lstlisting}
-\end{frame}
+    \mycols{
 
-\begin{frame}
-  \frametitle{Training phase}
-  \begin{table}[h!]
-      \scriptsize
-      \centering
-      \begin{tabular}{l l}
-      \toprule
-      \textbf{Hyper-parameter} & \hspace*{2mm}\textbf{Value} \\
-      \midrule
-      optimizer  & Adam\\
-      learning rate  & 1e-5, 1e-6, \colorbox{yellow}{1e-7}\\
-      batch size  & 100 \\
-      epochs  & 1500 \\
-      patience & 50 \\
-      kernel size  & (5,5) \\
-      activation & relu, linear, sigmoid \\
-      \bottomrule
-      \end{tabular}
-      \mycaptab{List of the most important hyper-parameters for the training}
-      \label{tab:Parametres}
-  \end{table}
+        \mycol{40}{
+			\myfigframe{Percussion2DNew.png}{Illustration de la percussion 2D}
 
-  \vspace*{-0.4cm}
-  % \begin{center}
-    %%% Ajouter l'image des hierarchie de machine learning
-    \begin{figure}
-    \includegraphics[width=.75\textwidth]{training1.png}    % Modifier la sortie pour avoir 1D/Class2D/Reg 2D
-    \mycap{MSE drop (left) and accuracy increase (right) during training}
-    \end{figure}
-% \end{center}
+\begin{align*}
+\begin{dcases}
+    (m+m') \ddot{\bvec{q}}_0  = \bvec{F}_0 + \bvec{F}^{'}_0  , & \textcolor{cyan}{\text{(SE)}} \\
+    \ddot{\bvec{p}}_0 = \ddot{\bvec{q}}_0 , \dot{\bvec{p}}_0 = \dot{\bvec{q}}_0 , \bvec{p}_0 = \bvec{q}_0 - \Delta_0 , & \textcolor{cyan}{\text{(SE)}} \\
+    m \ddot{\bvec{q}}_i = \bvec{F}_i   \,, \quad \quad \quad \forall 1 \leq i \leq n-1 , & \textcolor{orange}{\text{(SI)}} \\
+    m' \ddot{\bvec{p}}_i = \bvec{F}^{'}_i   \,, \quad \quad \quad \forall 1 \leq i \leq n'-1 , & \textcolor{orange}{\text{(SI)}}
+\end{dcases}
+\end{align*}
+où : $\quad \Delta_0 = \bvec{q}_0(0) - \bvec{p}_0(0)$.
+			
+        }
 
+        \mycol{60}{
+            \myfigframesize{Percussion2DSlides}{Un maillage 2D par processus de Poisson}{80}
+            
+            \centering
+    \textcolor{mygray}{\href{run:../../../../Share/ShortAnim2D.gif}{\textbf{Animation de la percussion 2D}}}
+
+    %\begin{adjustwidth}{-6em}{-6em}
+		\animategraphics[loop,controls,autoplay,width=\linewidth]{10}{Simu2D/ShortAnim2D-}{0}{70}
+    %\end{adjustwidth}	
+	
+        }
+
+    }
+    
 \end{frame}
 
 
 
-\begin{frame}[fragile]
-  \frametitle{Best/worst predictions}
 
-  \begin{block}{\vspace*{-3cm}}
-      $R^2$ score of $87$ \%.
-  \end{block}
+\begin{frame}{Collision parfaitement inélastique entre deux floes (2)}
 
-
-  \begin{columns}
-  \begin{column}{0.5\textwidth}
-    \begin{figure}
-      \includegraphics<1->[width=5cm]{Meilleur2D1}
-    \end{figure}
-    \begin{figure}
-      \vspace*{-0.25cm}       
-      \includegraphics<1->[width=5cm]{Meilleur2D2}       
-      \only<1-> {\mycap{Some of the best predictions}}
-    \end{figure}
-   \end{column}
-   \begin{column}{0.5\textwidth}
-      \begin{figure}
-        \includegraphics[width=5cm]{Pire2D1}     
-      \end{figure}
-      \begin{figure}
-        \vspace*{-0.25cm}       
-        \includegraphics[width=5cm]{Pire2D3}       
-        \mycap{Some of the worst predictions}
-      \end{figure}
-   \end{column}
-  \end{columns}
-
+	\myfigframesize{ClientWebMoi.jpg}{Client web développé et maintenu avec Flask}{60}
+	\note{En fin je dois vous montrer ce clien web.  Je ne pouvais m'en empécher.}
+    
 \end{frame}
-
-
-\metroset{background=dark}
-
-\begin{frame}
-  \frametitle{Conclusion on the 2D inverse problem}
-  \begin{alertblock}{\textbf{What we found out in 2D is:}}
-    \begin{enumerate}
-      \item The AI is able to determine the full density of the medium;
-      \item The AI is more precise when the obstacles are continuous (gaussian, sine, etc.) as opposed to circles and rectangles.
-    \end{enumerate}
-    We can easily post-process the predicted density to find the tumours.
-  \end{alertblock}
-
-  \pause
-
-  \begin{alertblock}{\textbf{Future work:}}
-    While writing and publishing the present work, I plan on:
-    \begin{enumerate}
-      \item Reconstructing other optical properties ($\sigma_e$, $\sigma_a$, and $\sigma_c$);
-      \item Finding out why \textbf{increasing} the dimensionality solves the problem (linked to the Radon Tansform);
-      \item Exploring how a tomograph can be implemented and used in medical conditions.
-    \end{enumerate}
-  \end{alertblock}
-
-\end{frame}
-
-\metroset{background=light}
-

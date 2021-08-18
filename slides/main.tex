@@ -5,8 +5,8 @@
 
 %%---------- Theme colors and design section ---------------------------
 
-\documentclass[notes,handout,compress]{beamer}
-% \documentclass[compress]{beamer}
+% \documentclass[notes,handout,compress]{beamer}
+\documentclass[compress]{beamer}
 
 \useoutertheme{infolines}
 \usetheme{Antibes}
@@ -59,7 +59,7 @@
 \usepackage{ragged2e}   %% For justification
 \usepackage{etoolbox}
 \usepackage{listings}
-\lstset{basicstyle=\ttfamily, keywordstyle=\bfseries\color{mygreen}}
+\lstset{basicstyle=\ttfamily, keywordstyle=\bfseries\color{mygreen}, frame=single}
 
 \usepackage{xcolor}
 \usepackage{graphicx}
@@ -86,7 +86,12 @@
 \usepackage[autostyle=true]{csquotes} % Required to generate language-dependent quotes in the bibliography 
 \renewcommand*{\bibfont}{\scriptsize} % Pour reduire la taille des references
 
-\usepackage{hyperref}     %% No coloring for hyperlinks, since links are everywhere
+\usepackage{hyperref}     %% Hyperlinks
+%\hypersetup{pdfpagemode={UseOutlines},
+%colorlinks=true,% Set to false to disable coloring links
+%urlcolor=orange,% The color of hyperlinks (URLs)
+%}
+
 \usepackage{cancel}   %% TO strikeout text
 \usepackage{marvosym} %% For smileys
 \usepackage{cleveref} %% For clever referencing
@@ -143,6 +148,12 @@
     \caption{#2}
   \end{figure}
 }
+\newcommand{\myfigframesize}[3]{
+  \begin{figure}       
+    \frame{\includegraphics[width=.#3\textwidth]{#1}}       
+    \caption{#2}
+  \end{figure}
+}
 
 
 \newcommand{\mycapfig}[1]{\caption{#1}}
@@ -177,7 +188,16 @@
 \newcommand{\tplus}{t^{+}}
 \newcommand{\tdelta}{\delta t^{*}}
 
+\newcommand{\bigzero}{\mbox{\normalfont\large\bfseries 0}}
+\newcommand{\avgzero}{\mbox{\normalfont\large\bfseries 0}}
+\newcommand{\rvline}{\hspace*{-\arraycolsep}\vline\hspace*{-\arraycolsep}}
 
+%%------------- New emoji redefinitions ------------------------
+\newcommand{\myemoji}{%
+  \begingroup\normalfont
+  \includegraphics[height=\fontcharht\font`\B]{pointing-right.png}%
+  \endgroup
+}
 %-------------------------------------------------------------------------------
 %							TITLE PAGE
 %-------------------------------------------------------------------------------
@@ -185,15 +205,15 @@
 
 % \setbeamercolor{postit}{fg=white,bg=mDarkTeal}
 
-\title[\textsc{Fracturation de floes de glace}]{\LARGE Fracturation de floes de glace par percussion dans un modèle granulaire}
+\title[\textsc{Fracturation de floes de glace}]{\vspace*{0.5cm} \LARGE Fracturation de floes de glace par percussion dans un modèle granulaire}
 
-\author[Roussel Desmond Nzoyem]{\large \textbf{Roussel Desmond Nzoyem} \\ \vspace*{0.15cm} \small Stéphane Labbé, Christophe Prud'homme}
+\author[Roussel Desmond Nzoyem]{\large \textbf{Roussel Desmond Nzoyem} \\ \vspace*{0.15cm} \small Pr. Stéphane Labbé, Pr. Christophe Prud'homme}
 
 \institute[]{\small Sorbonne Université \\ Laboratoire Jacques-Louis Lions}
 
 % \logo{\includegraphics[width=0.6cm,height=1cm,keepaspectratio]{LogoBristol.png}}
 
-\date[Soutenance de mi-stage 2021]{Soutenance de mi-stage\\\today}
+\date[Soutenance de fin de stage 2021]{Soutenance de fin de stage\\\today}
 
 
 \begingroup
@@ -237,9 +257,9 @@
 
 \input{sections/Section3}
 
-% \input{sections/Section4}
+\input{sections/Section4}
 
-% \input{sections/Section5}
+\input{sections/Section5}
 
 
 
