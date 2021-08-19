@@ -4,7 +4,7 @@
 %-------------------------------------------------------------------------------
 
 
-\section{\textsc{Travaux et résultats 2D}}
+\section{\textsc{Travaux 2D}}
 
 
 \subsection{Déplacement des n\oe{}uds}
@@ -19,20 +19,27 @@
             \begin{figure}
                 \centering
                 \includegraphics[width=0.6\textwidth]{Deplacement2D-1.png}
-                \caption{Floe de glace 2D}
+                \caption{Floe de glace 2D \vspace{0.5cm}}
             \end{figure}
 
         }
 
         \mycol{60}{
-            \myfig{PlotDeplacement2D-1-NonConv.png}{Simulation avec $T=10$}
+            % \onslide<2>{\myfig{PlotDeplacement2D-1-NonConv.png}{Simulation avec $T=10$}}
 
+            \begin{figure}
+                \centering
+                \includegraphics<2>[width=\textwidth]{PlotDeplacement2D-1-NonConv.png}
+                \onslide<2>{\caption{Simulation avec $T=10$} \vspace{-0.5cm}}
+            \end{figure}
             % \myfig{PositionInitFinales.png}{Illustration à $T=4$}
         }
 
     }
 
-	\vspace{-0.5cm}
+	% \onslide<1>{\vspace{0.5cm}}
+
+	% \onslide<2>{\vspace{-1cm}}
     Les équations de Newton-Euler :
     \begin{align*}
         \forall i \in \mathbb{Z}/3\mathbb{Z}, \quad m \ddot{\bvec{q}}_i = \underbrace{\sum_{j=i+1}^{i+2} \textcolor{teal}{C_{ij}} \left[  \textcolor{blue}{k \left( \Vert \bvec{q}_j - \bvec{q}_i \Vert - L_{ij} \right) \bvec{u}_{ij}} \textcolor{orange}{- \mu \left\langle \dot{\bvec{q}}_j - \dot{\bvec{q}}_i, \, \bvec{u}_{ij}  \right\rangle  \bvec{u}_{ij}}  \right]}_{\bvec F_i} . 
@@ -88,14 +95,23 @@
 	
 	
 	\mycol{32}{
-	\vspace{-0.5cm}
-	\normalsize
-	\hspace{-1cm}
-	\begin{adjustwidth}{1cm}{2cm}
-	   \begin{alertblock}{En somme}
-         Avec un schéma Euler explicite, symplectique ou Scipy (RK45), il faut fixer certains n\oe{}uds pour que le système reste stable!
-        \end{alertblock}
-	\end{adjustwidth}	
+
+	% \vspace{-0.5cm}
+	% \normalsize
+	% \hspace{-1cm}
+	% \begin{adjustwidth}{1cm}{2cm}
+	%    \begin{alertblock}{En somme}
+    %      Avec un schéma Euler explicite, symplectique ou Scipy (RK45), il faut fixer certains n\oe{}uds pour que le système reste stable!
+    %     \end{alertblock}
+	% \end{adjustwidth}	
+
+    \scriptsize
+    \begin{tcolorbox}[colback=red!5,colframe=red!50!black,arc=0mm,boxrule=0.1mm,title=Observation]
+        \vspace*{-0.1cm}
+            Avec un schéma Euler explicite, symplectique ou Scipy (RK45), il faut fixer certains n\oe{}uds pour que le système reste stable!
+        \vspace*{-0.1cm}
+    \end{tcolorbox}
+
 	}	
 	\normalsize
 	}
@@ -128,15 +144,14 @@ où : $\quad \Delta_0 = \bvec{q}_0(0) - \bvec{p}_0(0)$.
 			
         }
 
+        \pause
         \mycol{60}{
             \myfigframesize{Percussion2DSlides}{Un maillage 2D par processus de Poisson}{80}
             
             \centering
     \textcolor{mygray}{\href{run:../../../../Share/ShortAnim2D.gif}{\textbf{Animation de la percussion 2D}}}
 
-    %\begin{adjustwidth}{-6em}{-6em}
 		\animategraphics[loop,controls,autoplay,width=\linewidth]{10}{Simu2D/ShortAnim2D-}{0}{70}
-    %\end{adjustwidth}	
 	
         }
 

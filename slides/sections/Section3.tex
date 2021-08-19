@@ -5,7 +5,7 @@
 
 
 
-\section{\textsc{Travaux et résultats 1D}}
+\section{\textsc{Travaux 1D}}
 
 
 \subsection{Déplacement des n\oe{}uds}
@@ -31,7 +31,7 @@
                    \caption{Bilan des forces}
             \end{figure}
         }
-
+            \pause
         \mycol{50}{
             Les équations de Newton-Euler:
             \begin{align*}
@@ -114,46 +114,47 @@
 
 
 
-\begin{frame}{Collision parfaitement inélastique avec un floe encastré}
+% \begin{frame}{Collision parfaitement inélastique avec un floe encastré}
 
-    \mycols{
+%     \mycols{
 
-        \mycol{55}{
-            \myfigframe{Percussion1D-Systeme}{Collision 1D avec fixation d'un floe}
+%         \mycol{55}{
+%             \myfigframe{Percussion1D-Systeme}{Collision 1D avec fixation d'un floe}
 
-            \begin{figure}[!h]
-                \begin{subfigure}[b]{0.54\textwidth}
-                    \centering
-                    \frame{\includegraphics[width=\textwidth]{Percussion1D-Masse1}}
-                \end{subfigure}
-                \begin{subfigure}[b]{0.435\textwidth}
-                    \centering
-                    \frame{\includegraphics[width=\textwidth]{Percussion1D-Masse2}}
-                \end{subfigure}
-                   \caption{Bilan des forces}
-            \end{figure}
+%             \begin{figure}[!h]
+%                 \begin{subfigure}[b]{0.54\textwidth}
+%                     \centering
+%                     \frame{\includegraphics[width=\textwidth]{Percussion1D-Masse1}}
+%                 \end{subfigure}
+%                 \begin{subfigure}[b]{0.435\textwidth}
+%                     \centering
+%                     \frame{\includegraphics[width=\textwidth]{Percussion1D-Masse2}}
+%                 \end{subfigure}
+%                    \caption{Bilan des forces}
+%             \end{figure}
 
-            Le système est régi par les équations :
-            \begin{align*}
-                \begin{dcases}
-                (m+m')\ddot x_1 = -kx_1 - \mu \dot x_1 + k'(x_2 - x_1) + \mu'(\dot x_2 - \dot x_1) \,, \\
-                    m' \ddot x_2 =  -k'(x_2 - x_1) - \mu'(\dot x_2 - \dot x_1). 
-                \end{dcases}
-            \end{align*}
+%             Le système est régi par les équations :
+%             \begin{align*}
+%                 \begin{dcases}
+%                 (m+m')\ddot x_1 = -kx_1 - \mu \dot x_1 + k'(x_2 - x_1) + \mu'(\dot x_2 - \dot x_1) \,, \\
+%                     m' \ddot x_2 =  -k'(x_2 - x_1) - \mu'(\dot x_2 - \dot x_1). 
+%                 \end{dcases}
+%             \end{align*}
 
-        }
+%         }
+        
+%         \pause
+%         \mycol{45}{
 
-        \mycol{45}{
+%             \myfig{SimuPercussion1D.png}{Résultat de simulation}
+%         }
 
-            \myfig{SimuPercussion1D.png}{Résultat de simulation}
-        }
-
-    }
+%     }
     
-\end{frame}
+% \end{frame}
 
 
-\begin{frame}{Collision parfaitement inélastique sans présence du mur}
+\begin{frame}{Collision parfaitement inélastique avec au départ un floe immobile}
 
     \mycols{
 
@@ -187,6 +188,7 @@
 
         }
 
+        \pause
         \mycol{45}{
             % \myfig{SimuPercussion1D2.png}{Résultat de simulation}
 
@@ -206,10 +208,17 @@
                    \caption{Résultats de simulation}
             \end{figure}
 
+            % \pause
+            \vspace*{-0.3cm}
 			\scriptsize
-            \begin{alertblock}{Note}
-                Le critère de convergence n'est pas clair (i.e. $\mu << \mu'$, etc.)!
-            \end{alertblock}
+            % \begin{alertblock}{Note}
+            %     Le critère de convergence n'est pas clair (i.e. $\mu << \mu'$, etc.)!
+            % \end{alertblock}
+            \begin{tcolorbox}[colback=red!5,colframe=red!50!black,arc=0mm,boxrule=0.1mm,title=Remarque]
+                \vspace*{-0.1cm}
+                    Le critère de convergence n'est pas clair (i.e. $\mu << \mu'$, $k$ très grand, etc.)!
+                \vspace*{-0.1cm}
+            \end{tcolorbox}
             \normalsize
 
         }
@@ -255,17 +264,19 @@
 
         }
 
+        % \pause
         \mycol{50}{
             Le système est régi par les équations :
             \begin{align*}
                 \begin{dcases}
                 m\ddot x_1 = -k(x_1 - x_2) - \mu (\dot x_1 - \dot x_2) \,, \\
-                m\ddot x_2 = k(x_1 - x_2) + \mu (\dot x_1 - \dot x_2) - \alert{F_c} \,, \\
-                m'\ddot x_3 = - k'(x_3 - x_4) - \mu'(\dot x_3 - \dot x_4) + \alert{F_c} \,, \\
+                m\ddot x_2 = k(x_1 - x_2) + \mu (\dot x_1 - \dot x_2) - \textcolor{red}{F_c} \,, \\
+                m'\ddot x_3 = - k'(x_3 - x_4) - \mu'(\dot x_3 - \dot x_4) + \textcolor{red}{F_c} \,, \\
                     m' \ddot x_4 =  k'(x_3 - x_4) + \mu'(\dot x_3 - \dot x_4) \,. 
                 \end{dcases}
             \end{align*}
 
+            \pause
             Avec $\varepsilon$ est le coefficient de restitution et :
             \scriptsize
             $$
@@ -274,8 +285,8 @@
             \normalsize
             les vitesses après contact sont :
             \begin{align*}
-                V_0 = \frac{I + (m-\varepsilon m')v_0 + (1+\varepsilon)m'v'_0}{m+m'}\,, \\
-                V'_0 = \frac{I + (1+\varepsilon)mv_0 + (m'-\varepsilon m)v'_0}{m+m'}\,.
+                \alert{V_0 = \frac{I + (m-\varepsilon m')v_0 + (1+\varepsilon)m'v'_0}{m+m'}}\,, \\
+                \alert{V'_0 = \frac{I + (1+\varepsilon)mv_0 + (m'-\varepsilon m)v'_0}{m+m'}}\,.
             \end{align*}
             
             \note{Le calcul des vitesses ici était notre première tentative de trouver ce qui se passe véritablement après un contact. Nous avons complexifier les choses par la suite.}
@@ -307,7 +318,7 @@
         \end{matrix}
         & \rvline 
         & \begin{matrix}
-        & & & \\ & & &  \\ & & I_n & \\ & & & \\
+        & & & \\ & & &  \\ & I_n & & \\ & & & \\
         \end{matrix}  \\ 
         \hline
         \begin{matrix}
@@ -315,7 +326,7 @@
         \end{matrix}
         & \rvline 
         &\begin{matrix}
-            & & & \\ & & C & \\ & & & \\ & & & \\        
+            & & & \\ & C & & \\ & & & \\ & & & \\        
         \end{matrix}
       \end{pmatrix}}_{2n \times 2n}
       \begin{pmatrix}
@@ -328,7 +339,7 @@
         \end{matrix}
         & \rvline 
         &     \begin{matrix}
-            & & &  \\ & & &  \\ & & \bigzero & \\ & & & \\      
+            & & &  \\ & & &  \\ & \bigzero & & \\ & & & \\      
              \end{matrix}  \\ 
         \hline
         \begin{matrix}
@@ -336,7 +347,7 @@
         \end{matrix}
         & \rvline 
         &   \begin{matrix}
-            & & &  \\ & & \bigzero &  \\ & &  & \\ & & & \\      
+            & & &  \\ & \bigzero & &  \\ & &  & \\ & & & \\      
             \end{matrix}
       \end{pmatrix}}_{(2n) \times (2n-2)}
       \begin{pmatrix}
@@ -370,6 +381,8 @@ D = \frac{1}{m} \begin{pmatrix}
     \end{pmatrix}.
 	$$
     \normalsize
+
+    \note{On commence à utiliser z ici et non x parce que (pour une raison inexpliquée), les longueurs à vide des ressorts ne sont pas respectées.}
 \end{frame}
 
 
@@ -412,6 +425,7 @@ D = \frac{1}{m} \begin{pmatrix}
 		\end{alertblock}
 		}
 		
+        \pause
 		\mycol{50}{	
         \begin{exampleblock}{Un modèle qui met en évidence le coefficient de restitution \parencite{hecker1997collision}.}
 		\begin{align} \label{eq:perc5eq2}
@@ -447,6 +461,7 @@ D = \frac{1}{m} \begin{pmatrix}
 		\end{alertblock}
 		}
 		
+        \pause
 		\mycol{50}{	
         \begin{exampleblock}{\vspace*{-0.5cm}}
 		\myfig{EnsPlotPerc3.png}{Résultat pour le modèle qui met en évidence le coefficient de restitution}
@@ -457,6 +472,8 @@ D = \frac{1}{m} \begin{pmatrix}
 		\note{Technique répandue dans le monde du jeux vidéo pour le codage des graphics engines!!}
 
 	}
+    \note{Vu que je n'ai toujours rien décider pour le modèle final, c'est mieux de dire qu'*on ne peut pas tout avoir*. La conservation de l'énergie (au niveau macroscopique) dépend de ce qui se passe entre les deux noeuds concernés pendant la percussion (niveau microscopique).
+    }
 \end{frame}
 
 
@@ -504,9 +521,11 @@ D = \frac{1}{m} \begin{pmatrix}
 	}
 	\vspace{0.2cm}
 
+    \note{Pour le modèle combinatoire, bien préciser qu'on est en déformation élastique: et donc la longueur de la fracture est la longueur initiale des ressorts. Si les d;eplacements étaient plasiqques, ca ne serait pas la même chose.}
 
+        \pause
 	\centering
-    \textcolor{mygray}{\href{run:../../../../Share/ShortAnim2D.gif}{\textbf{Animation de la fracture 1D par un algorithme \emph{event-driven}}}}
+    \textcolor{mygray}{\href{run:../../../../Share/FracSimu.gif}{\textbf{Animation de la fracture 1D par un algorithme \emph{event-driven}}}}
 
 	\animategraphics[loop,controls,autoplay,width=\linewidth]{10}{Simu1D/FracSimu-}{0}{312}
 	

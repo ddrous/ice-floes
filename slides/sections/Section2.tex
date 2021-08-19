@@ -19,12 +19,12 @@
         \mathcal{I}_i \frac{\diff \dot{\theta}_i(t)}{\diff t} &= \mathfrak{M}_i,
       \end{dcases}        
       \end{align}
-      où pour le floe $i$ : 
+      où pour le floe $\Omega_i$ : 
       \begin{itemize}
         \item $M_i$ : masse du floe;
         \item $\bvec{F}_i$ : somme des forces par unité de volume;
-        \item $\mathcal{I}_i$ : le moment d'inertie du floe $i$;
-        \item $\mathfrak{M}_i$ : le moment dynamique en $G$.
+        \item $\mathcal{I}_i$ : moment d'inertie;
+        \item $\mathfrak{M}_i$ : moment dynamique en $G$.
       \end{itemize}
       Le système (\ref{eq:neweu}) se réécrit sous la forme :
       \begin{align*}    
@@ -65,10 +65,19 @@
     }
 
     \mycol{55}{Deux conditions à respecter:
-    \begin{itemize}
-      \item \alert{Condition unilatérale de Signorini} : afin de décrire la condition de non-interpénétration.
-      \item \alert{Loi de friction de Coulomb} : afin de modéliser le comportement de friction pendant une collision.
-    \end{itemize}}
+    \begin{enumerate}
+      \item \textbf{Condition unilatérale de Signorini} : afin de décrire la condition de non-interpénétration:
+      \begin{tcolorbox}[colback=myblack2!5,colframe=myblack2!30!black,arc=0mm,boxrule=0.1mm]
+        \textit{\footnotesize S’il y a contact, alors la réaction est strictement positive et l’accélération relative nulle, et s’il n’y a pas contact, alors l’accélération relative est strictement positive et la réaction nulle.}
+      \end{tcolorbox}
+      \normalsize
+      \pause
+      \item \textbf{Loi de friction de Coulomb} : afin de modéliser le comportement de friction pendant une collision:
+      \begin{tcolorbox}[colback=myblack2!5,colframe=myblack2!30!black,arc=0mm,boxrule=0.1mm]
+        \textit{\textit{\footnotesize Pendant la collision, y a-t-il frottement statique, ou y a-t-il glissement (suivant la direction $\bvec{T}_j$ ou $-\bvec{T}_j$)}?}
+      \end{tcolorbox}
+      \normalsize
+    \end{enumerate}}
 
     \note{Historiquement, on distingue ici deux approches:
     \begin{itemize}
@@ -125,33 +134,41 @@
 \subsection{Thèse de D. Balasoiu}
 
 
-\begin{frame}{Un modèle de fracture variationnel}
+\begin{frame}{Un modèle de fracture variationnel (Francfort-Marigo)}
   L'énergie totale s'écrit :
-  \begin{align*}
-  \etot : \,\bigcup_{\sigma \in \Sigma } A_{\sigma} \times \left\{ \sigma \right\} &\rightarrow \mathbb{R} \\
-  u &\mapsto \int_{\Omega \backslash \sigma} Ae(u) : e(u) \diff x + k\mathcal{H}^1(\sigma)\,,
-  \end{align*}
+  \begin{tcolorbox}[colback=myblack2!5,colframe=myblack2!30!black,arc=0mm,boxrule=0.1mm]
+    \vspace{-0.4cm}
+    \begin{align*}
+      \etot : \,\bigcup_{\sigma \in \Sigma } A_{\sigma} \times \left\{ \sigma \right\} &\rightarrow \mathbb{R} \\
+      u &\mapsto \textcolor{orange}{\int_{\Omega \backslash \sigma} Ae(u) : e(u) \diff x} + \textcolor{magenta}{k\mathcal{H}^1(\sigma)}.
+    \end{align*}
+    \vspace{-0.4cm}
+  \end{tcolorbox}
   
+  \pause
   Une solution du problème de fracture fragile est un couple $(u^*, \sigma^*)$ qui vérifie:
   \vspace*{0.25cm}
   $$
   \etot(u^*,\sigma^*) = \min_{\sigma \in \Sigma}{\min_{u\in A_{\sigma}}{\etot(u,\sigma)}} \,.
   $$
 
-	\note{$\Sigma$ c'est l'ensemble des fractures admissibles, et $A_{\sigma}$ l'ensemble des déplacements admissibles sur un floe qui présente déjà la fissure $\sigma$.}
+	\note{$\Sigma$ c'est l'ensemble des fractures admissibles, et $A_{\sigma}$ l'ensemble des déplacements admissibles sur un floe qui présente déjà la fissure $\sigma$.
+  Ne pas oublier de préciser quel est exactement l'aproche de Griffith (compétition d'énergies). Et quel est l'approt de Francfort-Marigo (Formulation variationnelle). Et Bourdin (Regularisation)}
 
-  \myfig{PhaseField2.png}{Bifurcation d’une fracture \parencite{nagaraja2019phase}}
+  \myfigsize{PhaseField2.png}{Bifurcation d’une fracture \parencite{nagaraja2019phase}}{90}
 
 \end{frame}
 
 
-\begin{frame}{Réseaux de ressorts régulier}
+\begin{frame}{Réseaux de ressorts à grande raideur}
 
-  \myfigsize{Ressort1.png}{Réseau de ressorts régulier \parencite{balasoiu2020modelisation}}{20}
+  \myfigsize{Ressort2.png}{Réseau de ressorts régulier \parencite{balasoiu2020modelisation}}{20}
 
   \vspace*{-0.25cm}
   \myfigsize{VoronoiDelaunay.png}{Tirage de points et diagrammes de Voronoi (à gauche) et Delaunay (à droite) \parencite{balasoiu2020modelisation}}{60}
 
-  \note{Afin d'établir la condition de Dirichlet nécéssaire pour engendrer la fracture, on passe du modèle macroscopique à un modèle microscopique.}
+  \note{la première figure est un réseau de ressort dans Z. Balasoiu montre qu'il s'agit là d'une bonne approximation d'un matériau élastique à travers une résultat de Gamma convergence qu'il prouve, tout comme avec la deuxième figure. La deuxième figure fait suite à une tirage par Processus de Poisson (pourquoi Poisson?) pour obtenir le nombre de points. Les coordonnées sont obtenus par des lois uniforme. Et enfin on fait un diagramme de Voronoi, et puis un de Delaunay (pronunciation de Delaunay ?).}
+
+  \note{  AFIN d'établir la condition de Dirichlet nécéssaire pour engendrer la fracture, on passe du modèle macroscopique à un modèle microscopique.}
 
 \end{frame}

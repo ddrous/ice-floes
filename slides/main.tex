@@ -18,19 +18,22 @@
 
 \colorlet{mygreen}{green!50!blue} 
 \colorlet{myblue}{blue!60!green} 
-\colorlet{mygray}{gray!88!blue} 
+\colorlet{mygray}{gray!92!blue} 
 \colorlet{mywhite}{white!98!black} 
 \colorlet{myred}{red!90!black} 
+\colorlet{myblack}{black!2}
+\definecolor{myblack2}{RGB}{27,55,61}
 \definecolor{navy}{rgb}{0.04706, 0.13725, 0.26667}
+\definecolor{mLightBrown}{HTML}{EB811B}
 
 % \usefonttheme{structuresmallcapsserif}
 
-\usecolortheme[named=mygray]{structure}
+\usecolortheme[named=myblack2]{structure}
 \setbeamercolor{background canvas}{bg=mywhite}
 \setbeamertemplate{navigation symbols}{}
 
 % \setbeamercolor{alerted text}{fg=violet}
-\setbeamercolor{alerted text}{fg=myred}
+\setbeamercolor{alerted text}{fg=blue}
 \setbeamertemplate{itemize items}{$\blacktriangleright$}  %% Triangles in itemize
 
 % \setbeamercolor{block title example}{bg=myblue}
@@ -101,6 +104,7 @@
 \languagepath{French}
 \usepackage[useregional]{datetime2}
 
+\usepackage{tcolorbox}
 
 %%------------- New commands and redefinitions ------------------------
 
@@ -207,13 +211,13 @@
 
 \title[\textsc{Fracturation de floes de glace}]{\LARGE Fracturation de floes de glace par percussion dans un modèle granulaire}
 
-\author[Roussel Desmond Nzoyem]{\large \textbf{Roussel Desmond Nzoyem} \\ \vspace*{0.15cm} \small Pr. Stéphane Labbé, Pr. Christophe Prud'homme}
+\author[Roussel Desmond Nzoyem]{\large \textbf{Roussel Desmond Nzoyem} \\ \vspace*{0.15cm} \small Pr. Stéphane Labbé \\ Pr. Christophe Prud'homme}
 
 \institute[]{\small Sorbonne Université \\ Laboratoire Jacques-Louis Lions}
 
 % \logo{\includegraphics[width=0.6cm,height=1cm,keepaspectratio]{LogoBristol.png}}
 
-\date[Soutenance de fin de stage 2021]{Soutenance de fin de stage\\\today}
+\date[Soutenance de fin de stage 2021]{Soutenance de fin de stage\\\DTMdisplaydate{2021}{08}{26}{-1}}
 
 
 \begingroup
@@ -233,7 +237,7 @@
 
 
   \begin{frame}[fragile]
-    \vspace*{1.5cm}
+    \vspace*{1.3cm}
     \maketitle
   \end{frame}
 \endgroup
