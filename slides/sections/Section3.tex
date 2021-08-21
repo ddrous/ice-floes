@@ -66,28 +66,30 @@
 
 \begin{frame}[fragile]{Déplacement des noeuds d’un floe isolé (2)}
 
-    \begin{columns}[onlytextwidth]
+    % \begin{columns}[onlytextwidth]
 		
-		\small
-        \begin{column}{0.4\textwidth}
-            \begin{lstlisting}[language=Python,captionpos=b,caption=Code de simulation]
-    Y0 = np.array([0,0, v0, -v_0])
-    t = np.linspace(0, tmax, N+1)
-    def model(Y, t):
-        return E @ Y
-    Y = odeint(model, Y0, t)
-            \end{lstlisting}
-        \end{column}
+	% 	\small
+    %     \begin{column}{0.4\textwidth}
+    %         \begin{lstlisting}[language=Python,captionpos=b,caption=Code de simulation]
+    % Y0 = np.array([0,0, v0, -v_0])
+    % t = np.linspace(0, tmax, N+1)
+    % def model(Y, t):
+    %     return E @ Y
+    % Y = odeint(model, Y0, t)
+    %         \end{lstlisting}
+    %     \end{column}
 
-		\normalsize
-        \mycol{60}{    
-        \begin{exampleblock}{Théorème (Convergence du modèle 1D isolé)}
-            Partant d'une position d'équilibre $x_1(0) = x_2(0) = 0$, les déplacements $x_1(\cdot)$ et $x_2(\cdot)$ des deux n\oe{}uds du floe 1D (avec viscosité $\mu > 0$) convergent  si et seulement si leurs vitesses initiales sont opposées, i.e. $\bvec v_0 = - \bvec v'_0$.
-        \end{exampleblock}
-        }
-    \end{columns}
+	% 	\normalsize
+    %     \mycol{60}{    
+    %     \begin{exampleblock}{Théorème (Convergence du modèle 1D isolé)}
+    %         Partant d'une position d'équilibre $x_1(0) = x_2(0) = 0$, les déplacements $x_1(\cdot)$ et $x_2(\cdot)$ des deux n\oe{}uds du floe 1D (avec viscosité $\mu > 0$) convergent  si et seulement si leurs vitesses initiales sont opposées, i.e. $\bvec v_0 = - \bvec v'_0$.
+    %     \end{exampleblock}
+    %     }
+    % \end{columns}
     
-
+    \begin{exampleblock}{Théorème (Convergence du modèle 1D à deux n\oe{}uds)}
+        Partant d'une position d'équilibre $x_1(0) = x_2(0) = 0$, les déplacements $x_1(\cdot)$ et $x_2(\cdot)$ des deux n\oe{}uds du floe 1D (avec viscosité $\mu > 0$) convergent  si et seulement si leurs vitesses initiales sont opposées, i.e. $\bvec v_0 = - \bvec v'_0$.
+    \end{exampleblock}
     
     \begin{figure}[!h]
         \centering
@@ -104,6 +106,8 @@
         \caption{Simulation du déplacement d'un floe 1D à 2 n\oe{}uds}
     \end{figure}
 
+    \note{Il faut absolument mentionner que la preuve graphique c'est la meilleure preuves de toutes :).}
+
 \end{frame}
 
 
@@ -114,44 +118,44 @@
 
 
 
-% \begin{frame}{Collision parfaitement inélastique avec un floe encastré}
+\begin{frame}{Collision parfaitement inélastique avec un floe encastré}
 
-%     \mycols{
+    \mycols{
 
-%         \mycol{55}{
-%             \myfigframe{Percussion1D-Systeme}{Collision 1D avec fixation d'un floe}
+        \mycol{55}{
+            \myfigframe{Percussion1D-Systeme}{Collision 1D avec fixation d'un floe}
 
-%             \begin{figure}[!h]
-%                 \begin{subfigure}[b]{0.54\textwidth}
-%                     \centering
-%                     \frame{\includegraphics[width=\textwidth]{Percussion1D-Masse1}}
-%                 \end{subfigure}
-%                 \begin{subfigure}[b]{0.435\textwidth}
-%                     \centering
-%                     \frame{\includegraphics[width=\textwidth]{Percussion1D-Masse2}}
-%                 \end{subfigure}
-%                    \caption{Bilan des forces}
-%             \end{figure}
+            \begin{figure}[!h]
+                \begin{subfigure}[b]{0.54\textwidth}
+                    \centering
+                    \frame{\includegraphics[width=\textwidth]{Percussion1D-Masse1}}
+                \end{subfigure}
+                \begin{subfigure}[b]{0.435\textwidth}
+                    \centering
+                    \frame{\includegraphics[width=\textwidth]{Percussion1D-Masse2}}
+                \end{subfigure}
+                   \caption{Bilan des forces}
+            \end{figure}
 
-%             Le système est régi par les équations :
-%             \begin{align*}
-%                 \begin{dcases}
-%                 (m+m')\ddot x_1 = -kx_1 - \mu \dot x_1 + k'(x_2 - x_1) + \mu'(\dot x_2 - \dot x_1) \,, \\
-%                     m' \ddot x_2 =  -k'(x_2 - x_1) - \mu'(\dot x_2 - \dot x_1). 
-%                 \end{dcases}
-%             \end{align*}
+            Le système est régi par les équations :
+            \begin{align*}
+                \begin{dcases}
+                (m+m')\ddot x_1 = -kx_1 - \mu \dot x_1 + k'(x_2 - x_1) + \mu'(\dot x_2 - \dot x_1) \,, \\
+                    m' \ddot x_2 =  -k'(x_2 - x_1) - \mu'(\dot x_2 - \dot x_1). 
+                \end{dcases}
+            \end{align*}
 
-%         }
+        }
         
-%         \pause
-%         \mycol{45}{
+        \pause
+        \mycol{45}{
 
-%             \myfig{SimuPercussion1D.png}{Résultat de simulation}
-%         }
+            \myfig{SimuPercussion1D.png}{Résultat de simulation}
+        }
 
-%     }
+    }
     
-% \end{frame}
+\end{frame}
 
 
 \begin{frame}{Collision parfaitement inélastique avec au départ un floe immobile}
@@ -312,7 +316,7 @@
         \dot z_0 \\ \dot z_1 \\ \vdots \\ \dot z_{n-1} \\ \ddot z_0 \\ \ddot z_1 \\ \vdots \\ \ddot z_{n-1}
     \end{pmatrix}
     = 
-    \underbrace{\begin{pmatrix}
+    \frac{1}{m} \underbrace{\begin{pmatrix}
         \begin{matrix}
        & & &  \\ & & &  \\ & & \bigzero & \\ & & & \\      
         \end{matrix}
@@ -333,7 +337,7 @@
         z_0 \\ z_1 \\ \vdots \\ z_{n-1} \\ \dot z_0 \\ \dot z_1 \\ \vdots \\ \dot z_{n-1}
         \end{pmatrix}
     +
-    \underbrace{\begin{pmatrix}
+    \frac{1}{m} \underbrace{\begin{pmatrix}
         \begin{matrix}
        & & &  \\ & & &  \\ & & \bigzero & \\ & & & \\      
         \end{matrix}
@@ -358,21 +362,21 @@
 	où:
 	\scriptsize
 	$$
-B = \frac{1}{m} \begin{pmatrix}
+B =  \begin{pmatrix}
     -k & k &  &  &  \\
     k & -2k & k &  &  \\
      & \ddots & \ddots & \ddots &  \\
      &  & k & -2k & k \\
      &  &  & k & -k
     \end{pmatrix} , 
-C = \frac{1}{m} \begin{pmatrix}
+C =  \begin{pmatrix}
     -\mu & \mu &  &  &  \\
     \mu & -2\mu & \mu &  &  \\
      & \ddots & \ddots & \ddots &  \\
      &  & \mu & -2\mu & \mu \\
      &  &  & \mu & -\mu
     \end{pmatrix} , 
-D = \frac{1}{m} \begin{pmatrix}
+D =  \begin{pmatrix}
     -k &  &  &  \\
     k & -k &  &  \\
      & \ddots & \ddots &  \\
@@ -532,5 +536,47 @@ D = \frac{1}{m} \begin{pmatrix}
 \end{frame}
 
 
-
+\begin{frame}[fragile]{Code de calcul 1D}
+    \scriptsize
+    \begin{lstlisting}[language=Python,breaklines,caption={Code de simulation 1D},captionpos=b,label={code}]
+        def runSimulation(self):
+            """
+            Runs the simulation for the complete fracture problem
+            """
+    
+            ## Run uniform mouvement phase up to the first collision
+            self.computeBeforeContact()
+    
+            for key in self.floes.keys():
+                self.checkFracFrom[key] = self.t.size
+    
+            while self.t.size <= self.NBef + self.NAft and max(self.collCount.values()) < 1000:
+    
+                self.computeAfterContact()
+    
+                ## (Potential) fracture detection 
+                floeDict = deepcopy(self.floes)
+                for floe in floeDict.values():
+                    self.checkFracture(floe.id)
+    
+                ## Collision detection 
+                for floe in self.floes.values():
+                    for node in floe.nodes:
+                        res = self.checkCollision(node.id, node.rightNode)
+    
+                ## Assign the same value to all keys to check collision from now on
+                smallestCheckCollFrom = min(self.checkCollFrom.values())
+                for key in self.checkCollFrom.keys():
+                    self.checkCollFrom[key] = smallestCheckCollFrom
+                self.collLoc.append(smallestCheckCollFrom)
+    
+                ## Assign the same value to all keys tp check fracture from now on
+                smallestCheckFracFrom = min(self.checkFracFrom.values())
+                for key in self.checkFracFrom.keys():
+                    self.checkFracFrom[key] = min([smallestCheckFracFrom, smallestCheckCollFrom])
+    \end{lstlisting}
+    \normalsize
+\end{frame}
+    
+    
 
