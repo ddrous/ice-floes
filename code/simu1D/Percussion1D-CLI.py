@@ -49,7 +49,7 @@ if __name__=="__main__":
                                     restitution_coef=eps)
 
     p.run_simulation()
-    p.save_fig(open_file=True, fps=10, filename="Exports/AnimPerc1D.gif")
+    # p.save_fig(open_file=True, fps=10, filename="Exports/AnimPerc1D.gif")
 
     ## Plot the positions
     plt.style.use("seaborn")

@@ -497,9 +497,11 @@ class Percussion:
         if floe_id == self.floe1.id:
             floe = self.floe1
             x = self.x1
+            color = ["b", "g"]
         elif floe_id == self.floe2.id:
             floe = self.floe2
             x = self.x2
+            color = ["r", "magenta"]
         else:
             print("Ice floe of id "+str(floe_id)+" is not part of this problem.")
             return figax
@@ -514,11 +516,12 @@ class Percussion:
             node_ids = np.arange(floe.n)
         try:
             for i in node_ids:
-                ax.plot(self.t, x[:, i], label=r"$z_"+str(i)+"$")
+                # ax.plot(self.t, x[:, i], label=r"$x_"+str(i+2*floe_id-1)+"$", color=color[i%2])
+                ax.plot(self.t, x[:, i], label=r"$x_"+str(i)+"$")
         except IndexError:
             print("Error plotting: A given node id not valid!")
 
-        ax.set_title("Trajectoires des noeuds du floe "+str(floe_id))
+        ax.set_title("Déplacements des noeuds du floe "+str(floe_id))
         ax.set_xlabel("temps")
         ax.legend()
         fig.tight_layout()
@@ -547,9 +550,11 @@ class Percussion:
         if floe_id == self.floe1.id:
             floe = self.floe1
             dep = self.dep1
+            color = ["b", "g"]
         elif floe_id == self.floe2.id:
             floe = self.floe2
             dep = self.dep2
+            color = ["r", "magenta"]
         else:
             print("Ice floe of id " + str(floe_id) + " is not part of this problem.")
             return figax
@@ -564,11 +569,13 @@ class Percussion:
             node_ids = np.arange(floe.n)
         try:
             for i in node_ids:
+                # ax.plot(self.t, dep[:, i], label=r"$x_"+str(i+2*floe_id-1)+"$", color=color[i%2])
                 ax.plot(self.t, dep[:, i], label=r"$x_"+str(i)+"$")
         except IndexError:
             print("Error plotting: A given node id not valid!")
 
-        ax.set_title("Déplacements des noeuds du floe "+str(floe_id))
+        ax.set_title("Déplacements des noeuds du floe "+str(floe_id)+" par rapport à son centre de masse",
+                     fontsize="small")
         ax.set_xlabel("temps")
         ax.legend()
         fig.tight_layout()
