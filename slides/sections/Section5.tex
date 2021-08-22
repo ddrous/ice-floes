@@ -8,20 +8,40 @@
 
 \subsection{Bilan}
 
+\setbeamercovered{transparent}
 \begin{frame}{Apports et recherches ultérieures}
 
-	\myfigframesize{Timeline}{Résumé du déroulement du stage}{60}
+    \vspace{-0.2cm}
+	\myfigsize{Timeline}{Résumé du déroulement du stage}{65}
 	\note{Prendant la soutenance, et dans le rapport, il faut dire que j'ai utilisé une méthode Agile. Plus précisément Scrum. Même si cela n'était aps très formel, j'implémentais une fonctionnalité chaque semaine; sauf que pour le dernier mois de stage, il a fallut coder un gros truc.. }
 
 	\note{On a commencer par la lecture des travaux antérieus, et on a fini par la percussion 1D en pasant par la percussion 2D. Ca semble contre-intuitif MAIS c'est nécésssaire pour avancer.}
 	\pause
 	\small
-	\vspace{-0.4cm}
+	
+    \vspace{-0.3cm}
 	\mycols{	
 		
 		\mycol{50}{
-        \begin{exampleblock}{Apports du stage}
+        \begin{alertblock}{Recherches ultérieures}
         \begin{itemize}
+        \item Implémentation de la méthode du champ de phase;
+        \item Implementation de la fracture au problème 2D, 2.5D, ou 3D;
+        \item Intégration de la fracture au code de \citeauthor{rabatel2015modelisation};
+        \item Confirmation de l'approximation par réseaux de ressorts;
+        \item Optimiser les codes avec Cython ou en C++;
+        \item Tests de validation en laboratoire.
+        \end{itemize}
+		\end{alertblock}
+		}
+
+        \pause
+        \note{Pour le passage en dimension supérieure, mentionner le CoD Curse of Dimensionnalyty qui s'est posé lorsque je suis passé de la 1D à la 2D, et qui se passera en passant à la 3D}
+
+
+		\mycol{50}{
+        \begin{exampleblock}{Apports du stage}
+        \begin{itemize}[<+->]
         \item Simulation de systèmes dynamiques en Python;
         \item Prise en main du modèle de rupture de Griffith (analyse fonctionnelle, analyse numérique, etc.);
         \item Maitrise de l'approche par réseaux de ressorts (probabilité, raisonnance);
@@ -34,21 +54,6 @@
         
         \note{Blague sur TikZ: La loi de Murphy. Etant donné assez de temps, tout peut arriver. C'est comme ca j'ai apris TIKZ, en 6 mois !!}
 
-        \pause
-		\mycol{50}{
-        \begin{alertblock}{Recherches ultérieures}
-        \begin{itemize}
-        \item Implémentation de la méthode du champ de phase;
-        \item Implementation de la fracture au problème 2D, 2.5D, ou 3D;
-        \item Intégration de la fracture fragile au code de \citeauthor{rabatel2015modelisation}
-        \item Confirmation de l'approximation par réseaux de ressorts;
-        \item Optimiser les codes avec Cython ou en C++;
-        \item Tests de validation en laboratoire.
-        \end{itemize}
-		\end{alertblock}
-		}
-
-        \note{Pour le passage en dimension supérieure, mentionner le CoD Curse of Dimensionnalyty qui s'est posé lorsque je suis passé de la 1D à la 2D, et qui se passera en passant à la 3D}
 		
 	}
     
@@ -63,18 +68,19 @@
 
         \begin{block}{Checklist des objectifs}
     	\begin{enumerate}
-      	\item[\checkmark] Prise en main de la notion de $\Gamma$‑convergence;
-      	\item[\checkmark] Assimilation des travaux antérieurs;
-      	\item[\checkmark] Modélisation de la percussion (1D et 2D);
-      	\item[\checkmark] Modélisation de la fracture:
+      	\item[\checkmark] Prise en main de la notion de $\Gamma$‑convergence; \pause
+      	\item[\checkmark] Assimilation des travaux antérieurs; \pause
+      	\item[\checkmark] Modélisation de la percussion (1D et 2D); \pause
+      	\item[\checkmark] Modélisation de la fracture: 
       	\begin{itemize}
         \item[\checkmark] en 1D;
-        \item[$\times$] en 2D.
-        \end{itemize}
-      	\item[$\times$] Calculs à l'échelle des floes de glace de l'Arctique.
+        \item[$\times$] en 2D. 
+        \end{itemize} \pause
+      	\item[$\times$] Calculs à l'échelle des floes de glace de l'Arctique. \pause
       	\end{enumerate}
 		\end{block}
 	
+        \setbeamercovered{invisible}
         \pause
         \begin{exampleblock}{Délivrables}
         \begin{enumerate}

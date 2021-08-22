@@ -42,19 +42,21 @@
             \end{align*}
 
             On préfère la forme matricielle:
+            \begingroup
+            \color{red}
             \begin{align*}
                 \begin{dcases}
                     \dot{Y}(t)= E Y(t) \,,\\
-                    Y_0 = Y(0) = (0,0,v_0,-v'_0)^T \,,
+                    Y(0) = (0,0,v_0,-v'_0)^T \,,
                 \end{dcases}
             \end{align*}
-
+            \endgroup
             où :
             \begin{align*}
                 E = \begin{pmatrix}
                     0 & 0 & 1 & 0 \\ 0 & 0& 0& 1 \\ -\frac{k}{m} & \frac{k}{m} & -\frac{\mu}{m} & \frac{\mu}{m} \\ \frac{k}{m} & -\frac{k}{m} & \frac{\mu}{m} & -\frac{\mu}{m}
                 \end{pmatrix} \,,
-                \text{ et } Y = \begin{pmatrix} x_1 \\ x_2 \\ \dot{x}_1 \\ \dot{x}_2 \end{pmatrix} 
+                \text{ et } Y = \begin{pmatrix} x_1 \\ x_2 \\ \dot{x}_1 \\ \dot{x}_2 \end{pmatrix}.
             \end{align*}
         }
     }
@@ -87,18 +89,24 @@
     %     }
     % \end{columns}
     
-    \begin{exampleblock}{Théorème (Convergence du modèle 1D à deux n\oe{}uds)}
-        Partant d'une position d'équilibre $x_1(0) = x_2(0) = 0$, les déplacements $x_1(\cdot)$ et $x_2(\cdot)$ des deux n\oe{}uds du floe 1D (avec viscosité $\mu > 0$) convergent  si et seulement si leurs vitesses initiales sont opposées, i.e. $\bvec v_0 = - \bvec v'_0$.
+    \large
+    \begin{exampleblock}{Théorème (Convergence du modèle 1D à deux n\oe{}uds) \parencite{nzoyem2021thesis}}
+        Partant d'une position d'équilibre $x_1(0) = x_2(0) = 0$, les déplacements $x_1(\cdot)$ et $x_2(\cdot)$ des deux n\oe{}uds du floe 1D (avec viscosité $\mu > 0$) convergent  si et seulement si leurs vitesses initiales sont opposées i.e. $\bvec v_0 = - \bvec v'_0$.
     \end{exampleblock}
-    
+    \normalsize
+    En effet:
+    \begin{align*}
+        x_1(t) = \textcolor{myblack2}{\frac{t}{2}\left( v_0 - v'_0 \right)} + \frac{e^{\alpha t} \sin(\beta t)}{2\beta} \left( v_0 + v'_0 \right), \quad x_2(t) = \textcolor{myblack2}{\frac{t}{2}\left( v_0 - v'_0 \right)} - \frac{e^{\alpha t} \sin(\beta t)}{2\beta} \left( v_0 + v'_0 \right),
+    \end{align*}
+    où : $\alpha = -\frac{\mu}{m}$ et $\beta = -\frac{\sqrt{2km - \mu^2}}{m}$.
     \begin{figure}[!h]
         \centering
-        \begin{subfigure}[t]{0.45\textwidth}
+        \begin{subfigure}[t]{0.48\textwidth}
             \centering
             \includegraphics[width=\textwidth]{SimuDeplacement1D1.png}
             \caption{$v_0=v'_0 = 0.8$}
         \end{subfigure}
-        \begin{subfigure}[t]{0.45\textwidth}
+        \begin{subfigure}[t]{0.48\textwidth}
             \centering
             \includegraphics[width=\textwidth]{SimuDeplacement1D2.png}
             \caption{$v_0= 0.6$ et $v'_0 = 0.8$}
@@ -107,6 +115,7 @@
     \end{figure}
 
     \note{Il faut absolument mentionner que la preuve graphique c'est la meilleure preuves de toutes :).}
+    \normalsize
 
 \end{frame}
 
@@ -209,12 +218,12 @@
                     \includegraphics[width=0.9\textwidth]{SimuPercussion1D2NonConv.png}
                     \caption{Cas non convergent}
                 \end{subfigure}
-                   \caption{Résultats de simulation}
+                %    \caption{Résultats de simulation}
             \end{figure}
 
             % \pause
-            \vspace*{-0.3cm}
-			\scriptsize
+            \vspace*{-0.1cm}
+			\small
             % \begin{alertblock}{Note}
             %     Le critère de convergence n'est pas clair (i.e. $\mu << \mu'$, etc.)!
             % \end{alertblock}
@@ -264,7 +273,7 @@
             \end{figure}
 
             \vspace*{-0.5cm}
-            \myfigframe{Percussion1D3-Apres.png}{Situation \alert{après} contact}
+            \myfigframe{Percussion1D3-Apres.png}{Situation \textcolor{red}{après} contact}
 
         }
 
@@ -288,10 +297,13 @@
             $$
             \normalsize
             les vitesses après contact sont :
+            \begingroup
+            \color{red}
             \begin{align*}
-                \alert{V_0 = \frac{I + (m-\varepsilon m')v_0 + (1+\varepsilon)m'v'_0}{m+m'}}\,, \\
-                \alert{V'_0 = \frac{I + (1+\varepsilon)mv_0 + (m'-\varepsilon m)v'_0}{m+m'}}\,.
+                V_0 = \frac{I + (m-\varepsilon m')v_0 + (1+\varepsilon)m'v'_0}{m+m'}\,, \\
+                V'_0 = \frac{I + (1+\varepsilon)mv_0 + (m'-\varepsilon m)v'_0}{m+m'}\,.
             \end{align*}
+            \endgroup
             
             \note{Le calcul des vitesses ici était notre première tentative de trouver ce qui se passe véritablement après un contact. Nous avons complexifier les choses par la suite.}
 
@@ -420,7 +432,7 @@ D =  \begin{pmatrix}
 		\mycol{50}{	
         \begin{alertblock}{Un modèle qui conserve l'énergie cinétique après chaque choc.}
         \begin{align}
-			V_0 = \frac{-b \pm \sqrt{\Delta}}{2a}, \quad V'_0 = V_0 + X\,,
+			\textcolor{red}{V_0 = \frac{-b \pm \sqrt{\Delta}}{2a}, \quad V'_0 = V_0 + X\,,}
 		\end{align}
 		avec :
 		\begin{align*}
@@ -433,12 +445,12 @@ D =  \begin{pmatrix}
 		\mycol{50}{	
         \begin{exampleblock}{Un modèle qui met en évidence le coefficient de restitution \parencite{hecker1997collision}.}
 		\begin{align} \label{eq:perc5eq2}
-    V_0 = v_0 + \frac{J-I}{m} , \quad
-    V'_0 = v'_0 + \frac{K+I}{m'}\,,
+            \textcolor{red}{V_0 = v_0 + \frac{J-I}{m} , \quad
+        V'_0 = v'_0 + \frac{K+I}{m'}\,,}
 		\end{align}
 		avec:
 		\begin{align*}
-    I = \frac{(v_0 - v'_0)(1+\varepsilon) +\frac{J}{m} - \frac{K}{m'}}{\frac{1}{m}+\frac{1}{m'}}, \\
+        I = \frac{(v_0 - v'_0)(1+\varepsilon) +\frac{J}{m} - \frac{K}{m'}}{\frac{1}{m}+\frac{1}{m'}}, \\
     		J = \int_{t^{-}}^{t^{+}} F_{n-1} \diff t = F_{n-1} \, \Delta t, \\ 
     		K = \int_{t^{-}}^{t^{+}} F'_{0} \diff t = F'_{0} \, \Delta t.
 		\end{align*}
@@ -459,17 +471,19 @@ D =  \begin{pmatrix}
 
 	\mycols{
 		\mycol{50}{	
-        \begin{alertblock}{\vspace*{-0.5cm}}
+        % \begin{alertblock}{\vspace*{-0.5cm}}
+        \begin{alertblock}{Premier modèle généralisant}
 		\myfig{EnsPlotPerc2.png}{Résultat pour le modèle qui conserve l'énergie cinétique après chaque choc}
-		\vspace*{-0.4cm}
+		\vspace*{-0.2cm}
 		\end{alertblock}
 		}
 		
         \pause
 		\mycol{50}{	
-        \begin{exampleblock}{\vspace*{-0.5cm}}
+        % \begin{exampleblock}{\vspace*{-0.5cm}}
+        \begin{exampleblock}{Deuxième modèle généralisant}
 		\myfig{EnsPlotPerc3.png}{Résultat pour le modèle qui met en évidence le coefficient de restitution}
-		\vspace*{-0.4cm}
+		\vspace*{-0.2cm}
 		\end{exampleblock}
 		}
 		
@@ -493,51 +507,55 @@ D =  \begin{pmatrix}
 
 \begin{frame}{Différents modèles de fracture fragile}
 
-\vspace{-0.5cm}
-\myfigsize{PhaseFieldExplainer.png}{Champ de phase pour la régularisation d'une fissure \parencite{yvonnet2018fissuration}}{45}
-\vspace{-0.5cm}
+% \vspace{-0.5cm}
+\myfigsize{PhaseFieldExplainer.png}{Champ de phase pour la régularisation d'une fissure \parencite{yvonnet2018fissuration}}{65}
+% \vspace{-0.5cm}
 	
 	\mycols{
 		\mycol{45}{	
-        \begin{block}{Méthode du champ de phase}
-        \vspace{-0.4cm}
+        \begin{exampleblock}{Méthode du champ de phase}
+        % \vspace{-0.4cm}
         \small
-\begin{align*}
-    E = \int_{\Omega} \Psi(\bvec{u},\Gamma) &\diff\Omega + G_c\int_{\Gamma} \diff \Gamma, \\
-&\big\Downarrow \\
-    E = \int_{\Omega} \Psi(\bvec{u},\Gamma) \diff\Omega &+ G_c\int_{\Gamma} \textcolor{orange}{\gamma(d, \nabla d)} \diff \Gamma.
-\end{align*}
-		 \vspace{-0.2cm} 
-		\end{block}
+        \begin{align*}
+            E = \int_{\Omega} \Psi(\bvec{u},\Gamma) &\diff\Omega + G_c\int_{\Gamma} \diff \Gamma, \\
+        &\big\Downarrow \\
+            E = \int_{\Omega} \Psi(\bvec{u},\Gamma) \diff\Omega &+ G_c\int_{\Gamma} \textcolor{orange}{\gamma(d, \nabla d)} \diff \Gamma.
+        \end{align*}
+		%  \vspace{-0.2cm} 
+		\end{exampleblock}
 		}
+
+        \pause
 
 		\normalsize
 		\mycol{55}{	
-        \begin{block}{Méthode combinatoire}
+        \begin{alertblock}{Méthode combinatoire}
             \begin{align*} \label{eq:modelcombi}
                 E^{n+1} & = \text{eng. pot. élastique au temps } t^{n+1}  \\
                 & + \text{ ténacité}\times \text{lg. de la fracture envisagée à }t^{n+1}.  
             \end{align*}
-		\vspace*{0.001cm} 
-		\end{block}
+		% \vspace*{0.001cm} 
+		\end{alertblock}
 		}
 
 	}
-	\vspace{0.2cm}
+	% \vspace{0.2cm}
 
     \note{Pour le modèle combinatoire, bien préciser qu'on est en déformation élastique: et donc la longueur de la fracture est la longueur initiale des ressorts. Si les d;eplacements étaient plasiqques, ca ne serait pas la même chose.}
 
-        \pause
-	\centering
-    \textcolor{mygray}{\href{run:../../../../Share/FracSimu.gif}{\textbf{Animation de la fracture 1D par un algorithme \emph{event-driven}}}}
-
-	\animategraphics[loop,controls,autoplay,width=\linewidth]{10}{Simu1D/FracSimu-}{0}{312}
-	
 \end{frame}
 
 
 \begin{frame}[fragile]{Code de calcul 1D}
-    \scriptsize
+
+	\centering
+    \textcolor{mygray}{\href{run:../../../../Share/FracSimu.gif}{\textbf{Animation de la fracture 1D par un algorithme \emph{event-driven}}}}
+
+    % \only<2>{
+	\animategraphics[loop,controls,autoplay,width=\linewidth]{10}{Simu1D/FracSimu-}{0}{312}
+    % }
+
+    \tiny
     \begin{lstlisting}[language=Python,breaklines,caption={Code de simulation 1D},captionpos=b,label={code}]
         def runSimulation(self):
             """
@@ -568,7 +586,6 @@ D =  \begin{pmatrix}
                 smallestCheckCollFrom = min(self.checkCollFrom.values())
                 for key in self.checkCollFrom.keys():
                     self.checkCollFrom[key] = smallestCheckCollFrom
-                self.collLoc.append(smallestCheckCollFrom)
     
                 ## Assign the same value to all keys tp check fracture from now on
                 smallestCheckFracFrom = min(self.checkFracFrom.values())
@@ -576,6 +593,7 @@ D =  \begin{pmatrix}
                     self.checkFracFrom[key] = min([smallestCheckFracFrom, smallestCheckCollFrom])
     \end{lstlisting}
     \normalsize
+
 \end{frame}
     
     

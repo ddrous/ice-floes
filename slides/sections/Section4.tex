@@ -45,6 +45,7 @@
         \forall i \in \mathbb{Z}/3\mathbb{Z}, \quad m \ddot{\bvec{q}}_i = \underbrace{\sum_{j=i+1}^{i+2} \textcolor{teal}{C_{ij}} \left[  \textcolor{blue}{k \left( \Vert \bvec{q}_j - \bvec{q}_i \Vert - L_{ij} \right) \bvec{u}_{ij}} \textcolor{orange}{- \mu \left\langle \dot{\bvec{q}}_j - \dot{\bvec{q}}_i, \, \bvec{u}_{ij}  \right\rangle  \bvec{u}_{ij}}  \right]}_{\bvec F_i} . 
     \end{align*}
 
+    \vspace{-0.2cm}
     Schéma d’Euler explicite :
     \begin{align*}
         \bvec{q}_{i}^{n+1} = 2\bvec{q}_{i}^{n}-\bvec{q}_{i}^{n-1} + \frac{\Delta t^2}{m} \sum_{j=i+1}^{i+2}C_{ij}\left[ k \left( \Vert \bvec{q}_j^n - \bvec{q}_i^n \Vert - L_{ij} \right) \bvec{u}_{ij} - \frac{\mu}{\Delta t} \left\langle \bvec{q}_{j}^{n}-\bvec{q}_{j}^{n-1} - \bvec{q}_{i}^{n}+\bvec{q}_{i}^{n-1}, \, \bvec{u}_{ij} \right\rangle  \bvec{u}_{ij}  \right].
@@ -149,10 +150,12 @@ où : $\quad \Delta_0 = \bvec{q}_0(0) - \bvec{p}_0(0)$.
             \myfigframesize{Percussion2DSlides}{Un maillage 2D par processus de Poisson}{80}
             
             \centering
-    \textcolor{mygray}{\href{run:../../../../Share/ShortAnim2D.gif}{\textbf{Animation de la percussion 2D}}}
+            \textcolor{mygray}{\href{run:../../../../Share/ShortAnim2D.gif}{\textbf{Animation de la percussion 2D}}}
 
-		\animategraphics[loop,controls,autoplay,width=\linewidth]{10}{Simu2D/ShortAnim2D-}{0}{70}
-	
+            \only<2>{
+            \animategraphics[loop,controls,autoplay,width=0.9\linewidth]{10}{Simu2D/ShortAnim2D-}{0}{70}
+            }
+
         }
 
     }
@@ -164,7 +167,7 @@ où : $\quad \Delta_0 = \bvec{q}_0(0) - \bvec{p}_0(0)$.
 
 \begin{frame}{Collision parfaitement inélastique entre deux floes (2)}
 
-	\myfigframesize{ClientWebMoi.jpg}{Client web développé et maintenu avec Flask}{60}
+	\myfigframesize{ClientWebMoi.jpg}{Client web développé et maintenu avec \textcolor{red}{Flask}}{60}
 	\note{En fin je dois vous montrer ce clien web.  Je ne pouvais m'en empécher.}
     
 \end{frame}
