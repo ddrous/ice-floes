@@ -25,8 +25,8 @@ if __name__=="__main__":
     eps = 0.4   ## coefficient de restitution
 
     ## Geometric constants
-    X_min, X_max = 0, 40.0        # Position of the farthest node in the grid
-    R = 1.5 / 6.0    # Radius for the balls at the end of the springs
+    X_min, X_max = 0, 40.0          # Position of the farthest node in the grid
+    R = 1.5 / 6.0                   # Radius for the balls at the end of the springs
 
     total_length1 = 6.0
     total_length2 = 12.0
@@ -48,6 +48,7 @@ if __name__=="__main__":
                                     n_steps_before_contact=4000,
                                     restitution_coef=eps)
 
+    ## Run the simulations and save animation
     p.run_simulation()
     # p.save_fig(open_file=True, fps=10, filename="Exports/AnimPerc1D.gif")
 
@@ -74,6 +75,3 @@ if __name__=="__main__":
 
 
     plt.show()
-
-
-    ## Start Flask web-interface

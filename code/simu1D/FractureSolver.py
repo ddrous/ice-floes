@@ -1,14 +1,14 @@
 """
-This module defines classes and functions for the collision and displacement of ice floes along with their 2 nodes.
+This module defines classes and functions for the collision, displacement, and fracture of ice floes.
 """
 import numpy as np
 
 from PercussionSolver import *
 from threading import Barrier, Thread
 from copy import deepcopy
-from sys import stdout          ## <<-- Only for printing immediately!!!
+from sys import stdout
 
-sys.setrecursionlimit(10**4)      # Recursion is important for this problem
+sys.setrecursionlimit(10**4)      ## Recursion might be important for this problem
 
 
 """ 
@@ -21,7 +21,7 @@ problem in 1D.
 
 class Fracture:
     """
-    A class representing a fracture problem between two floes or more
+    A class representing a fracture problem between two or more
     ice floes. Most of the function implemented in Percussion are
     repeated here.
     """
@@ -33,7 +33,7 @@ class Fracture:
         self.NBef = nStepsBefContact            ## Number of time steps before first percussion
         self.NAft = int(nStepsBefContact * (self.tAft / self.tBef))  ## Number of time steps after first choc
 
-        self.simuTimeStep = self.NAft  ## ==NAft        ## Tne number of time steps we simulate at a time
+        self.simuTimeStep = self.NAft  ## ==NAft        ## The number of time steps we simulate at a time
         self.tSim = self.tAft * self.simuTimeStep / self.NAft
 
         self.floes = {}
@@ -61,7 +61,7 @@ class Fracture:
                         node.leftNode, node.rightNode = (nodeCount - 1, None)
                     node.leftSpring, node.rightSpring = (nodeCount-1, None)
 
-                if node.rightSpring == nodeCount:       ## Just a random test to get good ids!
+                if node.rightSpring == nodeCount:
                     floe.springs[j].id = nodeCount
                     floe.springs[j].parentFloe = i
                     floe.springs[j].leftNode = nodeCount
@@ -73,15 +73,15 @@ class Fracture:
 
         self.initPos = self.positionsArray()                  ## Initial positions for the nodes
         self.initVel = self.velocitiesArray()                 ## Initial velocities for the nodes
-        self.initLengths = self.initialLengths()              ## Initial lenghts for the springs for all nodes
+        self.initLengths = self.initialLengths()              ## Initial lenghts for the springs
 
-        self.collCount = {}         ## Recursions depth counter for each collision that happens
+        self.collCount = {}         ## Collision counter for each collision that happens
 
         self.configurations = {}            ## All observed configurations until the end of simulation
         self.configurations[0] = deepcopy(self.floes)
 
-        self.checkCollFrom = {}             ## Position from which to perform collision and fracture checks
-        self.checkFracFrom = {}             ## Position from which to perform collision and fracture checks
+        self.checkCollFrom = {}             ## Position from which to perform collision checks
+        self.checkFracFrom = {}             ## Position from which to perform fracture checks
 
         self.collLoc = []
 
@@ -132,7 +132,7 @@ class Fracture:
 
     def locateNodeId(self, nodeId):
         """
-        Tells you to witch floe a node belongs to and its local id
+        Tells you to which floe a node belongs to and its local id
         """
         for i, floe in self.floes.items():
             for j, node in enumerate(floe.nodes):
@@ -149,7 +149,7 @@ class Fracture:
 
     def locateSpringId(self, springId):
         """
-        Tells you to witch floe a spring belongs to and its local id
+        Tells you to which floe a spring belongs to and its local id
         """
         for i, floe in self.floes.items():
             for j, spring in enumerate(floe.springs):
@@ -187,6 +187,9 @@ class Fracture:
 
 
     def computeBeforeContact(self):
+        """
+        Phase 1 of the simulation: all floes are in uniform motions until contact is detected
+        """
         self.t = np.linspace(0, self.tBef, self.NBef+1)
         initPos = self.positionsArray()
         initVel = self.velocitiesArray()
@@ -221,7 +224,7 @@ class Fracture:
 
     def couldCollide(self, left, right):
         """
-        Checks if node of ids i and j could ever collide
+        Checks if nodes of ids 'left' and 'right' could ever collide
         """
         if left is None or right is None:
             return False
@@ -247,21 +250,11 @@ class Fracture:
 
         else:
             startIndex = self.checkCollFrom.setdefault((left, right), 0)
-            # startIndex = min(self.checkFrom.values()) if len(self.checkFrom) > 0 else 0
             endIndex = self.t.size
-
-            # if startIndex >= endIndex:
-            #     # startIndex = endIndex-1
-            #     self.checkCollFrom[(left, right)] = endIndex-1
-            #     return False
 
             leftNode, rightNode = self.locateNode(left), self.locateNode(right)
 
             for i in range(startIndex, endIndex):
-
-                # diffVel = np.abs(self.v[i, left]-self.v[i, right]) > 1e-2
-                # collCount = self.collCount.setdefault((left, right), 0)
-                # if self.x[i, left]+leftNode.R > self.x[i, right]-rightNode.R and collCount < 100:
 
                 if self.x[i, left] + leftNode.R > self.x[i, right] - rightNode.R:
 
@@ -289,14 +282,14 @@ class Fracture:
 
     def computeAtContact(self, left, right):
         """
-        Computes the resulting velocities of the two colliding nodes (i=left and j=right)
+        Computes the resulting velocities of the two colliding nodes (left and right) (Several approaches are described).
         """
         if (left is None) or (right is None): return
         leftNode, rightNode = self.locateNode(left), self.locateNode(right)
         # assert self.could_collide(i, j), "These nodes cannot collide, why bring them here ?"
         self.collCount[(left, right)] = self.collCount.setdefault((left, right), 0) + 1
 
-        ## Compute the velocities after contact
+        ## Use shorter variables names
         v0 = leftNode.vx
         v0_ = rightNode.vx
         m = self.floes[leftNode.parentFloe].m
@@ -381,14 +374,6 @@ class Fracture:
         """
         Computes the positions and velocities of the any two colliding floes after a contact
         """
-        # for floe in self.floes.values():
-            # for node in floe.nodes:
-                # left, right = node.id, node.rightNode
-
-                # if self.checkCollision(left, right):
-
-                # self.computeAtContact(left, right)       ## Calculate new speeds ...
-
         x = np.zeros((self.simuTimeStep+1, self.nbNodes))
         vx = np.zeros((self.simuTimeStep+1, self.nbNodes))
 
@@ -400,8 +385,8 @@ class Fracture:
 
         try:
             self.x = np.concatenate([self.x, x])
-        except ValueError:                                  ####<<--clean this !
-            print("hey got ya")
+        except ValueError:
+            print("Error: Concatenating failed probably because of shapes")
         self.v = np.concatenate([self.v, vx])
         self.t = np.concatenate([self.t, self.t[-1] + tNew])
 
@@ -412,7 +397,7 @@ class Fracture:
         """
         Computes the fracture energy of a fractured ice floe, i.e. some springs and broken.
         """
-        ### Bien préciser qu'on est en déformation élastqiue: et donc la longueur de la fracture est la longeur initiale des ressorts
+        ## Bien préciser qu'on est en déformation élastqiue: et donc la longueur de la fracture est la longeur initiale des ressorts
 
         try:
             floe = self.floes[floeId]
@@ -443,7 +428,7 @@ class Fracture:
             print("Error: Ice floe of id "+str(floeId)+" does not exist (yet).")
             return 0
 
-        ## Not very sure <<<--- FIX THIS !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+        ## Not very sure <<<--- NEEDS AMELIORATION !
         if end >= self.t.size:
             return 0
         ##--------------------------------------
@@ -470,7 +455,7 @@ class Fracture:
         # t = self.t[1:end+1] - self.t[:end]
         # E_r = np.sum(integrand*t)
         #
-        # return E_el + E_r     #### ---- STUDY THIS PART AGAIN ---- ####
+        # return E_el + E_r     #### ---- UNCOMMENT THIS PART TO ADD DISSIPATED ENERGY ---- ####
         # print("Def energy:", E_el)
         return E_el
 
@@ -488,10 +473,6 @@ class Fracture:
             return False, None, ()        ## Only big floes can be fractured
 
         oldEnd = self.checkFracFrom[floeId]        ## Time step at witch we compute the current energy
-        # startCheckPos = []
-        # for node in floe.nodes:
-        #     startCheckPos.append(self.checkFracFrom.setdefault((node.id, node.rightNode), 0))
-        # oldEnd = min(startCheckPos)         ## Time step at witch we compute the current energy
 
         stopCheckAt = self.t.size         ## Time step at witch we compute the current energy
 
@@ -525,10 +506,7 @@ class Fracture:
                     fracEn = self.fractureEnergy(floeId, newBrokenSprings)
                     energies[newTuple] = defEn + fracEn
 
-            # try:
             minConfig = sorted(energies.items(), key=lambda item: item[1])[0]
-            # except IndexError:
-            #     print("Got you !")
 
             ## Compare to the old energy and conclude
             if minConfig[1] < oldEnergy:
@@ -548,7 +526,7 @@ class Fracture:
     def checkFracture(self, floeId):
         """
         Checks if fracture happens on any ice floe in the system.
-        Returns the ids of the (potentially) two newly created floes.
+        Adds the two newly created floes to the configurations.
         """
         fracture, fracPos, minConfig = self.griffithMinimization(floeId)
 
@@ -557,12 +535,6 @@ class Fracture:
             return False
         else:
             assert len(minConfig[0]) == 1, "Multiple spring fracturing simultanuously not yet studied "
-
-            ## Checks that this is the lowest position before fractionning
-            # lowest = min(self.checkFracFrom.values())
-            # lowest = max(self.configurations.keys())
-            # if fracPos < lowest:
-            #     return False
 
             cS = minConfig[0][0]
 
@@ -578,7 +550,7 @@ class Fracture:
             floe.init_lengths = oldInitLengths[:cS]
 
             ## Set new (right) floe's properties
-            newFloe = deepcopy(floe)       ## <<------------- Implement this function !!
+            newFloe = deepcopy(floe)       ## <<------------- We could implement this function too !!
             newFloe.nodes, newFloe.springs, newFloe.n = nodesR, springsR, len(nodesR)
             newFloe.id = len(self.floes)
             for node in newFloe.nodes:
@@ -712,7 +684,7 @@ class Fracture:
                 ax.set_ylim(-2 * max_R, 2 * max_R)
                 ax.set_aspect('equal', adjustable='box')
 
-                img_list.append(fig2img(fig))           ### Use tight borders !!!!!!!!!!!!!!!!!!!!!!!
+                img_list.append(fig2img(fig))
 
                 plt.cla()      # Clear the Axes ready for the next image.
 
@@ -727,7 +699,7 @@ class Fracture:
 
     def plot_energy(self, figax):
         """
-        Plots the total energy of the system before and after first chocs
+        Plots the total energy of the system during whole simulation
         """
         if figax:
             fig, ax = figax
@@ -776,22 +748,11 @@ class Fracture:
 
         E_tot = E_c + E_el + E_r
 
-        # print("Énergie totale immediatement avant 1er choc:", E_tot[N_first])
-        # print("Énergie totale immediatement après 1er choc:", E_tot[N_first + 1])
-        # print("Rapport APRÈS/AVANT:", E_ap[N_first + 1] / E_av[N_first])
-        # print("Epsilon:", self.eps)
-
         ax.plot(self.t, E_tot, "-", linewidth=2, label="énergie totale")
 
         ax.plot(self.t, E_c, "--", linewidth=1, label="énergie cinétique")
         ax.plot(self.t, E_el, "--", linewidth=1, label="énergie élastique")
         ax.plot(self.t, E_r, "--", linewidth=1, label="énergie dissipée")
-
-        # for i, N_choc in enumerate(self.contact_indices):
-        #     # label = "1er" if i==0 else str(i+1)+"eme"
-        #     # ax.plot([self.t[N_choc+1]], [E_ap[N_choc+1]], marker='X', label=label+" choc")
-        #     label = "chocs" if i==0 else None
-        #     ax.plot([self.t[N_choc+1]], [E_ap[N_choc+1]], 'kX', alpha=0.5, label=label)
 
         collLoc = np.unique(self.collLoc)
         for i in range(0, len(collLoc)):
@@ -821,7 +782,7 @@ class Fracture:
 
     def plot_momentum(self, figax):
         """
-        Plots the momentum of the system before and after first choc
+        Plots the momentum of the system during whole simulation
         """
         if figax:
             fig, ax = figax
@@ -840,9 +801,6 @@ class Fracture:
         ax.set_ylim([0, 2*P[0]])
 
         ax.plot(self.t, P, label="quantité de mouvement")
-        # for i, N_choc in enumerate(self.contact_indices[:]):
-        #     label = "chocs" if i==0 else None
-        #     ax.plot([self.t[N_choc+1]], [P_ap[N_choc+1]], 'kX', alpha=0.5, label=label)
 
         ax.set_title("Quantité de mouvement")
         ax.set_xlabel("temps")
@@ -861,7 +819,7 @@ class Fracture:
 
     def plot_positions(self, node_ids=None, figax=None):
         """
-        Plot the positions of (some) nodes of an ice floe part of this percussion problem.
+        Plot the positions of (some) nodes that are part of this problem.
         """
 
         if figax:
@@ -890,7 +848,7 @@ class Fracture:
 
     def plot_velocities(self, node_ids=None, figax=None):
         """
-        Plot the positions of (some) nodes of an ice floe part of this percussion problem.
+        Plot the positions of (some) nodes that are part of this problem.
         """
 
         if figax:

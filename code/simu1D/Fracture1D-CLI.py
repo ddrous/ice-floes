@@ -1,5 +1,5 @@
 """
-This script runs and animates the of two ice floes.
+This script runs simulations and animates the percussion of two ice floes.
 """
 import matplotlib.pyplot as plt
 
@@ -26,8 +26,8 @@ if __name__=="__main__":
     eps = 0.75   ## coefficient de restitution
 
     ## Geometric constants
-    X_min, X_max = 0, 50.0        # Position of the farthest node in the grid
-    R = 1.5 / 6.0    # Radius for the balls at the end of the springs
+    X_min, X_max = 0, 50.0          # Positions of the farthest nodes in the grid
+    R = 1.5 / 6.0                   # Radius for the balls (nodes) at the end of the springs
 
     total_length1 = 10.0
     total_length2 = 10.0
@@ -37,8 +37,7 @@ if __name__=="__main__":
     n_nodes2 = 5
     n_nodes3 = 5
 
-    ## Run a simple percussion task
-
+    ## Create three ice floes
     floe1 = IceFloe(nodes=None, springs=None, mass=m, stiffness=k, viscosity=mu, tenacity=L, rigid_velocity=v0,
                     id_number=0)
     floe1.generate_nodes(X_min, total_length1, n_nodes1, R)
@@ -51,11 +50,10 @@ if __name__=="__main__":
                     id_number=2)
     floe3.generate_nodes(X_max - total_length3, X_max, n_nodes3, R)
 
-    ## Create two ice floes
     f = Fracture([floe1, floe2, floe3], times=(6.0, 24.0), nStepsBefContact=500, restitutionCoef=eps)
     # f.printDetails()
-    # f.computeBeforeContact()
-    # f.computeAfterContact()
+
+    ## Run simulation and save animation
     f.runSimulation()
     f.saveFig(openFile=True, fps=10, filename="Exports/AnimFrac1D.gif")
 
@@ -63,6 +61,8 @@ if __name__=="__main__":
     nrow, ncol = 2, 2
     fig, ax = plt.subplots(nrow, ncol, figsize=(3.4*(ncol+1),3.4*(nrow)))
     ax = ax.flatten()
+
+    ## Plot positions, velocities, momentum and energy
     f.plot_positions(None, (fig, ax[0]))
     f.plot_velocities(None, (fig, ax[1]))
     f.plot_momentum((fig, ax[2]))

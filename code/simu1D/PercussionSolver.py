@@ -37,7 +37,8 @@ class Node:
         self.vx, self.vy = velocity
         self.R = radius
         self.id = id_number
-        ## Extra properties needed for fracture
+
+        ## Extra properties needed for fracture problem (not implemented in this script)
         self.parentFloe = None     ## Ice floe to which this node belongs
         self.leftNode = None
         self.rightNode = None
@@ -80,7 +81,8 @@ class Spring:
         self.D = diameter
         self.theta = np.arctan2(node2.y-node1.y, node2.x-node1.x) + np.pi/2.0
         self.id = id_number
-        ## Extra parameters for fracture
+
+        ## Extra attributes for the fracture problem
         self.parentFloe = None  ## Ice floe to which this spring belongs
         self.leftNode = None
         self.rightNode = None
@@ -235,7 +237,7 @@ class IceFloe:
 
     def update_along_x(self, x_array, vx_array):
         """
-        Update the position and speeds of all the nodes in the ice floe
+        Updates the position and speeds of all the nodes in the ice floe
         """
         for i, node in enumerate(self.nodes):
             node.x = x_array[i]
@@ -243,7 +245,7 @@ class IceFloe:
 
     def plot(self, figax=None, color='k'):
         """
-        Plot an ice floe whose nodes are at (x1,y1) and (x2,y2) with same radius R
+        Plots an ice floe
         """
         if figax:
             fig, ax = figax
@@ -333,14 +335,13 @@ class Percussion:
                 - self.floe2.mu*(xvx2[:,self.floe2.n] - xvx2[:, self.floe2.n+1])
 
         I = np.trapz(y=intgr, x=t_con)
-        ## I = 0       ## Conservation de la quantité de mouvement
         print("Value of I for computation:", I)
 
         ## Compute the velocities after contact
-        # v0 = np.abs(self.floe1.nodes[-1].vx)
-        # v0_ = np.abs(self.floe2.nodes[0].vx)
-        v0 = self.floe1.nodes[-1].vx
-        v0_ = self.floe2.nodes[0].vx
+        v0 = np.abs(self.floe1.nodes[-1].vx)
+        v0_ = np.abs(self.floe2.nodes[0].vx)
+        # v0 = self.floe1.nodes[-1].vx
+        # v0_ = self.floe2.nodes[0].vx
         m = self.floe1.m
         m_ = self.floe2.m
         eps = self.eps
@@ -387,17 +388,17 @@ class Percussion:
         ##-------------------------------------------------------------
 
         ##------------3eme alternative----------------------------------
-        # X = eps*(v0 - v0_)
-        # Y = m*(v0**2) + m_*(v0_**2)
-        # a = m+m_
-        # b = 2*m_*X
-        # c = m_*(X**2) - Y
-        # Delta = b**2 - 4*a*c
-        # V01 = (-b - np.sqrt(Delta)) / (2*a)
-        # V02 = (-b + np.sqrt(Delta)) / (2*a)
-        # # print("V0 values:", Delta, V01, V02)
-        # V0 = V01 if V01 >= 0 else V02
-        # V0_ = V0 + X
+        X = eps*(v0 - v0_)
+        Y = m*(v0**2) + m_*(v0_**2)
+        a = m+m_
+        b = 2*m_*X
+        c = m_*(X**2) - Y
+        Delta = b**2 - 4*a*c
+        V01 = (-b - np.sqrt(Delta)) / (2*a)
+        V02 = (-b + np.sqrt(Delta)) / (2*a)
+        # print("V0 values:", Delta, V01, V02)
+        V0 = V01 if V01 >= 0 else V02
+        V0_ = V0 + X
         # # print("TEST:", m*(V0**2) + m_*(V0_**2) == Y)
         ##-------------------------------------------------------------
 
@@ -408,25 +409,20 @@ class Percussion:
         # print(" Second floe:", [v0_, V0_])
 
         ## Update velocities at extreme nodes
-        # self.floe1.nodes[-1].vx = -np.abs(V0)
-        # self.floe2.nodes[0].vx = np.abs(V0_)
-        self.floe1.nodes[-1].vx = V0
-        self.floe2.nodes[0].vx = V0_
+        self.floe1.nodes[-1].vx = -np.abs(V0)
+        self.floe2.nodes[0].vx = np.abs(V0_)
+        # self.floe1.nodes[-1].vx = V0
+        # self.floe2.nodes[0].vx = V0_
 
 
     def compute_after_contact(self):
         """
         Computes the positions and velocities of the two colliding floes after a contact
         """
-        self.compute_at_contact()       ## Calculate new speeds ...
+        self.compute_at_contact()       ## Calculate new speeds for nodes in contact
 
         t_sim, xvx1 = simulate_displacement_wrapper(self.floe1, self.t_aft, self.N_aft)
         t_sim, xvx2 = simulate_displacement_wrapper(self.floe2, self.t_aft, self.N_aft)
-
-        # print(xvx1[:, -1])
-
-        # t_sim, xvx1 = simulate_displacement_wrapper(self.floe1, "left", self.t_aft, self.N_aft)
-        # t_sim, xvx2 = simulate_displacement_wrapper(self.floe2, "right", self.t_aft, self.N_aft)
 
         self.t = np.concatenate([self.t, self.t[-1] + t_sim])
 
@@ -447,6 +443,7 @@ class Percussion:
         else:
             self.rec_count += 1
             self.compute_after_contact()
+
 
     def run_simulation(self):
         """
@@ -639,15 +636,11 @@ class Percussion:
             figax = plt.subplots()
             fig, ax = figax
 
-        # P_av = (self.floe1.n * self.floe1.m * np.abs(self.floe1.v0)
-        #         + self.floe2.n * self.floe2.m * np.abs(self.floe2.v0)) * np.ones_like(self.t)
-        # P_av = self.floe1.m * np.sum(np.abs(self.v1), axis=-1) + self.floe2.m * np.sum(np.abs(self.v2), axis=-1)
         P_av = (self.floe1.n * self.floe1.m * self.floe1.v0
                 + self.floe2.n * self.floe2.m * self.floe2.v0) * np.ones_like(self.t)
         N_first = self.contact_indices[0]
         P_av[N_first + 1:] = np.nan
 
-        # P_ap = self.floe1.m * np.sum(np.abs(self.v1), axis=-1) + self.floe2.m * np.sum(np.abs(self.v2), axis=-1)
         P_ap = self.floe1.m * np.sum(self.v1, axis=-1) \
                + self.floe2.m * np.sum(self.v2, axis=-1)
         P_ap[:N_first + 1] = np.nan
@@ -702,14 +695,6 @@ class Percussion:
                     + 0.5 * self.floe2.k * np.sum((self.x2[:, 1:] - self.x2[:, :-1] - self.floe2.initial_lengths())**2, axis=-1)
 
         ## Energie dissipative apres choc
-        # unit1 = (self.x1[:, 1:] - self.x1[:, :-1]) / np.linalg.norm((self.x1[:, 1:] - self.x1[:, :-1]))
-        # unit2 = (self.x2[:, 1:] - self.x2[:, :-1]) / np.linalg.norm((self.x2[:, 1:] - self.x2[:, :-1]))
-        # E_ap_r_OLD = 0.5 * self.floe1.mu * np.sum(((self.v1[:, 1:] - self.v1[:, :-1]) * unit1)**2, axis=-1) \
-        #         + 0.5 * self.floe2.mu * np.sum(((self.v2[:, 1:] - self.v2[:, :-1]) * unit2)**2, axis=-1)
-        # # E_ap_r_OLD = 0.5 * self.floe1.mu * np.sum(((self.v1[:, 1:] - self.v1[:, :-1]))**2, axis=-1) \
-        # #         + 0.5 * self.floe2.mu * np.sum(((self.v2[:, 1:] - self.v2[:, :-1]))**2, axis=-1)
-        # # E_ap_r_OLD = 0.5 * self.floe1.mu * np.sum((np.abs(self.v1[:, 1:]) - np.abs(self.v1[:, :-1])) ** 2, axis=-1) \
-        # #          + 0.5 * self.floe2.mu * np.sum((np.abs(self.v2[:, 1:]) - np.abs(self.v2[:, :-1])) ** 2, axis=-1)
         E_ap_r_OLD = self.floe1.mu * np.sum((self.v1[:, 1:] - self.v1[:, :-1]) ** 2, axis=-1) \
                     + self.floe2.mu * np.sum((self.v2[:, 1:] - self.v2[:, :-1]) ** 2, axis=-1)
         integrand = E_ap_r_OLD[N_first:]
@@ -736,8 +721,6 @@ class Percussion:
         ax.plot(self.t, E_ap_r, "--", linewidth=1, label="énergie dissipée")
 
         for i, N_choc in enumerate(self.contact_indices):
-            # label = "1er" if i==0 else str(i+1)+"eme"
-            # ax.plot([self.t[N_choc+1]], [E_ap[N_choc+1]], marker='X', label=label+" choc")
             label = "chocs" if i==0 else None
             ax.plot([self.t[N_choc+1]], [E_ap[N_choc+1]], 'kX', alpha=0.5, label=label)
 
@@ -771,7 +754,7 @@ class Percussion:
         else:
             print("Ice floe of id " + str(floe_id) + " is not part of this problem.")
 
-        ### Bien préciser qu'on est en déformation élastqiue: et donc la longueur de la fracture est la longeur initiale des ressorts
+        ### Bien préciser qu'on est en déformation élastqiue: et donc la longueur de la fracture est la longeur initiale du ressort brisé
         broken_length = 0
         for i in broken_springs:
             try:
@@ -784,7 +767,7 @@ class Percussion:
     def deformation_energy(self, floe_id=None, broken_springs=None, start=0, end=0):
         """
         Computes the deformation energy (sum of the elastic energy and the dissipated
-        energy) when the ice floe is fractured, i.e. some springs and broken.
+        energy) when the ice floe is fractured, i.e. some springs are broken.
         """
         assert start <= end, "Error: Starting time step is bigger than ending time step!"
 
@@ -812,15 +795,16 @@ class Percussion:
         t = self.t[start:end+1] - self.t[start-1:end]
         E_r = np.sum(integrand*t)
 
-        # return E_el + E_r     #### ---- STUDY THIS PART AGAIN ---- ####
+        # return E_el + E_r     #### ---- ADD THIS LINE TO INCLUDE DISSIPATIVE ENERGY IN FRACTURE ---- ####
         return E_el
 
 
     def griffith_minimization(self, floe_id=None):
         """
         Studies the fracture problem to see if it is worth addind a path tot the crack.
-        __Note__: Here, the total energy is not the same as in `self.plot_energy()`. Here,
-        it is the sum of the deformation energy and the fracture energy.
+        __Note__: Here, the total energy is not the same as in `self.plot_energy()` (that 
+        was the total mechanical energy). Here, it is the sum of the deformation energy 
+        and the fracture energy.
         """
         if floe_id == self.floe1.id:
             floe = self.floe1
@@ -842,7 +826,6 @@ class Percussion:
         def_en = self.deformation_energy(floe_id, old_broken_springs, start, old_end)
         frac_en = self.fracture_energy(floe_id, old_broken_springs)
         old_energy = def_en + frac_en
-        # print("OLD ENERGY IS:", old_energy)
 
         ## Compute new energies, only stop if fracture or end of simulation
         steps_counter = 0
@@ -882,7 +865,7 @@ class Percussion:
 
 
 
-""" General purpose functions. The function simulate_displacement is the most heart of the problem """
+""" General purpose functions. The function simulate_displacement is the heart of the problem """
 
 def d_nodes(node_1, node_2):
     """
@@ -892,7 +875,7 @@ def d_nodes(node_1, node_2):
 
 def fig2img(fig):
     """
-    Convert a Matplotlib figure to a PIL Image and return it
+    Converts a Matplotlib figure to a PIL Image and returns it
     """
     buf = io.BytesIO()
     fig.savefig(buf, bbox_inches='tight')
@@ -922,17 +905,10 @@ def simulate_displacement(n=2, m=1.0, k=18.0, mu=1.3, x0=None, v0=None, L0=None,
 
     F = np.zeros((2*n, 2*n-2))
     F[n:, :n-1] = (np.diag(-k * np.ones((n)) / m) + np.diag(k * np.ones((n-1)) / m, -1))[:, :n-1]
-    # print("F matrix:\n", F)
 
-    # print("E matrix:\n", E)
-    # x0 = np.zeros((n))
-    # print("\nx0 vector:", x0)
-    # print()
     Y0 = np.concatenate([x0, v0])
     t = np.linspace(0, t_simu, N + 1)
     full_L0 = np.concatenate([L0, np.zeros((n-1))])
-
-    # print("L0 vector:\n", L0)
 
     def model(Y, t):
         return E @ Y + F @ full_L0
