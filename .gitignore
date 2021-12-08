@@ -44,3 +44,6 @@ main-blx.bib*
 code/simu1D/__pycache__/FractureSolverOld.cpython-38.pyc
 code/simu1D/__pycache__/FractureSolver.cpython-38.pyc
 code/simu1D/__pycache__/PercussionSolver.cpython-38.pyc
+
+# Vistualenv
+code/simu1D/venv/*
